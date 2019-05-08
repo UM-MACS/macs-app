@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">MASOCC</string>
+    <string name="title_home">Home</string>
+    <string name="title_emotion">Feeling</string>
+    <string name="title_schedule">Appointments</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_alert">Alert</string>
+
+    <string name="title_activity_emotion">emotionActivity</string>
+    <string name="emotionIntro">How do you feel today?</string>
+    <string name="emotion1" value="counter1">Happy</string>
+    <string name="emotion2" value="counter2">Moderate</string>
+    <string name="emotion3" value="counter3">Sad</string>
+    <string name="submit">Submit</string>
+    <string name="intro">Tell us how you feel</string>
+
+    <string name="buttonRegister">here</string>
+    <string name="registeredUser">Already have an account?</string>
+    <string name="registeredUser2">Click</string>
+    <string name="registeredUser3">to login</string>
+    <string name="newUser">Do not have an account? </string>
+    <string name="newUser2">Click </string>
+    <string name="newUser3"> to create one</string>
+    <string-array name="userType">
+        <item>Please Select One</item>
+        <item>Patient</item>
+        <item>Caregiver</item>
+    </string-array>
+
+    <string name="title_activity_schedule">scheduleActivity</string>
+    <string name="submitButton">Submit</string>
+</resources>
