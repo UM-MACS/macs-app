@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS " + patientTable);
             db.execSQL("DROP TABLE IF EXISTS " + caregiverTable);
-            db.execSQL("DROP TABLE IF EXISTS " +emotions);
+            db.execSQL("DROP TABLE IF EXISTS " + emotions);
     }
 
     //inserting in database
@@ -95,7 +95,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    //for user's emotion table
+
+
+    /* for user's emotion table */
     public void createCounter(String email, int count1, int count2, int count3){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -133,10 +135,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-    public Cursor getCounter(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + emotions , null);
+    public Cursor getHappyCounter(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Happy FROM " + emotions +" WHERE Email=? " , new String[]{email});
         return cursor;
     }
 
+    public Cursor getModerateCounter(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Moderate FROM " + emotions +" WHERE Email=? " , new String[]{email});
+        return cursor;
+    }
+
+    public Cursor getSadCounter(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Sad FROM " + emotions +" WHERE Email=? " , new String[]{email});
+        return cursor;
+    }
+    /* end of emotion table*/
 }

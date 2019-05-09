@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -57,10 +58,6 @@ public class emotionActivity extends AppCompatActivity {
         });
         //finish
 
-//        dbHelper = new FeedReaderDbHelper(getApplicationContext());
-//        db = dbHelper.getWritableDatabase();
-//        values = new ContentValues();
-//        patient = new Patient();
         Toast.makeText(getApplicationContext(),Patient.getInstance().getPatientEmail(),Toast.LENGTH_SHORT).show();
         b1 = (Button) findViewById(R.id.emotion1);
         b2 = (Button) findViewById(R.id.emotion2);
@@ -70,23 +67,33 @@ public class emotionActivity extends AppCompatActivity {
         counter3 =0;
         arrayList = new ArrayList<String>();
         db = new DatabaseHelper(this);
-        db.createCounter(Patient.getInstance().getPatientEmail(),0,0,0);
-        db.createCounter(Patient.getInstance().getPatientEmail(),0,0,0);
-        db.createCounter(Patient.getInstance().getPatientEmail(),0,0,0);
-        Cursor cursor = db.getCounter();
+        Log.e("tag", "Testing 1");
+        Boolean check = db.checkMail(Patient.getInstance().getPatientEmail());
+        if(check) {
+            db.createCounter(Patient.getInstance().getPatientEmail(), 0, 0, 0);
+        }
+        Cursor cursor = db.getHappyCounter(Patient.getInstance().getPatientEmail());
+        Cursor cursor2 = db.getModerateCounter(Patient.getInstance().getPatientEmail());
+        Cursor cursor3 = db.getSadCounter(Patient.getInstance().getPatientEmail());
         if(cursor.getCount()!=0){
-//            Toast.makeText(getApplicationContext(),"Getting Count",Toast.LENGTH_SHORT).show();
             while (cursor.moveToNext()){
-                arrayList.add(cursor.getString(1));
-
+                counter1 = cursor.getInt(cursor.getColumnIndex("Happy"));
             }
         }
-        counter1 = Integer.parseInt(arrayList.get(0));
-        counter2 = Integer.parseInt(arrayList.get(1));
-        counter3 = Integer.parseInt(arrayList.get(2));
-//        Toast.makeText(getApplicationContext(),"counter 1 is "+counter1,Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(),"counter 2 is "+counter2,Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(),"counter 3 is "+counter3,Toast.LENGTH_SHORT).show();
+        Log.e("tag", "Happy: "+counter1);
+        if(cursor2.getCount()!=0){
+            while (cursor2.moveToNext()){
+                counter2 = cursor2.getInt(cursor2.getColumnIndex("Moderate"));
+            }
+        }
+        Log.e("tag", "Moderate: "+counter2);
+        if(cursor3.getCount()!=0){
+            while (cursor3.moveToNext()){
+                counter3 = cursor3.getInt(cursor3.getColumnIndex("Sad"));
+            }
+        }
+        Log.e("tag", "Sad: "+counter3);
+
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
