@@ -20,6 +20,7 @@
             </intent-filter>
         </receiver>
         <activity
+            android:exported="true"
             android:name=".emotionActivity"
             android:label="@string/title_activity_emotion" />
         <activity
