@@ -120,8 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                                         Patient.getInstance().setPatientContact(s6);
                                         Patient.getInstance().setPatientAge(s7);
                                         Log.e( "Tag", "hello");
-                                        Toast.makeText(getApplicationContext(),Patient.getInstance().getPatientName(),Toast.LENGTH_SHORT).show();
-                                        Boolean insert = db.insert(s1,s5,s2,s6,s7);
+                                        Boolean insert = db.insertPatientTable(s1,s5,s2,s6,s7);
 
                                         if (insert == true) {
                                             Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
@@ -129,6 +128,20 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                                             startActivity(intent);
                                         }
                                   }
+                                  else if(s4.equals("Caregiver")) {
+                                        Caregiver.getInstance().setCaregiverEmail(s1);
+                                        Caregiver.getInstance().setCaregiverPassword(s2);
+                                        Caregiver.getInstance().setCaregiverName(s5);
+                                        Caregiver.getInstance().setCaregiverContact(s6);
+                                        Caregiver.getInstance().setCaregiverAge(s7);
+                                        Boolean insert2 = db.insertCaregiverTable(s1,s5,s2,s6,s7);
+
+                                        if (insert2 == true) {
+                                            Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }
 
                                 }
                                 else{
