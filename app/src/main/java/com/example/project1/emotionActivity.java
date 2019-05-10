@@ -62,14 +62,15 @@ public class emotionActivity extends AppCompatActivity {
         counter3 =0;
         arrayList = new ArrayList<String>();
         db = new DatabaseHelper(this);
-        Log.e("tag", "Testing 1");
-        Boolean check = db.checkMail(Patient.getInstance().getPatientEmail());
-        if(check) {
-            db.createCounter(Patient.getInstance().getPatientEmail(), 0, 0, 0);
+        Boolean check = db.checkMail(User.getInstance().getEmail());
+        Boolean check2 = db.checkMail2(User.getInstance().getEmail());
+        Log.e("tag", ""+User.getInstance().getUserType());
+        if(check || check2) {
+            db.createCounter(User.getInstance().getUserType(),User.getInstance().getEmail(), 0, 0, 0);
         }
-        Cursor cursor = db.getHappyCounter(Patient.getInstance().getPatientEmail());
-        Cursor cursor2 = db.getModerateCounter(Patient.getInstance().getPatientEmail());
-        Cursor cursor3 = db.getSadCounter(Patient.getInstance().getPatientEmail());
+        Cursor cursor = db.getHappyCounter(User.getInstance().getUserType(),User.getInstance().getEmail());
+        Cursor cursor2 = db.getModerateCounter(User.getInstance().getUserType(),User.getInstance().getEmail());
+        Cursor cursor3 = db.getSadCounter(User.getInstance().getUserType(),User.getInstance().getEmail());
         if(cursor.getCount()!=0){
             while (cursor.moveToNext()){
                 counter1 = cursor.getInt(cursor.getColumnIndex("Happy"));
@@ -95,7 +96,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 counter1++;
 //                Toast.makeText(getApplicationContext(),"new counter 1: "+counter1,Toast.LENGTH_SHORT).show();
-                Boolean counter = db.setHappyCounter(Patient.getInstance().getPatientEmail(),counter1);
+                Boolean counter = db.setHappyCounter(User.getInstance().getUserType(),User.getInstance().getEmail(),counter1);
 //                Boolean counter2 = db.setCounter("Moderate",0);
 //                Boolean counter3 = db.setCounter("Sad",0);
                 if(!counter){
@@ -112,7 +113,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 counter2++;
 //                Toast.makeText(getApplicationContext(),"new counter 2: "+counter2,Toast.LENGTH_SHORT).show();
-                Boolean counter = db.setModerateCounter(Patient.getInstance().getPatientEmail(),counter2);
+                Boolean counter = db.setModerateCounter(User.getInstance().getUserType(),User.getInstance().getEmail(),counter2);
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
@@ -127,7 +128,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 counter3++;
 //                Toast.makeText(getApplicationContext(),"new counter 3: "+counter3,Toast.LENGTH_SHORT).show();
-                Boolean counter = db.setSadCounter(Patient.getInstance().getPatientEmail(),counter3);
+                Boolean counter = db.setSadCounter(User.getInstance().getUserType(),User.getInstance().getEmail(),counter3);
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }

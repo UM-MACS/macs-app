@@ -102,11 +102,11 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 String s5 = e5.getText().toString(); //name
                 String s6 = e6.getText().toString(); //contact no
                 String s7 = e7.getText().toString(); //age
-                String s4 = spinner.getSelectedItem().toString(); //user type
+//                String s4 = spinner.getSelectedItem().toString(); //user type
 
 
                 //check if fields are empty
-                if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals("Please Select One") || s5.equals("") || s6.equals("") || s7.equals("")) {
+                if (s1.equals("") || s2.equals("") || s3.equals("") || s5.equals("") || s6.equals("") || s7.equals("")) {
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
                 } else {
                     if (s2.equals(s3)) { //check if password matches
@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                                 Boolean insert = db.insertPatientTable(s1, s5, s2, s6, s7);
                                 if (insert == true) {
                                     Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 }
                             }

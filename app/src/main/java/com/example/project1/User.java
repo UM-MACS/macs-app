@@ -13,6 +13,8 @@ public class User {
     private String userType;
     private static User ourInstance = new User();
 
+
+
     public static User getInstance() {
         if(ourInstance == null){
             ourInstance = new User();

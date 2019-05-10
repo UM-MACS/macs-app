@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User.getInstance().setUserType("Patient");
                 Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
@@ -61,13 +62,15 @@ public class MainActivity extends AppCompatActivity {
         l2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MainActivity.this,Login2Activity.class);
+                User.getInstance().setUserType("Caregiver");
+                Intent intent2 = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent2);
             }
         });
         l3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User.getInstance().setUserType("Specialist");
                 Intent intent3 = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent3);
             }

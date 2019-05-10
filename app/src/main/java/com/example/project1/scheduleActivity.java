@@ -90,7 +90,7 @@ public class scheduleActivity extends AppCompatActivity {
                 dd = datePicker.getDayOfMonth();
                 appointment = yy+"/"+mm+"/"+dd;
                 Patient.getInstance().setPatientAppointment(appointment);
-                boolean set = db.setAppointment(Patient.getInstance().getPatientEmail());
+                boolean set = db.setAppointment(User.getInstance().getUserType(),User.getInstance().getEmail());
                 if(set){
                     Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
                 }

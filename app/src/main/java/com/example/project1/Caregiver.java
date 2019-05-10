@@ -3,6 +3,7 @@ package com.example.project1;
 import java.util.ArrayList;
 
 public class Caregiver {
+
     private ArrayList<String> appointment = new ArrayList<String>();
     private int id;
     private String name;
@@ -21,6 +22,7 @@ public class Caregiver {
     }
 
     private Caregiver() {
+        super();
     }
 
 //    public ArrayList<String> getCaregiverAppointment() {

@@ -132,7 +132,7 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
                                 Boolean insert2 = db.insertCaregiverTable(s1, s5, s2, s6, s7,s4);
                                 if (insert2 == true) {
                                     Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Register2Activity.this, Login2Activity.class);
+                                    Intent intent = new Intent(Register2Activity.this, LoginActivity.class);
                                     startActivity(intent);
                                 }
                             }

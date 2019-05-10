@@ -53,45 +53,56 @@ public class LoginActivity extends AppCompatActivity {
         e2 = (EditText)findViewById(R.id.login_password);
         b1 = (Button)findViewById(R.id.login_button);
         b2 = (Button)findViewById(R.id.registerButton);
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = e1.getText().toString();
                 String password = e2.getText().toString();
                 Boolean checkEmail = db.verifyAccount(email,password);
-//                Boolean checkEmail2 = db.verifyAccount2(email,password);
-//                if (checkEmail ==true || checkEmail2 == true) {
+                Boolean checkEmail2 = db.verifyAccount2(email,password);
+                if (User.getInstance().getUserType().equals("Patient")) {
                     if (checkEmail) {
-                        User.getInstance().setUserType("Patient");
                         User.getInstance().setEmail(email);
                         Toast.makeText(getApplicationContext(), User.getInstance().getEmail() + User.getInstance().getUserType(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                         startActivity(myIntent);
                     }
-//                    else if (checkEmail2) {
-//                        User.getInstance().setUserType("Caregiver");
-//                        User.getInstance().setEmail(email);
-//                        Toast.makeText(getApplicationContext(), User.getInstance().getEmail()+ User.getInstance().getUserType(), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-//                        Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-//                        startActivity(myIntent);
-//                    }
-
-                else{
-                    Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (User.getInstance().getUserType().equals("Caregiver")) {
+                    if (checkEmail2) {
+                        User.getInstance().setEmail(email);
+                        Toast.makeText(getApplicationContext(), User.getInstance().getEmail() + User.getInstance().getUserType(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                        startActivity(myIntent);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
+
         });
 
 
         mTextMessage = (TextView) findViewById(R.id.message);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (User.getInstance().getUserType().equals("Patient")) {
+                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+                else if (User.getInstance().getUserType().equals("Caregiver")) {
+                    Intent intent = new Intent(LoginActivity.this, Register2Activity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }
