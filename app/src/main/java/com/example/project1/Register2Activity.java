@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Register2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
     private Button b1,b2;
@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register2);
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
@@ -42,15 +42,15 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.navigation_home:
-                        Intent i1 = new Intent(RegisterActivity.this,MainActivity.class);
+                        Intent i1 = new Intent(Register2Activity.this,MainActivity.class);
                         startActivity(i1);
                         break;
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(RegisterActivity.this,emotionActivity.class);
+                        Intent i2 = new Intent(Register2Activity.this,emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(RegisterActivity.this,scheduleActivity.class);
+                        Intent i3 = new Intent(Register2Activity.this,scheduleActivity.class);
                         startActivity(i3);
                         break;
                 }
@@ -71,18 +71,18 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 //        patient = new Patient();
 
         //choose user type
-//        spinner = (Spinner) findViewById(R.id.spinner);
-//        spinner.setOnItemSelectedListener(this);
-//        ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.relationship, android.R.layout.simple_spinner_item
-//        );
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-//        spinner.setAdapter(adapter);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+        ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.relationship, android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
 
         //click on login button
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                Intent intent = new Intent(Register2Activity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         //click on register button
         b1.setOnClickListener(new View.OnClickListener(){
             @Override
-                    public void onClick(View v) {
+            public void onClick(View v) {
 //                        Patient.getInstance().setPatientEmail(e1.getText().toString());
 //                        Patient.getInstance().setPatientName(e5.getText().toString());
 //                        Patient.getInstance().setPatientPassword(e2.getText().toString());
@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 String s5 = e5.getText().toString(); //name
                 String s6 = e6.getText().toString(); //contact no
                 String s7 = e7.getText().toString(); //age
-                String s4 = spinner.getSelectedItem().toString(); //user type
+                String s4 = spinner.getSelectedItem().toString(); //relationship with patient
 
 
                 //check if fields are empty
@@ -110,9 +110,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
                 } else {
                     if (s2.equals(s3)) { //check if password matches
-                        Boolean checkMail = db.checkMail(s1);
+//                        Boolean checkMail = db.checkMail(s1);
                         Boolean checkMail2 = db.checkMail2(s1);
-
+//                        if (checkMail == true || checkMail2 == true) {
 //                                        if (s4.equals("Patient")) {
                             User.getInstance().setEmail(s1); //email
                             User.getInstance().setPassword(s2); //pw
@@ -120,11 +120,19 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                             User.getInstance().setContact(s6);
                             User.getInstance().setAge(s7);
                             Log.e("Tag", "hello");
-                            if (checkMail == true) {
-                                Boolean insert = db.insertPatientTable(s1, s5, s2, s6, s7);
-                                if (insert == true) {
+//                            if (checkMail == true) {
+//                                Boolean insert = db.insertPatientTable(s1, s5, s2, s6, s7);
+//                                if (insert == true) {
+//                                    Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
+//                                    Intent intent = new Intent(Register2Activity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                }
+//                            } else
+                                if (checkMail2 == true) {
+                                Boolean insert2 = db.insertCaregiverTable(s1, s5, s2, s6, s7,s4);
+                                if (insert2 == true) {
                                     Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(Register2Activity.this, Login2Activity.class);
                                     startActivity(intent);
                                 }
                             }
@@ -143,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
         });
         mTextMessage = (TextView) findViewById(R.id.message);
-}
+    }
 
 
 

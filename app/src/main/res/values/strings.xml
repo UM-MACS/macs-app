@@ -3,8 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_emotion">Feeling</string>
     <string name="title_schedule">Appointments</string>
+
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_alert">Alert</string>
+    <string name="patientButton">Patient</string>
+    <string name="caregiverButton">Caregiver</string>
+    <string name="specialistButton">Specialist</string>
 
     <string name="title_activity_emotion">emotionActivity</string>
     <string name="emotionIntro">How do you feel today?</string>
@@ -14,6 +17,7 @@
     <string name="submit">Submit</string>
     <string name="intro">Tell us how you feel</string>
 
+    <string name="title_activity_register">Registration</string>
     <string name="buttonRegister">here</string>
     <string name="registeredUser">Already have an account?</string>
     <string name="registeredUser2">Click</string>
@@ -21,12 +25,21 @@
     <string name="newUser">Do not have an account? </string>
     <string name="newUser2">Click </string>
     <string name="newUser3"> to create one</string>
-    <string-array name="userType">
+    <string-array name="relationship">
         <item>Please Select One</item>
-        <item>Patient</item>
-        <item>Caregiver</item>
+        <item>Parent</item>
+        <item>Child</item>
+        <item>Spouse</item>
+        <item>Family</item>
+        <item>Others</item>
     </string-array>
 
     <string name="title_activity_schedule">scheduleActivity</string>
     <string name="submitButton">Submit</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_register2">Registration</string>
+    <string name="caregiverRelation">Relationship with Patient</string>
+    <string name="descriptionOfSpinner">What is your Relationship with the Patient? I am their..</string>
 </resources>

@@ -9,13 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    DatabaseHelper db;
-    EditText e1, e2;
-    Button b1,b2;
+    LinearLayout l1,l2,l3;
     private TextView mTextMessage;
 //    Patient patient;
 
@@ -48,39 +48,31 @@ public class MainActivity extends AppCompatActivity {
         });
         //finish
 
-        db = new DatabaseHelper(this);
-        e1 = (EditText)findViewById(R.id.login_email);
-        e2 = (EditText)findViewById(R.id.login_password);
-        b1 = (Button)findViewById(R.id.login_button);
-        b2 = (Button)findViewById(R.id.registerButton);
-        b2.setOnClickListener(new View.OnClickListener() {
+        l1 = (LinearLayout) findViewById(R.id.userPatient);
+        l2 = (LinearLayout) findViewById(R.id.userCaregiver);
+        l3 = (LinearLayout) findViewById(R.id.userSpecialist);
+        l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
         });
-        b1.setOnClickListener(new View.OnClickListener() {
+        l2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = e1.getText().toString();
-                String password = e2.getText().toString();
-                Boolean checkEmail = db.verifyAccount(email,password);
-                if (checkEmail){
-                    Patient.getInstance().setPatientEmail(email);
-                    Toast.makeText(getApplicationContext(),Patient.getInstance().getPatientEmail(),Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(MainActivity.this, emotionActivity.class);
-                    startActivity(myIntent);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent2 = new Intent(MainActivity.this,Login2Activity.class);
+                startActivity(intent2);
+            }
+        });
+        l3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3 = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent3);
             }
         });
 
-
-        mTextMessage = (TextView) findViewById(R.id.message);
     }
 
 }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project1">
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
@@ -10,22 +12,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:exported="true"
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
+        <activity
+            android:name=".Login2Activity"
+            android:label="@string/title_activity_login"></activity>
+        <activity
             android:name=".scheduleActivity"
-            android:label="@string/title_activity_schedule"></activity>
+            android:exported="true"
+            android:label="@string/title_activity_schedule" />
+
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
         <activity
-            android:exported="true"
             android:name=".emotionActivity"
+            android:exported="true"
             android:label="@string/title_activity_emotion" />
         <activity
             android:name=".RegisterActivity"
             android:label="RegisterActivity" />
+        <activity
+            android:name=".Register2Activity"
+            android:label="@string/title_activity_register2" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -35,8 +49,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

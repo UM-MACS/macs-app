@@ -9,26 +9,26 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String patientTable = "PatientTable";
-    public static final String caregiverTable = "CaregiverTable";
-    public static final String emotions = "UserEmotions";
+    public static final String patientData= "PatientTable";
+    public static final String caregiverData= "CaregiverTable";
+    public static final String patientEmotionData= "UserEmotions";
     public DatabaseHelper(Context context) {
-        super(context, "NewDatabase.db", null, 1);
+        super(context, "Database.db", null, 1);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + patientTable + "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text, Appointment text)");
-        db.execSQL("CREATE TABLE " + caregiverTable+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text)");
-        db.execSQL("CREATE TABLE " + emotions + "(Email text PRIMARY KEY, Happy INTEGER, Moderate INTEGER,Sad INTEGER)");
+        db.execSQL("CREATE TABLE " + patientData + "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text, Appointment text)");
+        db.execSQL("CREATE TABLE " + caregiverData+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text,Relationship text)");
+        db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text PRIMARY KEY, Happy INTEGER, Moderate INTEGER,Sad INTEGER)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + patientTable);
-            db.execSQL("DROP TABLE IF EXISTS " + caregiverTable);
-            db.execSQL("DROP TABLE IF EXISTS " + emotions);
+            db.execSQL("DROP TABLE IF EXISTS " + patientData);
+            db.execSQL("DROP TABLE IF EXISTS " + caregiverData);
+            db.execSQL("DROP TABLE IF EXISTS " + patientEmotionData);
     }
 
     //inserting in database
@@ -41,15 +41,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Contact",contact);
         contentValues.put("Age",age);
         contentValues.put("Appointment","");
-        long ins = db.insert(patientTable,null, contentValues);
+        long ins = db.insert(patientData,null, contentValues);
         //check if insert is successful
-        db.rawQuery(" SELECT name FROM "+patientTable+" ORDER BY  name " + " COLLATE NOCASE; ",null);
+        db.rawQuery(" SELECT name FROM "+patientData+" ORDER BY  name " + " COLLATE NOCASE; ",null);
         if(ins ==-1) return false;
         else return true;
 
     }
 
-    public boolean insertCaregiverTable(String email, String name, String password, String contact, String age){
+    public boolean insertCaregiverTable(String email, String name, String password, String contact, String age,String relationship){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Name",name);
@@ -57,8 +57,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Password",password);
         contentValues.put("Contact",contact);
         contentValues.put("Age",age);
+        contentValues.put("Relationship",relationship);
 //        contentValues.put("Appointment","");
-        long ins = db.insert(caregiverTable,null, contentValues);
+        long ins = db.insert(caregiverData,null, contentValues);
         //check if insert is successful
         if(ins ==-1) return false;
         else return true;
@@ -69,18 +70,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //check if the email is registered before
     public Boolean checkMail(String email){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("Select * from " + patientTable + " where email = ?", new String[]{email});
-        Cursor cursor2 = db.rawQuery("Select * from " + caregiverTable+ " where email = ?", new String[]{email});
-        if (cursor.getCount()>0 || cursor2.getCount()>0) return false;
+        Cursor cursor = db.rawQuery("Select * from " + patientData + " where email = ?", new String[]{email});
+        if (cursor.getCount()>0) return false;
+        else return true;
+    }
+
+    public Boolean checkMail2(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select * from " + caregiverData+ " where email = ?", new String[]{email});
+        if (cursor.getCount()>0) return false;
         else return true;
     }
 
     //check if email and password matches
     public Boolean verifyAccount(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + patientTable +" WHERE email =? AND password = ?", new String[]{email,password});
-        Cursor cursor2 = db.rawQuery("SELECT * FROM " + caregiverTable+" WHERE email =? AND password = ?", new String[]{email,password});
-        if (cursor.getCount()>0 || cursor2.getCount()>0) return true;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + patientData +" WHERE email =? AND password = ?", new String[]{email,password});
+        if (cursor.getCount()>0) return true;
+        else return false;
+    }
+
+    public Boolean verifyAccount2(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + caregiverData+" WHERE email =? AND password = ?", new String[]{email,password});
+        if (cursor.getCount()>0) return true;
         else return false;
     }
 
@@ -90,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int i = Patient.getInstance().getSizeAppointment()-1;
         String app= Patient.getInstance().getPatientAppointment().get(i);
         values.put("Appointment",app);
-        long ins = db.update(patientTable,values,"Email =?",new String[]{email});
+        long ins = db.update(patientData,values,"Email =?",new String[]{email});
         if(ins==-1) return false;
         return true;
     }
@@ -105,15 +118,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Happy",count1);
         contentValues.put("Moderate",count2);
         contentValues.put("Sad",count3);
-        db.insert(emotions,null,contentValues);
+        db.insert(patientEmotionData,null,contentValues);
     }
 
     public Boolean setHappyCounter(String email,int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Happy",count);
-        long c = db.update(emotions,contentValues, " Email =?",new String[]{email});
-        if(c==-1) return false;
+        long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
+        if(c==-1)
+            return false;
         else return true;
     }
 
@@ -121,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Moderate",count);
-        long c = db.update(emotions,contentValues, " Email =?",new String[]{email});
+        long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
         if(c==-1) return false;
         else return true;
     }
@@ -130,26 +144,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Sad",count);
-        long c = db.update(emotions,contentValues, " Email =?",new String[]{email});
+        long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
         if(c==-1) return false;
         else return true;
     }
 
     public Cursor getHappyCounter(String email){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT Happy FROM " + emotions +" WHERE Email=? " , new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT Happy FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
         return cursor;
     }
 
     public Cursor getModerateCounter(String email){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT Moderate FROM " + emotions +" WHERE Email=? " , new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT Moderate FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
         return cursor;
     }
 
     public Cursor getSadCounter(String email){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT Sad FROM " + emotions +" WHERE Email=? " , new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT Sad FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
         return cursor;
     }
     /* end of emotion table*/

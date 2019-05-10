@@ -12,6 +12,9 @@ public class Patient {
     private String age;
     private static Patient ourInstance;
 
+    private Patient() {
+    }
+
     public static Patient getInstance() {
         if(ourInstance == null){
             ourInstance = new Patient();
@@ -19,8 +22,6 @@ public class Patient {
         return ourInstance;
     }
 
-    private Patient() {
-    }
 
         public ArrayList<String> getPatientAppointment() {
             return appointment;

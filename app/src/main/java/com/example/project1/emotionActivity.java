@@ -1,9 +1,7 @@
 package com.example.project1;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,11 +16,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class emotionActivity extends AppCompatActivity {
-//    FeedReaderDbHelper dbHelper;
-//    SQLiteDatabase db;
     DatabaseHelper db;
     Button b1,b2,b3,b4;
-    TextView t1;
     ArrayList<String> arrayList;
     int counter1, counter2, counter3, counter4=0;
 //    ContentValues values;

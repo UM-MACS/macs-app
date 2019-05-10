@@ -10,6 +10,7 @@ public class Caregiver {
     private String password;
     private String contact;
     private String age;
+    private String relationship;
     private static Caregiver ourInstance = new Caregiver();
 
     public static Caregiver getInstance() {
@@ -73,4 +74,12 @@ public class Caregiver {
     public void setCaregiverContact(String contact) {
         this.contact = contact;
     }
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setCaregiverRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
 }
