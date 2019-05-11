@@ -11,4 +11,5 @@
     <dimen name="items_top_padding">4dp</dimen>
 
     <dimen name="timer_icon">20dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

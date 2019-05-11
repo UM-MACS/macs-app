@@ -15,10 +15,10 @@ import static com.example.project1.App.CHANNEL_ID;
 public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent notificationIntent = new Intent(context, scheduleActivity.class);
+        Intent notificationIntent = new Intent(context, viewEventActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(scheduleActivity.class);
+        stackBuilder.addParentStack(viewEventActivity.class);
         stackBuilder.addNextIntent(notificationIntent);
 
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
