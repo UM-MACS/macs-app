@@ -14,8 +14,7 @@
         <activity
             android:exported="true"
             android:name=".viewEventActivity"
-            android:label="@string/title_activity_view_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_view_event"/>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />

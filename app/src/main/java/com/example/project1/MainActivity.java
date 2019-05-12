@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i2);
                     break;
                 case R.id.navigation_schedule_appointment:
-                    Intent i3 = new Intent(MainActivity.this,scheduleActivity.class);
+                    Intent i3 = new Intent(MainActivity.this,viewEventActivity.class);
                     startActivity(i3);
                     break;
                 }

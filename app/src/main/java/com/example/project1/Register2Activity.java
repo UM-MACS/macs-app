@@ -50,7 +50,7 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(Register2Activity.this,scheduleActivity.class);
+                        Intent i3 = new Intent(Register2Activity.this,viewEventActivity.class);
                         startActivity(i3);
                         break;
                 }
@@ -67,7 +67,7 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         e6 = (EditText)findViewById(R.id.editText3); //contact no
         e7 = (EditText)findViewById(R.id.editText4); //age
         b1 = (Button)findViewById(R.id.register);
-        b2 = (Button)findViewById(R.id.button2);
+        b2 = (Button)findViewById(R.id.login);
 //        patient = new Patient();
 
         //choose user type

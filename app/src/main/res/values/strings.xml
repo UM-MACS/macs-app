@@ -18,13 +18,19 @@
     <string name="intro">Tell us how you feel</string>
 
     <string name="title_activity_register">Registration</string>
-    <string name="buttonRegister">here</string>
-    <string name="registeredUser">Already have an account?</string>
-    <string name="registeredUser2">Click</string>
-    <string name="registeredUser3">to login</string>
-    <string name="newUser">Do not have an account? </string>
-    <string name="newUser2">Click </string>
-    <string name="newUser3"> to create one</string>
+    <string name="registeredUser">Have an account?</string>
+    <string name="registeredUser2">Click Here to Login</string>
+
+    <string name="newUser">OR </string>
+    <string name="newUser2">Click Here to Register </string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="age">Age</string>
+    <string name="contact">Contact No</string>
     <string-array name="relationship">
         <item>Please Select One</item>
         <item>Parent</item>

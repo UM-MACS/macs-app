@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,12 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class viewEventActivity extends AppCompatActivity {
@@ -35,12 +39,13 @@ private LinearLayout datePickerLayout;
 private LinearLayout clickableView;
 private FrameLayout frameLayout;
 private DatabaseHelper db;
-private TextView mTextMessage;
+private TextView appointmentText,remarkTextView;
 private Button b1;
 private int yy, mm, dd;
 private DatePicker datePicker;
 private Calendar cal;
 private AlarmManager alarmManager;
+private EditText editText;
 public String appointment;
 
     @Override
@@ -62,7 +67,7 @@ public String appointment;
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(viewEventActivity.this,scheduleActivity.class);
+                        Intent i3 = new Intent(viewEventActivity.this,viewEventActivity.class);
                         startActivity(i3);
                         break;
                 }
@@ -76,15 +81,43 @@ public String appointment;
         frameLayout.getForeground().setAlpha(0);
         datePickerLayout = (LinearLayout)findViewById(R.id.container_date_picker);
         clickableView = (LinearLayout)findViewById(R.id.clickable_view);
+        db = new DatabaseHelper(this);
+        ArrayList <String> arrayList = new ArrayList<>();
+        ArrayList <String> arrayList2 = new ArrayList<>();
+        Cursor cursor = db.getAppointment(User.getInstance().getUserType(),User.getInstance().getEmail());
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                Log.e("tag", ""+cursor.getString(1) );
+                arrayList.add(cursor.getString(2));
+                arrayList2.add(cursor.getString(1));
+            }
+        }
+        for (int i=0; i<arrayList.size();i++){
+            Log.e("tag", ""+arrayList.get(i));
+            LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View rowView = inflater.inflate(R.layout.field,parentLinearLayout,false);
+            parentLinearLayout.addView(rowView,parentLinearLayout.getChildCount()-1);
+            remarkTextView = (TextView)((View)rowView).findViewById(R.id.show_remark_text);
+            remarkTextView.setText(arrayList2.get(i));
+            appointmentText = (TextView)((View)rowView).findViewById(R.id.appointment_text);
+            appointmentText.setText(arrayList.get(i));
 
-
+        }
 
     }
     public void onAddField(View v){
+//        appointmentText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_text);
         //add row of view
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.field,parentLinearLayout,false);
         parentLinearLayout.addView(rowView,parentLinearLayout.getChildCount()-1);
+        appointmentText = (TextView)((View)rowView).findViewById(R.id.appointment_text);
+        remarkTextView = (TextView)((View)rowView).findViewById(R.id.show_remark_text);
+//        final String text = "testing1";
+//        appointmentText.setText(text);
+        Log.e("tag", "appointment");
+//        final String text = "testing";
+//        appointmentText.setText(text);
         //alarmService
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
@@ -96,34 +129,38 @@ public String appointment;
         final View view = inflater1.inflate(R.layout.activity_schedule,null);
         float density=viewEventActivity.this.getResources().getDisplayMetrics().density;
         // create a focusable PopupWindow with the given layout and correct size
-        final PopupWindow pw = new PopupWindow(view, (int)density*500, (int)density*500, true);
+        final PopupWindow pw = new PopupWindow(view, (int)density*450, (int)density*600, true);
+        //dim background
         frameLayout.getForeground().setAlpha(220);
-//        datePicker = (DatePicker)((View) v.getParent()).view.findViewById(R.id.datePicker);
+        //get and set calendarView and editText
+        editText = (EditText)view.findViewById(R.id.remark);
         datePicker = (DatePicker)view.findViewById(R.id.datePicker);
         datePicker.setCalendarViewShown(false); //hide the calendar view
-        //Button to close the pop-up
+        //When Submit Button is clicked
         ((Button) view.findViewById(R.id.submitButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pw.dismiss();
                 frameLayout.getForeground().setAlpha(0);
+                String remarkText = editText.getText().toString();
                 yy = datePicker.getYear();
-                mm=datePicker.getMonth()+1;
+                mm=datePicker.getMonth();
                 dd = datePicker.getDayOfMonth();
-                appointment = yy+"/"+mm+"/"+dd;
-                Log.e("tag", ""+appointment);
-//                Patient.getInstance().setPatientAppointment(appointment);
-//                boolean set = db.setAppointment(User.getInstance().getUserType(),User.getInstance().getEmail());
-//                if(set){
-//                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
-//                }
+                appointment = yy+"/"+(mm+1)+"/"+dd;
+                remarkTextView.setText(remarkText);
+                appointmentText.setText(appointment);
+                User.getInstance().setAppointment(appointment);
+                boolean set = db.setAppointment(User.getInstance().getUserType(),User.getInstance().getEmail(),User.getInstance().getAppointment(),remarkText);
+                if(set){
+                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
+                }
                 cal.set(Calendar.YEAR,yy);
                 cal.set(Calendar.MONTH,mm);
                 cal.set(Calendar.DAY_OF_MONTH,dd);
-                cal.set(Calendar.HOUR_OF_DAY,12);
-                cal.set(Calendar.MINUTE,59);
+                cal.set(Calendar.HOUR_OF_DAY,1);
+                cal.set(Calendar.MINUTE,28);
                 cal.set(Calendar.SECOND,0);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
             }
@@ -144,66 +181,18 @@ public String appointment;
 
     }
     public void onDelete(View v){
+        appointmentText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_text);
+        final String text = (String) appointmentText.getText();
+        Log.e("tag", ""+text);
+        remarkTextView= (TextView)((View)v.getParent()).findViewById(R.id.show_remark_text);
+        final String text2 = (String) remarkTextView.getText();
+        Log.e("tag", ""+text2);
+        db = new DatabaseHelper(this);
+        db.deleteAppointment(User.getInstance().getUserType(),User.getInstance().getEmail(),text,text2);
         parentLinearLayout.removeView((View)v.getParent());
     }
 
     public void onEdit(View v) {
-//        //alarmService
-//        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-//        notificationIntent.addCategory("android.intent.category.DEFAULT");
-//        final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        cal = Calendar.getInstance();
-//        db = new DatabaseHelper(this);
-//        LayoutInflater inflater1 = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        final View view = inflater1.inflate(R.layout.activity_schedule,null);
-//        float density=viewEventActivity.this.getResources().getDisplayMetrics().density;
-//        // create a focusable PopupWindow with the given layout and correct size
-//        final PopupWindow pw = new PopupWindow(view, (int)density*500, (int)density*500, true);
-//        frameLayout.getForeground().setAlpha(220);
-////        datePicker = (DatePicker)((View) v.getParent()).view.findViewById(R.id.datePicker);
-//        datePicker = (DatePicker)view.findViewById(R.id.datePicker);
-//        datePicker.setCalendarViewShown(false); //hide the calendar view
-//        //Button to close the pop-up
-//        ((Button) view.findViewById(R.id.submitButton)).setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                pw.dismiss();
-//                frameLayout.getForeground().setAlpha(0);
-//                yy = datePicker.getYear();
-//                mm=datePicker.getMonth()+1;
-//                dd = datePicker.getDayOfMonth();
-//                appointment = yy+"/"+mm+"/"+dd;
-//                Log.e("tag", ""+appointment);
-////                Patient.getInstance().setPatientAppointment(appointment);
-////                boolean set = db.setAppointment(User.getInstance().getUserType(),User.getInstance().getEmail());
-////                if(set){
-////                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
-////                }
-////                else{
-////                    Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
-////                }
-//                cal.set(Calendar.YEAR,yy);
-//                cal.set(Calendar.MONTH,mm);
-//                cal.set(Calendar.DAY_OF_MONTH,dd);
-//                cal.set(Calendar.HOUR_OF_DAY,12);
-//                cal.set(Calendar.MINUTE,59);
-//                cal.set(Calendar.SECOND,0);
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
-//            }
-//        });
-//        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//        pw.setTouchInterceptor(new View.OnTouchListener() {
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//                    pw.dismiss();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//        pw.setOutsideTouchable(true);
-//        // display the pop-up in the center
-//        pw.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
 }

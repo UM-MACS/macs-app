@@ -3,7 +3,7 @@ package com.example.project1;
 import java.util.ArrayList;
 
 public class User {
-    private ArrayList<String> Appointment = new ArrayList<String>();
+    private String appointment;
     private int id;
     private String Name;
     private String Email;
@@ -25,8 +25,8 @@ public class User {
     private User() {
     }
 
-    public ArrayList<String> getPatientAppointment() {
-        return Appointment;
+    public String getAppointment() {
+        return appointment;
     }
 
     public void setUserType (String type){
@@ -37,12 +37,8 @@ public class User {
         return userType;
     }
 
-    public void setPatientAppointment(String app) {
-        Appointment.add(app);
-    }
-
-    public int getSizeAppointment(){
-        return Appointment.size();
+    public void setAppointment(String app) {
+        this.appointment = app;
     }
 
     public String getUserName() {
