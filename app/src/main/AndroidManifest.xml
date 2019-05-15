@@ -3,6 +3,7 @@
     package="com.example.project1">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,16 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".FAQ"
             android:exported="true"
+            android:label="FAQ"/>
+        <activity
+            android:name=".eventAssessment"
+            android:exported="true"
+            android:label="eventAssessment"/>
+        <activity
             android:name=".viewEventActivity"
-            android:label="@string/title_activity_view_event"/>
+            android:exported="true"
+            android:label="@string/title_activity_view_event" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity
-            android:name=".scheduleActivity"
-            android:exported="true"
-            android:label="@string/title_activity_schedule" />
 
         <receiver android:name=".AlarmReceiver">
             <intent-filter>

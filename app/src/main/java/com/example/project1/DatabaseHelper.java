@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String caregiverEmotionData= "CaregiverEmotions";
     public static final String patientAppointment = "PatientAppointment";
     public static final String caregiverAppointment = "CaregiverAppointment";
+    public static final String eventAssessmentTable = "EventAssessmentTable";
     public DatabaseHelper(Context context) {
         super(context, "UserDatabase.db", null, 1);
     }
@@ -28,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + caregiverEmotionData+ "(Email text PRIMARY KEY, Happy INTEGER, Moderate INTEGER,Sad INTEGER)");
         db.execSQL("CREATE TABLE " + patientAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + caregiverAppointment+ "(Email text,Remark text, Appointment text)");
+        db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, Answer text)");
     }
 
     @Override
@@ -38,6 +40,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + caregiverEmotionData);
             db.execSQL("DROP TABLE IF EXISTS " + patientAppointment);
             db.execSQL("DROP TABLE IF EXISTS " + caregiverAppointment);
+            db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
+    }
+
+    public boolean insertEventAssessment(String email, String text){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Email",email);
+        values.put("Answer",text);
+        long ins = db.insert(eventAssessmentTable,null,values);
+        if (ins == -1) return false;
+        else return true;
     }
 
     //inserting in database
