@@ -49,11 +49,19 @@ public class emotionActivity extends AppCompatActivity {
                         Intent i3 = new Intent(emotionActivity.this,viewEventActivity.class);
                         startActivity(i3);
                         break;
+                    case R.id.nagivation_event_assessment:
+                        Intent i4 = new Intent(emotionActivity.this, eventAssessment.class);
+                        startActivity(i4);
+                        break;
+                    case R.id.navigation_faq:
+                        Intent i5 = new Intent(emotionActivity.this,FAQ.class);
+                        startActivity(i5);
+                        break;
                 }
                 return true;
             }
         });
-        //finish
+        //end
 
         b1 = (Button) findViewById(R.id.emotion1);
         b2 = (Button) findViewById(R.id.emotion2);

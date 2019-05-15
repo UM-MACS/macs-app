@@ -53,6 +53,14 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
                         Intent i3 = new Intent(Register2Activity.this,viewEventActivity.class);
                         startActivity(i3);
                         break;
+                    case R.id.nagivation_event_assessment:
+                        Intent i4 = new Intent(Register2Activity.this, eventAssessment.class);
+                        startActivity(i4);
+                        break;
+                    case R.id.navigation_faq:
+                        Intent i5 = new Intent(Register2Activity.this,FAQ.class);
+                        startActivity(i5);
+                        break;
                 }
                 return true;
             }

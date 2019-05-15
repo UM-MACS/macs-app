@@ -4,19 +4,31 @@
     <item
         android:id="@+id/navigation_home"
         android:enabled="true"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home"/>
+        android:icon="@drawable/ic_homepage"
+        android:title=""/>
 
     <item
         android:id="@+id/navigation_emotion_tracking"
         android:enabled="true"
-        android:icon="@drawable/ic_feeling"
-        android:title="@string/title_emotion"/>
+        android:icon="@drawable/ic_emotion"
+        android:title=""/>
 
     <item
         android:id="@+id/navigation_schedule_appointment"
         android:enabled="true"
-        android:icon="@drawable/ic_appointment"
-        android:title="@string/title_schedule"/>
+        android:icon="@drawable/ic_scheduling"
+        android:title=""/>
+
+    <item
+        android:id="@+id/nagivation_event_assessment"
+        android:enabled="true"
+        android:icon="@drawable/ic_assessment"
+        android:title=""/>
+
+    <item
+        android:id="@+id/navigation_faq"
+        android:enabled="true"
+        android:icon="@drawable/ic_faq"
+        android:title=""/>
 
 </menu>

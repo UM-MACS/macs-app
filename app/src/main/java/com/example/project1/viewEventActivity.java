@@ -70,6 +70,14 @@ public String appointment;
                         Intent i3 = new Intent(viewEventActivity.this,viewEventActivity.class);
                         startActivity(i3);
                         break;
+                    case R.id.nagivation_event_assessment:
+                        Intent i4 = new Intent(viewEventActivity.this, eventAssessment.class);
+                        startActivity(i4);
+                        break;
+                    case R.id.navigation_faq:
+                        Intent i5 = new Intent(viewEventActivity.this,FAQ.class);
+                        startActivity(i5);
+                        break;
                 }
                 return true;
             }
@@ -159,8 +167,8 @@ public String appointment;
                 cal.set(Calendar.YEAR,yy);
                 cal.set(Calendar.MONTH,mm);
                 cal.set(Calendar.DAY_OF_MONTH,dd);
-                cal.set(Calendar.HOUR_OF_DAY,1);
-                cal.set(Calendar.MINUTE,28);
+                cal.set(Calendar.HOUR_OF_DAY,8);
+                cal.set(Calendar.MINUTE,1);
                 cal.set(Calendar.SECOND,0);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
             }
