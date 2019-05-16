@@ -137,7 +137,7 @@ public class viewEventActivity extends AppCompatActivity {
         final View view = inflater1.inflate(R.layout.activity_schedule,null);
         float density=viewEventActivity.this.getResources().getDisplayMetrics().density;
         // create a focusable PopupWindow with the given layout and correct size
-        final PopupWindow pw = new PopupWindow(view, (int)density*450, (int)density*600, true);
+        final PopupWindow pw = new PopupWindow(view, (int)density*450, (int)density*750, true);
         //dim background
         frameLayout.getForeground().setAlpha(220);
         //get and set calendarView and editText
