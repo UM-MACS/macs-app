@@ -120,22 +120,13 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
                     if (s2.equals(s3)) { //check if password matches
 //                        Boolean checkMail = db.checkMail(s1);
                         Boolean checkMail2 = db.checkMail2(s1);
-//                        if (checkMail == true || checkMail2 == true) {
-//                                        if (s4.equals("Patient")) {
                             User.getInstance().setEmail(s1); //email
                             User.getInstance().setPassword(s2); //pw
                             User.getInstance().setUserName(s5);
                             User.getInstance().setContact(s6);
                             User.getInstance().setAge(s7);
+                            Caregiver.getInstance().setRelation(s4);
                             Log.e("Tag", "hello");
-//                            if (checkMail == true) {
-//                                Boolean insert = db.insertPatientTable(s1, s5, s2, s6, s7);
-//                                if (insert == true) {
-//                                    Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(Register2Activity.this, MainActivity.class);
-//                                    startActivity(intent);
-//                                }
-//                            } else
                                 if (checkMail2 == true) {
                                 Boolean insert2 = db.insertCaregiverTable(s1, s5, s2, s6, s7,s4);
                                 if (insert2 == true) {
