@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseHelper db;
     EditText e1, e2;
     Button b1,b2;
+    TextView t1;
     private TextView mTextMessage;
 //    Patient patient;
 
@@ -34,22 +35,6 @@ public class LoginActivity extends AppCompatActivity {
                         Intent i1 = new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(i1);
                         break;
-                    case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(LoginActivity.this,emotionActivity.class);
-                        startActivity(i2);
-                        break;
-                    case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(LoginActivity.this,viewEventActivity.class);
-                        startActivity(i3);
-                        break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(LoginActivity.this, eventAssessment.class);
-                        startActivity(i4);
-                        break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(LoginActivity.this,FAQ.class);
-                        startActivity(i5);
-                        break;
                 }
                 return true;
             }
@@ -61,6 +46,13 @@ public class LoginActivity extends AppCompatActivity {
         e2 = (EditText)findViewById(R.id.login_password);
         b1 = (Button)findViewById(R.id.login_button);
         b2 = (Button)findViewById(R.id.registerButton);
+        t1 = (TextView)findViewById(R.id.textLogin);
+        if(User.getInstance().getUserType().equals("Patient")){
+            t1.setText("Patient Login");
+        }
+        else{
+            t1.setText("Caregiver Login");
+        }
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

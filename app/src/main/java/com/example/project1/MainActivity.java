@@ -24,38 +24,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Bottom Navigation Bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.navigation_home:
-                        Intent i1 = new Intent(MainActivity.this, MainActivity.class);
-                        startActivity(i1);
-                        break;
-                    case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(MainActivity.this, emotionActivity.class);
-                        startActivity(i2);
-                        break;
-                    case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(MainActivity.this, viewEventActivity.class);
-                        startActivity(i3);
-                        break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(MainActivity.this, eventAssessment.class);
-                        startActivity(i4);
-                        break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(MainActivity.this,FAQ.class);
-                        startActivity(i5);
-                        break;
-                }
-                return true;
-            }
-        });
-        //end
-
         l1 = (LinearLayout) findViewById(R.id.userPatient);
         l2 = (LinearLayout) findViewById(R.id.userCaregiver);
         l3 = (LinearLayout) findViewById(R.id.userSpecialist);
