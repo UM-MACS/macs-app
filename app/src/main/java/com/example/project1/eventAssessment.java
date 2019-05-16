@@ -16,71 +16,129 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class eventAssessment extends AppCompatActivity {
-        DatabaseHelper db;
-        Button b1;
-        RadioGroup radio1;
-        RadioButton radioButton1;
-        TextView textView;
-        EditText editText;
+    DatabaseHelper db;
+    Button b1;
+    RadioGroup radio1;
+    RadioGroup radio2;
+    RadioGroup radio3;
+    RadioGroup radio4;
+    RadioGroup radio5;
+    RadioGroup radio6;
+    RadioGroup radio7;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_event_assessment);
+    RadioButton radioButton1;
+    RadioButton radioButton2;
+    RadioButton radioButton3;
+    RadioButton radioButton4;
+    RadioButton radioButton5;
+    RadioButton radioButton6;
+    RadioButton radioButton7;
 
-            //Bottom Navigation Bar
-            BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
-            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    switch (menuItem.getItemId()){
-                        case R.id.navigation_home:
-                            Intent i1 = new Intent(eventAssessment.this,MainActivity.class);
-                            startActivity(i1);
-                            break;
-                        case R.id.navigation_emotion_tracking:
-                            Intent i2 = new Intent(eventAssessment.this,emotionActivity.class);
-                            startActivity(i2);
-                            break;
-                        case R.id.navigation_schedule_appointment:
-                            Intent i3 = new Intent(eventAssessment.this,viewEventActivity.class);
-                            startActivity(i3);
-                            break;
-                        case R.id.nagivation_event_assessment:
-                            Intent i4 = new Intent(eventAssessment.this, eventAssessment.class);
-                            startActivity(i4);
-                            break;
-                        case R.id.navigation_faq:
-                            Intent i5 = new Intent(eventAssessment.this,FAQ.class);
-                            startActivity(i5);
-                            break;
-                    }
-                    return true;
+    TextView textView;
+    EditText editText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event_assessment);
+
+        //Bottom Navigation Bar
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.navigation_home:
+                        Intent i1 = new Intent(eventAssessment.this,MainActivity.class);
+                        startActivity(i1);
+                        break;
+                    case R.id.navigation_emotion_tracking:
+                        Intent i2 = new Intent(eventAssessment.this,emotionActivity.class);
+                        startActivity(i2);
+                        break;
+                    case R.id.navigation_schedule_appointment:
+                        Intent i3 = new Intent(eventAssessment.this,viewEventActivity.class);
+                        startActivity(i3);
+                        break;
+                    case R.id.nagivation_event_assessment:
+                        Intent i4 = new Intent(eventAssessment.this, eventAssessment.class);
+                        startActivity(i4);
+                        break;
+                    case R.id.navigation_faq:
+                        Intent i5 = new Intent(eventAssessment.this,FAQ.class);
+                        startActivity(i5);
+                        break;
                 }
-            });
-            //finish
+                return true;
+            }
+        });
+        //finish
 
-            db = new DatabaseHelper(this);
-            b1 = (Button)findViewById(R.id.button_submit_assessment);
-            radio1 = (RadioGroup) findViewById(R.id.radioGroup);
-            b1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int radioId = radio1.getCheckedRadioButtonId();
-                    radioButton1 = (RadioButton)findViewById(radioId);
-                    String text = radioButton1.getText().toString();
-                    Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
-                    Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text);
-                    if(ins){
-                        Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
-                    }
-                    Log.e("tag", ""+radioButton1.getText());
+        db = new DatabaseHelper(this);
+        b1 = (Button)findViewById(R.id.button_submit_assessment);
+        radio1 = (RadioGroup) findViewById(R.id.radioGroup);
+        radio2 = (RadioGroup) findViewById(R.id.radioGroup2);
+        radio3 = (RadioGroup) findViewById(R.id.radioGroup3);
+        radio4 = (RadioGroup) findViewById(R.id.radioGroup4);
+        radio5 = (RadioGroup) findViewById(R.id.radioGroup5);
+        radio6 = (RadioGroup) findViewById(R.id.radioGroup6);
+        radio7 = (RadioGroup) findViewById(R.id.radioGroup7);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //button 1
+                int radioId = radio1.getCheckedRadioButtonId();
+                radioButton1 = (RadioButton)findViewById(radioId);
+                String text = radioButton1.getText().toString();
+                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
+                //button 2
+                int radioId2 = radio2.getCheckedRadioButtonId();
+                radioButton2 = (RadioButton)findViewById(radioId2);
+                String text2 = radioButton2.getText().toString();
+                Toast.makeText(getApplicationContext(),text2,Toast.LENGTH_SHORT).show();
+                //button 3
+                int radioId3 = radio3.getCheckedRadioButtonId();
+                radioButton3 = (RadioButton)findViewById(radioId3);
+                String text3 = radioButton3.getText().toString();
+                Toast.makeText(getApplicationContext(),text3,Toast.LENGTH_SHORT).show();
+                //button 4
+                int radioId4 = radio4.getCheckedRadioButtonId();
+                radioButton4 = (RadioButton)findViewById(radioId4);
+                String text4 = radioButton4.getText().toString();
+                Toast.makeText(getApplicationContext(),text4,Toast.LENGTH_SHORT).show();
+                //button 5
+                int radioId5 = radio5.getCheckedRadioButtonId();
+                radioButton5 = (RadioButton)findViewById(radioId5);
+                String text5 = radioButton5.getText().toString();
+                Toast.makeText(getApplicationContext(),text5,Toast.LENGTH_SHORT).show();
+                //button 6
+                int radioId6 = radio6.getCheckedRadioButtonId();
+                radioButton6 = (RadioButton)findViewById(radioId6);
+                String text6 = radioButton6.getText().toString();
+                Toast.makeText(getApplicationContext(),text6,Toast.LENGTH_SHORT).show();
+                //button 7
+                int radioId7 = radio7.getCheckedRadioButtonId();
+                radioButton7 = (RadioButton)findViewById(radioId7);
+                String text7 = radioButton7.getText().toString();
+                Toast.makeText(getApplicationContext(),text7,Toast.LENGTH_SHORT).show();
+
+
+                Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text,text2,text3,text4,text5,text6,text7);
+
+                if(ins){
+                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
                 }
-            });
+                Log.e("tag", ""+radioButton1.getText());
 
-        }
+
+            }
+        });
 
 
     }
+
+
+}
 
 

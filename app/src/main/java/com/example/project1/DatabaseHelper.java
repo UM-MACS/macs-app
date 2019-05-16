@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String patientAppointment = "PatientAppointment";
     public static final String caregiverAppointment = "CaregiverAppointment";
     public static final String eventAssessmentTable = "EventAssessmentTable";
+
     public DatabaseHelper(Context context) {
         super(context, "UserDatabase.db", null, 1);
     }
@@ -29,25 +30,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + caregiverEmotionData+ "(Email text PRIMARY KEY, Happy INTEGER, Moderate INTEGER,Sad INTEGER)");
         db.execSQL("CREATE TABLE " + patientAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + caregiverAppointment+ "(Email text,Remark text, Appointment text)");
-        db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, Answer text)");
+        db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + patientData);
-            db.execSQL("DROP TABLE IF EXISTS " + caregiverData);
-            db.execSQL("DROP TABLE IF EXISTS " + patientEmotionData);
-            db.execSQL("DROP TABLE IF EXISTS " + caregiverEmotionData);
-            db.execSQL("DROP TABLE IF EXISTS " + patientAppointment);
-            db.execSQL("DROP TABLE IF EXISTS " + caregiverAppointment);
-            db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
+        db.execSQL("DROP TABLE IF EXISTS " + patientData);
+        db.execSQL("DROP TABLE IF EXISTS " + caregiverData);
+        db.execSQL("DROP TABLE IF EXISTS " + patientEmotionData);
+        db.execSQL("DROP TABLE IF EXISTS " + caregiverEmotionData);
+        db.execSQL("DROP TABLE IF EXISTS " + patientAppointment);
+        db.execSQL("DROP TABLE IF EXISTS " + caregiverAppointment);
+        db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
     }
 
-    public boolean insertEventAssessment(String email, String text){
+    public boolean insertEventAssessment(String email, String text, String text2, String text3, String text4, String text5, String text6, String text7){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Email",email);
-        values.put("Answer",text);
+        values.put("q1",text);
+        values.put("q2",text2);
+        values.put("q3",text3);
+        values.put("q4",text4);
+        values.put("q5",text5);
+        values.put("q6",text6);
+        values.put("q7",text7);
+
         long ins = db.insert(eventAssessmentTable,null,values);
         if (ins == -1) return false;
         else return true;
@@ -178,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Sad",count5);
         contentValues.put("Expression","");
         if(type.equals("Patient")){
-        db.insert(patientEmotionData,null,contentValues);
+            db.insert(patientEmotionData,null,contentValues);
         }
         else{
             db.insert(caregiverEmotionData,null,contentValues);
