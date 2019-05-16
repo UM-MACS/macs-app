@@ -70,29 +70,29 @@ public class FAQ extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("How do I schedule an appointment?");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("How can I make changes to an appointment?");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("Is my privacy secure when I am using this app?");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("How will this app improve my emotional health?");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("Question 5");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("Question 6");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("Question 7");
 
-        mImageUrls.add("https://www.google.com/search?q=q&rlz=1C1CHBF_enMY814MY814&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj7-Nnb6JLiAhUK6XMBHWcIDlUQ_AUIDigB&biw=767&bih=744&dpr=1.25#imgrc=8gln5w2XGi-DVM:");
-        mNames.add("Question");
+        mImageUrls.add("https://media.istockphoto.com/photos/letter-q-3d-metal-isolated-on-white-picture-id675661888?s=2048x2048");
+        mNames.add("Question 8");
 
 
 

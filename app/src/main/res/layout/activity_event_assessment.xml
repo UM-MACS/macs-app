@@ -32,272 +32,312 @@
     android:fillViewport="true">
 
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stretchColumns="1">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:orientation="vertical"
-            android:elevation="10dp"
-            android:padding="16dp"
-            android:background="@drawable/border"
-            tools:context=".eventAssessment">
+            android:layout_height="match_parent"
+            android:stretchColumns="1"
+            >
 
-            <TextView
-                android:id="@+id/firstQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How did you feel before the event?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="1dp">
-
-                <RadioButton
-                    android:id="@+id/radio_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="Happy" />
-
-                <RadioButton
-                    android:id="@+id/radio_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Neutral" />
-
-                <RadioButton
-                    android:id="@+id/radio_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sad" />
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/secondQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How did you feel after the event?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="1dp">
-
-                <RadioButton
-                    android:id="@+id/radio_2_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Happy" />
-
-                <RadioButton
-                    android:id="@+id/radio_2_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Neutral" />
-
-                <RadioButton
-                    android:id="@+id/radio_2_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sad" />
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/thirdQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How was the event venue?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_3_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Satisfactory" />
-
-                <RadioButton
-                    android:id="@+id/radio_3_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Neutral" />
-
-                <RadioButton
-                    android:id="@+id/radio_3_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Unsatisfactory" />
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/fourthQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How was the event moderator?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_4_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Satisfactory" />
-
-                <RadioButton
-                    android:id="@+id/radio_4_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Neutral" />
-
-                <RadioButton
-                    android:id="@+id/radio_4_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Unsatisfactory" />
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/fifthQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Did the event meet your expectations?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_5_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Yes" />
-
-                <RadioButton
-                    android:id="@+id/radio_5_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No" />
-
-
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/sixthQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Was the event topic relevant to you?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_6_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Yes" />
-
-                <RadioButton
-                    android:id="@+id/radio_6_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No" />
-
-
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/seventhQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How did you feel before the event?"
-                android:textColor="#000" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_7_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Yes" />
-
-                <RadioButton
-                    android:id="@+id/radio_7_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No" />
-
-
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How would you improve the event?" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:text="Answer"
-                android:textColor="#000" />
-
-            <Button
-                android:id="@+id/button_submit_assessment"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit"/>
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                android:elevation="10dp"
+                android:padding="16dp"
+                tools:context=".eventAssessment"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/firstQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How did you feel before the event?"
+                    android:textColor="#000" />
 
-    </TableLayout>
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="1dp"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/radio_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Happy"
+                        android:layout_marginRight="15dp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="checkButton"
+                        android:text="Neutral"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="checkButton"
+                        android:text="Sad"
+                        android:layout_marginRight="15dp"/>
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/secondQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How did you feel after the event?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
+
+                    <RadioButton
+                        android:id="@+id/radio_2_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Happy"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_2_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Neutral"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_2_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Sad"
+                        android:layout_marginRight="15dp"/>
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/thirdQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How was the event venue?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_3_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Satisfactory"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_3_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Neutral"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_3_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Unsatisfactory"
+                        />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/fourthQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How was the event moderator?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_4_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Satisfactory"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_4_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Neutral"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_4_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="Unsatisfactory" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/fifthQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Did the event meet your expectations?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_5_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Yes"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_5_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="No"
+                        android:layout_marginRight="15dp"/>
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/sixthQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Was the event topic relevant to you?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_6_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Yes"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_6_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="No"
+                        android:layout_marginRight="15dp"/>
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/seventhQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How did you feel before the event?"
+                    android:textColor="#000" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_7_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="checkButton"
+                        android:text="Yes"
+                        android:layout_marginRight="15dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_7_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="checkButton"
+                        android:text="No"
+                        android:layout_marginRight="15dp"/>
+
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How would you improve the event?"
+                    android:textColor="#000"/>
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="Answer"
+                    android:textColor="#000"
+                    android:focusableInTouchMode="true" android:cursorVisible="false"/>
+
+                <Button
+                    android:id="@+id/button_submit_assessment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"/>
+
+            </LinearLayout>
+
+        </TableLayout>
 
 
 </ScrollView>

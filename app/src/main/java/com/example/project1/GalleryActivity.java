@@ -23,7 +23,7 @@ public class GalleryActivity extends AppCompatActivity {
         if(getIntent().hasExtra("image_name")){
             Log.d(TAG, "getIncomingIntent: found intent extras.");
 
-            String imageName = getIntent().getStringExtra("imge_name");
+            String imageName = getIntent().getStringExtra("image_name");
 
             setImage(imageName);
         }

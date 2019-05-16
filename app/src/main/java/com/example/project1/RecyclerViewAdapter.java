@@ -61,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(mContext, GalleryActivity.class);
-                intent.putExtra("imae_name", mImageNames.get(position));
+                intent.putExtra("image_name", mImageNames.get(position));
                 mContext.startActivity(intent);
             }
 
