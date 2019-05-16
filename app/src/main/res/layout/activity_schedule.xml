@@ -4,12 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_date_picker"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/border"
     tools:context=".viewEventActivity">
 
-
+    <Button
+        android:id="@+id/close_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:background="@android:drawable/ic_delete"/>
 
     <DatePicker
         android:id="@+id/datePicker"
@@ -36,17 +41,17 @@
         android:padding="5dp"
         android:elevation="10dp"
         android:background="@drawable/border">
-    <EditText
-        android:id="@+id/remark"
-        android:layout_width="wrap_content"
-        android:layout_height="88dp"
-        android:layout_gravity="center"
-        android:paddingLeft="20dp"
-        android:ems="10"
-        android:hint="Add Remark"
-        android:background="@null"
-        android:layout_marginBottom="10dp"
-        android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/remark"
+            android:layout_width="wrap_content"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:ems="10"
+            android:hint="Add Remark"
+            android:background="@null"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPersonName" />
     </RelativeLayout>
 
 

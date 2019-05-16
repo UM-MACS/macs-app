@@ -43,13 +43,13 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+                android:background="@drawable/border"
                 android:orientation="vertical"
                 android:elevation="10dp"
                 android:padding="16dp"
-                tools:context=".eventAssessment"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -74,7 +74,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Happy"
                         android:layout_marginRight="15dp" />
 
@@ -83,7 +82,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:onClick="checkButton"
                         android:text="Neutral"
                         android:layout_marginRight="15dp"/>
 
@@ -92,7 +90,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:onClick="checkButton"
                         android:text="Sad"
                         android:layout_marginRight="15dp"/>
                 </RadioGroup>
@@ -116,7 +113,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Happy"
                         android:layout_marginRight="15dp"/>
 
@@ -124,7 +120,6 @@
                         android:id="@+id/radio_2_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Neutral"
                         android:layout_marginRight="15dp"/>
 
@@ -132,7 +127,6 @@
                         android:id="@+id/radio_2_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Sad"
                         android:layout_marginRight="15dp"/>
                 </RadioGroup>
@@ -155,7 +149,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Satisfactory"
                         android:layout_marginRight="15dp"/>
 
@@ -163,7 +156,6 @@
                         android:id="@+id/radio_3_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Neutral"
                         android:layout_marginRight="15dp"/>
 
@@ -171,7 +163,6 @@
                         android:id="@+id/radio_3_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Unsatisfactory"
                         />
                 </RadioGroup>
@@ -194,7 +185,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Satisfactory"
                         android:layout_marginRight="15dp"/>
 
@@ -202,7 +192,6 @@
                         android:id="@+id/radio_4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Neutral"
                         android:layout_marginRight="15dp"/>
 
@@ -210,7 +199,6 @@
                         android:id="@+id/radio_4_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="Unsatisfactory" />
                 </RadioGroup>
 
@@ -232,7 +220,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Yes"
                         android:layout_marginRight="15dp"/>
 
@@ -240,7 +227,6 @@
                         android:id="@+id/radio_5_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="No"
                         android:layout_marginRight="15dp"/>
 
@@ -265,7 +251,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Yes"
                         android:layout_marginRight="15dp"/>
 
@@ -273,7 +258,6 @@
                         android:id="@+id/radio_6_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="No"
                         android:layout_marginRight="15dp"/>
 
@@ -298,7 +282,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:onClick="checkButton"
                         android:text="Yes"
                         android:layout_marginRight="15dp"/>
 
@@ -306,7 +289,6 @@
                         android:id="@+id/radio_7_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="checkButton"
                         android:text="No"
                         android:layout_marginRight="15dp"/>
 

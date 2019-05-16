@@ -70,7 +70,7 @@ public class eventAssessment extends AppCompatActivity {
                     radioButton1 = (RadioButton)findViewById(radioId);
                     String text = radioButton1.getText().toString();
                     Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
-                    Boolean ins =db.insertEventAssessment("lim@gmail.com",text);
+                    Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text);
                     if(ins){
                         Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
                     }

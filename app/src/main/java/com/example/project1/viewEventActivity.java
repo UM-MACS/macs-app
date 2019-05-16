@@ -34,19 +34,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class viewEventActivity extends AppCompatActivity {
-private LinearLayout parentLinearLayout;
-private LinearLayout datePickerLayout;
-private LinearLayout clickableView;
-private FrameLayout frameLayout;
-private DatabaseHelper db;
-private TextView appointmentText,remarkTextView;
-private Button b1;
-private int yy, mm, dd;
-private DatePicker datePicker;
-private Calendar cal;
-private AlarmManager alarmManager;
-private EditText editText;
-public String appointment;
+    private LinearLayout parentLinearLayout;
+    private LinearLayout datePickerLayout;
+    private LinearLayout clickableView;
+    private FrameLayout frameLayout;
+    private DatabaseHelper db;
+    private TextView appointmentText,remarkTextView;
+    private Button b1;
+    private int yy, mm, dd;
+    private DatePicker datePicker;
+    private Calendar cal;
+    private AlarmManager alarmManager;
+    private EditText editText;
+    public String appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +144,17 @@ public String appointment;
         editText = (EditText)view.findViewById(R.id.remark);
         datePicker = (DatePicker)view.findViewById(R.id.datePicker);
         datePicker.setCalendarViewShown(false); //hide the calendar view
+        //When close Button is clicked
+
+        ((Button)view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw.dismiss();
+                frameLayout.getForeground().setAlpha(0);
+                parentLinearLayout.removeView((View)rowView);
+            }
+        });
+
         //When Submit Button is clicked
         ((Button) view.findViewById(R.id.submitButton)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
