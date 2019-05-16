@@ -133,6 +133,7 @@ public class viewEventActivity extends AppCompatActivity {
         final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         cal = Calendar.getInstance();
         db = new DatabaseHelper(this);
+        //Create pop up window
         LayoutInflater inflater1 = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View view = inflater1.inflate(R.layout.activity_schedule,null);
         float density=viewEventActivity.this.getResources().getDisplayMetrics().density;

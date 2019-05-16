@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/emotion_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foreground="@drawable/dim_layout"
     tools:context=".emotionActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginStart="0dp"
@@ -136,6 +137,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:focusableInTouchMode="true"
                 android:cursorVisible="false"
                 android:layout_marginStart="13dp"
                 android:layout_marginTop="0dp"
@@ -155,4 +157,4 @@
 
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

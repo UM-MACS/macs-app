@@ -1,5 +1,6 @@
 package com.example.project1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (User.getInstance().getUserType().equals("Patient")) {
                     if (checkEmail) {
                         User.getInstance().setEmail(email);
-                        Toast.makeText(getApplicationContext(), User.getInstance().getEmail() + User.getInstance().getUserType(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                         startActivity(myIntent);
@@ -75,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                 else if (User.getInstance().getUserType().equals("Caregiver")) {
                     if (checkEmail2) {
                         User.getInstance().setEmail(email);
-                        Toast.makeText(getApplicationContext(), User.getInstance().getEmail() + User.getInstance().getUserType(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                         startActivity(myIntent);
@@ -84,6 +85,10 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
                     }
                 }
+                getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+                );
+
             }
 
 

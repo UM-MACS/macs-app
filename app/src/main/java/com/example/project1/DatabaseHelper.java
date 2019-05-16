@@ -26,8 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + patientData + "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text)");
         db.execSQL("CREATE TABLE " + caregiverData+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text,Relationship text)");
-        db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text PRIMARY KEY, Happy INTEGER, Smiley INTEGER, Unhappy INTEGER, Angry INTEGER,Sad INTEGER, Expression text)");
-        db.execSQL("CREATE TABLE " + caregiverEmotionData+ "(Email text PRIMARY KEY, Happy INTEGER, Moderate INTEGER,Sad INTEGER)");
+        db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text, Date text, Happy INTEGER, Smiley INTEGER, Unhappy INTEGER, Angry INTEGER,Sad INTEGER, Expression text)");
+        db.execSQL("CREATE TABLE " + caregiverEmotionData+ "(Email text, Date text, Happy INTEGER, Smiley INTEGER, Unhappy INTEGER, Angry INTEGER,Sad INTEGER, Expression text)");
         db.execSQL("CREATE TABLE " + patientAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + caregiverAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text)");
@@ -170,13 +170,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /* End */
 
 
 
     /* for user's emotion table */
-    public void createCounter(String type,String email, int count1, int count2, int count3, int count4, int count5){
+    public Boolean checkDate (String email, String date, String type){
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(type.equals("Patient")) {
+            Cursor cursor = db.rawQuery("Select * from " + patientEmotionData + " where Email =? AND Date =? ", new String[]{email,date});
+            if (cursor.getCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else{
+            Cursor cursor = db.rawQuery("Select * from " + caregiverEmotionData + " where Email =? AND Date =? ", new String[]{email,date});
+            if (cursor.getCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+    public void createCounter(String type,String email,String date, int count1, int count2, int count3, int count4, int count5){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put("Date",date);
         contentValues.put("Email",email);
         contentValues.put("Happy",count1);
         contentValues.put("Smiley",count2);
@@ -192,169 +215,171 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Boolean setHappyCounter(String type, String email,int count){
+    public Boolean setHappyCounter(String type, String email, String date, int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Happy",count);
-        if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
-            if(c==-1)
-                return false;
-            else return true;
+            if (type.equals("Patient")) {
+                long c = db.update(patientEmotionData, contentValues, " Email =? AND Date =?", new String[]{email,date});
+                if (c == -1)
+                    return false;
+                else return true;
+            } else {
+                long c = db.update(caregiverEmotionData, contentValues, " Email =? AND Date =?", new String[]{email,date});
+                if (c == -1)
+                    return false;
+                else return true;
+            }
         }
-        else{
-            long c = db.update(caregiverEmotionData,contentValues, " Email =?",new String[]{email});
-            if(c==-1)
-                return false;
-            else return true;
-        }
-    }
 
-    public Boolean setSmileyCounter(String type,String email,int count){
+
+
+
+    public Boolean setSmileyCounter(String type,String email,String date, int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Smiley",count);
         if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(patientEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
         else{
-            long c = db.update(caregiverEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(caregiverEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
     }
 
-    public Boolean setUnhappyCounter(String type,String email,int count){
+    public Boolean setUnhappyCounter(String type,String email,String date, int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Unhappy",count);
         if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(patientEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
         else{
-            long c = db.update(caregiverEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(caregiverEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
     }
 
-    public Boolean setAngryCounter(String type,String email,int count){
+    public Boolean setAngryCounter(String type,String email,String date, int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Angry",count);
         if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(patientEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
         else{
-            long c = db.update(caregiverEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(caregiverEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
     }
 
-    public Boolean setSadCounter(String type,String email,int count){
+    public Boolean setSadCounter(String type,String email,String date, int count){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Sad",count);
         if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(patientEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
         else{
-            long c = db.update(caregiverEmotionData,contentValues, " Email =?",new String[]{email});
+            long c = db.update(caregiverEmotionData,contentValues, " Email =? AND Date =?", new String[]{email,date});
             if(c==-1)
                 return false;
             else return true;
         }
     }
 
-    public Cursor getHappyCounter(String type,String email){
+    public Cursor getHappyCounter(String type,String email,String date){
         SQLiteDatabase db = this.getReadableDatabase();
         if(type.equals("Patient")){
-            Cursor cursor = db.rawQuery("SELECT Happy FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Happy FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
         else{
-            Cursor cursor = db.rawQuery("SELECT Happy FROM " + caregiverEmotionData+" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Happy FROM " + caregiverEmotionData+" WHERE Email=? AND Date=? " , new String[]{email,date});
             return cursor;
         }
 
     }
 
-    public Cursor getSmileyCounter(String type,String email){
+    public Cursor getSmileyCounter(String type,String email, String date){
         SQLiteDatabase db = this.getReadableDatabase();
         if(type.equals("Patient")){
-            Cursor cursor = db.rawQuery("SELECT Smiley FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Smiley FROM " + patientEmotionData +" WHERE Email =? AND Date =? " , new String[]{email, date});
             return cursor;
         }
         else{
-            Cursor cursor = db.rawQuery("SELECT Smiley FROM " + caregiverEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Smiley FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
     }
 
-    public Cursor getUnhappyCounter(String type,String email){
+    public Cursor getUnhappyCounter(String type,String email, String date){
         SQLiteDatabase db = this.getReadableDatabase();
         if(type.equals("Patient")){
-            Cursor cursor = db.rawQuery("SELECT Unhappy FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Unhappy FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
         else{
-            Cursor cursor = db.rawQuery("SELECT Unhappy FROM " + caregiverEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Unhappy FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
 
     }
 
-    public Cursor getAngryCounter(String type,String email){
+    public Cursor getAngryCounter(String type,String email,String date){
         SQLiteDatabase db = this.getReadableDatabase();
         if(type.equals("Patient")){
-            Cursor cursor = db.rawQuery("SELECT Angry FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Angry FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
         else{
-            Cursor cursor = db.rawQuery("SELECT Angry FROM " + caregiverEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Angry FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
     }
 
-    public Cursor getSadCounter(String type,String email){
+    public Cursor getSadCounter(String type,String email,String date){
         SQLiteDatabase db = this.getReadableDatabase();
         if(type.equals("Patient")){
-            Cursor cursor = db.rawQuery("SELECT Sad FROM " + patientEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Sad FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
         else{
-            Cursor cursor = db.rawQuery("SELECT Sad FROM " + caregiverEmotionData +" WHERE Email=? " , new String[]{email});
+            Cursor cursor = db.rawQuery("SELECT Sad FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
             return cursor;
         }
     }
 
-    public Boolean setExpressionText(String type, String email, String text){
+    public Boolean setExpressionText(String type, String email, String date, String text){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Expression",text);
         if(type.equals("Patient")){
-            long c = db.update(patientEmotionData,values," Email =?",new String[]{email});
+            long c = db.update(patientEmotionData,values," Email =? AND Date =? ",new String[]{email,date});
             if(c==-1) return false;
             return true;
         }
         else{
-            long c = db.update(caregiverEmotionData,values," Email =?",new String[]{email});
+            long c = db.update(caregiverEmotionData,values," Email =? AND Date =? ",new String[]{email,date});
             if(c==-1) return false;
             return true;
         }
