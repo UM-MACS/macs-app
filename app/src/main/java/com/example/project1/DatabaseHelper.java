@@ -31,7 +31,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + patientAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + caregiverAppointment+ "(Email text,Remark text, Appointment text)");
         db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text)");
-
     }
 
     @Override
@@ -56,7 +55,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("q5",text5);
         values.put("q6",text6);
         values.put("q7",text7);
-
         long ins = db.insert(eventAssessmentTable,null,values);
         if (ins == -1) return false;
         else return true;
