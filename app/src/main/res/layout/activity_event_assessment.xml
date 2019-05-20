@@ -28,24 +28,23 @@
 
     <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1"
-            >
+            android:layout_height="wrap_content"
+            android:stretchColumns="1">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginBottom="70dp"
                 android:background="@drawable/border"
                 android:orientation="vertical"
                 android:elevation="10dp"
@@ -148,6 +147,7 @@
                         android:id="@+id/radio_3_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:checked="true"
                         android:text="Satisfactory"
                         android:layout_marginRight="15dp"/>
@@ -156,13 +156,15 @@
                         android:id="@+id/radio_3_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Neutral"
-                        android:layout_marginRight="15dp"/>
+                        android:layout_marginEnd="15dp"/>
 
                     <RadioButton
                         android:id="@+id/radio_3_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Unsatisfactory"
                         />
                 </RadioGroup>
@@ -185,6 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
+                        android:layout_weight="1"
                         android:text="Satisfactory"
                         android:layout_marginRight="15dp"/>
 
@@ -192,6 +195,7 @@
                         android:id="@+id/radio_4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Neutral"
                         android:layout_marginRight="15dp"/>
 
@@ -199,6 +203,7 @@
                         android:id="@+id/radio_4_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Unsatisfactory" />
                 </RadioGroup>
 
