@@ -19,17 +19,17 @@
             android:name=".FAQ"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name"/>
+            android:label="FaQ"/>
         <activity
             android:name=".eventAssessment"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name" />
+            android:label="Event Assessment"/>
         <activity
             android:name=".viewEventActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name" />
+            android:label="Schedule Appointment" />
         <activity
             android:name=".LoginActivity"
             android:label="MASOCC" />
@@ -45,14 +45,13 @@
         <activity
             android:name=".emotionActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:label="Patient" />
+            android:label="Patient Register" />
         <activity
             android:name=".Register2Activity"
-            android:label="Caregiver" />
+            android:label="Caregiver Register" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
