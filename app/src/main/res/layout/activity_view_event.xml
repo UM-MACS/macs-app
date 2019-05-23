@@ -9,21 +9,29 @@
     android:foreground="@drawable/dim_layout"
     tools:context=".viewEventActivity">
 
-    <include
-        layout="@layout/content_view_event"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="133dp" />
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <include
+            layout="@layout/app_bar_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.DrawerLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
     <LinearLayout
         android:id="@+id/parent_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
         android:orientation="vertical"
         android:layout_marginBottom="15dp">
 
@@ -32,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="80dp"
         android:orientation="vertical">
         <Button
@@ -61,6 +70,8 @@
     </LinearLayout>
 
     </ScrollView>
+
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

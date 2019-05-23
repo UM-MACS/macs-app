@@ -8,10 +8,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class emotionActivity extends AppCompatActivity {
+public class emotionActivity extends AppCompatActivity{
     DatabaseHelper db;
     Button b1,b2,b3,b4,b5,b6,submitButton;
     ArrayList<String> arrayList;
@@ -45,16 +53,18 @@ public class emotionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
 
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_tracking);
+        item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent i1 = new Intent(emotionActivity.this,MainActivity.class);
-                        startActivity(i1);
-                        break;
                     case R.id.navigation_emotion_tracking:
                         Intent i2 = new Intent(emotionActivity.this,emotionActivity.class);
                         startActivity(i2);
@@ -75,6 +85,7 @@ public class emotionActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         //end
         frameLayout = (FrameLayout)findViewById(R.id.emotion_page);
         frameLayout.getForeground().setAlpha(0);
@@ -87,51 +98,6 @@ public class emotionActivity extends AppCompatActivity {
         arrayList = new ArrayList<String>();
 //        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         db = new DatabaseHelper(this);
-//        Boolean check = db.checkMail(User.getInstance().getEmail());
-//        Boolean check2 = db.checkMail2(User.getInstance().getEmail());
-//        Boolean checkDate = db.checkDate(User.getInstance().getEmail(),date,User.getInstance().getUserType());
-//        if (!checkDate) {
-//            Log.e("tag", "date not exist" + User.getInstance().getUserType());
-//            if (check) {
-//                db.insertEmotion(User.getInstance().getUserType(), User.getInstance().getEmail(), date, 0, 0, 0, 0, 0);
-//            }
-//        }else {
-//                Cursor cursor = db.getHappyCounter(User.getInstance().getUserType(), User.getInstance().getEmail(), date);
-//                Cursor cursor2 = db.getSmileyCounter(User.getInstance().getUserType(), User.getInstance().getEmail(), date);
-//                Cursor cursor3 = db.getUnhappyCounter(User.getInstance().getUserType(), User.getInstance().getEmail(), date);
-//                Cursor cursor4 = db.getAngryCounter(User.getInstance().getUserType(), User.getInstance().getEmail(), date);
-//                Cursor cursor5 = db.getSadCounter(User.getInstance().getUserType(), User.getInstance().getEmail(), date);
-//                if (cursor.getCount() != 0) {
-//                    while (cursor.moveToNext()) {
-//                        counter1 = cursor.getInt(cursor.getColumnIndex("Happy"));
-//                    }
-//                }
-//                Log.e("tag", "Happy: " + counter1);
-//                if (cursor2.getCount() != 0) {
-//                    while (cursor2.moveToNext()) {
-//                        counter2 = cursor2.getInt(cursor2.getColumnIndex("Smiley"));
-//                    }
-//                }
-//                Log.e("tag", "Smiley: " + counter2);
-//                if (cursor3.getCount() != 0) {
-//                    while (cursor3.moveToNext()) {
-//                        counter3 = cursor3.getInt(cursor3.getColumnIndex("Unhappy"));
-//                    }
-//                }
-//                Log.e("tag", "Unhappy: " + counter3);
-//                if (cursor4.getCount() != 0) {
-//                    while (cursor4.moveToNext()) {
-//                        counter3 = cursor4.getInt(cursor4.getColumnIndex("Angry"));
-//                    }
-//                }
-//                Log.e("tag", "Angry: " + counter3);
-//                if (cursor5.getCount() != 0) {
-//                    while (cursor5.moveToNext()) {
-//                        counter3 = cursor5.getInt(cursor5.getColumnIndex("Sad"));
-//                    }
-//                }
-//                Log.e("tag", "Sad: " + counter3);
-//            }
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,4 +250,40 @@ public class emotionActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Intent intent = new Intent(emotionActivity.this,MainActivity.class);
+            startActivity(intent);
+            User.getInstance().setUserName("");
+            User.getInstance().setEmail("");
+            User.getInstance().setPassword("");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

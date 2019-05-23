@@ -26,6 +26,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -68,15 +69,17 @@ public class viewEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
 
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_schedule_appointment);
+        item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent i1 = new Intent(viewEventActivity.this,MainActivity.class);
-                        startActivity(i1);
-                        break;
                     case R.id.navigation_emotion_tracking:
                         Intent i2 = new Intent(viewEventActivity.this,emotionActivity.class);
                         startActivity(i2);
@@ -271,9 +274,13 @@ public class viewEventActivity extends AppCompatActivity {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy");
                 SimpleDateFormat df2 = new SimpleDateFormat("MM");
                 SimpleDateFormat df3 = new SimpleDateFormat("dd");
+                SimpleDateFormat df4 = new SimpleDateFormat("mm");
+                SimpleDateFormat df5 = new SimpleDateFormat("hh");
                 int year = Integer.parseInt(df.format(c));
                 int month = (Integer.parseInt(df2.format(c)))-1;
                 int day = Integer.parseInt(df3.format(c));
+                int minute = Integer.parseInt(df4.format(c));
+                int hour = Integer.parseInt(df5.format(c));
                 Log.e("tag", "year is " + year);
                 //if date chosen has passed
                 if (year > yy) {
@@ -303,8 +310,8 @@ public class viewEventActivity extends AppCompatActivity {
                     cal.set(Calendar.YEAR, yy);
                     cal.set(Calendar.MONTH, mm);
                     cal.set(Calendar.DAY_OF_MONTH, dd);
-                    cal.set(Calendar.HOUR_OF_DAY, 20);
-                    cal.set(Calendar.MINUTE, 00);
+                    cal.set(Calendar.HOUR_OF_DAY, hour);
+                    cal.set(Calendar.MINUTE, (minute+2));
                     cal.set(Calendar.SECOND, 0);
                     Log.e("tag", "" + cal.getTime());
 //                BroadcastReceiver br = new AlarmReceiver();
@@ -345,6 +352,33 @@ public class viewEventActivity extends AppCompatActivity {
     }
 
     public void onEdit(View v) {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Intent intent = new Intent(viewEventActivity.this,MainActivity.class);
+            startActivity(intent);
+            User.getInstance().setUserName("");
+            User.getInstance().setEmail("");
+            User.getInstance().setPassword("");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
