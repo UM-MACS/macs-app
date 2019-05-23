@@ -1,41 +1,114 @@
 package com.example.project1;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import static com.example.project1.App.CHANNEL_ID;
 
+
+
 public class AlarmReceiver extends BroadcastReceiver{
+    private NotificationManager notifManager;
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent notificationIntent = new Intent(context, viewEventActivity.class);
+        final int NOTIFY_ID = 0; // ID of notification
+        String id = "Channel 1"; // default_channel_id
+        String title = "title channel 1"; // Default Channel
+        PendingIntent pendingIntent;
+        NotificationCompat.Builder builder;
+        if (notifManager == null) {
+            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel(id);
+            if (mChannel == null) {
+                mChannel = new NotificationChannel(id, title, importance);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+            builder = new NotificationCompat.Builder(context, id);
+            intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentTitle("MASOCC")                            // required
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setContentText("You have an upcoming appointment")
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
+                    .setContentIntent(pendingIntent)
+                    .setTicker("MASOCC")
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        }
+        else {
+            builder = new NotificationCompat.Builder(context, id);
+            intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentTitle("MASOCC")                            // required
+                    .setContentText("You have an upcoming appointment")
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setTicker("MASOCC")
+                    .setAutoCancel(true)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent)
+                    .setPriority(Notification.PRIORITY_HIGH);
+        }
+        Notification notification = builder.build();
+        notifManager.notify(NOTIFY_ID, notification);
+//        Intent notificationIntent = new Intent(context, viewEventActivity.class);
+//        Log.e("tag", "enter alarm receiver class");
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+//        stackBuilder.addParentStack(viewEventActivity.class);
+//        stackBuilder.addNextIntent(notificationIntent);
+//
+//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//        Log.e("tag", "channel id is" + CHANNEL_ID);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//
+//            Notification notification = builder
+//                    .setContentTitle("MASOCC")
+//                    .setContentText("You have an upcoming appointment")
+//                    .setSmallIcon(R.drawable.app_icon)
+//                    .setTicker("New Message Alert!")
+//                    .setAutoCancel(true)
+//                    .setChannelId(CHANNEL_ID)
+//                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
+//                    .setDefaults(Notification.DEFAULT_ALL)
+//                    .setContentIntent(pendingIntent).build();
+//
+//            NotificationManagerCompat notificationManager = (NotificationManagerCompat) NotificationManagerCompat.from(context);
+//            notificationManager.notify(0, notification);
+//        }
+//
+//            Notification notification = new Notification.Builder(context)
+//                    .setContentTitle("MASOCC")
+//                    .setContentText("You have an upcoming appointment")
+//                    .setSmallIcon(R.drawable.app_icon)
+//                    .setPriority(Notification.PRIORITY_HIGH)
+//                    .setTicker("New Message Alert!")
+//                    .setAutoCancel(true)
+//                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
+//                    .setDefaults(Notification.DEFAULT_ALL)
+//                    .setContentIntent(pendingIntent).build();
+//
+//            NotificationManagerCompat notificationManager = (NotificationManagerCompat) NotificationManagerCompat.from(context);
+//            notificationManager.notify(0, notification);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(viewEventActivity.class);
-        stackBuilder.addNextIntent(notificationIntent);
-
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID);
-
-        Notification notification = builder.setContentTitle("MASOCC")
-                .setContentText("You have an upcoming appointment")
-                .setTicker("New Message Alert!")
-                .setSmallIcon(R.drawable.app_icon)
-                .setAutoCancel(true)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.app_icon))
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent).build();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
     }
 }

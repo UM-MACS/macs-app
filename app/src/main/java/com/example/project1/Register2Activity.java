@@ -74,7 +74,7 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Register2Activity.this, MainActivity.class);
+                Intent intent = new Intent(Register2Activity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

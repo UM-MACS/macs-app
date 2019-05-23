@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String patientData= "PatientTable";
     public static final String caregiverData= "CaregiverTable";
     public static final String patientEmotionData= "PatientEmotions";
-    public static final String patientAppointment = "PatientAppointment";
+    public static final String appointment = "Appointment";
     public static final String eventAssessmentTable = "EventAssessmentTable";
 
     public DatabaseHelper(Context context) {
@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + patientData + "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text)");
         db.execSQL("CREATE TABLE " + caregiverData+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text,Relationship text)");
         db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text,Type text, Date text, Expression text)");
-        db.execSQL("CREATE TABLE " + patientAppointment+ "(Email text,Type text, Remark text, Appointment text)");
+        db.execSQL("CREATE TABLE " + appointment+ "(Email text,Type text, Remark text, AppointmentDate text, AppointmentTime text)");
         db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text)");
     }
 
@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + patientData);
         db.execSQL("DROP TABLE IF EXISTS " + caregiverData);
         db.execSQL("DROP TABLE IF EXISTS " + patientEmotionData);
-        db.execSQL("DROP TABLE IF EXISTS " + patientAppointment);
+        db.execSQL("DROP TABLE IF EXISTS " + appointment);
         db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
     }
 
@@ -120,28 +120,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /* For Appointment Scheduling */
-    public Boolean setAppointment(String type,String email,String app,String remark){
+    public Boolean setAppointment(String type,String email,String date,String time, String remark){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Email",email);
         values.put("Type",type);
-        values.put("Appointment",app);
+        values.put("AppointmentDate",date);
+        values.put("AppointmentTime",time);
         values.put("Remark",remark);
-            long ins = db.insert(patientAppointment, null, values);
+            long ins = db.insert(appointment, null, values);
             if (ins == -1) return false;
             return true;
     }
 
     public Cursor getAppointment(String type, String email){
         SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + patientAppointment +" WHERE Email=? AND Type =? " , new String[]{email, type});
+            Cursor cursor = db.rawQuery("SELECT * FROM " + appointment +" WHERE Email=? AND Type =? " , new String[]{email, type});
             return cursor;
 
     }
 
-    public Boolean deleteAppointment(String type, String email, String app,String remark){
+    public Boolean deleteAppointment(String type, String email, String date,String time,String remark){
         SQLiteDatabase db = this.getWritableDatabase();
-            long c = db.delete(patientAppointment," Email=? AND Type =? AND Appointment=? AND Remark=? ",new String[]{email,type,app,remark});
+            long c = db.delete(appointment," Email=? AND Type =? AND AppointmentDate=? AND AppointmentTime =? AND Remark=? ",new String[]{email,type,date,time,remark});
             if(c==-1) return false;
             return true;
     }

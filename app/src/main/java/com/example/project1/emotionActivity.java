@@ -31,7 +31,7 @@ import java.util.Date;
 
 public class emotionActivity extends AppCompatActivity {
     DatabaseHelper db;
-    Button b1,b2,b3,b4,b5,submitButton;
+    Button b1,b2,b3,b4,b5,b6,submitButton;
     ArrayList<String> arrayList;
     EditText expression;
     FrameLayout frameLayout;
@@ -83,6 +83,7 @@ public class emotionActivity extends AppCompatActivity {
         b3 = (Button) findViewById(R.id.emotion3);
         b4 = (Button) findViewById(R.id.emotion4);
         b5 = (Button) findViewById(R.id.emotion5);
+        b6 = (Button) findViewById(R.id.emotion6);
         arrayList = new ArrayList<String>();
 //        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         db = new DatabaseHelper(this);
@@ -137,7 +138,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Happy(def)");
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Very Happy(def)");
 //                Boolean counter2 = db.setCounter("Moderate",0);
 //                Boolean counter3 = db.setCounter("Sad",0);
                 if(!counter){
@@ -154,7 +155,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Smiley(def)");
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Happy(def)");
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
@@ -170,7 +171,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Unhappy(def)");
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Smiling(def)");
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
@@ -186,7 +187,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Angry(def)");
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Unhappy(def)");
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
@@ -201,7 +202,7 @@ public class emotionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Sad(def)");
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Angry(def)");
                 if(!counter){
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
@@ -210,6 +211,23 @@ public class emotionActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+
+        b6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Sad(def)");
+//                Boolean counter2 = db.setCounter("Moderate",0);
+//                Boolean counter3 = db.setCounter("Sad",0);
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -242,6 +260,7 @@ public class emotionActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             pw.dismiss();
                             frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
                         }
                     });
                     pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

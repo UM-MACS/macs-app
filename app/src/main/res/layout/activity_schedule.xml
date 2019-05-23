@@ -5,49 +5,99 @@
     android:id="@+id/container_date_picker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/border"
     tools:context=".viewEventActivity">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    android:layout_marginBottom="80dp"
+    android:background="@drawable/border">
     <Button
         android:id="@+id/close_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="right"
         android:background="@android:drawable/ic_delete"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/date_picker_border">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:text="Select Date" />
 
     <DatePicker
         android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="248dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="5dp"
         android:padding="5dp"
         android:elevation="10dp"
-        android:background="@drawable/date_picker_border"
+        android:layout_weight="1"
         android:datePickerMode="spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+    <!--<TimePicker-->
+        <!--android:id="@+id/timePicker"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@drawable/date_picker_border"-->
+        <!--android:timePickerMode="spinner"/>-->
+    <TextView
+        android:id="@+id/select_time"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:gravity="left|center"
+        android:background="@drawable/date_picker_border"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="Select Time"
+        android:padding="10dp"
+        android:textSize="25sp"
+        android:textAlignment="center"/>
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:padding="5dp"
         android:elevation="10dp"
-        android:background="@drawable/border">
+        android:background="@drawable/date_picker_border">
         <EditText
             android:id="@+id/remark"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_gravity="center"
-            android:paddingLeft="20dp"
+            android:padding="10dp"
             android:ems="10"
+            android:gravity="center"
+            android:textSize="25dp"
             android:hint="Add Remark"
             android:background="@null"
             android:layout_marginBottom="10dp"
@@ -68,4 +118,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+</LinearLayout>
+    </ScrollView>
 </LinearLayout>

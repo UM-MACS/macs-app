@@ -91,37 +91,30 @@ public class eventAssessment extends AppCompatActivity {
                 int radioId = radio1.getCheckedRadioButtonId();
                 radioButton1 = (RadioButton)findViewById(radioId);
                 String text = radioButton1.getText().toString();
-                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT).show();
                 //button 2
                 int radioId2 = radio2.getCheckedRadioButtonId();
                 radioButton2 = (RadioButton)findViewById(radioId2);
                 String text2 = radioButton2.getText().toString();
-                Toast.makeText(getApplicationContext(),text2,Toast.LENGTH_SHORT).show();
                 //button 3
                 int radioId3 = radio3.getCheckedRadioButtonId();
                 radioButton3 = (RadioButton)findViewById(radioId3);
                 String text3 = radioButton3.getText().toString();
-                Toast.makeText(getApplicationContext(),text3,Toast.LENGTH_SHORT).show();
                 //button 4
                 int radioId4 = radio4.getCheckedRadioButtonId();
                 radioButton4 = (RadioButton)findViewById(radioId4);
                 String text4 = radioButton4.getText().toString();
-                Toast.makeText(getApplicationContext(),text4,Toast.LENGTH_SHORT).show();
                 //button 5
                 int radioId5 = radio5.getCheckedRadioButtonId();
                 radioButton5 = (RadioButton)findViewById(radioId5);
                 String text5 = radioButton5.getText().toString();
-                Toast.makeText(getApplicationContext(),text5,Toast.LENGTH_SHORT).show();
                 //button 6
                 int radioId6 = radio6.getCheckedRadioButtonId();
                 radioButton6 = (RadioButton)findViewById(radioId6);
                 String text6 = radioButton6.getText().toString();
-                Toast.makeText(getApplicationContext(),text6,Toast.LENGTH_SHORT).show();
                 //button 7
                 int radioId7 = radio7.getCheckedRadioButtonId();
                 radioButton7 = (RadioButton)findViewById(radioId7);
                 String text7 = radioButton7.getText().toString();
-                Toast.makeText(getApplicationContext(),text7,Toast.LENGTH_SHORT).show();
 
 
                 Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text,text2,text3,text4,text5,text6,text7);
