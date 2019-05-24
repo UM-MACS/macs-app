@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String eventAssessmentTable = "EventAssessmentTable";
 
     public DatabaseHelper(Context context) {
-        super(context, "UserDatabase.db", null, 1);
+        super(context, "Database.db", null, 1);
     }
 
 
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + caregiverData+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text,Relationship text)");
         db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text,Type text, Date text, Expression text)");
         db.execSQL("CREATE TABLE " + appointment+ "(Email text,Type text, Remark text, AppointmentDate text, AppointmentTime text)");
-        db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text)");
+        db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text, q8 text)");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
     }
 
-    public boolean insertEventAssessment(String email, String text, String text2, String text3, String text4, String text5, String text6, String text7){
+    public boolean insertEventAssessment(String email, String text, String text2, String text3, String text4, String text5, String text6, String text7, String text8){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Email",email);
@@ -49,6 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("q5",text5);
         values.put("q6",text6);
         values.put("q7",text7);
+        values.put("q8",text8);
         long ins = db.insert(eventAssessmentTable,null,values);
         if (ins == -1) return false;
         else return true;

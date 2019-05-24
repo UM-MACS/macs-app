@@ -4,11 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:orientation="vertical"
-    android:background="@drawable/border">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/pop_up_text"
         android:layout_width="match_parent"
@@ -18,7 +24,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="Your feedback is successfully recorded!"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="217dp" />
 
@@ -30,8 +36,9 @@
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="20dp"
         android:text="Return"
-        android:background="@color/brown"
+        android:background="@color/dodger_blue"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
+    </LinearLayout>
 
 </LinearLayout>

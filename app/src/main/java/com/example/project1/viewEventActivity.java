@@ -238,34 +238,6 @@ public class viewEventActivity extends AppCompatActivity {
                 frameLayout.getForeground().setAlpha(0);
                 //get remark text
                 String remarkText = editText.getText().toString();
-//                //get time
-//                int hour, minute;
-//                String am_pm;
-//                if (Build.VERSION.SDK_INT >= 23 ){
-//                    hour = timePicker.getHour();
-//                    minute = timePicker.getMinute();
-//                }
-//                else{
-//                    hour = timePicker.getCurrentHour();
-//                    minute = timePicker.getCurrentMinute();
-//                }
-//                if(hour > 12) {
-//                    am_pm = "PM";
-//                    hour = hour - 12;
-//                }
-//                else
-//                {
-//                    am_pm="AM";
-//                }
-//                if(minute==0){
-//                    min = "00";
-//                    timeSelected = (hour +":"+ min+" "+am_pm);
-//                }
-//                else{
-//                    timeSelected = (hour +":"+ minute+" "+am_pm);
-//                }
-//
-//                Log.e("tag", "time is "+timeSelected);
                 //get date
                 yy = datePicker.getYear();
                 mm = datePicker.getMonth();
@@ -301,6 +273,9 @@ public class viewEventActivity extends AppCompatActivity {
                     appointmentDateText.setText(appointment);
                     appointmentTimeText.setText(timeSelected);
                     User.getInstance().setAppointment(appointment);
+                    if(timeSelected==null){
+                        timeSelected = "";
+                    }
                     boolean set = db.setAppointment(User.getInstance().getUserType(), User.getInstance().getEmail(), User.getInstance().getAppointment(),timeSelected, remarkText);
                     if (set) {
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -314,10 +289,6 @@ public class viewEventActivity extends AppCompatActivity {
                     cal.set(Calendar.MINUTE, (minute+2));
                     cal.set(Calendar.SECOND, 0);
                     Log.e("tag", "" + cal.getTime());
-//                BroadcastReceiver br = new AlarmReceiver();
-//                IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-//                filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//                registerReceiver(br,filter);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
                     Log.e("tag", "done setting");

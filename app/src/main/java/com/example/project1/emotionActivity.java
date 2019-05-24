@@ -1,22 +1,15 @@
 package com.example.project1;
 
-import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,15 +17,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -111,110 +101,6 @@ public class emotionActivity extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Happy(def)");
-                if(!counter){
-                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Smiling(def)");
-                if(!counter){
-                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        b4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Unhappy(def)");
-                if(!counter){
-                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-        b5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Angry(def)");
-                if(!counter){
-                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-        });
-
-        b6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Sad(def)");
-//                Boolean counter2 = db.setCounter("Moderate",0);
-//                Boolean counter3 = db.setCounter("Sad",0);
-                if(!counter){
-                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Successfully Recorded",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        expression = (EditText)findViewById(R.id.expression);
-        expression.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expression.setCursorVisible(true);
-            }
-        });
-        submitButton = (Button)findViewById(R.id.submitExpressionButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = expression.getText().toString();
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                Boolean ins = db.insertEmotion(User.getInstance().getUserType(), User.getInstance().getEmail(),date, text);
-                if (ins) {
-                    //Create pop up window
                     LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View view = inflater1.inflate(R.layout.pop_up_message, null);
                     // create a focusable PopupWindow with the given layout and correct size
@@ -242,8 +128,272 @@ public class emotionActivity extends AppCompatActivity{
                     pw.setOutsideTouchable(true);
                     // display the pop-up in the center
                     pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Happy(def)");
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                    // create a focusable PopupWindow with the given layout and correct size
+                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    //dim background
+                    frameLayout.getForeground().setAlpha(220);
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+                            frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
+                        }
+                    });
+                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    pw.setTouchInterceptor(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                pw.dismiss();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    // display the pop-up in the center
+                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+
+            }
+        });
+
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Smiling(def)");
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                    // create a focusable PopupWindow with the given layout and correct size
+                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    //dim background
+                    frameLayout.getForeground().setAlpha(220);
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+                            frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
+                        }
+                    });
+                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    pw.setTouchInterceptor(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                pw.dismiss();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    // display the pop-up in the center
+                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+
+            }
+        });
+
+        b4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Unhappy(def)");
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                    // create a focusable PopupWindow with the given layout and correct size
+                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    //dim background
+                    frameLayout.getForeground().setAlpha(220);
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+                            frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
+                        }
+                    });
+                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    pw.setTouchInterceptor(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                pw.dismiss();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    // display the pop-up in the center
+                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+
+            }
+        });
+        b5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Angry(def)");
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                    // create a focusable PopupWindow with the given layout and correct size
+                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    //dim background
+                    frameLayout.getForeground().setAlpha(220);
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+                            frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
+                        }
+                    });
+                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    pw.setTouchInterceptor(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                pw.dismiss();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    // display the pop-up in the center
+                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+
+
+            }
+        });
+
+        b6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                Boolean counter = db.insertEmotion(User.getInstance().getUserType(),User.getInstance().getEmail(),date,"Sad(def)");
+//                Boolean counter2 = db.setCounter("Moderate",0);
+//                Boolean counter3 = db.setCounter("Sad",0);
+                if(!counter){
+                    Toast.makeText(getApplicationContext(),"Error, Please try again later",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                    // create a focusable PopupWindow with the given layout and correct size
+                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    //dim background
+                    frameLayout.getForeground().setAlpha(220);
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+                            frameLayout.getForeground().setAlpha(0);
+                            expression.setText("");
+                        }
+                    });
+                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    pw.setTouchInterceptor(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                pw.dismiss();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    // display the pop-up in the center
+                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+            }
+        });
+
+
+        expression = (EditText)findViewById(R.id.expression);
+        expression.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expression.setCursorVisible(true);
+            }
+        });
+        submitButton = (Button)findViewById(R.id.submitExpressionButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = expression.getText().toString();
+                Date c = Calendar.getInstance().getTime();
+                final String date = c.toString();
+                if (text.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Error! Please Enter something in the text box! ", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error! Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    Boolean ins = db.insertEmotion(User.getInstance().getUserType(), User.getInstance().getEmail(), date, text);
+                    if (ins) {
+                        //Create pop up window
+                        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final View view = inflater1.inflate(R.layout.pop_up_message, null);
+                        // create a focusable PopupWindow with the given layout and correct size
+                        final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                        //dim background
+                        frameLayout.getForeground().setAlpha(220);
+                        ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                pw.dismiss();
+                                frameLayout.getForeground().setAlpha(0);
+                                expression.setText("");
+                            }
+                        });
+                        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        pw.setTouchInterceptor(new View.OnTouchListener() {
+                            public boolean onTouch(View v, MotionEvent event) {
+                                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                    pw.dismiss();
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+                        pw.setOutsideTouchable(true);
+                        // display the pop-up in the center
+                        pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error! Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

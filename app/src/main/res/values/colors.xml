@@ -3,6 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="dodger_blue">#1E90FF</color>
+    <color name="alice_blue">#F0F8FF</color>
+    <color name="steel_blue">#4682B4</color>
     <color name="pink">#FFD3D3</color>
     <color name="brown">#993300</color>
     <color name="yellow">#FFFFE2</color>

@@ -87,6 +87,7 @@ public class eventAssessment extends AppCompatActivity {
         radio5 = (RadioGroup) findViewById(R.id.radioGroup5);
         radio6 = (RadioGroup) findViewById(R.id.radioGroup6);
         radio7 = (RadioGroup) findViewById(R.id.radioGroup7);
+        editText = (EditText) findViewById(R.id.answerEditText);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +120,10 @@ public class eventAssessment extends AppCompatActivity {
                 int radioId7 = radio7.getCheckedRadioButtonId();
                 radioButton7 = (RadioButton)findViewById(radioId7);
                 String text7 = radioButton7.getText().toString();
+                //edit text
+                String text8 = editText.getText().toString();
 
-
-                Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text,text2,text3,text4,text5,text6,text7);
+                Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text,text2,text3,text4,text5,text6,text7,text8);
 
                 if(ins){
                     Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
