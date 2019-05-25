@@ -57,10 +57,6 @@ public class User {
         this.Email= email;
     }
 
-    public String getPassword() {
-        return Password;
-    }
-
     public void setPassword(String password) {
         this.Password = password;
     }

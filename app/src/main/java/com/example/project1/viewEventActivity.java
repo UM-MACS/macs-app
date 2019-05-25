@@ -1,25 +1,19 @@
 package com.example.project1;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -30,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -51,18 +44,18 @@ public class viewEventActivity extends AppCompatActivity {
     private LinearLayout clickableView;
     private FrameLayout frameLayout;
     private DatabaseHelper db;
-    private TextView appointmentDateText,appointmentTimeText,remarkTextView;
+    private TextView appointmentDateText, appointmentTimeText, remarkTextView;
     private Button b1;
-    private String min, timeSelected;
-    private int yy, mm, dd;
+    private String timeSelected, dateSelected;
+    private int yy, MM, dd;
+    private String HH, mm;
     private DatePicker datePicker;
-    private TimePicker timePicker;
     private TimePickerDialog picker;
-    private TextView timeText;
+    private DatePickerDialog picker2;
+    private TextView timeText, dateText;
     private Calendar cal;
     private AlarmManager alarmManager;
     private EditText editText;
-    public String appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +66,19 @@ public class viewEventActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_schedule_appointment);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(viewEventActivity.this,emotionActivity.class);
+                        Intent i2 = new Intent(viewEventActivity.this, emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(viewEventActivity.this,viewEventActivity.class);
+                        Intent i3 = new Intent(viewEventActivity.this, viewEventActivity.class);
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
@@ -93,7 +86,7 @@ public class viewEventActivity extends AppCompatActivity {
                         startActivity(i4);
                         break;
                     case R.id.navigation_faq:
-                        Intent i5 = new Intent(viewEventActivity.this,FAQ.class);
+                        Intent i5 = new Intent(viewEventActivity.this, FAQ.class);
                         startActivity(i5);
                         break;
                 }
@@ -101,69 +94,47 @@ public class viewEventActivity extends AppCompatActivity {
             }
         });
 
-        parentLinearLayout=(LinearLayout)findViewById(R.id.parent_linear_layout);
-        frameLayout = (FrameLayout)findViewById(R.id.foreground_menu);
+        parentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout);
+        frameLayout = (FrameLayout) findViewById(R.id.foreground_menu);
         frameLayout.getForeground().setAlpha(0);
-        datePickerLayout = (LinearLayout)findViewById(R.id.container_date_picker);
-        clickableView = (LinearLayout)findViewById(R.id.clickable_view);
+        datePickerLayout = (LinearLayout) findViewById(R.id.container_date_picker);
+        clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         db = new DatabaseHelper(this);
-        ArrayList <String> arrayList = new ArrayList<>();
-        ArrayList <String> arrayList2 = new ArrayList<>();
-        ArrayList <String> arrayList3 = new ArrayList<>();
-        Cursor cursor = db.getAppointment(User.getInstance().getUserType(),User.getInstance().getEmail());
-        if(cursor.getCount()!=0){
-            while(cursor.moveToNext()){
-                Log.e("tag", ""+cursor.getString(1) );
+        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<String> arrayList2 = new ArrayList<>();
+        ArrayList<String> arrayList3 = new ArrayList<>();
+        Cursor cursor = db.getAppointment(User.getInstance().getUserType(), User.getInstance().getEmail());
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                Log.e("tag", "" + cursor.getString(1));
                 arrayList.add(cursor.getString(3)); //date
                 arrayList2.add(cursor.getString(2)); //remark
                 arrayList3.add(cursor.getString(4)); //time
             }
         }
-        for (int i=0; i<arrayList.size();i++){
-            Log.e("tag", ""+arrayList.get(i));
-            LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View rowView = inflater.inflate(R.layout.field,parentLinearLayout,false);
-            parentLinearLayout.addView(rowView,parentLinearLayout.getChildCount()-1);
-            remarkTextView = (TextView)((View)rowView).findViewById(R.id.show_remark_text);
+        for (int i = 0; i < arrayList.size(); i++) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View rowView = inflater.inflate(R.layout.field, parentLinearLayout, false);
+            parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
+            remarkTextView = (TextView) ((View) rowView).findViewById(R.id.show_remark_text);
             remarkTextView.setText(arrayList2.get(i));
-            appointmentDateText = (TextView)((View)rowView).findViewById(R.id.appointment_date_text);
+            appointmentDateText = (TextView) ((View) rowView).findViewById(R.id.appointment_date_text);
             appointmentDateText.setText(arrayList.get(i));
-            appointmentTimeText = (TextView)((View)rowView).findViewById(R.id.appointment_time_text);
+            appointmentTimeText = (TextView) ((View) rowView).findViewById(R.id.appointment_time_text);
             appointmentTimeText.setText(arrayList3.get(i));
-//            //set alarm for recorded
-//            cal = Calendar.getInstance();
-//            String []dateRecorded = (arrayList.get(i).split("/"));
-//            yy = Integer.parseInt(dateRecorded[0]);
-//            mm = (Integer.parseInt(dateRecorded[1]))-1;
-//            dd = Integer.parseInt(dateRecorded[2]);
-//            Log.e("tag", ""+yy+" "+mm+" "+dd);
-//            cal.set(Calendar.YEAR, yy);
-//            cal.set(Calendar.MONTH, mm) ;
-//            cal.set(Calendar.DATE, dd);
-//            cal.set(Calendar.HOUR_OF_DAY, 20);
-//            cal.set(Calendar.MINUTE, 42);
-//            cal.set(Calendar.SECOND, 0);
-//            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//            final String action = "ConnectivityManager.CONNECTIVITY_ACTION";
-//            IntentFilter intentFilter = new IntentFilter(action);
-//            intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//            AlarmReceiver mReceiver = new AlarmReceiver();
-//            getApplicationContext().registerReceiver(mReceiver,intentFilter);
-//            Intent i2 = new Intent(action);
-//            final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,i2,0);
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
         }
 
 
     }
-    public void onAddField(View v){
+
+    public void onAddField(View v) {
         //add row of view
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.field,parentLinearLayout,false);
-        parentLinearLayout.addView(rowView,parentLinearLayout.getChildCount()-1);
-        appointmentDateText = (TextView)((View)rowView).findViewById(R.id.appointment_date_text);
-        appointmentTimeText = (TextView)((View)rowView).findViewById(R.id.appointment_time_text);
-        remarkTextView = (TextView)((View)rowView).findViewById(R.id.show_remark_text);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.field, parentLinearLayout, false);
+        parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
+        appointmentDateText = (TextView) ((View) rowView).findViewById(R.id.appointment_date_text);
+        appointmentTimeText = (TextView) ((View) rowView).findViewById(R.id.appointment_time_text);
+        remarkTextView = (TextView) ((View) rowView).findViewById(R.id.show_remark_text);
 
         //alarmService
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -171,41 +142,62 @@ public class viewEventActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(action);
         intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         AlarmReceiver mReceiver = new AlarmReceiver();
-        getApplicationContext().registerReceiver(mReceiver,intentFilter);
+        getApplicationContext().registerReceiver(mReceiver, intentFilter);
         Intent i2 = new Intent(action);
-        final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,i2,0);
+        final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i2, 0);
 
-
+        //Notification for api less than 26
         Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
         notificationIntent.addCategory("android.intent.category.DEFAULT");
         final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         cal = Calendar.getInstance();
         db = new DatabaseHelper(this);
         //Create pop up window
-        LayoutInflater inflater1 = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view = inflater1.inflate(R.layout.activity_schedule,null);
-            // create a focusable PopupWindow with the given layout and correct size
+        LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = inflater1.inflate(R.layout.activity_schedule, null);
         final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-            //dim background
         frameLayout.getForeground().setAlpha(220);
-        //get and set calendarView and editText
-        editText = (EditText)view.findViewById(R.id.remark);
-        datePicker = (DatePicker)view.findViewById(R.id.datePicker);
-        datePicker.setCalendarViewShown(false); //hide the calendar view
-//        timePicker = (TimePicker)view.findViewById(R.id.timePicker);
-//        timePicker.setIs24HourView(true);
 
+
+        editText = (EditText) view.findViewById(R.id.remark);
         //When close Button is clicked
-        ((Button)view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {
+        ((Button) view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pw.dismiss();
                 frameLayout.getForeground().setAlpha(0);
-                parentLinearLayout.removeView((View)rowView);
+                parentLinearLayout.removeView((View) rowView);
             }
         });
 
-        //When set time edit text is pressed
+        //When set date is pressed
+        dateText = (TextView)view.findViewById(R.id.select_date);
+        dateText.setInputType(InputType.TYPE_NULL);
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                //date picker dialog
+                picker2 = new DatePickerDialog(viewEventActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dateSelected = (year+"/"+(month+1)+"/"+dayOfMonth);
+                        yy = year;
+                        MM = month+1;
+                        dd = dayOfMonth;
+                        dateText.setText(dateSelected);
+                    }
+                },year,month,day);
+                picker2.show();
+            }
+        });
+
+
+
+        //When set time is pressed
         timeText = (TextView)view.findViewById(R.id.select_time);
         timeText.setInputType(InputType.TYPE_NULL);
         timeText.setOnClickListener(new View.OnClickListener() {
@@ -218,12 +210,28 @@ public class viewEventActivity extends AppCompatActivity {
                 picker = new TimePickerDialog(viewEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                        String hourSet="", minuteSet="";
                         if(sMinute==0){
-                            timeSelected=(sHour + ":00");
+                            minuteSet = "00";
+                        }
+                        else if (sMinute<10){
+                            minuteSet = "0"+sMinute;
                         }
                         else{
-                        timeSelected = (sHour + ":" + sMinute);
+                            minuteSet = ""+sMinute;
                         }
+                        if( sHour==0){
+                            hourSet = "00";
+                        }
+                        else if(sHour<10){
+                            hourSet = "0"+sHour;
+                        }
+                        else{
+                            hourSet = ""+sHour;
+                        }
+                        timeSelected = (hourSet + ":" + minuteSet);
+                        HH = hourSet;
+                        mm = minuteSet;
                         timeText.setText(timeSelected);
                     }
                 }, Hour, Minutes, true);
@@ -239,40 +247,43 @@ public class viewEventActivity extends AppCompatActivity {
                 //get remark text
                 String remarkText = editText.getText().toString();
                 //get date
-                yy = datePicker.getYear();
-                mm = datePicker.getMonth();
-                dd = datePicker.getDayOfMonth();
+                Log.e("tag", "time selected is "+timeSelected);
                 Date c = Calendar.getInstance().getTime();
                 SimpleDateFormat df = new SimpleDateFormat("yyyy");
                 SimpleDateFormat df2 = new SimpleDateFormat("MM");
                 SimpleDateFormat df3 = new SimpleDateFormat("dd");
                 SimpleDateFormat df4 = new SimpleDateFormat("mm");
-                SimpleDateFormat df5 = new SimpleDateFormat("hh");
+                SimpleDateFormat df5 = new SimpleDateFormat("HH");
+                SimpleDateFormat df6 = new SimpleDateFormat("yyyyMMddHHmm");
                 int year = Integer.parseInt(df.format(c));
                 int month = (Integer.parseInt(df2.format(c)))-1;
                 int day = Integer.parseInt(df3.format(c));
                 int minute = Integer.parseInt(df4.format(c));
                 int hour = Integer.parseInt(df5.format(c));
-                Log.e("tag", "year is " + year);
-                //if date chosen has passed
-                if (year > yy) {
-                    Toast.makeText(getApplicationContext(), "Error!!", Toast.LENGTH_SHORT).show();
+                long s1,s2;
+                s2 = Long.parseLong(df6.format(c));
+                Log.e("tag", "s2 is "+s2);
+                String yearSet=""+yy, monthSet=""+MM, daySet=""+dd;
+                if(yy<1000){
+                    yearSet = yy+"0";
+                }
+                if(MM<10){
+                    monthSet = "0"+MM;
+                }
+                if(dd<10){
+                    daySet = "0"+dd;
+                }
+                 s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
+                Log.e("tag", "s1 is "+s1);
+                if(s2>=s1){
+                    Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View)rowView);
                 }
-                else if(year == yy && month>mm){
-                        Toast.makeText(getApplicationContext(), "Error!!", Toast.LENGTH_SHORT).show();
-                        parentLinearLayout.removeView((View)rowView);}
-
-                else if (year == yy && month == mm && day>dd){
-                            Toast.makeText(getApplicationContext(), "Error!!", Toast.LENGTH_SHORT).show();
-                            parentLinearLayout.removeView((View)rowView);
-                }
-                else {
-                    appointment = yy + "/" + (mm + 1) + "/" + dd;
+                else{
                     remarkTextView.setText(remarkText);
-                    appointmentDateText.setText(appointment);
+                    appointmentDateText.setText(dateSelected);
                     appointmentTimeText.setText(timeSelected);
-                    User.getInstance().setAppointment(appointment);
+                    User.getInstance().setAppointment(dateSelected);
                     if(timeSelected==null){
                         timeSelected = "";
                     }
@@ -282,13 +293,8 @@ public class viewEventActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
                     }
-                    cal.set(Calendar.YEAR, yy);
-                    cal.set(Calendar.MONTH, mm);
-                    cal.set(Calendar.DAY_OF_MONTH, dd);
-                    cal.set(Calendar.HOUR_OF_DAY, hour);
-                    cal.set(Calendar.MINUTE, (minute+2));
-                    cal.set(Calendar.SECOND, 0);
-                    Log.e("tag", "" + cal.getTime());
+                    cal.set(yy,(MM-1),dd,hour,(minute+1),0);
+                    Log.e("tag", "" + yy+MM+dd+hour+minute);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
                     Log.e("tag", "done setting");
@@ -323,6 +329,199 @@ public class viewEventActivity extends AppCompatActivity {
     }
 
     public void onEdit(View v) {
+        appointmentDateText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_date_text);
+        final String text = (String) appointmentDateText.getText();
+        String box [] = text.split("/");
+        yy = Integer.parseInt(box[0]);
+        MM = Integer.parseInt(box[1]);
+        dd = Integer.parseInt(box[2]);
+        appointmentTimeText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_time_text);
+        final String text3 = (String) appointmentTimeText.getText();
+        String box2 [] = text3.split(":");
+        HH = box2[0];
+        mm = box2[1];
+        remarkTextView= (TextView)((View)v.getParent()).findViewById(R.id.show_remark_text);
+        final String text2 = (String) remarkTextView.getText();
+
+        //alarmService
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        final String action = "ConnectivityManager.CONNECTIVITY_ACTION";
+        IntentFilter intentFilter = new IntentFilter(action);
+        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        AlarmReceiver mReceiver = new AlarmReceiver();
+        getApplicationContext().registerReceiver(mReceiver,intentFilter);
+        Intent i2 = new Intent(action);
+        final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,i2,0);
+        //Notification for api less than 26
+        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        cal = Calendar.getInstance();
+        db = new DatabaseHelper(this);
+        //Create pop up window
+        LayoutInflater inflater1 = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View view = inflater1.inflate(R.layout.activity_schedule,null);
+        final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        frameLayout.getForeground().setAlpha(220);
+
+        //get and set calendarView and editText
+        editText = (EditText)view.findViewById(R.id.remark);
+        timeText = (TextView)view.findViewById(R.id.select_time);
+        dateText = (TextView)view.findViewById(R.id.select_date);
+        timeText.setText(text3);
+        timeSelected = timeText.getText().toString();
+        editText.setText(text2);
+        dateText.setText(text);
+        dateSelected = dateText.getText().toString();
+
+        //When close Button is clicked
+        ((Button)view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw.dismiss();
+                frameLayout.getForeground().setAlpha(0);
+            }
+        });
+
+        //When set date is pressed
+        dateText = (TextView)view.findViewById(R.id.select_date);
+        dateText.setInputType(InputType.TYPE_NULL);
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                //date picker dialog
+                picker2 = new DatePickerDialog(viewEventActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dateSelected = (year+"/"+(month+1)+"/"+dayOfMonth);
+                        yy = year;
+                        MM = month+1;
+                        dd = dayOfMonth;
+                        dateText.setText(dateSelected);
+                    }
+                },year,month,day);
+                picker2.show();
+            }
+        });
+
+        //When set time is pressed
+        timeText.setInputType(InputType.TYPE_NULL);
+        timeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int Hour = cldr.get(Calendar.HOUR_OF_DAY);
+                int Minutes = cldr.get(Calendar.MINUTE);
+                //time picker dialog
+                picker = new TimePickerDialog(viewEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                        String hourSet="", minuteSet="";
+                        if(sMinute==0){
+                            minuteSet = "00";
+                        }
+                        else if (sMinute<10){
+                            minuteSet = "0"+sMinute;
+                        }
+                        else{
+                            minuteSet = ""+sMinute;
+                        }
+                        if( sHour==0){
+                            hourSet = "00";
+                        }
+                        else if(sHour<10){
+                            hourSet = "0"+sHour;
+                        }
+                        else{
+                            hourSet = ""+sHour;
+                        }
+                        timeSelected = (hourSet + ":" + minuteSet);
+                        HH = hourSet;
+                        mm = minuteSet;
+                        timeText.setText(timeSelected);
+                    }
+                }, Hour, Minutes, true);
+                picker.show();
+            }
+        });
+
+        //When Submit Button is clicked
+        ((Button) view.findViewById(R.id.submitButton)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pw.dismiss();
+                frameLayout.getForeground().setAlpha(0);
+                //get remark text
+                String remarkText = editText.getText().toString();
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy");
+                SimpleDateFormat df2 = new SimpleDateFormat("MM");
+                SimpleDateFormat df3 = new SimpleDateFormat("dd");
+                SimpleDateFormat df4 = new SimpleDateFormat("mm");
+                SimpleDateFormat df5 = new SimpleDateFormat("HH");
+                SimpleDateFormat df6 = new SimpleDateFormat("yyyyMMddHHmm");
+                String year = df.format(c);
+                int month = (Integer.parseInt(df2.format(c)))-1;
+                int day = Integer.parseInt(df3.format(c));
+                int minute = Integer.parseInt(df4.format(c));
+                int hour = Integer.parseInt(df5.format(c));
+                long s1,s2;
+                s2 = Long.parseLong(df6.format(c));
+                Log.e("tag", "s2 is "+s2);
+                String yearSet=""+yy, monthSet=""+MM, daySet=""+dd;
+                if(yy<1000){
+                    yearSet = yy+"0";
+                }
+                if(MM<10){
+                    monthSet = "0"+MM;
+                }
+                if(dd<10){
+                    daySet = "0"+dd;
+                }
+                s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
+                Log.e("tag", "s1 is "+s1);
+                if(s2>=s1){
+                    Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    remarkTextView.setText(remarkText);
+                    appointmentDateText.setText(dateSelected);
+                    appointmentTimeText.setText(timeSelected);
+                    User.getInstance().setAppointment(dateSelected);
+                    if(timeSelected==null){
+                        timeSelected = "";
+                    }
+                    boolean set = db.setAppointment(User.getInstance().getUserType(), User.getInstance().getEmail(), User.getInstance().getAppointment(),timeSelected, remarkText);
+                    boolean set2 = db.deleteAppointment(User.getInstance().getUserType(),User.getInstance().getEmail(),text,text3,text2);
+                    if (set && set2) {
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                    }
+                    cal.set(yy,(MM-1),dd,hour,(minute+1),0);
+                    Log.e("tag", "" + yy+MM+dd+hour+minute);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+                    Log.e("tag", "done setting");
+                }
+            }
+        });
+        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setTouchInterceptor(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    pw.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
+        pw.setOutsideTouchable(true);
+        // display the pop-up in the center
+        pw.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     @Override

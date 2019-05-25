@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String eventAssessmentTable = "EventAssessmentTable";
 
     public DatabaseHelper(Context context) {
-        super(context, "Database.db", null, 1);
+        super(context, "UserDatabase.db", null, 1);
     }
 
 

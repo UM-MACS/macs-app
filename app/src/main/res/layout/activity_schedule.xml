@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".viewEventActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -25,13 +26,14 @@
         android:background="@android:drawable/ic_delete"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="vertical"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/date_picker_border">
     <TextView
+        android:id="@+id/select_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -39,21 +41,21 @@
         android:textSize="25sp"
         android:text="Select Date" />
 
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center"
-        android:padding="5dp"
-        android:elevation="10dp"
-        android:layout_weight="1"
-        android:datePickerMode="spinner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<DatePicker-->
+        <!--android:id="@+id/datePicker"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:padding="5dp"-->
+        <!--android:elevation="10dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:datePickerMode="spinner"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
     </LinearLayout>
     <!--<TimePicker-->
         <!--android:id="@+id/timePicker"-->
@@ -97,11 +99,11 @@
             android:padding="10dp"
             android:ems="10"
             android:gravity="center"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:hint="Add Remark"
             android:background="@null"
             android:layout_marginBottom="10dp"
-            android:inputType="textPersonName" />
+            android:inputType="textMultiLine" />
     </RelativeLayout>
 
 
