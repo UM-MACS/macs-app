@@ -13,12 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".viewUserDataActivity"
-            android:label="@string/title_activity_view_user_data"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
             android:name=".GalleryActivity"
-            android:label="Gallery" />
+            android:label="Answer"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".FAQ"
             android:exported="true"

@@ -103,6 +103,8 @@
             android:hint="Add Remark"
             android:background="@null"
             android:layout_marginBottom="10dp"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="false"
             android:inputType="textMultiLine" />
     </RelativeLayout>
 

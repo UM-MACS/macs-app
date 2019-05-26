@@ -65,6 +65,22 @@
                 android:focusableInTouchMode="true">
 
                 <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How would you improve the event?"
+                    android:textColor="#000"/>
+
+                <EditText
+                    android:id="@+id/answerEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Answer"
+                    android:textColor="#000"
+                    android:focusableInTouchMode="true" android:cursorVisible="false"/>
+
+                <TextView
                     android:id="@+id/firstQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -291,22 +307,6 @@
 
 
                 </RadioGroup>
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="How would you improve the event?"
-                    android:textColor="#000"/>
-
-                <EditText
-                    android:id="@+id/answerEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="Answer"
-                    android:textColor="#000"
-                    android:focusableInTouchMode="true" android:cursorVisible="false"/>
 
                 <Button
                     android:id="@+id/button_submit_assessment"

@@ -158,8 +158,14 @@ public class viewEventActivity extends AppCompatActivity {
         final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         frameLayout.getForeground().setAlpha(220);
 
-
         editText = (EditText) view.findViewById(R.id.remark);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setCursorVisible(true);
+            }
+        });
+
         //When close Button is clicked
         ((Button) view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,6 +348,12 @@ public class viewEventActivity extends AppCompatActivity {
         mm = box2[1];
         remarkTextView= (TextView)((View)v.getParent()).findViewById(R.id.show_remark_text);
         final String text2 = (String) remarkTextView.getText();
+        remarkTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remarkTextView.setCursorVisible(true);
+            }
+        });
 
         //alarmService
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -373,6 +385,12 @@ public class viewEventActivity extends AppCompatActivity {
         editText.setText(text2);
         dateText.setText(text);
         dateSelected = dateText.getText().toString();
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setCursorVisible(true);
+            }
+        });
 
         //When close Button is clicked
         ((Button)view.findViewById(R.id.close_button)).setOnClickListener(new View.OnClickListener() {

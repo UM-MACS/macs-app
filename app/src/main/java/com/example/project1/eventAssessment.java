@@ -123,13 +123,17 @@ public class eventAssessment extends AppCompatActivity {
                 //edit text
                 String text8 = editText.getText().toString();
 
-                Boolean ins =db.insertEventAssessment(User.getInstance().getEmail(),text,text2,text3,text4,text5,text6,text7,text8);
-
-                if(ins){
-                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
+                if (text8.equals("")){
+                    Toast.makeText(getApplicationContext(),"Please enter a Valid Answer",Toast.LENGTH_SHORT).show();
                 }
-                Log.e("tag", ""+radioButton1.getText());
+                else {
+                    Boolean ins = db.insertEventAssessment(User.getInstance().getEmail(), text, text2, text3, text4, text5, text6, text7, text8);
 
+                    if (ins) {
+                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    }
+                    Log.e("tag", "" + radioButton1.getText());
+                }
 
             }
         });
