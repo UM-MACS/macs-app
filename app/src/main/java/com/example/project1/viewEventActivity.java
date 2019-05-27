@@ -612,6 +612,12 @@ public class viewEventActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_change_password){
+            Intent intent = new Intent(viewEventActivity.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

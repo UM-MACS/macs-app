@@ -12,10 +12,12 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".GalleryActivity"
             android:label="Answer"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FAQ"
             android:exported="true"

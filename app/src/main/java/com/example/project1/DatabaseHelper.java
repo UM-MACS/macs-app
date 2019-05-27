@@ -167,6 +167,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    /* change password */
+    public Cursor checkOldPasswordP(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select Password from " + patientData+ " where email = ?", new String[]{email});
+        return cursor;
+    }
+
+    public Boolean updatePasswordP(String email, String newPw){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Password", newPw);
+        long c = db.update(patientData,values," Email =?",new String[]{email});
+        if(c==-1) return false;
+        else return true;
+    }
+
+    public Cursor checkOldPasswordC(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select Password from " + caregiverData+ " where email = ?", new String[]{email});
+        return cursor;
+    }
+
+    public Boolean updatePasswordC(String email, String newPw){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Password", newPw);
+        long c = db.update(caregiverData,values," Email =?",new String[]{email});
+        if(c==-1) return false;
+        else return true;
+    }
+
 
     /* For Appointment Scheduling */
     public Boolean setAppointment(String id, String type,String email,String date,String time, String remark){

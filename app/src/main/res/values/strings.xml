@@ -58,7 +58,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_logout">Logout</string>
-
+    <string name="action_change_password">Change Password</string>
     <string name="menu_home">Logout</string>
     <string name="title_activity_view_user_data">viewUserDataActivity</string>
+
 </resources>
