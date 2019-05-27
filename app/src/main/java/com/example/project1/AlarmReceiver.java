@@ -70,45 +70,6 @@ public class AlarmReceiver extends BroadcastReceiver{
         }
         Notification notification = builder.build();
         notifManager.notify(NOTIFY_ID, notification);
-//        Intent notificationIntent = new Intent(context, viewEventActivity.class);
-//        Log.e("tag", "enter alarm receiver class");
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-//        stackBuilder.addParentStack(viewEventActivity.class);
-//        stackBuilder.addNextIntent(notificationIntent);
-//
-//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//        Log.e("tag", "channel id is" + CHANNEL_ID);
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//
-//            Notification notification = builder
-//                    .setContentTitle("MASOCC")
-//                    .setContentText("You have an upcoming appointment")
-//                    .setSmallIcon(R.drawable.app_icon)
-//                    .setTicker("New Message Alert!")
-//                    .setAutoCancel(true)
-//                    .setChannelId(CHANNEL_ID)
-//                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
-//                    .setDefaults(Notification.DEFAULT_ALL)
-//                    .setContentIntent(pendingIntent).build();
-//
-//            NotificationManagerCompat notificationManager = (NotificationManagerCompat) NotificationManagerCompat.from(context);
-//            notificationManager.notify(0, notification);
-//        }
-//
-//            Notification notification = new Notification.Builder(context)
-//                    .setContentTitle("MASOCC")
-//                    .setContentText("You have an upcoming appointment")
-//                    .setSmallIcon(R.drawable.app_icon)
-//                    .setPriority(Notification.PRIORITY_HIGH)
-//                    .setTicker("New Message Alert!")
-//                    .setAutoCancel(true)
-//                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
-//                    .setDefaults(Notification.DEFAULT_ALL)
-//                    .setContentIntent(pendingIntent).build();
-//
-//            NotificationManagerCompat notificationManager = (NotificationManagerCompat) NotificationManagerCompat.from(context);
-//            notificationManager.notify(0, notification);
 
     }
 }

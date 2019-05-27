@@ -87,47 +87,71 @@ public class eventAssessment extends AppCompatActivity {
         radio5 = (RadioGroup) findViewById(R.id.radioGroup5);
         radio6 = (RadioGroup) findViewById(R.id.radioGroup6);
         radio7 = (RadioGroup) findViewById(R.id.radioGroup7);
+        radio1.clearCheck();
+        radio2.clearCheck();
+        radio3.clearCheck();
+        radio4.clearCheck();
+        radio5.clearCheck();
+        radio6.clearCheck();
+        radio7.clearCheck();
+
         editText = (EditText) findViewById(R.id.answerEditText);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //button 1
                 int radioId = radio1.getCheckedRadioButtonId();
-                radioButton1 = (RadioButton)findViewById(radioId);
-                String text = radioButton1.getText().toString();
-                //button 2
                 int radioId2 = radio2.getCheckedRadioButtonId();
-                radioButton2 = (RadioButton)findViewById(radioId2);
-                String text2 = radioButton2.getText().toString();
-                //button 3
                 int radioId3 = radio3.getCheckedRadioButtonId();
-                radioButton3 = (RadioButton)findViewById(radioId3);
-                String text3 = radioButton3.getText().toString();
-                //button 4
                 int radioId4 = radio4.getCheckedRadioButtonId();
-                radioButton4 = (RadioButton)findViewById(radioId4);
-                String text4 = radioButton4.getText().toString();
-                //button 5
                 int radioId5 = radio5.getCheckedRadioButtonId();
-                radioButton5 = (RadioButton)findViewById(radioId5);
-                String text5 = radioButton5.getText().toString();
-                //button 6
                 int radioId6 = radio6.getCheckedRadioButtonId();
-                radioButton6 = (RadioButton)findViewById(radioId6);
-                String text6 = radioButton6.getText().toString();
-                //button 7
                 int radioId7 = radio7.getCheckedRadioButtonId();
-                radioButton7 = (RadioButton)findViewById(radioId7);
-                String text7 = radioButton7.getText().toString();
-                //edit text
+
                 String text8 = editText.getText().toString();
 
                 if (text8.equals("")){
                     Toast.makeText(getApplicationContext(),"Please enter a Valid Answer",Toast.LENGTH_SHORT).show();
                 }
+                else if(radioId == -1 || radioId2 == -1 || radioId3 == -1 || radioId4 == -1 || radioId5 == -1 || radioId6 == -1 || radioId7 == -1){
+                    Toast.makeText(getApplicationContext(),"Please Make Sure Every Question is Answered",Toast.LENGTH_SHORT).show();
+                }
                 else {
+                //button 1
+
+                radioButton1 = (RadioButton)findViewById(radioId);
+                String text = radioButton1.getText().toString();
+                //button 2
+
+                radioButton2 = (RadioButton)findViewById(radioId2);
+                String text2 = radioButton2.getText().toString();
+                //button 3
+                radioButton3 = (RadioButton)findViewById(radioId3);
+                String text3 = radioButton3.getText().toString();
+                //button 4
+                radioButton4 = (RadioButton)findViewById(radioId4);
+                String text4 = radioButton4.getText().toString();
+                //button 5
+                radioButton5 = (RadioButton)findViewById(radioId5);
+                String text5 = radioButton5.getText().toString();
+                //button 6
+                radioButton6 = (RadioButton)findViewById(radioId6);
+                String text6 = radioButton6.getText().toString();
+                //button 7
+                radioButton7 = (RadioButton)findViewById(radioId7);
+                String text7 = radioButton7.getText().toString();
+                //edit text
+
+
+
                     Boolean ins = db.insertEventAssessment(User.getInstance().getEmail(), text, text2, text3, text4, text5, text6, text7, text8);
+                    editText.setText("");
+                    radio1.clearCheck();
+                    radio2.clearCheck();
+                    radio3.clearCheck();
+                    radio4.clearCheck();
+                    radio5.clearCheck();
+                    radio6.clearCheck();
+                    radio7.clearCheck();
 
                     if (ins) {
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

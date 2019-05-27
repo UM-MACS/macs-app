@@ -66,7 +66,6 @@ public class AndroidDatabaseManager extends Activity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         //in the below line Change the text 'yourCustomSqlHelper' with your custom sqlitehelper class name
         dbm = new DatabaseHelper(AndroidDatabaseManager.this);
 
@@ -74,6 +73,7 @@ public class AndroidDatabaseManager extends Activity implements AdapterView.OnIt
 
         //the main linear layout to which all tables spinners etc will be added.In this activity every element is created dynamically  to avoid using xml file
         mainLayout = new LinearLayout(AndroidDatabaseManager.this);
+        mainLayout.setPadding(30,20,20,20);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setBackgroundColor(Color.WHITE);
         mainLayout.setScrollContainer(true);
@@ -245,7 +245,7 @@ public class AndroidDatabaseManager extends Activity implements AdapterView.OnIt
         });
         //layout parameters for each row in the table
         tableRowParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        tableRowParams.setMargins(0, 0, 2, 0);
+        tableRowParams.setMargins(2, 0, 2, 0);
 
         // a query which returns a cursor with the list of tables in the database.We use this cursor to populate spinner in the first row
         alc = dbm.getData(Query);

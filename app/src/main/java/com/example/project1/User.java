@@ -11,6 +11,7 @@ public class User {
     private String Contact;
     private String Age;
     private String userType;
+    private int appointmentId;
     private static User ourInstance = new User();
 
 
@@ -40,6 +41,10 @@ public class User {
     public void setAppointment(String app) {
         this.appointment = app;
     }
+
+    public void setAppointmentId(int id){ this.appointmentId = id; }
+
+    public int getAppointmentId(){return appointmentId;}
 
     public String getUserName() {
         return Name;

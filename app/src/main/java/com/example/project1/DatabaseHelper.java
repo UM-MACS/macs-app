@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String patientData= "PatientTable";
     public static final String caregiverData= "CaregiverTable";
-    public static final String patientEmotionData= "PatientEmotions";
-    public static final String appointment = "Appointment";
+    public static final String userEmotionData= "UserEmotionData";
+    public static final String userAppointment = "UserAppointment";
     public static final String eventAssessmentTable = "EventAssessmentTable";
 
     public DatabaseHelper(Context context) {
@@ -27,8 +27,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + patientData + "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text)");
         db.execSQL("CREATE TABLE " + caregiverData+ "(Name text PRIMARY KEY,Email text, Password text, Contact text, Age text,Relationship text)");
-        db.execSQL("CREATE TABLE " + patientEmotionData + "(Email text,Type text, Date text, Expression text)");
-        db.execSQL("CREATE TABLE " + appointment+ "(Email text,Type text, Remark text, AppointmentDate text, AppointmentTime text)");
+        db.execSQL("CREATE TABLE " + userEmotionData + "(Email text,Type text, Date text, Expression text)");
+        db.execSQL("CREATE TABLE " + userAppointment+ "(ID text PRIMARY KEY, Email text,Type text, Remark text, AppointmentDate text, AppointmentTime text)");
         db.execSQL("CREATE TABLE " + eventAssessmentTable+ "(Email text, q1 text, q2 text, q3 text, q4 text, q5 text, q6 text, q7 text, q8 text)");
     }
 
@@ -36,8 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + patientData);
         db.execSQL("DROP TABLE IF EXISTS " + caregiverData);
-        db.execSQL("DROP TABLE IF EXISTS " + patientEmotionData);
-        db.execSQL("DROP TABLE IF EXISTS " + appointment);
+        db.execSQL("DROP TABLE IF EXISTS " + userEmotionData);
+        db.execSQL("DROP TABLE IF EXISTS " + userAppointment);
         db.execSQL("DROP TABLE IF EXISTS " + eventAssessmentTable);
     }
 
@@ -114,7 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Age",age);
         long ins = db.insert(patientData,null, contentValues);
         //check if insert is successful
-        db.rawQuery(" SELECT name FROM "+patientData+" ORDER BY  name " + " COLLATE NOCASE; ",null);
+        db.rawQuery(" SELECT Name FROM "+patientData+" ORDER BY  name " + " COLLATE NOCASE; ",null);
         if(ins ==-1) return false;
         else return true;
 
@@ -169,31 +169,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /* For Appointment Scheduling */
-    public Boolean setAppointment(String type,String email,String date,String time, String remark){
+    public Boolean setAppointment(String id, String type,String email,String date,String time, String remark){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("ID", id);
         values.put("Email",email);
         values.put("Type",type);
         values.put("AppointmentDate",date);
         values.put("AppointmentTime",time);
         values.put("Remark",remark);
-            long ins = db.insert(appointment, null, values);
+            long ins = db.insert(userAppointment, null, values);
             if (ins == -1) return false;
             return true;
     }
 
     public Cursor getAppointment(String type, String email){
         SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + appointment +" WHERE Email=? AND Type =? " , new String[]{email, type});
+            Cursor cursor = db.rawQuery("SELECT * FROM " + userAppointment+" WHERE Email=? AND Type =? " , new String[]{email, type});
             return cursor;
-
     }
 
     public Boolean deleteAppointment(String type, String email, String date,String time,String remark){
         SQLiteDatabase db = this.getWritableDatabase();
-            long c = db.delete(appointment," Email=? AND Type =? AND AppointmentDate=? AND AppointmentTime =? AND Remark=? ",new String[]{email,type,date,time,remark});
+            long c = db.delete(userAppointment," Email=? AND Type =? AND AppointmentDate=? AND AppointmentTime =? AND Remark=? ",new String[]{email,type,date,time,remark});
             if(c==-1) return false;
             return true;
+    }
+
+    public Cursor getId(String email, String type, String date, String time, String remark){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(" SELECT ID FROM " + userAppointment +" WHERE Email =? AND Type=? AND AppointmentDate =? AND AppointmentTime =? AND Remark =? ", new String[]{email,type,date,time,remark});
+        return cursor;
+    }
+
+    public Boolean updateAppointment(String id, String email, String type, String date, String time, String remark) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("AppointmentDate", date);
+        values.put("AppointmentTime", time);
+        values.put("Remark", remark);
+        long c = db.update(userAppointment, values, " ID =? AND Email =? AND Type =? ", new String[]{id, email, type});
+        if (c == -1) return false;
+        else return true;
     }
 
     /* End */
@@ -209,7 +226,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Email",email);
         contentValues.put("Type", type);
         contentValues.put("Expression",emotion);
-        long ins = db.insert(patientEmotionData,null,contentValues);
+        long ins = db.insert(userEmotionData,null,contentValues);
         if (ins==-1) return false;
         return true;
 

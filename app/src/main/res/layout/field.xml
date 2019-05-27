@@ -6,6 +6,8 @@
     android:layout_height="100dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
+    android:paddingStart="10dp"
+    android:paddingRight="10dp"
     android:background="@drawable/border"
     android:layout_marginBottom="5dp"
     android:orientation="horizontal" >
@@ -20,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:textStyle="bold"
         android:textSize="20sp"/>
 
         <TextView
@@ -28,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center|top"
-            android:textStyle="bold"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -40,13 +40,12 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:onClick="onEdit"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/delete_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="top|end"
         android:background="@drawable/ic_trash_bin"
         android:onClick="onDelete" />

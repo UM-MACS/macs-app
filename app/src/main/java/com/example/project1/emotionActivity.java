@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -356,6 +357,7 @@ public class emotionActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String text = expression.getText().toString();
+                Log.e("tag", "text is "+text);
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
                 if (text.equals("")) {
