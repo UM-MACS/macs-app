@@ -100,7 +100,11 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 //check if fields are empty
                 if (s1.equals("") || s2.equals("") || s3.equals("") || s5.equals("") || s6.equals("") || s7.equals("")) {
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else if (Integer.parseInt(s7)>120){
+                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     if (s2.equals(s3)) { //check if password matches
                         Boolean checkMail = db.checkMail(s1);
                         Boolean checkMail2 = db.checkMail2(s1);

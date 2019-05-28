@@ -112,7 +112,12 @@ public class viewEventActivity extends AppCompatActivity {
                 arrayList.add(cursor.getString(4)); //date
                 arrayList2.add(cursor.getString(3)); //remark
                 arrayList3.add(cursor.getString(5)); //time
-                arrayList4.add(cursor.getString(0));
+            }
+        }
+        Cursor cursor2 = db.getLatest();
+        if(cursor2.getCount()!=0){
+            while(cursor2.moveToNext()){
+                arrayList4.add(cursor2.getString(0));
             }
             id = Integer.parseInt(arrayList4.get(arrayList4.size()-1));
         }
@@ -435,6 +440,8 @@ public class viewEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pw.dismiss();
                 frameLayout.getForeground().setAlpha(0);
+                Intent i = new Intent(viewEventActivity.this,viewEventActivity.class);
+                startActivity(i);
             }
         });
 
@@ -571,6 +578,8 @@ public class viewEventActivity extends AppCompatActivity {
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
                     Log.e("tag", "done setting");
                 }
+                Intent i = new Intent(viewEventActivity.this,viewEventActivity.class);
+                startActivity(i);
             }
         });
         pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

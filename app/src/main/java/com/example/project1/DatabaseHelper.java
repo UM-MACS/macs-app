@@ -220,6 +220,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return cursor;
     }
 
+    public Cursor getLatest(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(" SELECT ID FROM "+ userAppointment + " ORDER BY ID" , null);
+        return cursor;
+    }
+
     public Boolean deleteAppointment(String type, String email, String date,String time,String remark){
         SQLiteDatabase db = this.getWritableDatabase();
             long c = db.delete(userAppointment," Email=? AND Type =? AND AppointmentDate=? AND AppointmentTime =? AND Remark=? ",new String[]{email,type,date,time,remark});
