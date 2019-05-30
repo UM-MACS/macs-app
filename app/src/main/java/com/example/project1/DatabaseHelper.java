@@ -222,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getLatest(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(" SELECT ID FROM "+ userAppointment + " ORDER BY ID" , null);
+        Cursor cursor = db.rawQuery(" SELECT ID FROM "+ userAppointment , null);
         return cursor;
     }
 
@@ -419,30 +419,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //            return cursor;
 //        }
 //
-//    }
-//
-//    public Cursor getAngryCounter(String type,String email,String date){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        if(type.equals("Patient")){
-//            Cursor cursor = db.rawQuery("SELECT Angry FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
-//            return cursor;
-//        }
-//        else{
-//            Cursor cursor = db.rawQuery("SELECT Angry FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
-//            return cursor;
-//        }
-//    }
-//
-//    public Cursor getSadCounter(String type,String email,String date){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        if(type.equals("Patient")){
-//            Cursor cursor = db.rawQuery("SELECT Sad FROM " + patientEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
-//            return cursor;
-//        }
-//        else{
-//            Cursor cursor = db.rawQuery("SELECT Sad FROM " + caregiverEmotionData +" WHERE Email=? AND Date =? " , new String[]{email, date});
-//            return cursor;
-//        }
 //    }
 //
 //    public Boolean setExpressionText(String type, String email, String date, String text){

@@ -115,11 +115,18 @@ public class viewEventActivity extends AppCompatActivity {
             }
         }
         Cursor cursor2 = db.getLatest();
-        if(cursor2.getCount()!=0){
-            while(cursor2.moveToNext()){
+        int max =0;
+        if(cursor2.getCount()!=0) {
+            while (cursor2.moveToNext()) {
                 arrayList4.add(cursor2.getString(0));
             }
-            id = Integer.parseInt(arrayList4.get(arrayList4.size()-1));
+            for (int i = 0; i < arrayList4.size(); i++) {
+                if (Integer.parseInt(arrayList4.get(i)) > max) {
+                    max = Integer.parseInt(arrayList4.get(i));
+                }
+                id = max;
+                Log.e("tag", "max id" + id);
+            }
         }
         else {
             id = 1;
