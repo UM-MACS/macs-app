@@ -212,7 +212,6 @@ public class LoginActivity extends AppCompatActivity {
                     requestQueue.add(stringRequest);
 
                     User.getInstance().setEmail(email);
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
                 getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
