@@ -64,7 +64,8 @@ public class emotionActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         //Bottom Navigation Bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView =
+                (BottomNavigationView) findViewById(R.id.navigation);
         MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_tracking);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,15 +73,18 @@ public class emotionActivity extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(emotionActivity.this, emotionActivity.class);
+                        Intent i2 = new Intent(emotionActivity.this,
+                                emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(emotionActivity.this, viewEventActivity.class);
+                        Intent i3 = new Intent(emotionActivity.this,
+                                viewEventActivity.class);
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(emotionActivity.this, eventAssessment.class);
+                        Intent i4 = new Intent(emotionActivity.this,
+                                eventAssessment.class);
                         startActivity(i4);
                         break;
                     case R.id.navigation_faq:
@@ -112,7 +116,8 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Very Happy(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Very Happy(def)");
             }
         });
 
@@ -121,7 +126,8 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Happy(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Happy(def)");
             }
         });
 
@@ -130,7 +136,8 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Smiling(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Smiling(def)");
             }
         });
 
@@ -139,7 +146,8 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Unhappy(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Unhappy(def)");
             }
         });
 
@@ -148,7 +156,8 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Angry(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Angry(def)");
             }
         });
 
@@ -157,10 +166,12 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, "Sad(def)");
+                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        "Sad(def)");
             }
         });
 
+        //submit input in text box
         expression.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,17 +189,22 @@ public class emotionActivity extends AppCompatActivity{
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
                 if (text.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Error! Please Enter something in the text box! ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Error! Please Enter something in the text box! ",
+                            Toast.LENGTH_LONG).show();
                 } else {
-                    insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date, replacedText);
+                    insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                            replacedText);
                 }
             }
         });
     }
 
-    private void insert(final String email, final String type, final String date, final String expressionInput) {
+    private void insert(final String email, final String type, final String date,
+                        final String expressionInput) {
         Log.e("TAG", "expression input: "+expressionInput );
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 JSONObject jsonObject = null;
@@ -197,13 +213,17 @@ public class emotionActivity extends AppCompatActivity{
                     String success = jsonObject.getString("success");
                 if(success.equals("1")){
                     //Create pop up window
-                    LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater inflater1 =
+                            (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View view = inflater1.inflate(R.layout.pop_up_message, null);
                     // create a focusable PopupWindow with the given layout and correct size
-                    final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    final PopupWindow pw = new PopupWindow(view,
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT, true);
                     //dim background
                     frameLayout.getForeground().setAlpha(220);
-                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener(new View.OnClickListener() {
+                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener
+                            (new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             pw.dismiss();
@@ -226,18 +246,21 @@ public class emotionActivity extends AppCompatActivity{
                     pw.showAtLocation(view, Gravity.CENTER, 0, 0);
                 }
                 else if(success.equals("0")){
-                    Toast.makeText(getApplicationContext(),"Fail to submit",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Fail to submit",
+                            Toast.LENGTH_SHORT).show();
                     expression.setText("");
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
+                            Toast.LENGTH_SHORT).show();
                 }
         }},
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
+                                Toast.LENGTH_SHORT).show();
                     }
                 })
         {

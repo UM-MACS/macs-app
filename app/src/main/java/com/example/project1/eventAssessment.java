@@ -17,6 +17,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class eventAssessment extends AppCompatActivity {
     DatabaseHelper db;
     Button b1;
@@ -35,6 +49,7 @@ public class eventAssessment extends AppCompatActivity {
     RadioButton radioButton5;
     RadioButton radioButton6;
     RadioButton radioButton7;
+    private static String URL = "http://192.168.0.187/jee/eAssessment.php";
 
     TextView textView;
     EditText editText;
@@ -143,7 +158,8 @@ public class eventAssessment extends AppCompatActivity {
 
 
 
-                    Boolean ins = db.insertEventAssessment(User.getInstance().getEmail(), text, text2, text3, text4, text5, text6, text7, text8);
+//                    Boolean ins = db.insertEventAssessment(User.getInstance().getEmail(), text, text2, text3, text4, text5, text6, text7, text8);
+                    insertAssessment(User.getInstance().getEmail(),User.getInstance().getUserType(), text, text2, text3, text4, text5, text6, text7, text8);
                     editText.setText("");
                     radio1.clearCheck();
                     radio2.clearCheck();
@@ -153,16 +169,65 @@ public class eventAssessment extends AppCompatActivity {
                     radio6.clearCheck();
                     radio7.clearCheck();
 
-                    if (ins) {
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                    }
-                    Log.e("tag", "" + radioButton1.getText());
+//                    if (ins) {
+//                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+//                    }
+//                    Log.e("tag", "" + radioButton1.getText());
                 }
 
             }
         });
 
 
+    }
+
+    private void insertAssessment(final String email, final String type, final String text, final String text2, final String text3, final String text4, final String text5, final String text6, final String text7, final String text8) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+                    Log.e("TAG", "success"+success );
+                    if(success.equals("1")){
+                        Toast.makeText(getApplicationContext(),"Your Feedback is Recorded", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if(success.equals("0")){
+                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email",email);
+                params.put("type",type);
+                params.put("q1",text);
+                params.put("q2",text2);
+                params.put("q3",text3);
+                params.put("q4",text4);
+                params.put("q5",text5);
+                params.put("q6",text6);
+                params.put("q7",text7);
+                params.put("q8",text8);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 
     @Override

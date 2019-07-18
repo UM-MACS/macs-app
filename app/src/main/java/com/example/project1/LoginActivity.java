@@ -92,9 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
                                         String success = jsonObject.getString("success");
-                                        String message = jsonObject.getString("message");
                                         Log.e("tag", "success: " + success);
-                                        Log.e("tag", "message: " + message);
                                         if (success.equals("-1")) {
                                             Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
                                             progressBar.setVisibility(View.GONE);
