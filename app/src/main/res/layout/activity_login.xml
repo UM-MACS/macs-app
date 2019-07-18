@@ -103,6 +103,12 @@
                 android:text="@string/login"
                 android:textColor="@color/white"/>
 
+            <ProgressBar
+                android:id="@+id/login_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
         <TextView

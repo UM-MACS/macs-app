@@ -109,6 +109,12 @@
                     android:text="@string/register"
                     android:textColor="@color/white" />
 
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
             <TextView

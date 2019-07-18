@@ -6,14 +6,31 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     DatabaseHelper db;
@@ -21,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     Button b1,b2;
     TextView t1;
     private TextView mTextMessage;
-//    Patient patient;
+    private ProgressBar progressBar;
+    private static String URL_LOGIN = "http://192.168.0.187/jee/login.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         //finish
 
         db = new DatabaseHelper(this);
+        progressBar = (ProgressBar) findViewById(R.id.login_loading);
         e1 = (EditText)findViewById(R.id.login_email);
         e2 = (EditText)findViewById(R.id.login_password);
         b1 = (Button)findViewById(R.id.login_button);
@@ -59,31 +78,80 @@ public class LoginActivity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = e1.getText().toString();
-                String password = e2.getText().toString();
-                Boolean checkEmail = db.verifyAccount(email,password);
-                Boolean checkEmail2 = db.verifyAccount2(email,password);
+                final String email = e1.getText().toString().trim();
+                final String password = e2.getText().toString().trim();
                 if (User.getInstance().getUserType().equals("Patient")) {
-                    if (checkEmail) {
-                        User.getInstance().setEmail(email);
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                        Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                        startActivity(myIntent);
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
-                    }
+                    /* mysql */
+                    progressBar.setVisibility(View.VISIBLE);
+                    b1.setVisibility(View.GONE);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String success = jsonObject.getString("success");
+                                        String message = jsonObject.getString("message");
+                                        Log.e("tag", "success: " + success);
+                                        Log.e("tag", "message: " + message);
+                                        if (success.equals("-1")) {
+                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else if (success.equals("1")) {
+                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                String jname = jsonObject1.getString("name").trim();
+                                                String jemail = jsonObject1.getString("email").trim();
+                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                startActivity(myIntent);
+                                            }
+                                        } else if (success.equals("0")) {
+                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("email", email);
+                            params.put("password", password);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
+
+                    User.getInstance().setEmail(email);
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
+
                 else if (User.getInstance().getUserType().equals("Caregiver")) {
-                    if (checkEmail2) {
                         User.getInstance().setEmail(email);
                         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                         startActivity(myIntent);
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Wrong Email or Password", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
