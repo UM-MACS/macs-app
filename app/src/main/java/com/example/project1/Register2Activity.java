@@ -14,13 +14,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Register2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private ProgressBar loading;
+    private static String URL_REGIST ="http://192.168.0.187/jee/register2.php";
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
     private Button b1,b2;
@@ -52,6 +68,7 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         //finish
 
         db = new DatabaseHelper(this);
+        loading = (ProgressBar)findViewById(R.id.register2_loading);
         e1 = (EditText)findViewById(R.id.email);
         e2 = (EditText)findViewById(R.id.confirm_password);
         e3 = (EditText)findViewById(R.id.confirm_password2);
@@ -60,15 +77,15 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         e7 = (EditText)findViewById(R.id.editText4); //age
         b1 = (Button)findViewById(R.id.register);
         b2 = (Button)findViewById(R.id.login);
-//        patient = new Patient();
-
-        //choose user type
+        //select relationship
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
-        ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.relationship, android.R.layout.simple_spinner_item
+        ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.relationship, android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
+
 
         //click on login button
         b2.setOnClickListener(new View.OnClickListener() {
@@ -83,53 +100,97 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         b1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-//                        Patient.getInstance().setPatientEmail(e1.getText().toString());
-//                        Patient.getInstance().setPatientName(e5.getText().toString());
-//                        Patient.getInstance().setPatientPassword(e2.getText().toString());
-//                        Patient.getInstance().setPatientContact(e6.getText().toString());
-//                        Patient.getInstance().setPatientage(e7.getText().toString());
-                String s1 = e1.getText().toString(); //email
-                String s2 = e2.getText().toString(); //pw
+                loading.setVisibility(View.VISIBLE);
+                b1.setVisibility(View.GONE);
+                final String s1 = e1.getText().toString().trim(); //email
+                final String s2 = e2.getText().toString().trim(); //pw
                 String s3 = e3.getText().toString(); //confirm pw
-                String s5 = e5.getText().toString(); //name
-                String s6 = e6.getText().toString(); //contact no
-                String s7 = e7.getText().toString(); //age
-                String s4 = spinner.getSelectedItem().toString(); //relationship with patient
+                final String s4 = spinner.getSelectedItem().toString(); //relationship
+                final String s5 = e5.getText().toString().trim(); //name
+                final String s6 = e6.getText().toString(); //contact no
+                final String s7 = e7.getText().toString(); //age
 
 
                 //check if fields are empty
                 if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals("Please Select One") || s5.equals("") || s6.equals("") || s7.equals("")) {
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
                 }
                 else if (Integer.parseInt(s7)>120){
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
                 }
                 else {
                     if (s2.equals(s3)) { //check if password matches
-//                        Boolean checkMail = db.checkMail(s1);
-                        Boolean checkMail2 = db.checkMail2(s1);
-                            User.getInstance().setEmail(s1); //email
-                            User.getInstance().setPassword(s2); //pw
-                            User.getInstance().setUserName(s5);
-                            User.getInstance().setContact(s6);
-                            User.getInstance().setAge(s7);
-                            Caregiver.getInstance().setRelation(s4);
-                            Log.e("Tag", "hello");
-                                if (checkMail2 == true) {
-                                Boolean insert2 = db.insertCaregiverTable(s1, s5, s2, s6, s7,s4);
-                                if (insert2 == true) {
-                                    Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Register2Activity.this, LoginActivity.class);
-                                    startActivity(intent);
+                        /* mysql posting */
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String success = jsonObject.getString("success");
+                                    Log.e("TAG", "success"+success );
+                                    if(success.equals("1")){
+                                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(Register2Activity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    else if(success.equals("0")){
+                                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                                        loading.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                    else if(success.equals("-1")){
+                                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+                                        loading.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                } catch (JSONException e){
+                                    e.printStackTrace();
+                                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                                    loading.setVisibility(View.GONE);
+                                    b1.setVisibility(View.VISIBLE);
                                 }
                             }
+                        },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                                        loading.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                })
+                        {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("name",s5);
+                                params.put("email",s1);
+                                params.put("password",s2);
+                                params.put("contact",s6);
+                                params.put("age",s7);
+                                params.put("relationship",s4);
+                                return params;
+                            }
+                        };
 
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
 
-                         else {
-                            Toast.makeText(getApplicationContext(), "Email is Used, Please Re-enter", Toast.LENGTH_SHORT).show();
-                        }
+                        /* set user instance */
+                        User.getInstance().setEmail(s1); //email
+                        User.getInstance().setPassword(s2); //pw
+                        User.getInstance().setUserName(s5);
+                        User.getInstance().setContact(s6);
+                        User.getInstance().setAge(s7);
+                        Log.e("Tag", "hello");
                     } else {
                         Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
                     }
                 }
             }

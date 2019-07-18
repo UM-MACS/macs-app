@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private ProgressBar progressBar;
     private static String URL_LOGIN = "http://192.168.0.187/jee/login.php";
+    private static String URL_LOGIN2 = "http://192.168.0.187/jee/login2.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,10 +149,70 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 else if (User.getInstance().getUserType().equals("Caregiver")) {
-                        User.getInstance().setEmail(email);
-                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                        Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                        startActivity(myIntent);
+                    /* mysql */
+                    progressBar.setVisibility(View.VISIBLE);
+                    b1.setVisibility(View.GONE);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN2,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String success = jsonObject.getString("success");
+                                        String message = jsonObject.getString("message");
+                                        Log.e("tag", "success: " + success);
+                                        Log.e("tag", "message: " + message);
+                                        if (success.equals("-1")) {
+                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else if (success.equals("1")) {
+                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                String jname = jsonObject1.getString("name").trim();
+                                                String jemail = jsonObject1.getString("email").trim();
+                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                startActivity(myIntent);
+                                            }
+                                        } else if (success.equals("0")) {
+                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("email", email);
+                            params.put("password", password);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
+
+                    User.getInstance().setEmail(email);
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
                 getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
