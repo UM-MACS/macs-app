@@ -41,11 +41,13 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private static String URL_LOGIN = "http://192.168.0.187/jee/login.php";
     private static String URL_LOGIN2 = "http://192.168.0.187/jee/login2.php";
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sessionManager = new SessionManager(this);
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
@@ -104,9 +106,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 String jname = jsonObject1.getString("name").trim();
                                                 String jemail = jsonObject1.getString("email").trim();
                                                 Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                                                startActivity(myIntent);
+                                                sessionManager.createSession(jname, jemail, null);
                                             }
+                                            Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                            startActivity(myIntent);
                                         } else if (success.equals("0")) {
                                             Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                             progressBar.setVisibility(View.GONE);
@@ -171,9 +174,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 String jname = jsonObject1.getString("name").trim();
                                                 String jemail = jsonObject1.getString("email").trim();
                                                 Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                                                startActivity(myIntent);
+                                                sessionManager.createSession(jname, jemail, null);
                                             }
+                                            Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                            startActivity(myIntent);
                                         } else if (success.equals("0")) {
                                             Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                             progressBar.setVisibility(View.GONE);

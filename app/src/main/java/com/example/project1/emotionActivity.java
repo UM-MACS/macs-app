@@ -3,6 +3,7 @@ package com.example.project1;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.media.session.MediaSessionManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -50,14 +51,24 @@ public class emotionActivity extends AppCompatActivity{
     FrameLayout frameLayout;
     private static String URL ="http://192.168.0.187/jee/emotion.php";
     Date currentTime;
-//    ContentValues values;
     private TextView mTextMessage;
-//    Patient patient;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
+
+        sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
+
+        HashMap<String,String> user = sessionManager.getUserDetail();
+        String mName = user.get(sessionManager.NAME);
+        String mEmail = user.get(sessionManager.EMAIL);
+        Log.e("TAG", "shared preference name is "+mName );
+//        User.getInstance().setUserName(mName);
+//        User.getInstance().setEmail(mEmail);
+
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -305,11 +316,13 @@ public class emotionActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(emotionActivity.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
             User.getInstance().setPassword("");
+            finish();
             return true;
         }
 
