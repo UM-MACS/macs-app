@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 String jname = jsonObject1.getString("name").trim();
                                                 String jemail = jsonObject1.getString("email").trim();
                                                 Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                sessionManager.createSession(jname, jemail, null);
+                                                sessionManager.createSession(jname, jemail, "Patient");
                                             }
                                             Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                                             startActivity(myIntent);
@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 String jname = jsonObject1.getString("name").trim();
                                                 String jemail = jsonObject1.getString("email").trim();
                                                 Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                sessionManager.createSession(jname, jemail, null);
+                                                sessionManager.createSession(jname, jemail, "Caregiver");
                                             }
                                             Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                                             startActivity(myIntent);

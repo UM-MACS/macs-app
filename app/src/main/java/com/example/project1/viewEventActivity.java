@@ -77,6 +77,7 @@ public class viewEventActivity extends AppCompatActivity {
     private static String URL2 = "http://192.168.0.187/jee/setappointment.php";
     private static String URL3 = "http://192.168.0.187/jee/delappointment.php";
     private static String URL4 = "http://192.168.0.187/jee/updateapp.php";
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,7 @@ public class viewEventActivity extends AppCompatActivity {
         frameLayout.getForeground().setAlpha(0);
         datePickerLayout = (LinearLayout) findViewById(R.id.container_date_picker);
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
+        sessionManager = new SessionManager(this);
 //        db = new DatabaseHelper(this);
 //        ArrayList<String> arrayList = new ArrayList<>();
 //        ArrayList<String> arrayList2 = new ArrayList<>();
@@ -852,6 +854,7 @@ public class viewEventActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(viewEventActivity.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");

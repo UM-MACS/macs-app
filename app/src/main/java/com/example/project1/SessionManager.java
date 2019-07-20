@@ -17,7 +17,7 @@ public class SessionManager {
     private static final String LOGIN = "IS_LOGIN";
     public static final String NAME = "NAME";
     public static final String EMAIL = "EMAIL";
-    public static final String ID = "ID";
+    public static final String TYPE = "TYPE";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -25,17 +25,18 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void createSession(String name, String email, String id){
+    public void createSession(String name, String email, String type){
 
         editor.putBoolean(LOGIN, true);
         editor.putString(NAME, name);
         editor.putString(EMAIL, email);
-        editor.putString(ID, id);
+        editor.putString(TYPE, type);
         editor.apply();
 
     }
 
     public boolean isLogin(){
+
         return sharedPreferences.getBoolean(LOGIN, false);
     }
 
@@ -52,19 +53,14 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<>();
         user.put(NAME, sharedPreferences.getString(NAME, null));
         user.put(EMAIL, sharedPreferences.getString(EMAIL, null));
-        user.put(ID, sharedPreferences.getString(ID, null));
+        user.put(TYPE, sharedPreferences.getString(TYPE, null));
 
         return user;
     }
 
     public void logout(){
-
         editor.clear();
         editor.commit();
-        Intent i = new Intent(context, LoginActivity.class);
-        context.startActivity(i);
-        ((emotionActivity) context).finish();
-
     }
 
 }

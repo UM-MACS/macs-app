@@ -14,11 +14,14 @@ import android.widget.TextView;
 
 public class GalleryActivity extends AppCompatActivity {
     private static final String TAG = "GalleryActivity";
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        sessionManager = new SessionManager(this);
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -95,6 +98,7 @@ public class GalleryActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(GalleryActivity.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");

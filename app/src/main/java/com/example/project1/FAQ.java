@@ -22,6 +22,7 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class FAQ extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private SessionManager sessionManager;
 
 
     //vars
@@ -32,6 +33,8 @@ public class FAQ extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
+
+        sessionManager = new SessionManager(this);
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -129,6 +132,7 @@ public class FAQ extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(FAQ.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");

@@ -322,7 +322,7 @@ public class emotionActivity extends AppCompatActivity{
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
             User.getInstance().setPassword("");
-            finish();
+//            finish();
             return true;
         }
 

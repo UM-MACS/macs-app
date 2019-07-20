@@ -50,6 +50,7 @@ public class eventAssessment extends AppCompatActivity {
     RadioButton radioButton6;
     RadioButton radioButton7;
     private static String URL = "http://192.168.0.187/jee/eAssessment.php";
+    private SessionManager sessionManager;
 
     TextView textView;
     EditText editText;
@@ -93,6 +94,7 @@ public class eventAssessment extends AppCompatActivity {
         });
         //finish
 
+        sessionManager = new SessionManager(this);
         db = new DatabaseHelper(this);
         b1 = (Button)findViewById(R.id.button_submit_assessment);
         radio1 = (RadioGroup) findViewById(R.id.radioGroup);
@@ -246,6 +248,7 @@ public class eventAssessment extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(eventAssessment.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");
