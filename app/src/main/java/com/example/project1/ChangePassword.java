@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,15 +15,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChangePassword extends AppCompatActivity {
 private EditText o1,c1,c2;
 private Button button;
 private String t1, t2, t3,pw1;
 private DatabaseHelper db;
+private static String URL = "http://192.168.0.187/jee/changePassword.php";
+SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        sessionManager = new SessionManager(this);
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -56,7 +76,7 @@ private DatabaseHelper db;
             }
         });
 
-        db = new DatabaseHelper(this);
+//        db = new DatabaseHelper(this);
         o1 = (EditText)findViewById(R.id.old_pw);
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);
@@ -64,60 +84,58 @@ private DatabaseHelper db;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                t1 = o1.getText().toString();
-                t2 = c1.getText().toString();
+                Log.e("TAG", "type: "+User.getInstance().getUserType() );
+                t1 = o1.getText().toString(); //old pw
+                t2 = c1.getText().toString(); //new pw
                 t3 = c2.getText().toString();
-                if(t2.equals(t3)){
-                    if(User.getInstance().getUserType().equals("Patient")) {
-                        Cursor cursor = db.checkOldPasswordP(User.getInstance().getEmail());
-                        if (cursor.getCount() != 0) {
-                            while (cursor.moveToNext()) {
-                                pw1 = cursor.getString(0);
+                if (t2.equals(t3)) {
+                        StringRequest stringRequest = new StringRequest(
+                                Request.Method.POST, URL,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            String success = jsonObject.getString("success");
+                                            if (success.equals("1")) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "Update is Successful!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else if (success.equals("0")) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "Error, Please Try Again Later!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else if (success.equals("-1")) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "Old Password is wrong",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(),
+                                                "Error, Please Try Again Later!",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("email", User.getInstance().getEmail());
+                                params.put("type", User.getInstance().getUserType());
+                                params.put("password", t1);
+                                params.put("newPass", t2);
+                                return params;
                             }
-                        }
-                        if (t1.equals(pw1)) {
-                            Boolean ins = db.updatePasswordP(User.getInstance().getEmail(), t2);
-                            if (ins) {
-                                Toast.makeText(getApplicationContext(), "Password is Successfully Changed!", Toast.LENGTH_LONG).show();
-                                o1.setText("");
-                                c1.setText("");
-                                c2.setText("");
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error! Please Try Again Later", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Old Password is not correct!", Toast.LENGTH_LONG).show();
-                            o1.setText("");
-                            c1.setText("");
-                            c2.setText("");
-                        }
-
+                        };
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
                     }
-                    else{
-                        Cursor cursor = db.checkOldPasswordC(User.getInstance().getEmail());
-                        if (cursor.getCount() != 0) {
-                            while (cursor.moveToNext()) {
-                                pw1 = cursor.getString(0);
-                            }
-                        }
-                        if (t1.equals(pw1)) {
-                            Boolean ins = db.updatePasswordC(User.getInstance().getEmail(), t2);
-                            if (ins) {
-                                Toast.makeText(getApplicationContext(), "Password is Successfully Changed!", Toast.LENGTH_LONG).show();
-                                o1.setText("");
-                                c1.setText("");
-                                c2.setText("");
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error! Please Try Again Later", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Old Password is not correct!", Toast.LENGTH_LONG).show();
-                            o1.setText("");
-                            c1.setText("");
-                            c2.setText("");
-                        }
-                    }
-                }
                 else {
                     Toast.makeText(getApplicationContext(),"New Passwords are not same!",Toast.LENGTH_LONG).show();
                     c1.setText("");
@@ -142,6 +160,7 @@ private DatabaseHelper db;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            sessionManager.logout();
             Intent intent = new Intent(ChangePassword.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");

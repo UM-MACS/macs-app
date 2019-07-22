@@ -159,8 +159,6 @@ public class eventAssessment extends AppCompatActivity {
                 //edit text
 
 
-
-//                    Boolean ins = db.insertEventAssessment(User.getInstance().getEmail(), text, text2, text3, text4, text5, text6, text7, text8);
                     insertAssessment(User.getInstance().getEmail(),User.getInstance().getUserType(), text, text2, text3, text4, text5, text6, text7, text8);
                     editText.setText("");
                     radio1.clearCheck();
@@ -170,11 +168,6 @@ public class eventAssessment extends AppCompatActivity {
                     radio5.clearCheck();
                     radio6.clearCheck();
                     radio7.clearCheck();
-
-//                    if (ins) {
-//                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-//                    }
-//                    Log.e("tag", "" + radioButton1.getText());
                 }
 
             }

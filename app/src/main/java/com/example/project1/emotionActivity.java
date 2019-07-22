@@ -66,8 +66,6 @@ public class emotionActivity extends AppCompatActivity{
         String mName = user.get(sessionManager.NAME);
         String mEmail = user.get(sessionManager.EMAIL);
         Log.e("TAG", "shared preference name is "+mName );
-//        User.getInstance().setUserName(mName);
-//        User.getInstance().setEmail(mEmail);
 
 
         //drawer

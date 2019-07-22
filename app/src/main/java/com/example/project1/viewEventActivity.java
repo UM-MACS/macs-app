@@ -122,36 +122,6 @@ public class viewEventActivity extends AppCompatActivity {
         datePickerLayout = (LinearLayout) findViewById(R.id.container_date_picker);
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         sessionManager = new SessionManager(this);
-//        db = new DatabaseHelper(this);
-//        ArrayList<String> arrayList = new ArrayList<>();
-//        ArrayList<String> arrayList2 = new ArrayList<>();
-//        ArrayList<String> arrayList3 = new ArrayList<>();
-//        ArrayList<String> arrayList4 = new ArrayList<>();
-//        Cursor cursor = db.getAppointment(User.getInstance().getUserType(), User.getInstance().getEmail());
-//        if (cursor.getCount() != 0) {
-//            while (cursor.moveToNext()) {
-//                arrayList.add(cursor.getString(4)); //date
-//                arrayList2.add(cursor.getString(3)); //remark
-//                arrayList3.add(cursor.getString(5)); //time
-//            }
-//        }
-//        Cursor cursor2 = db.getLatest();
-//        int max =0;
-//        if(cursor2.getCount()!=0) {
-//            while (cursor2.moveToNext()) {
-//                arrayList4.add(cursor2.getString(0));
-//            }
-//            for (int i = 0; i < arrayList4.size(); i++) {
-//                if (Integer.parseInt(arrayList4.get(i)) > max) {
-//                    max = Integer.parseInt(arrayList4.get(i));
-//                }
-//                id = max;
-//                Log.e("tag", "max id" + id);
-//            }
-//        }
-//        else {
-//            id = 1;
-//        }
         getAppointmentData(User.getInstance().getEmail());
 
 
@@ -360,17 +330,7 @@ public class viewEventActivity extends AppCompatActivity {
                     //get date
                     Log.e("tag", "time selected is " + timeSelected);
                     Date c = Calendar.getInstance().getTime();
-//                    SimpleDateFormat df = new SimpleDateFormat("yyyy");
-//                    SimpleDateFormat df2 = new SimpleDateFormat("MM");
-//                    SimpleDateFormat df3 = new SimpleDateFormat("dd");
-//                    SimpleDateFormat df4 = new SimpleDateFormat("mm");
-//                    SimpleDateFormat df5 = new SimpleDateFormat("HH");
                     SimpleDateFormat df6 = new SimpleDateFormat("yyyyMMddHHmm");
-//                    int year = Integer.parseInt(df.format(c));
-//                    int month = (Integer.parseInt(df2.format(c))) - 1;
-//                    int day = Integer.parseInt(df3.format(c));
-//                    int minute = Integer.parseInt(df4.format(c));
-//                    int hour = Integer.parseInt(df5.format(c));
                     long s1, s2;
                     s2 = Long.parseLong(df6.format(c));
                     Log.e("tag", "s2 is " + s2);
@@ -392,18 +352,7 @@ public class viewEventActivity extends AppCompatActivity {
                         appointmentTimeText.setText(timeSelected);
                         User.getInstance().setAppointment(dateSelected);
                         Log.e("tag", "date selected is " + dateSelected);
-//                        boolean set = db.setAppointment("" + (id + 1), User.getInstance().getUserType(), User.getInstance().getEmail(), User.getInstance().getAppointment(), timeSelected, remarkText);
-//                        if (set) {
-//                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-//                        }
                         setAppointment(User.getInstance().getEmail(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
-//                        cal.set(yy, (MM - 1), dd, hour, (minute + 1), 0);
-//                        Log.e("tag", "" + yy + MM + dd + hour + minute);
-//                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
-//                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
-//                        Log.e("tag", "done setting");
                     }
                 }
             }
@@ -620,31 +569,7 @@ public class viewEventActivity extends AppCompatActivity {
                 remarkTextView.setCursorVisible(true);
             }
         });
-//        Cursor cursor = db.getId(User.getInstance().getEmail(),User.getInstance().getUserType(),text,text3,text2);
-//        if (cursor.getCount() != 0) {
-//            while (cursor.moveToNext()) {
-//                Log.e("tag", ""+cursor.getString(0));
-//                ID = cursor.getString(0);
-//            }
-//        }
 
-
-//        //alarmService
-//        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        final String action = "ConnectivityManager.CONNECTIVITY_ACTION";
-//        IntentFilter intentFilter = new IntentFilter(action);
-//        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//        AlarmReceiver mReceiver = new AlarmReceiver();
-//        getApplicationContext().registerReceiver(mReceiver,intentFilter);
-//        Intent i2 = new Intent(action);
-//        final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,i2,0);
-//        //Notification for api less than 26
-//        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-//        notificationIntent.addCategory("android.intent.category.DEFAULT");
-//        final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        cal = Calendar.getInstance();
-//        db = new DatabaseHelper(this);
-        //Create pop up window
         LayoutInflater inflater1 = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View view = inflater1.inflate(R.layout.activity_schedule,null);
         final PopupWindow pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -796,15 +721,7 @@ public class viewEventActivity extends AppCompatActivity {
                     if(timeSelected==null){
                         timeSelected = "";
                     }
-
-//                    boolean set = db.updateAppointment(ID,User.getInstance().getEmail(),User.getInstance().getUserType(),dateSelected,timeSelected,remarkText);
-//                    boolean set = db.setAppointment(User.getInstance().getUserType(), User.getInstance().getEmail(), User.getInstance().getAppointment(),timeSelected, remarkText);
-//                    boolean set2 = db.deleteAppointment(User.getInstance().getUserType(),User.getInstance().getEmail(),text,text3,text2);
-//                    if (set) {
-//                        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-//                    }
+                    
                     Log.e("tag", "remark is"+text2+"date: "+text+"time: "+text3+
                             "remarktext"+remarkText +"dateSelected: "+dateSelected +
                             "timeselected: "+ timeSelected);
@@ -812,11 +729,6 @@ public class viewEventActivity extends AppCompatActivity {
                             remarkText,dateSelected,timeSelected);
 
                     setReminder(dateSelected,timeSelected);
-//                    cal.set(yy,(MM-1),dd,hour,(minute+1),0);
-//                    Log.e("tag", "" + yy+MM+dd+hour+minute);
-//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
-//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
-//                    Log.e("tag", "done setting");
                 }
                 Intent i = new Intent(viewEventActivity.this,viewEventActivity.class);
                 startActivity(i);
