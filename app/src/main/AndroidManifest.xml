@@ -12,8 +12,11 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChangePassword"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CreatePostActivity"></activity>
+        <activity android:name=".ForumActivity" />
+        <activity
+            android:name=".ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GalleryActivity"
             android:label="Answer"
