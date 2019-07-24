@@ -25,4 +25,10 @@
         android:icon="@drawable/ic_faq"
         android:title=""/>
 
+    <item
+        android:id="@+id/navigation_forum"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_button"
+        android:title=""/>
+
 </menu>

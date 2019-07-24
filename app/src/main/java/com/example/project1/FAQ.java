@@ -64,6 +64,10 @@ public class FAQ extends AppCompatActivity {
                         Intent i5 = new Intent(FAQ.this,FAQ.class);
                         startActivity(i5);
                         break;
+                    case R.id.navigation_forum:
+                        Intent i6 = new Intent(FAQ.this, ForumActivity.class);
+                        startActivity(i6);
+                        break;
                 }
                 return true;
             }
@@ -137,7 +141,7 @@ public class FAQ extends AppCompatActivity {
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
-            User.getInstance().setPassword("");
+            User.getInstance().setUserType("");
             return true;
         }
 

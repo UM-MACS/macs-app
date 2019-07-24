@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
     LinearLayout l1,l2,l3;
     private TextView mTextMessage;
@@ -29,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
         boolean login = sessionManager.isLogin();
         Log.e("TAG", "is login"+ login );
         if(login){
+            HashMap<String,String> user = sessionManager.getUserDetail();
+            String mName = user.get(sessionManager.NAME);
+            String mEmail = user.get(sessionManager.EMAIL);
+            String mType = user.get(sessionManager.TYPE);
+            Log.e("TAG", "shared preference name is "+mName );
+            User.getInstance().setEmail(mEmail);
+            User.getInstance().setUserName(mName);
+            User.getInstance().setUserType(mType);
             Intent myIntent = new Intent(MainActivity.this, emotionActivity.class);
             startActivity(myIntent);
         }

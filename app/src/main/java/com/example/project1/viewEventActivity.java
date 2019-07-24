@@ -111,6 +111,10 @@ public class viewEventActivity extends AppCompatActivity {
                         Intent i5 = new Intent(viewEventActivity.this, FAQ.class);
                         startActivity(i5);
                         break;
+                    case R.id.navigation_forum:
+                        Intent i6 = new Intent(viewEventActivity.this, ForumActivity.class);
+                        startActivity(i6);
+                        break;
                 }
                 return true;
             }
@@ -721,7 +725,8 @@ public class viewEventActivity extends AppCompatActivity {
                     if(timeSelected==null){
                         timeSelected = "";
                     }
-                    
+
+
                     Log.e("tag", "remark is"+text2+"date: "+text+"time: "+text3+
                             "remarktext"+remarkText +"dateSelected: "+dateSelected +
                             "timeselected: "+ timeSelected);

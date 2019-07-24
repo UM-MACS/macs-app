@@ -65,7 +65,11 @@ public class emotionActivity extends AppCompatActivity{
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
         String mEmail = user.get(sessionManager.EMAIL);
+        String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
+        User.getInstance().setEmail(mEmail);
+        User.getInstance().setUserName(mName);
+        User.getInstance().setUserType(mType);
 
 
         //drawer
@@ -100,6 +104,11 @@ public class emotionActivity extends AppCompatActivity{
                         Intent i5 = new Intent(emotionActivity.this, FAQ.class);
                         startActivity(i5);
                         break;
+                    case R.id.navigation_forum:
+                        Intent i6 = new Intent(emotionActivity.this, ForumActivity.class);
+                        startActivity(i6);
+                        break;
+
                 }
                 return true;
             }
@@ -319,7 +328,7 @@ public class emotionActivity extends AppCompatActivity{
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
-            User.getInstance().setPassword("");
+            User.getInstance().setUserType("");
 //            finish();
             return true;
         }
