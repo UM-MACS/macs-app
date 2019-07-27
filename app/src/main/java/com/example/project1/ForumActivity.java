@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,15 +33,21 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ForumActivity extends AppCompatActivity {
 private SessionManager sessionManager;
 private static String URL = "http://192.168.0.187/jee/getForumPost.php";
+private static String URL_GETPIC = "http://192.168.0.187/jee/getPic.php";
+private String picture;
 private LinearLayout forumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent;
+private TextView nullPost, username, threadTitle, threadContent, threadID;
 private FloatingActionButton createPostButton;
-private TextView expandedName, expandedTitle, expandedContent;
+private TextView expandedName, expandedTitle, expandedContent, expandedID;
+private CircleImageView user_pic, expanded_user_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +93,7 @@ private TextView expandedName, expandedTitle, expandedContent;
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
+//        picture = "http://192.168.0.187/jee/profile_image/user.png";
         getPosts();
         createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
 
@@ -109,15 +117,18 @@ private TextView expandedName, expandedTitle, expandedContent;
                             ArrayList<String> name = new ArrayList<>();
                             ArrayList<String> title = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
+                            ArrayList<String> id = new ArrayList<>();
 
                             if(success.equals("1")){
                                 JSONArray jsonArray1 = jsonObject.getJSONArray("name");
                                 JSONArray jsonArray2 = jsonObject.getJSONArray("title");
                                 JSONArray jsonArray3 = jsonObject.getJSONArray("content");
+                                JSONArray jsonArray4 = jsonObject.getJSONArray("id");
                                 for (int i=0; i<jsonArray1.length(); i++){
                                     name.add(jsonArray1.getString(i));
                                     title.add(jsonArray2.getString(i));
                                     content.add(jsonArray3.getString(i));
+                                    id.add(jsonArray4.getString(i));
                                 }
                                 nullPost.setText("");
 
@@ -128,13 +139,16 @@ private TextView expandedName, expandedTitle, expandedContent;
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                    getPic(name.get(i),user_pic);
                                     username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                     username.setText(name.get(i));
                                     threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                     threadTitle.setText(title.get(i));
                                     threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
                                     threadContent.setText(content.get(i));
-
+                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
+                                    threadID.setText(id.get(i));
                                 }
 
                             }
@@ -159,6 +173,46 @@ private TextView expandedName, expandedTitle, expandedContent;
         requestQueue.add(stringRequest);
     }
 
+    public void getPic(final String name, final CircleImageView view){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            picture = jsonObject.getString("picture");
+                            Log.e("TAG", "pic: "+picture );
+
+                            //load picture example
+                            int loader = R.drawable.ic_user;
+                            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+                            imgLoader.DisplayImage(picture,loader,view);
+                            String success = jsonObject.getString("success");
+                            if(success.equals("1")){
+                                Log.e("TAG", "success loading photo" );
+                            }
+                        } catch (JSONException e) {
+                            Log.e("TAG", "fail to load photo");
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "fail to load photo");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("name",name);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
 
     public void onExpand(View v){
         username = (TextView) ((View) v).findViewById(R.id.user_name);
@@ -170,14 +224,19 @@ private TextView expandedName, expandedTitle, expandedContent;
         threadContent = (TextView) ((View) v).findViewById(R.id.thread_content);
         final String getContent = (String) threadContent.getText().toString();
         Log.e("TAG", "get content"+ getContent );
+        threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
+        final String getID = (String) threadID.getText().toString();
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView)findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView)findViewById(R.id.expanded_thread_title);
         expandedContent=(TextView)findViewById(R.id.expanded_thread_content);
+        expandedID = (TextView)findViewById(R.id.expanded_thread_id);
+        expanded_user_pic = (CircleImageView)findViewById(R.id.expanded_user_profile_pic);
+        getPic(getName,expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
-
+        expandedID.setText(getID);
     }
 
     @Override
@@ -213,6 +272,12 @@ private TextView expandedName, expandedTitle, expandedContent;
 
         if (id == R.id.action_change_password){
             Intent intent = new Intent(ForumActivity.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(ForumActivity.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }

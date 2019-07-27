@@ -66,6 +66,12 @@
 
             android:text="2:07pm"
             android:gravity="end"/>
+
+        <TextView
+            android:id="@+id/thread_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>
