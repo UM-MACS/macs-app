@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ private EditText o1,c1,c2;
 private Button button;
 private String t1, t2, t3,pw1;
 private DatabaseHelper db;
-private static String URL = "http://192.168.0.187/jee/changePassword.php";
+private static String URL = "http://192.168.0.187:3000/changepassword";
 SessionManager sessionManager;
 
     @Override
@@ -95,7 +96,8 @@ SessionManager sessionManager;
                                     @Override
                                     public void onResponse(String response) {
                                         try {
-                                            JSONObject jsonObject = new JSONObject(response);
+                                            JSONArray jsonArray = new JSONArray(response);
+                                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                                             String success = jsonObject.getString("success");
                                             if (success.equals("1")) {
                                                 Toast.makeText(getApplicationContext(),

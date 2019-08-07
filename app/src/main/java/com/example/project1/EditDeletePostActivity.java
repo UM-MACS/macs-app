@@ -360,10 +360,4 @@ public class EditDeletePostActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Intent i = new Intent(EditDeletePostActivity.this,
-//                EditDeletePostActivity.class);
-//        startActivity(i);
-//    }
 }

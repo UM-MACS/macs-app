@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView t1;
     private TextView mTextMessage;
     private ProgressBar progressBar;
-    private static String URL_LOGIN = "http://192.168.0.187/jee/login.php";
+    private static String URL_LOGIN = "http://192.168.0.187:3000/login/";
     private static String URL_LOGIN2 = "http://192.168.0.187/jee/login2.php";
     SessionManager sessionManager;
 
@@ -92,7 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(String response) {
                                     try {
-                                        JSONObject jsonObject = new JSONObject(response);
+                                        JSONArray jsonArray = new JSONArray(response);
+//                                      JSONObject jsonObject = new JSONObject(response);
+                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
                                         String success = jsonObject.getString("success");
                                         Log.e("tag", "success: " + success);
                                         if (success.equals("-1")) {
@@ -100,11 +102,11 @@ public class LoginActivity extends AppCompatActivity {
                                             progressBar.setVisibility(View.GONE);
                                             b1.setVisibility(View.VISIBLE);
                                         } else if (success.equals("1")) {
-                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+//                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
                                             for (int i = 0; i < jsonArray.length(); i++) {
-                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                                String jname = jsonObject1.getString("name").trim();
-                                                String jemail = jsonObject1.getString("email").trim();
+//                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                String jname = jsonObject.getString("name").trim();
+                                                String jemail = jsonObject.getString("email").trim();
                                                 Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                 sessionManager.createSession(jname, jemail, "Patient");
                                             }
@@ -146,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                     requestQueue.add(stringRequest);
 
                     User.getInstance().setEmail(email);
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+
                 }
 
                 else if (User.getInstance().getUserType().equals("Caregiver")) {

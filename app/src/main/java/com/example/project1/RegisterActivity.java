@@ -34,6 +34,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,7 +48,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
-    private static String URL_REGIST ="http://192.168.0.187/jee/register.php";
+//    private static String URL_REGIST ="http://192.168.0.187/jee/register.php";
+    private static String URL_REGIST ="http://192.168.0.187:3000/register/";
     private static String URL_UPLOAD ="http://192.168.0.187/jee/upload.php";
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
@@ -138,7 +140,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                             @Override
                             public void onResponse(String response) {
                                   try{
-                                      JSONObject jsonObject = new JSONObject(response);
+                                      JSONArray jsonArray = new JSONArray(response);
+//                                      JSONObject jsonObject = new JSONObject(response);
+                                      JSONObject jsonObject = jsonArray.getJSONObject(0);
                                       String success = jsonObject.getString("success");
                                       Log.e("TAG", "success"+success );
                                       if(success.equals("1")){
@@ -181,7 +185,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                                 params.put("password",s2);
                                 params.put("contact",s6);
                                 params.put("age",s7);
-                                params.put("photo",getStringImage(bitmap));
+//                                params.put("photo",getStringImage(bitmap));
                                 return params;
                             }
                         };
