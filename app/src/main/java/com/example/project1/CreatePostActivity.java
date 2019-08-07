@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ import java.util.Map;
 public class CreatePostActivity extends AppCompatActivity {
 private EditText titleInput, contentInput;
 private Button cancelButton, postButton;
-private static String URL = "http://192.168.0.187/jee/postingToForum.php";
+private static String URL = "http://192.168.0.187:3000/postingToForum/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,8 @@ private static String URL = "http://192.168.0.187/jee/postingToForum.php";
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Toast.makeText(getApplicationContext(),"Post Success",
@@ -87,6 +89,7 @@ private static String URL = "http://192.168.0.187/jee/postingToForum.php";
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                params.put("email",User.getInstance().getEmail());
                 params.put("name",User.getInstance().getUserName());
                 params.put("title", title);
                 params.put("content", content);

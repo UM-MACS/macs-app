@@ -59,7 +59,7 @@ public class viewEventActivity extends AppCompatActivity {
     private LinearLayout clickableView;
     private FrameLayout frameLayout;
     private DatabaseHelper db;
-    private TextView appointmentDateText, appointmentTimeText, remarkTextView;
+    private TextView appointmentDateText, appointmentTimeText, remarkTextView, idTextView;
     private Button b1;
     private String timeSelected, dateSelected;
     private int yy, MM, dd;
@@ -73,10 +73,10 @@ public class viewEventActivity extends AppCompatActivity {
     private EditText editText;
     private int id;
     private String ID;
-    private static String URL = "http://192.168.0.187/jee/appointment.php";
-    private static String URL2 = "http://192.168.0.187/jee/setappointment.php";
-    private static String URL3 = "http://192.168.0.187/jee/delappointment.php";
-    private static String URL4 = "http://192.168.0.187/jee/updateapp.php";
+    private static String URL = "http://192.168.0.187:3000/getAppointment";
+    private static String URL2 = "http://192.168.0.187:3000/setAppointment";
+    private static String URL3 = "http://192.168.0.187:3000/deleteAppointment";
+    private static String URL4 = "http://192.168.0.187:3000/updateAppointment";
     private SessionManager sessionManager;
 
     @Override
@@ -138,39 +138,38 @@ public class viewEventActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             Log.e("TAG", "success: "+ success);
                             ArrayList <String> remarkList = new ArrayList<>();
                             ArrayList <String> dateList = new ArrayList<>();
                             ArrayList <String> timeList = new ArrayList<>();
+                            ArrayList <String> idList = new ArrayList<>();
                             if(success.equals("1")){
-                                JSONArray jsonArray1 = jsonObject.getJSONArray("remark");
-                                JSONArray jsonArray2 = jsonObject.getJSONArray("appointmentDate");
-                                JSONArray jsonArray3 = jsonObject.getJSONArray("appointmentTime");
-                                for (int i=0; i<jsonArray1.length(); i++){
-                                    remarkList.add(jsonArray1.getString(i));
-                                    dateList.add(jsonArray2.getString(i));
-                                    timeList.add(jsonArray3.getString(i));
-                                    Log.e("tag", "jsonObject1: "+jsonArray1.getString(i) );
-//                                    JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-//                                    JSONObject jsonObject3 = jsonArray3.getJSONObject(i);
-//                                    remarkList.add(jsonObject1.toString());
-//                                    dateList.add(jsonObject2.toString());
-//                                    timeList.add(jsonObject3.toString());
-
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    remarkList.add(object.getString("remark"));
+                                    dateList.add(object.getString("appointmentDate"));
+                                    timeList.add(object.getString("appointmentTime"));
+                                    idList.add(object.getString("id"));
                                 }
+
                                 for (int i = 0; i < dateList.size(); i++) {
                                     Log.e("TAG", " dates: "+dateList.get(i) );
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field, parentLinearLayout, false);
                                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                                     remarkTextView = (TextView) ((View) rowView).findViewById(R.id.show_remark_text);
-                                    remarkTextView.setText(remarkList.get(i));
                                     appointmentDateText = (TextView) ((View) rowView).findViewById(R.id.appointment_date_text);
-                                    appointmentDateText.setText(dateList.get(i));
                                     appointmentTimeText = (TextView) ((View) rowView).findViewById(R.id.appointment_time_text);
+                                    idTextView = (TextView)((View)rowView).findViewById(R.id.appointment_id);
+
+                                    remarkTextView.setText(remarkList.get(i));
+                                    appointmentDateText.setText(dateList.get(i));
                                     appointmentTimeText.setText(timeList.get(i));
+                                    idTextView.setText(idList.get(i));
+
                                     String oldDate[] = dateList.get(i).split("/");
                                     String oldTime[] = timeList.get(i).split(":");
                                     String newDateString = ""+oldDate[0]+""+(oldDate[1])+""+oldDate[2]+""+oldTime[0]+oldTime[1];
@@ -184,7 +183,6 @@ public class viewEventActivity extends AppCompatActivity {
                                         Log.e("tag", "enter delete");
                                         parentLinearLayout.removeView((View)rowView);
                                     }
-
                                 }
                             }
                         } catch (JSONException e) {
@@ -384,7 +382,8 @@ public class viewEventActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
@@ -419,15 +418,15 @@ public class viewEventActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void updateAppointment(final String email, final String type, final String oremark,
-                                   final String odate, final String otime, final String remark,
+    private void updateAppointment(final String id, final String remark,
                                    final String date, final String time) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL4,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
@@ -450,11 +449,7 @@ public class viewEventActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("type",type);
-                params.put("oremark",oremark);
-                params.put("odate",odate);
-                params.put("otime",otime);
+                params.put("id", id);
                 params.put("remark",remark);
                 params.put("date",date);
                 params.put("time",time);
@@ -466,15 +461,14 @@ public class viewEventActivity extends AppCompatActivity {
 
     }
 
-    private void delAppointment(final View v, final String email, final String type,
-                                final String remark, final String date,
-                                final String time){
+    private void delAppointment(final View v, final String id){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL3,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
@@ -497,11 +491,7 @@ public class viewEventActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("type",type);
-                params.put("remark",remark);
-                params.put("date",date);
-                params.put("time",time);
+                params.put("id", id);
                 return params;
             }
         };
@@ -538,21 +528,15 @@ public class viewEventActivity extends AppCompatActivity {
         Log.e("tag", "done setting");
     }
 
-
     public void onDelete(View v){
-        appointmentDateText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_date_text);
-        final String text = (String) appointmentDateText.getText();
-        appointmentTimeText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_time_text);
-        final String text3 = (String) appointmentTimeText.getText();
-        remarkTextView= (TextView)((View)v.getParent()).findViewById(R.id.show_remark_text);
-        final String text2 = (String) remarkTextView.getText();
-//        db = new DatabaseHelper(this);
-        delAppointment(v, User.getInstance().getEmail(),User.getInstance().getUserType()
-                ,text2,text,text3);
+        idTextView = (TextView)((View)v.getParent()).findViewById(R.id.appointment_id);
+        final String text = (String) idTextView.getText();
+        delAppointment(v,text);
     }
 
-
     public void onEdit(View v) {
+        idTextView = (TextView)((View)v.getParent()).findViewById(R.id.appointment_id);
+        final String id = idTextView.getText().toString();
         appointmentDateText = (TextView)((View)v.getParent()).findViewById(R.id.appointment_date_text);
         final String text = (String) appointmentDateText.getText();
         String box [] = text.split("/");
@@ -730,8 +714,7 @@ public class viewEventActivity extends AppCompatActivity {
                     Log.e("tag", "remark is"+text2+"date: "+text+"time: "+text3+
                             "remarktext"+remarkText +"dateSelected: "+dateSelected +
                             "timeselected: "+ timeSelected);
-                    updateAppointment(User.getInstance().getEmail(),User.getInstance().getUserType(),text2, text, text3,
-                            remarkText,dateSelected,timeSelected);
+                    updateAppointment(id,remarkText,dateSelected,timeSelected);
 
                     setReminder(dateSelected,timeSelected);
                 }

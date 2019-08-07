@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +50,7 @@ public class emotionActivity extends AppCompatActivity{
     ArrayList<String> arrayList;
     EditText expression;
     FrameLayout frameLayout;
-    private static String URL ="http://192.168.0.187/jee/emotion.php";
+    private static String URL ="http://192.168.0.187:3000/emotion";
     Date currentTime;
     private TextView mTextMessage;
     SessionManager sessionManager;
@@ -201,9 +202,6 @@ public class emotionActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String text = expression.getText().toString();
-                String replacedText = text.replace("'","\\\'");
-                replacedText = replacedText.replace(" \"" ,"\\\"");
-                Log.e("tag", "text is " + replacedText);
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
                 if (text.equals("")) {
@@ -212,7 +210,7 @@ public class emotionActivity extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 } else {
                     insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                            replacedText);
+                            text);
                 }
             }
         });
@@ -225,9 +223,9 @@ public class emotionActivity extends AppCompatActivity{
                 new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                JSONObject jsonObject = null;
                 try {
-                    jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String success = jsonObject.getString("success");
                 if(success.equals("1")){
                     //Create pop up window

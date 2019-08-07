@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 
 public class Register2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
-    private static String URL_REGIST ="http://192.168.0.187/jee/register2.php";
+    private static String URL_REGIST ="http://192.168.0.187:3000/register2/";
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
     private Button b1,b2;
@@ -129,7 +130,8 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
                             @Override
                             public void onResponse(String response) {
                                 try{
-                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
                                     String success = jsonObject.getString("success");
                                     Log.e("TAG", "success"+success );
                                     if(success.equals("1")){

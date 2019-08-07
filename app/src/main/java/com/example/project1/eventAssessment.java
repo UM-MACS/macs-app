@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +50,7 @@ public class eventAssessment extends AppCompatActivity {
     RadioButton radioButton5;
     RadioButton radioButton6;
     RadioButton radioButton7;
-    private static String URL = "http://192.168.0.187/jee/eAssessment.php";
+    private static String URL = "http://192.168.0.187:3000/eAssessment";
     private SessionManager sessionManager;
 
     TextView textView;
@@ -185,7 +186,8 @@ public class eventAssessment extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try{
-                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String success = jsonObject.getString("success");
                     Log.e("TAG", "success"+success );
                     if(success.equals("1")){

@@ -36,10 +36,10 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditDeletePostActivity extends AppCompatActivity {
-    private static String URL_GET_POSTS = "http://192.168.0.187/jee/getMyPosts.php";
+    private static String URL_GET_POSTS = "http://192.168.0.187:3000/getMyPost/";
     private static String URL_GETPIC = "http://192.168.0.187/jee/getPic.php";
-    private static String URL_UPDATE_POST = "http://192.168.0.187/jee/updatePost.php";
-    private static String URL_DELETE_POST = "http://192.168.0.187/jee/deletePost.php";
+    private static String URL_UPDATE_POST = "http://192.168.0.187:3000/updatePost/";
+    private static String URL_DELETE_POST = "http://192.168.0.187:3000/deletePost/";
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID;
     private LinearLayout forumParentLinearLayout;
@@ -61,17 +61,18 @@ public class EditDeletePostActivity extends AppCompatActivity {
         b1.hide();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
-        getMyPosts(User.getInstance().getUserName());
+        getMyPosts(User.getInstance().getEmail());
 
     }
 
-    private void getMyPosts(final String name) {
+    private void getMyPosts(final String email) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
                             ArrayList<String> title = new ArrayList<>();
@@ -80,15 +81,12 @@ public class EditDeletePostActivity extends AppCompatActivity {
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
-                                JSONArray jsonArray1 = jsonObject.getJSONArray("name");
-                                JSONArray jsonArray2 = jsonObject.getJSONArray("title");
-                                JSONArray jsonArray3 = jsonObject.getJSONArray("content");
-                                JSONArray jsonArray4 = jsonObject.getJSONArray("id");
-                                for (int i=0; i<jsonArray1.length(); i++){
-                                    name.add(jsonArray1.getString(i));
-                                    title.add(jsonArray2.getString(i));
-                                    content.add(jsonArray3.getString(i));
-                                    id.add(jsonArray4.getString(i));
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    name.add(object.getString("name"));
+                                    title.add(object.getString("title"));
+                                    content.add(object.getString("content"));
+                                    id.add(object.getString("id"));
                                 }
                                 nullPost.setText("");
 
@@ -128,7 +126,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("name",name);
+                params.put("email",email);
                 return params;
             }
         };
@@ -249,7 +247,8 @@ public class EditDeletePostActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Toast.makeText(getApplicationContext(),"Update Success",
@@ -323,7 +322,8 @@ public class EditDeletePostActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Log.e("TAG", "success" );

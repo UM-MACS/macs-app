@@ -40,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ForumActivity extends AppCompatActivity {
 private SessionManager sessionManager;
-private static String URL = "http://192.168.0.187/jee/getForumPost.php";
+private static String URL = "http://192.168.0.187:3000/getForumPost";
 private static String URL_GETPIC = "http://192.168.0.187/jee/getPic.php";
 private String picture;
 private LinearLayout forumParentLinearLayout;
@@ -112,7 +112,8 @@ private CircleImageView user_pic, expanded_user_pic;
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
                             ArrayList<String> title = new ArrayList<>();
@@ -120,15 +121,16 @@ private CircleImageView user_pic, expanded_user_pic;
                             ArrayList<String> id = new ArrayList<>();
 
                             if(success.equals("1")){
-                                JSONArray jsonArray1 = jsonObject.getJSONArray("name");
-                                JSONArray jsonArray2 = jsonObject.getJSONArray("title");
-                                JSONArray jsonArray3 = jsonObject.getJSONArray("content");
-                                JSONArray jsonArray4 = jsonObject.getJSONArray("id");
-                                for (int i=0; i<jsonArray1.length(); i++){
-                                    name.add(jsonArray1.getString(i));
-                                    title.add(jsonArray2.getString(i));
-                                    content.add(jsonArray3.getString(i));
-                                    id.add(jsonArray4.getString(i));
+//                                JSONArray jsonArray1 = jsonObject.getJSONArray("name");
+//                                JSONArray jsonArray2 = jsonObject.getJSONArray("title");
+//                                JSONArray jsonArray3 = jsonObject.getJSONArray("content");
+//                                JSONArray jsonArray4 = jsonObject.getJSONArray("id");
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    name.add(object.getString("name"));
+                                    title.add(object.getString("title"));
+                                    content.add(object.getString("content"));
+                                    id.add(object.getString("id"));
                                 }
                                 nullPost.setText("");
 
