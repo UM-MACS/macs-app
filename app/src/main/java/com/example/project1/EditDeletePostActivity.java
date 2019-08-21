@@ -88,7 +88,6 @@ public class EditDeletePostActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                 }
-                                nullPost.setText("");
 
                                 for(int i=0; i<name.size();i++){
                                     Log.e("TAG", "name "+name.get(i));
@@ -110,6 +109,8 @@ public class EditDeletePostActivity extends AppCompatActivity {
 
                                 }
 
+                            } else if(success.equals("-1")){
+                                nullPost.setVisibility(View.VISIBLE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
