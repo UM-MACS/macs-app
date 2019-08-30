@@ -49,8 +49,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
 //    private static String URL_REGIST ="http://192.168.0.187/jee/register.php";
-    private static String URL_REGIST ="http://192.168.0.187:3000/register/";
-    private static String URL_UPLOAD ="http://192.168.0.187/jee/upload.php";
+    private String localhost;
+    private static String URL_REGIST ;
+    private static String URL_UPLOAD ;
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
     private Button b1,b2;
@@ -60,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private Button uploadButton;
     private Bitmap bitmap;
     private CircleImageView profile_pic;
-    private String s1;
 //    private Patient patient;
 
 
@@ -85,6 +85,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         });
         //finish
 
+        localhost = getString(R.string.localhost);
+        URL_REGIST =localhost+":3000/register/";
+        URL_UPLOAD =localhost+"/jee/setPic.php";
         db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.loading);
         e1 = (EditText)findViewById(R.id.email);
@@ -115,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     public void onClick(View v) {
                 loading.setVisibility(View.VISIBLE);
                 b1.setVisibility(View.GONE);
-                s1 = e1.getText().toString().trim(); //email
+                final String s1 = e1.getText().toString().trim(); //email
                 final String s2 = e2.getText().toString().trim(); //pw
                 String s3 = e3.getText().toString(); //confirm pw
                 final String s5 = e5.getText().toString().trim(); //name
@@ -136,62 +139,10 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 else {
                     if (s2.equals(s3)) { //check if password matches
                         /* mysql posting */
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                  try{
-                                      JSONArray jsonArray = new JSONArray(response);
-//                                      JSONObject jsonObject = new JSONObject(response);
-                                      JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                      String success = jsonObject.getString("success");
-                                      Log.e("TAG", "success"+success );
-                                      if(success.equals("1")){
-                                          Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
-                                          Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                          startActivity(intent);
-                                      }
-                                      else if(success.equals("0")){
-                                          Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
-                                          loading.setVisibility(View.GONE);
-                                          b1.setVisibility(View.VISIBLE);
-                                      }
-                                      else if(success.equals("-1")){
-                                          Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
-                                          loading.setVisibility(View.GONE);
-                                          b1.setVisibility(View.VISIBLE);
-                                      }
-                                  } catch (JSONException e){
-                                      e.printStackTrace();
-                                      Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
-                                      loading.setVisibility(View.GONE);
-                                      b1.setVisibility(View.VISIBLE);
-                                  }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
-                                loading.setVisibility(View.GONE);
-                                b1.setVisibility(View.VISIBLE);
-                            }
-                            })
-                        {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("name",s5);
-                                params.put("email",s1);
-                                params.put("password",s2);
-                                params.put("contact",s6);
-                                params.put("age",s7);
-//                                params.put("photo",getStringImage(bitmap));
-                                return params;
-                            }
-                        };
 
-                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                        requestQueue.add(stringRequest);
+                        Log.e("TAG", "log"+ s1+ " "+s2+" "+s5+" "+s6+" "+s7 );
+                       registerAccount(s1,s2,s5,s6,s7);
+                       setProfile_pic(s1,s5);
 
                         /* set user instance */
                             User.getInstance().setEmail(s1); //email
@@ -224,6 +175,120 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
+    private void registerAccount(final String email, final String password, final String name,
+                                 final String contact, final String age) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String success = jsonObject.getString("success");
+                    Log.e("TAG", "success"+success );
+                    if(success.equals("1")){
+                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    else if(success.equals("0")){
+                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                    else if(success.equals("-1")){
+                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email",email);
+                params.put("password",password);
+                params.put("name",name);
+                params.put("contact",contact);
+                params.put("age",age);
+//                                params.put("photo",getStringImage(bitmap));
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void setProfile_pic(final String email, final String name) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOAD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String success = jsonObject.getString("success");
+                    Log.e("TAG", "success of pic "+success );
+                    if(success.equals("1")){
+//                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+                    }
+                    else if(success.equals("0")){
+//                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                    else if(success.equals("-1")){
+//                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email",email);
+                params.put("photo",getStringImage(bitmap));
+                params.put("name",name);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
 
 
     private void chooseFile(){

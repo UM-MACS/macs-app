@@ -35,7 +35,8 @@ private EditText o1,c1,c2;
 private Button button;
 private String t1, t2, t3,pw1;
 private DatabaseHelper db;
-private static String URL = "http://192.168.0.187:3000/changepassword";
+private String localhost;
+private static String URL ;
 SessionManager sessionManager;
 
     @Override
@@ -78,6 +79,8 @@ SessionManager sessionManager;
         });
 
 //        db = new DatabaseHelper(this);
+        localhost = getString(R.string.localhost);
+        URL = localhost+":3000/changepassword";
         o1 = (EditText)findViewById(R.id.old_pw);
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);

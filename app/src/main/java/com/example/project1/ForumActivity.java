@@ -43,10 +43,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ForumActivity extends AppCompatActivity {
 private SessionManager sessionManager;
-private static String URL = "http://192.168.0.187:3000/getForumPost";
-private static String URL_GETPIC = "http://192.168.0.187/jee/getPic.php";
-private static String URL_GET_REPLY = "http://192.168.0.187:3000/getReplyPost/";
-    private static String URL_POST_REPLY = "http://192.168.0.187:3000/postReply/";
+private String localhost;
+private static String URL;
+private static String URL_GETPIC;
+private static String URL_GET_REPLY;
+private static String URL_POST_REPLY;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
 private TextView nullPost, username, threadTitle, threadContent, threadID;
@@ -99,6 +100,11 @@ private LinearLayout layoutAdjust;
             }
         });
 
+        localhost = getString(R.string.localhost);
+        URL = localhost+":3000/getForumPost";
+        URL_GETPIC = localhost+"/jee/getPic.php";
+        URL_GET_REPLY = localhost+":3000/getReplyPost/";
+        URL_POST_REPLY = localhost+":3000/postReply/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
 //        expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
@@ -129,18 +135,16 @@ private LinearLayout layoutAdjust;
                             ArrayList<String> title = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> anonymous = new ArrayList<>();
 
                             if(success.equals("1")){
-//                                JSONArray jsonArray1 = jsonObject.getJSONArray("name");
-//                                JSONArray jsonArray2 = jsonObject.getJSONArray("title");
-//                                JSONArray jsonArray3 = jsonObject.getJSONArray("content");
-//                                JSONArray jsonArray4 = jsonObject.getJSONArray("id");
                                 for (int i=0; i<jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
                                     title.add(object.getString("title"));
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
+                                    anonymous.add(object.getString("anonymous"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -150,10 +154,16 @@ private LinearLayout layoutAdjust;
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                    getPic(name.get(i),user_pic);
-                                    username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                    username.setText(name.get(i));
+                                    if(anonymous.get(i).equals("true")){
+                                        username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                        username.setText("Anonymous");
+                                        user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                        getPic("lee",user_pic);
+                                    }else{
+                                        username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                        username.setText(name.get(i));
+                                        user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                        getPic(name.get(i),user_pic);}
                                     threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                     threadTitle.setText(title.get(i));
                                     threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
@@ -344,56 +354,61 @@ private LinearLayout layoutAdjust;
     public void onReply(final String parentID){
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),"Successfully Posted",
-                                Toast.LENGTH_SHORT).show();
-                                replyText.setText("");
-                                expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
-                                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                final View rowView = inflater.inflate(R.layout.field_forum_expand, expandedForumParentLinearLayout, false);
-                                expandedForumParentLinearLayout.addView(rowView, expandedForumParentLinearLayout.getChildCount() - 1);
-                                expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
-                                expandedContent=(TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
-                                expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                getPic(User.getInstance().getUserName(),expanded_user_pic);
-                                expandedName.setText(User.getInstance().getUserName());
-                                expandedContent.setText(text);
+        if(text.equals("")){
+            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                String success = jsonObject.getString("success");
+                                if (success.equals("1")) {
+                                    Toast.makeText(getApplicationContext(), "Successfully Posted",
+                                            Toast.LENGTH_SHORT).show();
+                                    replyText.setText("");
+                                    expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    final View rowView = inflater.inflate(R.layout.field_forum_expand, expandedForumParentLinearLayout, false);
+                                    expandedForumParentLinearLayout.addView(rowView, expandedForumParentLinearLayout.getChildCount() - 1);
+                                    expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
+                                    expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
+                                    expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
+                                    getPic(User.getInstance().getUserName(), expanded_user_pic);
+                                    expandedName.setText(User.getInstance().getUserName());
+                                    expandedContent.setText(text);
 
-                            } else{
-                                Toast.makeText(getApplicationContext(),"Error",
-                                        Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Error",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",User.getInstance().getEmail());
-                params.put("name",User.getInstance().getUserName());
-                params.put("content",text);
-                params.put("parentID",parentID);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Error",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("email", User.getInstance().getEmail());
+                    params.put("name", User.getInstance().getUserName());
+                    params.put("content", text);
+                    params.put("parentID", parentID);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        }
     }
 
 //    public void onClickReply(View v){

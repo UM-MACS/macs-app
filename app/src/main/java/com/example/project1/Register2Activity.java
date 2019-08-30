@@ -37,7 +37,8 @@ import java.util.Map;
 
 public class Register2Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
-    private static String URL_REGIST ="http://192.168.0.187:3000/register2/";
+    private String localhost;
+    private static String URL_REGIST;
     private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7;
     private Button b1,b2;
@@ -68,6 +69,8 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
         });
         //finish
 
+        localhost = getString(R.string.localhost);
+        URL_REGIST =localhost+":3000/register2/";
         db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.register2_loading);
         e1 = (EditText)findViewById(R.id.email);

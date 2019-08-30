@@ -50,7 +50,8 @@ public class eventAssessment extends AppCompatActivity {
     RadioButton radioButton5;
     RadioButton radioButton6;
     RadioButton radioButton7;
-    private static String URL = "http://192.168.0.187:3000/eAssessment";
+    private String localhost;
+    private static String URL;
     private SessionManager sessionManager;
 
     TextView textView;
@@ -99,6 +100,8 @@ public class eventAssessment extends AppCompatActivity {
         });
         //finish
 
+        localhost= getString(R.string.localhost);
+        URL = localhost+":3000/eAssessment";
         sessionManager = new SessionManager(this);
         db = new DatabaseHelper(this);
         b1 = (Button)findViewById(R.id.button_submit_assessment);

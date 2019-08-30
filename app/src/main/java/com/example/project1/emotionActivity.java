@@ -50,7 +50,8 @@ public class emotionActivity extends AppCompatActivity{
     ArrayList<String> arrayList;
     EditText expression;
     FrameLayout frameLayout;
-    private static String URL ="http://192.168.0.187:3000/emotion";
+    private String localhost;
+    private static String URL;
     Date currentTime;
     private TextView mTextMessage;
     SessionManager sessionManager;
@@ -63,6 +64,8 @@ public class emotionActivity extends AppCompatActivity{
         sessionManager = new SessionManager(this);
         sessionManager.checkLogin();
 
+        localhost = getString(R.string.localhost);
+        URL =localhost+":3000/emotion";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
         String mEmail = user.get(sessionManager.EMAIL);

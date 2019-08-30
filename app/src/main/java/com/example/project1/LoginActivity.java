@@ -39,8 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView t1;
     private TextView mTextMessage;
     private ProgressBar progressBar;
-    private static String URL_LOGIN = "http://192.168.0.187:3000/login/";
-    private static String URL_LOGIN2 = "http://192.168.0.187:3000/login2/";
+    private String localhost;
+    private String URL_LOGIN;
+    private String URL_LOGIN2;
     SessionManager sessionManager;
 
     @Override
@@ -65,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         });
         //finish
 
+        localhost = getString(R.string.localhost);
+        URL_LOGIN = localhost+":3000/login/";
+        URL_LOGIN2 = localhost+":3000/login2/";
         db = new DatabaseHelper(this);
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
         e1 = (EditText)findViewById(R.id.login_email);

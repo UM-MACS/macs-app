@@ -73,10 +73,11 @@ public class viewEventActivity extends AppCompatActivity {
     private EditText editText;
     private int id;
     private String ID;
-    private static String URL = "http://192.168.0.187:3000/getAppointment";
-    private static String URL2 = "http://192.168.0.187:3000/setAppointment";
-    private static String URL3 = "http://192.168.0.187:3000/deleteAppointment";
-    private static String URL4 = "http://192.168.0.187:3000/updateAppointment";
+    private String localhost;
+    private String URL;
+    private String URL2;
+    private String URL3;
+    private String URL4;
     private SessionManager sessionManager;
 
     @Override
@@ -120,6 +121,11 @@ public class viewEventActivity extends AppCompatActivity {
             }
         });
 
+        localhost = getString(R.string.localhost);
+        URL = localhost+":3000/getAppointment";
+        URL2 = localhost+":3000/setAppointment";
+        URL3 = localhost+":3000/deleteAppointment";
+        URL4 = localhost+":3000/updateAppointment";
         parentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout);
         frameLayout = (FrameLayout) findViewById(R.id.foreground_menu);
         frameLayout.getForeground().setAlpha(0);

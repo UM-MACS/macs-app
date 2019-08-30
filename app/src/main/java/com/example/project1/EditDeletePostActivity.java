@@ -36,10 +36,11 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditDeletePostActivity extends AppCompatActivity {
-    private static String URL_GET_POSTS = "http://192.168.0.187:3000/getMyPost/";
-    private static String URL_GETPIC = "http://192.168.0.187/jee/getPic.php";
-    private static String URL_UPDATE_POST = "http://192.168.0.187:3000/updatePost/";
-    private static String URL_DELETE_POST = "http://192.168.0.187:3000/deletePost/";
+    private String localhost;
+    private static String URL_GET_POSTS;
+    private static String URL_GETPIC;
+    private static String URL_UPDATE_POST;
+    private static String URL_DELETE_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID;
     private LinearLayout forumParentLinearLayout;
@@ -55,6 +56,11 @@ public class EditDeletePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum);
 
+        localhost = getString(R.string.localhost);
+        URL_GET_POSTS = localhost+":3000/getMyPost/";
+        URL_GETPIC = localhost+"/jee/getPic.php";
+        URL_UPDATE_POST = localhost+":3000/updatePost/";
+        URL_DELETE_POST = localhost+":3000/deletePost/";
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
         b1 = (FloatingActionButton) findViewById(R.id.create_post_button);

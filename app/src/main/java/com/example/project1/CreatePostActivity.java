@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,17 +31,23 @@ import java.util.Map;
 public class CreatePostActivity extends AppCompatActivity {
 private EditText titleInput, contentInput;
 private Button cancelButton, postButton;
-private static String URL = "http://192.168.0.187:3000/postingToForum/";
+private CheckBox checkBox;
+private String localhost;
+private static String URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
+        localhost = getString(R.string.localhost);
+        URL = localhost+":3000/postingToForum/";
+
         titleInput = (EditText)findViewById(R.id.post_title);
         contentInput = (EditText)findViewById(R.id.post_content);
         cancelButton = (Button) findViewById(R.id.post_cancel);
         postButton = (Button)findViewById(R.id.post_button);
+        checkBox = (CheckBox)findViewById(R.id.anonymous_checkbox);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +61,12 @@ private static String URL = "http://192.168.0.187:3000/postingToForum/";
     public void onPost(View v){
         final String title = titleInput.getText().toString();
         final String content = contentInput.getText().toString();
+        final String anonymous;
+        if(checkBox.isChecked()){
+            anonymous = "true";
+        } else{
+            anonymous = "false";
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -93,6 +106,7 @@ private static String URL = "http://192.168.0.187:3000/postingToForum/";
                 params.put("name",User.getInstance().getUserName());
                 params.put("title", title);
                 params.put("content", content);
+                params.put("anonymous",anonymous);
                 return params;
             }
         };
