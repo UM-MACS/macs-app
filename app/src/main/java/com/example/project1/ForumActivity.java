@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,12 +49,14 @@ private static String URL;
 private static String URL_GETPIC;
 private static String URL_GET_REPLY;
 private static String URL_POST_REPLY;
+private static String URL_PIN_POST;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
 private TextView nullPost, username, threadTitle, threadContent, threadID;
 private FloatingActionButton createPostButton;
 private TextView expandedName, expandedTitle, expandedContent, expandedID;
 private CircleImageView user_pic, expanded_user_pic;
+private ImageView pinned_pic, unpinned_pic;
 private EditText replyText;
 private Button submitReplyButton;
 //private String getName, getTitle, getContent, getID;
@@ -105,6 +108,7 @@ private LinearLayout layoutAdjust;
         URL_GETPIC = localhost+"/jee/getPic.php";
         URL_GET_REPLY = localhost+":3000/getReplyPost/";
         URL_POST_REPLY = localhost+":3000/postReply/";
+        URL_PIN_POST = localhost+":3000/pinPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
 //        expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
@@ -136,6 +140,7 @@ private LinearLayout layoutAdjust;
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> anonymous = new ArrayList<>();
+                            ArrayList<String> pinned = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -145,31 +150,64 @@ private LinearLayout layoutAdjust;
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     anonymous.add(object.getString("anonymous"));
+                                    pinned.add(object.getString("pinned"));
                                 }
-
+                                for (int i =0; i<name.size();i++){
+                                    if(pinned.get(i).equals("true")) {
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                        pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
+                                        pinned_pic.setVisibility(View.VISIBLE);
+                                        if (anonymous.get(i).equals("true")) {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText("Anonymous");
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic("lee", user_pic);
+                                        } else {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText(name.get(i));
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic(name.get(i), user_pic);
+                                        }
+                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                        threadTitle.setText(title.get(i));
+                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                        threadContent.setText(content.get(i));
+                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
+                                        threadID.setText(id.get(i));
+                                    }
+                                }
                                 for(int i=0; i<name.size();i++){
-                                    Log.e("TAG", "name "+name.get(i));
-                                    Log.e("TAG", "title "+title.get(i));
-                                    Log.e("TAG", "content "+content.get(i));
-                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                    forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                    if(anonymous.get(i).equals("true")){
-                                        username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                        username.setText("Anonymous");
-                                        user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                        getPic("lee",user_pic);
-                                    }else{
-                                        username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                        username.setText(name.get(i));
-                                        user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                        getPic(name.get(i),user_pic);}
-                                    threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                    threadTitle.setText(title.get(i));
-                                    threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                    threadContent.setText(content.get(i));
-                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
-                                    threadID.setText(id.get(i));
+                                    if(pinned.get(i).equals("")){
+                                        Log.e("TAG", "name " + name.get(i));
+                                        Log.e("TAG", "title " + title.get(i));
+                                        Log.e("TAG", "content " + content.get(i));
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                        if(User.getInstance().getUserType().equals("Specialist")){
+                                            unpinned_pic = (ImageView) ((View)rowView).findViewById(R.id.unpinned);
+                                            unpinned_pic.setVisibility(View.VISIBLE);
+                                        }
+                                        if (anonymous.get(i).equals("true")) {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText("Anonymous");
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic("lee", user_pic);
+                                        } else {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText(name.get(i));
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic(name.get(i), user_pic);
+                                        }
+                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                        threadTitle.setText(title.get(i));
+                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                        threadContent.setText(content.get(i));
+                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
+                                        threadID.setText(id.get(i));
+                                    }
                                 }
 
                             } else if (success.equals("-1")){
@@ -411,45 +449,99 @@ private LinearLayout layoutAdjust;
         }
     }
 
-//    public void onClickReply(View v){
-//        username = (TextView) ((View) v.getParent().getParent().getParent()).findViewById(R.id.user_name);
-//        final String getName = username.getText().toString();
-//        Log.e("TAG", "get name"+ getName );
-//        threadTitle = (TextView) ((View) v.getParent().getParent()).findViewById(R.id.thread_title);
-//        final String getTitle = (String) threadTitle.getText().toString();
-//        Log.e("TAG", "get title"+ getTitle );
-//        threadContent = (TextView) ((View) v.getParent().getParent()).findViewById(R.id.thread_content);
-//        final String getContent = (String) threadContent.getText().toString();
-//        Log.e("TAG", "get content"+ getContent );
-//        threadID = (TextView) ((View) v.getParent().getParent()).findViewById(R.id.thread_id);
-//        final String getID = (String) threadID.getText().toString();
-//
-//        setContentView(R.layout.activity_forum_expand);
-//        replyText = (EditText) findViewById(R.id.reply_input);
-//        InputMethodManager inputMethodManager =
-//                (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.toggleSoftInputFromWindow(
-//                replyText.getApplicationWindowToken(),
-//                InputMethodManager.SHOW_FORCED, 0);
-//        expandedName = (TextView) findViewById(R.id.expanded_user_name);
-//        expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
-//        expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
-//        expandedID = (TextView) findViewById(R.id.expanded_thread_id);
-//        expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
-//        getPic(getName, expanded_user_pic);
-//        expandedName.setText(getName);
-//        expandedTitle.setText(getTitle);
-//        expandedContent.setText(getContent);
-//        expandedID.setText(getID);
-//        getReplyPost(getID);
-//        submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
-//        submitReplyButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onReply(getID);
-//            }
-//        });
-//    }
+    public void onPin(final View v){
+
+        threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_PIN_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                pinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.pinned);
+                                unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
+                                pinned_pic.setVisibility(View.VISIBLE);
+                                unpinned_pic.setVisibility(View.GONE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("pin","true" );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onUnpin(final View v){
+
+        threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_PIN_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                pinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.pinned);
+                                unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
+                                pinned_pic.setVisibility(View.GONE);
+                                unpinned_pic.setVisibility(View.VISIBLE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("pin","" );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
 
     @Override
     public void onBackPressed() {

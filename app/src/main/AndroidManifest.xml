@@ -13,13 +13,15 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditDeletePostActivity"
+
+        <activity
+            android:name=".EditDeletePostActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".UserProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserProfileActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreatePostActivity"
             android:exported="true"
@@ -27,8 +29,8 @@
         <activity
             android:name=".ForumActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ChangePassword"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -73,6 +75,8 @@
         <activity
             android:name=".Register2Activity"
             android:label="Caregiver Register" />
+        <activity android:name=".Register3Activity"
+            android:label="Specialist Register"/>
         <activity
             android:name=".AndroidDatabaseManager"
             android:label="User Database" />

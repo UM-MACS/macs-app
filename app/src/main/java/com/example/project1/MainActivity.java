@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 User.getInstance().setUserType("Specialist");
-                Intent intent3 = new Intent(MainActivity.this,AndroidDatabaseManager.class);
+                Intent intent3 = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent3);
             }
         });

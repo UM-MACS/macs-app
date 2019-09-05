@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private String localhost;
     private String URL_LOGIN;
     private String URL_LOGIN2;
+    private String URL_LOGIN3;
     SessionManager sessionManager;
 
     @Override
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         localhost = getString(R.string.localhost);
         URL_LOGIN = localhost+":3000/login/";
         URL_LOGIN2 = localhost+":3000/login2/";
+        URL_LOGIN3 = localhost+":3000/login3/";
         db = new DatabaseHelper(this);
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
         e1 = (EditText)findViewById(R.id.login_email);
@@ -79,8 +81,10 @@ public class LoginActivity extends AppCompatActivity {
         if(User.getInstance().getUserType().equals("Patient")){
             t1.setText("Patient Login");
         }
-        else{
+        else if(User.getInstance().getUserType().equals("Caregiver")){
             t1.setText("Caregiver Login");
+        } else{
+            t1.setText("Specialist Login");
         }
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +221,70 @@ public class LoginActivity extends AppCompatActivity {
                     requestQueue.add(stringRequest);
 
                     User.getInstance().setEmail(email);
+                } else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    b1.setVisibility(View.GONE);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONArray jsonArray = new JSONArray(response);
+//                                      JSONObject jsonObject = new JSONObject(response);
+                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                        String success = jsonObject.getString("success");
+                                        Log.e("tag", "success: " + success);
+                                        if (success.equals("-1")) {
+                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else if (success.equals("1")) {
+//                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                String jname = jsonObject.getString("name").trim();
+                                                String jemail = jsonObject.getString("email").trim();
+                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                sessionManager.createSession(jname, jemail, "Specialist");
+                                            }
+                                            Intent myIntent = new Intent(LoginActivity.this, ForumActivity.class);
+                                            startActivity(myIntent);
+                                        } else if (success.equals("0")) {
+                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("email", email);
+                            params.put("password", password);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
+
+                    User.getInstance().setEmail(email);
                 }
                 getWindow().setSoftInputMode(
                         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
@@ -238,6 +306,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else if (User.getInstance().getUserType().equals("Caregiver")) {
                     Intent intent = new Intent(LoginActivity.this, Register2Activity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(LoginActivity.this, Register3Activity.class);
                     startActivity(intent);
                 }
             }
