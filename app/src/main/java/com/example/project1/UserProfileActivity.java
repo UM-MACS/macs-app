@@ -33,7 +33,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity {
-    private Button viewMyPosts, viewMyEmotions;
+    private Button viewMyPosts, viewMyEmotions, viewMyFavourite;
 
 
     @Override
@@ -43,11 +43,20 @@ public class UserProfileActivity extends AppCompatActivity {
 
         viewMyPosts = (Button)findViewById(R.id.view_my_posts_button);
         viewMyEmotions = (Button)findViewById(R.id.view_my_emotions_button);
+        viewMyFavourite = (Button)findViewById(R.id.view_my_favourite_button);
 
         viewMyPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserProfileActivity.this, EditDeletePostActivity.class);
+                startActivity(i);
+            }
+        });
+
+        viewMyFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserProfileActivity.this, ViewFavouriteList.class);
                 startActivity(i);
             }
         });

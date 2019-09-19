@@ -52,13 +52,16 @@ private static String URL_GET_REPLY;
 private static String URL_POST_REPLY;
 private static String URL_PIN_POST;
 private static String URL_SEARCH_POST;
+private static String URL_ADD_FAV;
+private static String URL_DEL_FAV;
+private static String URL_GET_IS_FAV;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
 private TextView nullPost, username, threadTitle, threadContent, threadID;
 private FloatingActionButton createPostButton;
 private TextView expandedName, expandedTitle, expandedContent, expandedID;
 private CircleImageView user_pic, expanded_user_pic;
-private ImageView pinned_pic, unpinned_pic;
+private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
 private EditText replyText;
 private Button submitReplyButton;
 //private String getName, getTitle, getContent, getID;
@@ -112,6 +115,9 @@ private LinearLayout layoutAdjust;
         URL_POST_REPLY = localhost+":3000/postReply/";
         URL_PIN_POST = localhost+":3000/pinPost/";
         URL_SEARCH_POST = localhost+":3000/searchPost/";
+        URL_ADD_FAV = localhost+":3000/addToFavourite/";
+        URL_DEL_FAV = localhost+":3000/removeFavourite/";
+        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
 //        expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
@@ -127,6 +133,46 @@ private LinearLayout layoutAdjust;
                 startActivity(i);
             }
         });
+    }
+
+    public void getPic(final String name, final CircleImageView view){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            picture = jsonObject.getString("picture");
+                            Log.e("TAG", "pic: "+picture );
+
+                            //load picture example
+                            int loader = R.drawable.ic_user;
+                            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+                            imgLoader.DisplayImage(picture,loader,view);
+                            String success = jsonObject.getString("success");
+                            if(success.equals("1")){
+                                Log.e("TAG", "success loading photo" );
+                            }
+                        } catch (JSONException e) {
+                            Log.e("TAG", "fail to load photo");
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "fail to load photo");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("name",name);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void getPosts() {
@@ -237,47 +283,6 @@ private LinearLayout layoutAdjust;
         requestQueue.add(stringRequest);
     }
 
-    public void getPic(final String name, final CircleImageView view){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            picture = jsonObject.getString("picture");
-                            Log.e("TAG", "pic: "+picture );
-
-                            //load picture example
-                            int loader = R.drawable.ic_user;
-                            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-                            imgLoader.DisplayImage(picture,loader,view);
-                            String success = jsonObject.getString("success");
-                            if(success.equals("1")){
-                                Log.e("TAG", "success loading photo" );
-                            }
-                        } catch (JSONException e) {
-                            Log.e("TAG", "fail to load photo");
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", "fail to load photo");
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("name",name);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-
     public void onExpand(View v){
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
@@ -317,6 +322,7 @@ private LinearLayout layoutAdjust;
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
+        getIsFavourite(getID);
         getReplyPost(getID);
         submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
         submitReplyButton.setOnClickListener(new View.OnClickListener() {
@@ -325,6 +331,47 @@ private LinearLayout layoutAdjust;
                 onReply(getID);
             }
         });
+    }
+
+    private void getIsFavourite(final String id) {
+        Log.e("TAG", "getIsFavourite: id "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_IS_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)(findViewById(R.id.addFav));
+                                unfav_icon = (ImageView)(findViewById(R.id.removeFav));
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void getReplyPost(final String parentID) {
@@ -460,6 +507,8 @@ private LinearLayout layoutAdjust;
         startActivity(intent);
     }
 
+
+
     //for specialists only
     public void onPin(final View v){
 
@@ -554,6 +603,99 @@ private LinearLayout layoutAdjust;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+    public void onFavourite(final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onRemoveFavourite (final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.VISIBLE);
+                                unfav_icon.setVisibility(View.GONE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
 
     @Override
     public void onBackPressed() {

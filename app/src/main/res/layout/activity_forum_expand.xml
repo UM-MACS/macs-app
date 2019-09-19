@@ -66,7 +66,23 @@
                     android:visibility="gone"/>
 
             </FrameLayout>
-
+            <ImageView
+                android:id="@+id/addFav"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_remove_fav"
+                android:layout_gravity="end"
+                android:paddingBottom="15dp"
+                android:onClick="onFavourite"/>
+            <ImageView
+                android:id="@+id/removeFav"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_favourite"
+                android:layout_gravity="end"
+                android:paddingBottom="15dp"
+                android:visibility="gone"
+                android:onClick="onRemoveFavourite"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

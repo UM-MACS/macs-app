@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +36,12 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditDeletePostActivity extends AppCompatActivity {
+public class ViewFavouriteList extends AppCompatActivity {
     private String localhost;
-    private static String URL_GET_POSTS;
+    private static String URL_GET_FAV;
     private static String URL_GETPIC;
-    private static String URL_UPDATE_POST;
-    private static String URL_DELETE_POST;
+    private static String URL_ADD_FAV;
+    private static String URL_DEL_FAV;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID;
     private LinearLayout forumParentLinearLayout;
@@ -52,6 +53,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
     private EditText postTitle, postContent;
     private EditText searchEditText;
     private Button searchButton;
+    private ImageView fav_icon, unfav_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +61,10 @@ public class EditDeletePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_POSTS = localhost+":3000/getMyPost/";
+        URL_GET_FAV = localhost+":3000/myFavouriteList/";
+        URL_ADD_FAV = localhost+":3000/addToFavourite/";
+        URL_DEL_FAV = localhost+":3000/removeFavourite/";
         URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_UPDATE_POST = localhost+":3000/updatePost/";
-        URL_DELETE_POST = localhost+":3000/deletePost/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
@@ -79,7 +81,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
     }
 
     private void getMyPosts(final String email) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_FAV,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -200,10 +202,6 @@ public class EditDeletePostActivity extends AppCompatActivity {
         final String getID = (String) threadID.getText().toString();
         Log.e("TAG", "get id"+ getID );
         setContentView(R.layout.activity_forum_expand);
-        editButton = (Button)findViewById(R.id.edit_post);
-        editButton.setVisibility(View.VISIBLE);
-        deleteButton = (Button)findViewById(R.id.delete_post);
-        deleteButton.setVisibility(View.VISIBLE);
         expandedName = (TextView)findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView)findViewById(R.id.expanded_thread_title);
         expandedContent=(TextView)findViewById(R.id.expanded_thread_content);
@@ -214,49 +212,19 @@ public class EditDeletePostActivity extends AppCompatActivity {
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
-
-        //click on edit button
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onEditPost(getID, getTitle,getContent);
-            }
-        });
-
-        //click on delete button
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog diaBox = AskOption(getID);
-                diaBox.show();
-            }
-        });
+        fav_icon = (ImageView)findViewById(R.id.addFav);
+        unfav_icon = (ImageView)findViewById(R.id.removeFav);
+        fav_icon.setVisibility(View.GONE);
+        unfav_icon.setVisibility(View.VISIBLE);
 
     }
 
-    public void onEditPost(final String ID, final String title, final String content){
-        setContentView(R.layout.activity_create_post);
-        postButton = (Button) findViewById(R.id.post_button);
-        postTitle = (EditText)findViewById(R.id.post_title);
-        postContent = (EditText)findViewById(R.id.post_content);
-        postTitle.setText(title);
-        postContent.setText(content);
-        //onPost(id)
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUpdate(ID);
-            }
-        });
+    public void onFavourite(final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
 
-    }
-
-    public void onUpdate(final String id){
-        postTitle = (EditText)findViewById(R.id.post_title);
-        postContent = (EditText)findViewById(R.id.post_content);
-        final String title = postTitle.getText().toString();
-        final String content = postContent.getText().toString();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_POST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -264,114 +232,84 @@ public class EditDeletePostActivity extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
-                            if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),"Update Success",
-                                        Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(EditDeletePostActivity.this,
-                                        EditDeletePostActivity.class);
-                                startActivity(i);
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Post Fail",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Post Fail",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Post Fail",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("id", id);
-                params.put("title",title);
-                params.put("content",content);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
 
-    private AlertDialog AskOption(final String id) {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
-                //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_cancel_button)
-
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        onDeletePost(id);
-                        dialog.dismiss();
-                    }
-
-                })
-
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                })
-                .create();
-        return myQuittingDialogBox;
-
-    }
-
-    private void onDeletePost(final String id) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DELETE_POST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if(success.equals("1")){
-                                Log.e("TAG", "success" );
-                                Toast.makeText(getApplicationContext(),"Post Deleted",
-                                        Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(EditDeletePostActivity.this,
-                                        EditDeletePostActivity.class);
-                                startActivity(i);
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                Toast.makeText(getApplicationContext(), "Error",
                         Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("id",id);
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id);
                 return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+    public void onRemoveFavourite (final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.VISIBLE);
+                                unfav_icon.setVisibility(View.GONE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
 
 }

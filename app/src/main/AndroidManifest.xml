@@ -83,6 +83,9 @@
         <activity
             android:name=".AndroidDatabaseManager"
             android:label="User Database" />
+        <activity android:name=".ViewFavouriteList"
+            android:label="Favourite List"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
