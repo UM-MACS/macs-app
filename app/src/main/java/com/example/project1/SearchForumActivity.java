@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,26 +44,26 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ForumActivity extends AppCompatActivity {
-private SessionManager sessionManager;
-private String localhost;
-private static String URL;
-private static String URL_GETPIC;
-private static String URL_GET_REPLY;
-private static String URL_POST_REPLY;
-private static String URL_PIN_POST;
-private static String URL_SEARCH_POST;
-private String picture;
-private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent, threadID;
-private FloatingActionButton createPostButton;
-private TextView expandedName, expandedTitle, expandedContent, expandedID;
-private CircleImageView user_pic, expanded_user_pic;
-private ImageView pinned_pic, unpinned_pic;
-private EditText replyText;
-private Button submitReplyButton;
-//private String getName, getTitle, getContent, getID;
-private LinearLayout layoutAdjust;
+public class SearchForumActivity extends AppCompatActivity {
+    private SessionManager sessionManager;
+    private String localhost;
+    private static String URL;
+    private static String URL_GETPIC;
+    private static String URL_GET_REPLY;
+    private static String URL_POST_REPLY;
+    private static String URL_PIN_POST;
+    private static String URL_SEARCH_POST;
+    private String picture, searchTitle, searchContent;
+    private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
+    private TextView nullPost, username, threadTitle, threadContent, threadID;
+    private FloatingActionButton createPostButton;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID;
+    private CircleImageView user_pic, expanded_user_pic;
+    private ImageView pinned_pic, unpinned_pic;
+    private EditText replyText, searchEditText;
+    private Button submitReplyButton, searchButton;
+    //private String getName, getTitle, getContent, getID;
+    private LinearLayout layoutAdjust;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,23 +82,23 @@ private LinearLayout layoutAdjust;
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(ForumActivity.this, emotionActivity.class);
+                        Intent i2 = new Intent(SearchForumActivity.this, emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(ForumActivity.this, viewEventActivity.class);
+                        Intent i3 = new Intent(SearchForumActivity.this, viewEventActivity.class);
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(ForumActivity.this, eventAssessment.class);
+                        Intent i4 = new Intent(SearchForumActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
                     case R.id.navigation_faq:
-                        Intent i5 = new Intent(ForumActivity.this, FAQ.class);
+                        Intent i5 = new Intent(SearchForumActivity.this, FAQ.class);
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(ForumActivity.this, ForumActivity.class);
+                        Intent i6 = new Intent(SearchForumActivity.this, ForumActivity.class);
                         startActivity(i6);
                         break;
                 }
@@ -114,128 +115,35 @@ private LinearLayout layoutAdjust;
         URL_SEARCH_POST = localhost+":3000/searchPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
-//        expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
-//        picture = "http://192.168.0.187/jee/profile_image/user.png";
-        getPosts();
-        createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
 
+        searchButton = (Button)findViewById(R.id.search_button);
+        searchEditText = (EditText)findViewById(R.id.search_edit_text);
+        searchButton.setVisibility(View.GONE);
+        searchEditText.setVisibility(View.GONE);
+        String searchText;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                searchText= null;
+            } else {
+                searchText= extras.getString("searchText");
+            }
+        } else {
+            searchText = (String) savedInstanceState.getSerializable("searchText");
+        }
+        search(searchText);
+
+        createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ForumActivity.this, CreatePostActivity.class);
+                Intent i = new Intent(SearchForumActivity.this, CreatePostActivity.class);
                 startActivity(i);
             }
         });
     }
 
-    private void getPosts() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            ArrayList<String> name = new ArrayList<>();
-                            ArrayList<String> title = new ArrayList<>();
-                            ArrayList<String> content = new ArrayList<>();
-                            ArrayList<String> id = new ArrayList<>();
-                            ArrayList<String> anonymous = new ArrayList<>();
-                            ArrayList<String> pinned = new ArrayList<>();
-
-                            if(success.equals("1")){
-                                for (int i=0; i<jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    name.add(object.getString("name"));
-                                    title.add(object.getString("title"));
-                                    content.add(object.getString("content"));
-                                    id.add(object.getString("id"));
-                                    anonymous.add(object.getString("anonymous"));
-                                    pinned.add(object.getString("pinned"));
-                                }
-                                for (int i =0; i<name.size();i++){
-                                    if(pinned.get(i).equals("true")) {
-                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
-                                        pinned_pic.setVisibility(View.VISIBLE);
-                                        if (anonymous.get(i).equals("true")) {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText("Anonymous");
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
-                                        } else {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText(name.get(i));
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
-                                        }
-                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                        threadTitle.setText(title.get(i));
-                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                        threadContent.setText(content.get(i));
-                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
-                                        threadID.setText(id.get(i));
-                                    }
-                                }
-                                for(int i=0; i<name.size();i++){
-                                    if(pinned.get(i).equals("")){
-                                        Log.e("TAG", "name " + name.get(i));
-                                        Log.e("TAG", "title " + title.get(i));
-                                        Log.e("TAG", "content " + content.get(i));
-                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        if(User.getInstance().getUserType().equals("Specialist")){
-                                            unpinned_pic = (ImageView) ((View)rowView).findViewById(R.id.unpinned);
-                                            unpinned_pic.setVisibility(View.VISIBLE);
-                                        }
-                                        if (anonymous.get(i).equals("true")) {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText("Anonymous");
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
-                                        } else {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText(name.get(i));
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
-                                        }
-                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                        threadTitle.setText(title.get(i));
-                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                        threadContent.setText(content.get(i));
-                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
-                                        threadID.setText(id.get(i));
-                                    }
-                                }
-
-                            } else if (success.equals("-1")){
-                                nullPost.setVisibility(View.VISIBLE);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
     public void getPic(final String name, final CircleImageView view){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
@@ -276,7 +184,6 @@ private LinearLayout layoutAdjust;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
-
 
     public void onExpand(View v){
         username = (TextView) ((View) v).findViewById(R.id.user_name);
@@ -452,13 +359,122 @@ private LinearLayout layoutAdjust;
         }
     }
 
-    public void onSearch(View v){
-        EditText editText = (EditText) ((View)v.getParent()).findViewById(R.id.search_edit_text);
-        final String searchText = (String) editText.getText().toString();
-        Intent intent = new Intent(ForumActivity.this,SearchForumActivity.class);
-        intent.putExtra("searchText",searchText);
-        startActivity(intent);
+    public void search(final String searchText){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SEARCH_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> title = new ArrayList<>();
+                            ArrayList<String> content = new ArrayList<>();
+                            ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> anonymous = new ArrayList<>();
+                            ArrayList<String> pinned = new ArrayList<>();
+
+                            if(success.equals("1")){
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    name.add(object.getString("name"));
+                                    title.add(object.getString("title"));
+                                    content.add(object.getString("content"));
+                                    id.add(object.getString("id"));
+                                    anonymous.add(object.getString("anonymous"));
+                                    pinned.add(object.getString("pinned"));
+                                }
+                                for (int i =0; i<name.size();i++){
+                                    if(pinned.get(i).equals("true")) {
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                        pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
+                                        pinned_pic.setVisibility(View.VISIBLE);
+                                        if (anonymous.get(i).equals("true")) {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText("Anonymous");
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic("lee", user_pic);
+                                        } else {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText(name.get(i));
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic(name.get(i), user_pic);
+                                        }
+
+                                        searchTitle = title.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
+                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                        threadTitle.setText(Html.fromHtml(searchTitle));
+                                        searchContent = content.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
+                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                        threadContent.setText(Html.fromHtml(searchContent));
+//                                        threadContent.setText(content.get(i));
+                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
+                                        threadID.setText(id.get(i));
+                                    }
+                                }
+                                for(int i=0; i<name.size();i++){
+                                    if(pinned.get(i).equals("")){
+                                        Log.e("TAG", "name " + name.get(i));
+                                        Log.e("TAG", "title " + title.get(i));
+                                        Log.e("TAG", "content " + content.get(i));
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                        if(User.getInstance().getUserType().equals("Specialist")){
+                                            unpinned_pic = (ImageView) ((View)rowView).findViewById(R.id.unpinned);
+                                            unpinned_pic.setVisibility(View.VISIBLE);
+                                        }
+                                        if (anonymous.get(i).equals("true")) {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText("Anonymous");
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic("lee", user_pic);
+                                        } else {
+                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                            username.setText(name.get(i));
+                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            getPic(name.get(i), user_pic);
+                                        }
+                                        searchTitle = title.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
+                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                        threadTitle.setText(Html.fromHtml(searchTitle));
+                                        searchContent = content.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
+                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                        threadContent.setText(Html.fromHtml(searchContent));
+                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
+                                        threadID.setText(id.get(i));
+                                    }
+                                }
+
+                            } else if (success.equals("-1")){
+                                nullPost.setVisibility(View.VISIBLE);
+                                nullPost.setText("No Search Result for "+searchText);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("search",searchText);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
+
 
     //for specialists only
     public void onPin(final View v){
@@ -557,7 +573,7 @@ private LinearLayout layoutAdjust;
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
+        Intent i = new Intent(SearchForumActivity.this,ForumActivity.class);
         startActivity(i);
     }
 
@@ -578,7 +594,7 @@ private LinearLayout layoutAdjust;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             sessionManager.logout();
-            Intent intent = new Intent(ForumActivity.this,MainActivity.class);
+            Intent intent = new Intent(SearchForumActivity.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
@@ -587,13 +603,13 @@ private LinearLayout layoutAdjust;
         }
 
         if (id == R.id.action_change_password){
-            Intent intent = new Intent(ForumActivity.this,ChangePassword.class);
+            Intent intent = new Intent(SearchForumActivity.this,ChangePassword.class);
             startActivity(intent);
             return true;
         }
 
         if(id == R.id.action_user_profile){
-            Intent intent = new Intent(ForumActivity.this,UserProfileActivity.class);
+            Intent intent = new Intent(SearchForumActivity.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }

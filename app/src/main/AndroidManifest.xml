@@ -31,6 +31,9 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".SearchForumActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ChangePassword"
             android:theme="@style/AppTheme.NoActionBar" />

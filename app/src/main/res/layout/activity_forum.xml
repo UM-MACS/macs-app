@@ -33,13 +33,43 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="90dp">
     <LinearLayout
         android:id="@+id/parent_linear_layout_forum"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="50dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:layout_marginEnd="45dp"
+        android:hint="Search"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:gravity="center"
+        android:background="@drawable/border"
+        android:layout_gravity="start"/>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:background="@drawable/ic_search"
+        android:onClick="onSearch"/>
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/nullPost"
         android:layout_width="match_parent"

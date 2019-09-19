@@ -62,12 +62,12 @@
             android:id="@+id/thread_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
             android:text="Title"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/thread_content"
