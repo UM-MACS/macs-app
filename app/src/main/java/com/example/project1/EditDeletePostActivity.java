@@ -8,11 +8,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +31,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,16 +47,17 @@ public class EditDeletePostActivity extends AppCompatActivity {
     private static String URL_UPDATE_POST;
     private static String URL_DELETE_POST;
     private String picture, ID;
-    private TextView nullPost, username, threadTitle, threadContent, threadID;
+    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
     private BottomNavigationView bottomNavigationView;
-    private TextView expandedName, expandedTitle, expandedContent, expandedID;
     private Button editButton, deleteButton, postButton;
     private EditText postTitle, postContent;
     private EditText searchEditText;
-    private Button searchButton;
+    private Button searchButton,cancelButton;
+    private ImageView fav_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,74 +85,87 @@ public class EditDeletePostActivity extends AppCompatActivity {
     }
 
     private void getMyPosts(final String email) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            ArrayList<String> name = new ArrayList<>();
-                            ArrayList<String> title = new ArrayList<>();
-                            ArrayList<String> content = new ArrayList<>();
-                            ArrayList<String> id = new ArrayList<>();
-                            Log.e("TAG", "success"+success );
+    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        String success = jsonObject.getString("success");
+                        ArrayList<String> name = new ArrayList<>();
+                        ArrayList<String> title = new ArrayList<>();
+                        ArrayList<String> content = new ArrayList<>();
+                        ArrayList<String> id = new ArrayList<>();
+                        ArrayList<String> date = new ArrayList<>();
+                        Log.e("TAG", "success"+success );
 
-                            if(success.equals("1")){
-                                for (int i=0; i<jsonArray.length(); i++){
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    name.add(object.getString("name"));
-                                    title.add(object.getString("title"));
-                                    content.add(object.getString("content"));
-                                    id.add(object.getString("id"));
-                                }
-
-                                for(int i=0; i<name.size();i++){
-                                    Log.e("TAG", "name "+name.get(i));
-                                    Log.e("TAG", "title "+title.get(i));
-                                    Log.e("TAG", "content "+content.get(i));
-                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                    forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                    getPic(name.get(i),user_pic);
-                                    username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                    username.setText(name.get(i));
-                                    threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                    threadTitle.setText(title.get(i));
-                                    threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                    threadContent.setText(content.get(i));
-                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
-                                    threadID.setText(id.get(i));
-
-                                }
-
-                            } else if(success.equals("-1")){
-                                nullPost.setVisibility(View.VISIBLE);
+                        if(success.equals("1")){
+                            for (int i=0; i<jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                name.add(object.getString("name"));
+                                title.add(object.getString("title"));
+                                content.add(object.getString("content"));
+                                id.add(object.getString("id"));
+                                date.add(object.getString("date"));
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            for(int i=0; i<name.size();i++){
+                                Log.e("TAG", "name "+name.get(i));
+                                Log.e("TAG", "title "+title.get(i));
+                                Log.e("TAG", "content "+content.get(i));
+                                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                getPic(name.get(i),user_pic);
+                                username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                username.setText(name.get(i));
+                                threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                threadTitle.setText(title.get(i));
+                                threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                threadContent.setText(content.get(i));
+                                threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
+                                threadID.setText(id.get(i));
+                                threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                try {
+                                    Date d = dateFormat.parse(date.get(i));
+                                    long epoch = d.getTime();
+                                    CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                    Log.e("TAG", "time: "+time );
+                                    threadTime.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        } else if(success.equals("-1")){
+                            nullPost.setVisibility(View.VISIBLE);
                         }
-
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
+
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    }){
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String,String> params = new HashMap<>();
+            params.put("email",email);
+            return params;
+        }
+    };
+    RequestQueue requestQueue = Volley.newRequestQueue(this);
+    requestQueue.add(stringRequest);
+}
 
     public void getPic(final String name, final CircleImageView view){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
@@ -189,31 +208,34 @@ public class EditDeletePostActivity extends AppCompatActivity {
     public void onExpand(View v){
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
-        Log.e("TAG", "get name"+ getName );
         threadTitle = (TextView) ((View) v).findViewById(R.id.thread_title);
         final String getTitle = (String) threadTitle.getText().toString();
-        Log.e("TAG", "get title"+ getTitle );
         threadContent = (TextView) ((View) v).findViewById(R.id.thread_content);
         final String getContent = (String) threadContent.getText().toString();
-        Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
-        Log.e("TAG", "get id"+ getID );
+        threadTime = (TextView) ((View) v).findViewById(R.id.thread_time);
+        final String getTime = (String) threadTime.getText().toString();
+
         setContentView(R.layout.activity_forum_expand);
         editButton = (Button)findViewById(R.id.edit_post);
         editButton.setVisibility(View.VISIBLE);
         deleteButton = (Button)findViewById(R.id.delete_post);
         deleteButton.setVisibility(View.VISIBLE);
+        fav_icon = (ImageView)findViewById(R.id.addFav);
+        fav_icon.setVisibility(View.GONE);
         expandedName = (TextView)findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView)findViewById(R.id.expanded_thread_title);
         expandedContent=(TextView)findViewById(R.id.expanded_thread_content);
         expandedID = (TextView)findViewById(R.id.expanded_thread_id);
+        expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView)findViewById(R.id.expanded_user_profile_pic);
         getPic(getName,expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
+        expandedTime.setText(getTime);
 
         //click on edit button
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +261,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
         postButton = (Button) findViewById(R.id.post_button);
         postTitle = (EditText)findViewById(R.id.post_title);
         postContent = (EditText)findViewById(R.id.post_content);
+        cancelButton = (Button) findViewById(R.id.post_cancel);
         postTitle.setText(title);
         postContent.setText(content);
         //onPost(id)
@@ -248,7 +271,13 @@ public class EditDeletePostActivity extends AppCompatActivity {
                 onUpdate(ID);
             }
         });
-
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditDeletePostActivity.this, EditDeletePostActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public void onUpdate(final String id){
@@ -374,4 +403,9 @@ public class EditDeletePostActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        Intent i = new Intent(EditDeletePostActivity.this,EditDeletePostActivity.class);
+//        startActivity(i);
+//    }
 }

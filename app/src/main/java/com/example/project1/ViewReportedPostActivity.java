@@ -41,14 +41,13 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewFavouriteList extends AppCompatActivity {
+public class ViewReportedPostActivity extends AppCompatActivity {
     private String localhost;
-    private static String URL_GET_FAV;
+    private static String URL_GET_REPORTED_POST;
     private static String URL_GETPIC;
-    private static String URL_ADD_FAV;
-    private static String URL_DEL_FAV;
     private static String URL_GET_REPLY;
     private static String URL_POST_REPLY;
+    private static String URL_DELETE_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
@@ -69,12 +68,11 @@ public class ViewFavouriteList extends AppCompatActivity {
         setContentView(R.layout.activity_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_FAV = localhost+":3000/myFavouriteList/";
-        URL_ADD_FAV = localhost+":3000/addToFavourite/";
-        URL_DEL_FAV = localhost+":3000/removeFavourite/";
+        URL_GET_REPORTED_POST = localhost+":3000/getReportedPost/";
         URL_GETPIC = localhost+"/jee/getPic.php";
         URL_GET_REPLY = localhost+":3000/getReplyPost/";
         URL_POST_REPLY = localhost+":3000/postReply/";
+        URL_DELETE_POST = localhost+":3000/deletePost/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
@@ -91,7 +89,7 @@ public class ViewFavouriteList extends AppCompatActivity {
     }
 
     private void getMyPosts(final String email) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_FAV,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REPORTED_POST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -164,9 +162,7 @@ public class ViewFavouriteList extends AppCompatActivity {
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email);
-                return params;
+                return super.getParams();
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -245,11 +241,20 @@ public class ViewFavouriteList extends AppCompatActivity {
                 onReply(getID);
             }
         });
-
         fav_icon = (ImageView)findViewById(R.id.addFav);
         fav_icon.setVisibility(View.GONE);
         unfav_icon = (ImageView)findViewById(R.id.removeFav);
-        unfav_icon.setVisibility(View.VISIBLE);
+        unfav_icon.setVisibility(View.GONE);
+        deleteButton = (Button)findViewById(R.id.delete_post);
+        deleteButton.setVisibility(View.VISIBLE);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog diaBox = AskOption(getID);
+                diaBox.show();
+            }
+        });
+
     }
 
     private void getReplyPost(final String parentID) {
@@ -406,12 +411,36 @@ public class ViewFavouriteList extends AppCompatActivity {
         }
     }
 
-    public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
-        final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
+    private AlertDialog AskOption(final String id) {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.ic_cancel_button)
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        onDeletePost(id);
+                        dialog.dismiss();
+                    }
+
+                })
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    private void onDeletePost(final String id) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DELETE_POST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -419,32 +448,34 @@ public class ViewFavouriteList extends AppCompatActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
-                                fav_icon.setVisibility(View.GONE);
-                                unfav_icon.setVisibility(View.VISIBLE);
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error",
+                            if(success.equals("1")){
+                                Log.e("TAG", "success" );
+                                Toast.makeText(getApplicationContext(),"Post Deleted",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(ViewReportedPostActivity.this,
+                                        ViewReportedPostActivity.class);
+                                startActivity(i);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"Error Deleting,",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
+                Toast.makeText(getApplicationContext(),"Error Deleting,",
                         Toast.LENGTH_SHORT).show();
             }
-        }) {
+        }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
-                params.put("postID",id);
+                Map<String,String> params = new HashMap<>();
+                params.put("id",id);
                 return params;
             }
         };
@@ -452,51 +483,6 @@ public class ViewFavouriteList extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
-        final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
-                                fav_icon.setVisibility(View.VISIBLE);
-                                unfav_icon.setVisibility(View.GONE);
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
-                params.put("postID",id );
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
 
 }

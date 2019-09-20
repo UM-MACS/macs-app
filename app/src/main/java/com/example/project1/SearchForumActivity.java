@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +39,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,11 +58,12 @@ public class SearchForumActivity extends AppCompatActivity {
     private static String URL_POST_REPLY;
     private static String URL_PIN_POST;
     private static String URL_SEARCH_POST;
+    private static String URL_GET_POSTS;
     private String picture, searchTitle, searchContent;
     private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-    private TextView nullPost, username, threadTitle, threadContent, threadID;
+    private TextView nullPost, username, threadTitle, threadContent, threadID,threadTime;
     private FloatingActionButton createPostButton;
-    private TextView expandedName, expandedTitle, expandedContent, expandedID;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID,expandedTime;
     private CircleImageView user_pic, expanded_user_pic;
     private ImageView pinned_pic, unpinned_pic;
     private EditText replyText, searchEditText;
@@ -113,9 +119,11 @@ public class SearchForumActivity extends AppCompatActivity {
         URL_POST_REPLY = localhost+":3000/postReply/";
         URL_PIN_POST = localhost+":3000/pinPost/";
         URL_SEARCH_POST = localhost+":3000/searchPost/";
+        URL_GET_POSTS= localhost+":3000/getPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
+        nullPost.setVisibility(View.GONE);
 
         searchButton = (Button)findViewById(R.id.search_button);
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
@@ -197,33 +205,23 @@ public class SearchForumActivity extends AppCompatActivity {
         Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
+        threadTime = (TextView) ((View) v).findViewById(R.id.thread_time);
+        final String getTime = (String) threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
         expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
+        expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        replyText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                layoutAdjust = (LinearLayout)findViewById(R.id.layout_adjust);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
-                        (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0,440,0,0);
-                layoutAdjust.setLayoutParams(lp);
-                if(!hasFocus){
-                    lp.setMargins(0,0,0,0);
-                    layoutAdjust.setLayoutParams(lp);
-                }
-            }
-        });
         getPic(getName, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
+        expandedTime.setText(getTime);
         getReplyPost(getID);
         submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
         submitReplyButton.setOnClickListener(new View.OnClickListener() {
@@ -246,12 +244,14 @@ public class SearchForumActivity extends AppCompatActivity {
                             ArrayList<String> name = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
+                                    date.add(object.getString("date"));
                                 }
                                 //displaying reply
                                 for(int i=0; i<name.size();i++){
@@ -270,6 +270,18 @@ public class SearchForumActivity extends AppCompatActivity {
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
+                                    threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date.get(i));
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        threadTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
@@ -302,6 +314,9 @@ public class SearchForumActivity extends AppCompatActivity {
     public void onReply(final String parentID){
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
+        Date d = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
                     Toast.LENGTH_SHORT).show();
@@ -325,9 +340,20 @@ public class SearchForumActivity extends AppCompatActivity {
                                     expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
+                                    expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
                                     getPic(User.getInstance().getUserName(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date);
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        expandedTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Error",
@@ -351,6 +377,7 @@ public class SearchForumActivity extends AppCompatActivity {
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
+                    params.put("date",date);
                     return params;
                 }
             };
@@ -374,6 +401,8 @@ public class SearchForumActivity extends AppCompatActivity {
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> anonymous = new ArrayList<>();
                             ArrayList<String> pinned = new ArrayList<>();
+                            ArrayList<String> parentID = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -384,42 +413,54 @@ public class SearchForumActivity extends AppCompatActivity {
                                     id.add(object.getString("id"));
                                     anonymous.add(object.getString("anonymous"));
                                     pinned.add(object.getString("pinned"));
+                                    parentID.add(object.getString("parentID"));
+                                    date.add(object.getString("date"));
+
                                 }
                                 for (int i =0; i<name.size();i++){
                                     if(pinned.get(i).equals("true")) {
-                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
-                                        pinned_pic.setVisibility(View.VISIBLE);
-                                        if (anonymous.get(i).equals("true")) {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText("Anonymous");
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
-                                        } else {
-                                            username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText(name.get(i));
-                                            user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
-                                        }
+                                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                            final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                            forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                            pinned_pic = (ImageView) ((View) rowView).findViewById(R.id.pinned);
+                                            pinned_pic.setVisibility(View.VISIBLE);
+                                            if (anonymous.get(i).equals("true")) {
+                                                username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                                username.setText("Anonymous");
+                                                user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                                getPic("lee", user_pic);
+                                            } else {
+                                                username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                                username.setText(name.get(i));
+                                                user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                                getPic(name.get(i), user_pic);
+                                            }
 
-                                        searchTitle = title.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
-                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                        threadTitle.setText(Html.fromHtml(searchTitle));
-                                        searchContent = content.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
-                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                        threadContent.setText(Html.fromHtml(searchContent));
-//                                        threadContent.setText(content.get(i));
-                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
-                                        threadID.setText(id.get(i));
+                                            searchTitle = title.get(i).replaceAll("(?i)" + searchText, "<font color='blue'>" + searchText + "</font>");
+                                            threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                            threadTitle.setText(Html.fromHtml(searchTitle));
+                                            searchContent = content.get(i).replaceAll("(?i)" + searchText, "<font color='blue'>" + searchText + "</font>");
+                                            threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                            threadContent.setText(Html.fromHtml(searchContent));
+                                            threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
+                                            threadID.setText(id.get(i));
+                                            threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                            try {
+                                                Date d = dateFormat.parse(date.get(i));
+                                                long epoch = d.getTime();
+                                                CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                                Log.e("TAG", "time: "+time );
+                                                threadTime.setText(time);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+
                                     }
                                 }
                                 for(int i=0; i<name.size();i++){
                                     if(pinned.get(i).equals("")){
-                                        Log.e("TAG", "name " + name.get(i));
-                                        Log.e("TAG", "title " + title.get(i));
-                                        Log.e("TAG", "content " + content.get(i));
+                                        if (parentID.get(i).equals("")) {
                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                         final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
@@ -446,6 +487,20 @@ public class SearchForumActivity extends AppCompatActivity {
                                         threadContent.setText(Html.fromHtml(searchContent));
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
+                                        threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        try {
+                                            Date d = dateFormat.parse(date.get(i));
+                                            long epoch = d.getTime();
+                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                            Log.e("TAG", "time: "+time );
+                                            threadTime.setText(time);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        } else{
+                                            getMyPosts(parentID.get(i));
+                                        }
                                     }
                                 }
 
@@ -475,6 +530,86 @@ public class SearchForumActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    private void getMyPosts(final String id) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> title = new ArrayList<>();
+                            ArrayList<String> content = new ArrayList<>();
+                            ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
+                            Log.e("TAG", "success"+success );
+
+                            if(success.equals("1")){
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    name.add(object.getString("name"));
+                                    title.add(object.getString("title"));
+                                    content.add(object.getString("content"));
+                                    id.add(object.getString("id"));
+                                    date.add(object.getString("date"));
+                                }
+
+                                for(int i=0; i<name.size();i++){
+                                    Log.e("TAG", "name "+name.get(i));
+                                    Log.e("TAG", "title "+title.get(i));
+                                    Log.e("TAG", "content "+content.get(i));
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                    forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                    getPic(name.get(i),user_pic);
+                                    username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                    username.setText(name.get(i));
+                                    threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                    threadTitle.setText(title.get(i));
+                                    threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                    threadContent.setText(content.get(i));
+                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
+                                    threadID.setText(id.get(i));
+                                    threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date.get(i));
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        threadTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("id",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
 
     //for specialists only
     public void onPin(final View v){

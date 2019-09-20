@@ -291,7 +291,9 @@ public class viewEventActivity extends AppCompatActivity {
                 int Hour = cldr.get(Calendar.HOUR_OF_DAY);
                 int Minutes = cldr.get(Calendar.MINUTE);
                 //time picker dialog
-                picker = new TimePickerDialog(viewEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                picker = new TimePickerDialog(viewEventActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                        new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                         String hourSet="", minuteSet="";

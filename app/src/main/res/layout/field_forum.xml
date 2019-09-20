@@ -85,9 +85,8 @@
             android:id="@+id/thread_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2:07pm"
-            android:paddingBottom="10dp"
-            android:gravity="end"/>
+            android:gravity="end"
+            android:paddingBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

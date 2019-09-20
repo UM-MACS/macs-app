@@ -25,6 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +68,12 @@ private static String URL;
         if(checkBox.isChecked()){
             anonymous = "true";
         } else{
-            anonymous = "false";
+            anonymous = "";
         }
+        Date d = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String date = dateFormat.format(d);
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -107,6 +114,7 @@ private static String URL;
                 params.put("title", title);
                 params.put("content", content);
                 params.put("anonymous",anonymous);
+                params.put("date",date);
                 return params;
             }
         };

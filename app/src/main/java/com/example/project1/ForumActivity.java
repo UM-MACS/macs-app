@@ -2,13 +2,16 @@ package com.example.project1;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,9 +38,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,15 +63,17 @@ private static String URL_SEARCH_POST;
 private static String URL_ADD_FAV;
 private static String URL_DEL_FAV;
 private static String URL_GET_IS_FAV;
+private static String URL_REPORT_POST;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent, threadID;
+private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
+private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
 private FloatingActionButton createPostButton;
-private TextView expandedName, expandedTitle, expandedContent, expandedID;
 private CircleImageView user_pic, expanded_user_pic;
 private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
 private EditText replyText;
-private Button submitReplyButton;
+private TextView reportButton;
+private Button submitReplyButton, viewReportedButton;
 //private String getName, getTitle, getContent, getID;
 private LinearLayout layoutAdjust;
 
@@ -118,14 +128,12 @@ private LinearLayout layoutAdjust;
         URL_ADD_FAV = localhost+":3000/addToFavourite/";
         URL_DEL_FAV = localhost+":3000/removeFavourite/";
         URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
+        URL_REPORT_POST = localhost+":3000/reportPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
-//        expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
-//        picture = "http://192.168.0.187/jee/profile_image/user.png";
         getPosts();
         createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
-
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +141,17 @@ private LinearLayout layoutAdjust;
                 startActivity(i);
             }
         });
+        if(User.getInstance().getUserType().equals("Specialist")){
+            viewReportedButton = (Button)findViewById(R.id.view_reported_posts);
+            viewReportedButton.setVisibility(View.VISIBLE);
+            viewReportedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ForumActivity.this,ViewReportedPostActivity.class);
+                    startActivity(i);
+                }
+            });
+        }
     }
 
     public void getPic(final String name, final CircleImageView view){
@@ -190,6 +209,7 @@ private LinearLayout layoutAdjust;
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> anonymous = new ArrayList<>();
                             ArrayList<String> pinned = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -200,6 +220,7 @@ private LinearLayout layoutAdjust;
                                     id.add(object.getString("id"));
                                     anonymous.add(object.getString("anonymous"));
                                     pinned.add(object.getString("pinned"));
+                                    date.add(object.getString("date"));
                                 }
                                 for (int i =0; i<name.size();i++){
                                     if(pinned.get(i).equals("true")) {
@@ -225,6 +246,17 @@ private LinearLayout layoutAdjust;
                                         threadContent.setText(content.get(i));
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
+                                        threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        try {
+                                            Date d = dateFormat.parse(date.get(i));
+                                            long epoch = d.getTime();
+                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                            Log.e("TAG", "time: "+time );
+                                            threadTime.setText(time);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                                 for(int i=0; i<name.size();i++){
@@ -256,6 +288,17 @@ private LinearLayout layoutAdjust;
                                         threadContent.setText(content.get(i));
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
+                                        threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        try {
+                                            Date d = dateFormat.parse(date.get(i));
+                                            long epoch = d.getTime();
+                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                            Log.e("TAG", "time: "+time );
+                                            threadTime.setText(time);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
 
@@ -295,33 +338,24 @@ private LinearLayout layoutAdjust;
         Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
+        threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
+        final String getTime = threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
         expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
+        expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        replyText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                layoutAdjust = (LinearLayout)findViewById(R.id.layout_adjust);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
-                        (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0,440,0,0);
-                layoutAdjust.setLayoutParams(lp);
-                if(!hasFocus){
-                    lp.setMargins(0,0,0,0);
-                    layoutAdjust.setLayoutParams(lp);
-                }
-            }
-        });
         getPic(getName, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
+        expandedTime.setText(getTime);
+
         getIsFavourite(getID);
         getReplyPost(getID);
         submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
@@ -329,6 +363,16 @@ private LinearLayout layoutAdjust;
             @Override
             public void onClick(View v) {
                 onReply(getID);
+            }
+        });
+
+        reportButton = (TextView) findViewById(R.id.report_button);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //confirmation pop up window
+                AlertDialog diaBox = AskOption(getID);
+                diaBox.show();
             }
         });
     }
@@ -386,12 +430,14 @@ private LinearLayout layoutAdjust;
                             ArrayList<String> name = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
+                                    date.add(object.getString("date"));
                                 }
                                 //displaying reply
                                 for(int i=0; i<name.size();i++){
@@ -410,6 +456,18 @@ private LinearLayout layoutAdjust;
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
+                                    threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date.get(i));
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        threadTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
@@ -442,6 +500,9 @@ private LinearLayout layoutAdjust;
     public void onReply(final String parentID){
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
+        Date d = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
                     Toast.LENGTH_SHORT).show();
@@ -465,9 +526,20 @@ private LinearLayout layoutAdjust;
                                     expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
+                                    expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
                                     getPic(User.getInstance().getUserName(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date);
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        expandedTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Error",
@@ -491,6 +563,7 @@ private LinearLayout layoutAdjust;
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
+                    params.put("date",date);
                     return params;
                 }
             };
@@ -505,6 +578,164 @@ private LinearLayout layoutAdjust;
         Intent intent = new Intent(ForumActivity.this,SearchForumActivity.class);
         intent.putExtra("searchText",searchText);
         startActivity(intent);
+    }
+
+    public void onReport(final String id){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REPORT_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "This post has been reported successfully",
+                                        Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("report","true" );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private AlertDialog AskOption(final String id) {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Report This Post")
+                .setMessage("Are you sure you want to report this post?")
+                .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        onReport(id);
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    public void onFavourite(final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onRemoveFavourite (final View v){
+        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.VISIBLE);
+                                unfav_icon.setVisibility(View.GONE);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 
@@ -604,97 +835,6 @@ private LinearLayout layoutAdjust;
         requestQueue.add(stringRequest);
     }
 
-    public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
-        final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
-                                fav_icon.setVisibility(View.GONE);
-                                unfav_icon.setVisibility(View.VISIBLE);
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
-                params.put("postID",id);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
-        final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
-                                fav_icon.setVisibility(View.VISIBLE);
-                                unfav_icon.setVisibility(View.GONE);
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
-                params.put("postID",id );
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
 
     @Override

@@ -41,7 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/expanded_thread_id"
@@ -51,16 +52,16 @@
 
                 <Button
                     android:id="@+id/edit_post"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="start"
                     android:background="@drawable/ic_edit"
                     android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/delete_post"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="end"
                     android:background="@drawable/ic_bin"
                     android:visibility="gone"/>
@@ -68,16 +69,16 @@
             </FrameLayout>
             <ImageView
                 android:id="@+id/addFav"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_remove_fav"
                 android:layout_gravity="end"
                 android:paddingBottom="15dp"
                 android:onClick="onFavourite"/>
             <ImageView
                 android:id="@+id/removeFav"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_favourite"
                 android:layout_gravity="end"
                 android:paddingBottom="15dp"
@@ -145,13 +146,23 @@
 
             <TextView
                 android:id="@+id/expanded_thread_content"
-                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:padding="5dp"
                 android:text="random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl"
-                />
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/report_button"
+                android:background="@color/white"
+                android:textColor="@color/dodger_blue"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="10sp"
+                android:text="Report This Post"/>
 
         </LinearLayout>
         <LinearLayout
