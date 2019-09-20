@@ -51,7 +51,16 @@
                     android:background="@color/white"
                     android:onClick="onPost"
                     android:text="Post"
-                    android:textColor="@color/dodger_blue" />
+                    android:textColor="@color/dodger_blue"/>
+
+                <Button
+                    android:id="@+id/update_button"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/ic_tick"
+                    android:textColor="@color/dodger_blue"
+                    android:visibility="gone"/>
 
             </FrameLayout>
 

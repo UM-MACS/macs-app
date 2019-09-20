@@ -53,7 +53,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
     private BottomNavigationView bottomNavigationView;
-    private Button editButton, deleteButton, postButton;
+    private Button editButton, deleteButton, postButton, updateButton;
     private EditText postTitle, postContent;
     private EditText searchEditText;
     private Button searchButton,cancelButton;
@@ -259,13 +259,16 @@ public class EditDeletePostActivity extends AppCompatActivity {
     public void onEditPost(final String ID, final String title, final String content){
         setContentView(R.layout.activity_create_post);
         postButton = (Button) findViewById(R.id.post_button);
+        postButton.setVisibility(View.GONE);
+        updateButton = (Button)findViewById(R.id.update_button);
+        updateButton.setVisibility(View.VISIBLE);
         postTitle = (EditText)findViewById(R.id.post_title);
         postContent = (EditText)findViewById(R.id.post_content);
         cancelButton = (Button) findViewById(R.id.post_cancel);
         postTitle.setText(title);
         postContent.setText(content);
         //onPost(id)
-        postButton.setOnClickListener(new View.OnClickListener() {
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onUpdate(ID);
