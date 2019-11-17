@@ -91,208 +91,213 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = e1.getText().toString().trim();
                 final String password = e2.getText().toString().trim();
-                if (User.getInstance().getUserType().equals("Patient")) {
-                    /* mysql */
-                    progressBar.setVisibility(View.VISIBLE);
-                    b1.setVisibility(View.GONE);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONArray jsonArray = new JSONArray(response);
+                if (email.equals("") || password.equals("")) {
+                    Toast.makeText(getApplicationContext(),"Field(s) are empty",Toast.LENGTH_SHORT).show();
+                } else {
+                    if (User.getInstance().getUserType().equals("Patient")) {
+                        /* mysql */
+                        progressBar.setVisibility(View.VISIBLE);
+                        b1.setVisibility(View.GONE);
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONArray jsonArray = new JSONArray(response);
 //                                      JSONObject jsonObject = new JSONObject(response);
-                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                        String success = jsonObject.getString("success");
-                                        Log.e("tag", "success: " + success);
-                                        if (success.equals("-1")) {
-                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else if (success.equals("1")) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                            String success = jsonObject.getString("success");
+                                            Log.e("tag", "success: " + success);
+                                            if (success.equals("-1")) {
+                                                Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else if (success.equals("1")) {
 //                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
-                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                for (int i = 0; i < jsonArray.length(); i++) {
 //                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                                String jname = jsonObject.getString("name").trim();
-                                                String jemail = jsonObject.getString("email").trim();
-                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                sessionManager.createSession(jname, jemail, "Patient");
+                                                    String jname = jsonObject.getString("name").trim();
+                                                    String jemail = jsonObject.getString("email").trim();
+                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                    sessionManager.createSession(jname, jemail, "Patient");
+                                                }
+                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                startActivity(myIntent);
+                                            } else if (success.equals("0")) {
+                                                Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
                                             }
-                                            Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                                            startActivity(myIntent);
-                                        } else if (success.equals("0")) {
-                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                             b1.setVisibility(View.VISIBLE);
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        b1.setVisibility(View.VISIBLE);
                                     }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("email", email);
-                            params.put("password", password);
-                            return params;
-                        }
-                    };
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("email", email);
+                                params.put("password", password);
+                                return params;
+                            }
+                        };
 
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    requestQueue.add(stringRequest);
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
 
-                    User.getInstance().setEmail(email);
+                        User.getInstance().setEmail(email);
+
+                    } else if (User.getInstance().getUserType().equals("Caregiver")) {
+                        /* mysql */
+                        progressBar.setVisibility(View.VISIBLE);
+                        b1.setVisibility(View.GONE);
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN2,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONArray jsonArray = new JSONArray(response);
+                                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                            String success = jsonObject.getString("success");
+                                            Log.e("tag", "success: " + success);
+                                            if (success.equals("-1")) {
+                                                Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else if (success.equals("1")) {
+                                                for (int i = 0; i < jsonArray.length(); i++) {
+                                                    String jname = jsonObject.getString("name").trim();
+                                                    String jemail = jsonObject.getString("email").trim();
+                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                    sessionManager.createSession(jname, jemail, "Caregiver");
+                                                    User.getInstance().setEmail(jemail); //email
+                                                    User.getInstance().setUserName(jname);
+
+
+                                                }
+                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                startActivity(myIntent);
+                                            } else if (success.equals("0")) {
+                                                Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("email", email);
+                                params.put("password", password);
+                                return params;
+                            }
+                        };
+
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
+
+                        User.getInstance().setEmail(email);
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        b1.setVisibility(View.GONE);
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONArray jsonArray = new JSONArray(response);
+//                                      JSONObject jsonObject = new JSONObject(response);
+                                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                            String success = jsonObject.getString("success");
+                                            Log.e("tag", "success: " + success);
+                                            if (success.equals("-1")) {
+                                                Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else if (success.equals("1")) {
+//                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+                                                for (int i = 0; i < jsonArray.length(); i++) {
+//                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                    String jname = jsonObject.getString("name").trim();
+                                                    String jemail = jsonObject.getString("email").trim();
+                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
+                                                    sessionManager.createSession(jname, jemail, "Specialist");
+                                                }
+                                                Intent myIntent = new Intent(LoginActivity.this, SpecialistForumActivity.class);
+                                                startActivity(myIntent);
+                                            } else if (success.equals("0")) {
+                                                Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                b1.setVisibility(View.VISIBLE);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            b1.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
+                                params.put("email", email);
+                                params.put("password", password);
+                                return params;
+                            }
+                        };
+
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
+
+                        User.getInstance().setEmail(email);
+                    }
+                    getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+                    );
 
                 }
-
-                else if (User.getInstance().getUserType().equals("Caregiver")) {
-                    /* mysql */
-                    progressBar.setVisibility(View.VISIBLE);
-                    b1.setVisibility(View.GONE);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN2,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONArray jsonArray = new JSONArray(response);
-                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                        String success = jsonObject.getString("success");
-                                        Log.e("tag", "success: " + success);
-                                        if (success.equals("-1")) {
-                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else if (success.equals("1")) {
-                                            for (int i = 0; i < jsonArray.length(); i++) {
-                                                String jname = jsonObject.getString("name").trim();
-                                                String jemail = jsonObject.getString("email").trim();
-                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                sessionManager.createSession(jname, jemail, "Caregiver");
-                                            }
-                                            Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
-                                            startActivity(myIntent);
-                                        } else if (success.equals("0")) {
-                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        b1.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("email", email);
-                            params.put("password", password);
-                            return params;
-                        }
-                    };
-
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    requestQueue.add(stringRequest);
-
-                    User.getInstance().setEmail(email);
-                } else{
-                    progressBar.setVisibility(View.VISIBLE);
-                    b1.setVisibility(View.GONE);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONArray jsonArray = new JSONArray(response);
-//                                      JSONObject jsonObject = new JSONObject(response);
-                                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                        String success = jsonObject.getString("success");
-                                        Log.e("tag", "success: " + success);
-                                        if (success.equals("-1")) {
-                                            Toast.makeText(getApplicationContext(), "Email does not exist", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else if (success.equals("1")) {
-//                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
-                                            for (int i = 0; i < jsonArray.length(); i++) {
-//                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                                String jname = jsonObject.getString("name").trim();
-                                                String jemail = jsonObject.getString("email").trim();
-                                                Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                sessionManager.createSession(jname, jemail, "Specialist");
-                                            }
-                                            Intent myIntent = new Intent(LoginActivity.this, ForumActivity.class);
-                                            startActivity(myIntent);
-                                        } else if (success.equals("0")) {
-                                            Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            b1.setVisibility(View.VISIBLE);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        b1.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<>();
-                            params.put("email", email);
-                            params.put("password", password);
-                            return params;
-                        }
-                    };
-
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    requestQueue.add(stringRequest);
-
-                    User.getInstance().setEmail(email);
-                }
-                getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-                );
 
             }
-
-
         });
 
 

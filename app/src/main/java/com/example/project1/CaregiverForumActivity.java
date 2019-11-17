@@ -51,36 +51,37 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ForumActivity extends AppCompatActivity {
-private SessionManager sessionManager;
-private String localhost;
-private static String URL;
-private static String URL_GETPIC;
-private static String URL_GET_REPLY;
-private static String URL_POST_REPLY;
-private static String URL_PIN_POST;
-private static String URL_SEARCH_POST;
-private static String URL_ADD_FAV;
-private static String URL_DEL_FAV;
-private static String URL_GET_IS_FAV;
-private static String URL_REPORT_POST;
-private String picture;
-private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
-private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
-private FloatingActionButton createPostButton;
-private CircleImageView user_pic, expanded_user_pic;
-private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
-private EditText replyText;
-private TextView reportButton;
-private Button submitReplyButton, viewReportedButton;
-//private String getName, getTitle, getContent, getID;
-private LinearLayout layoutAdjust;
+public class CaregiverForumActivity extends AppCompatActivity {
+    private SessionManager sessionManager;
+    private String localhost;
+    private static String URL;
+    private static String URL_GETPIC;
+    private static String URL_GET_REPLY;
+    private static String URL_POST_REPLY;
+    private static String URL_PIN_POST;
+    private static String URL_SEARCH_POST;
+    private static String URL_ADD_FAV;
+    private static String URL_DEL_FAV;
+    private static String URL_GET_IS_FAV;
+    private static String URL_REPORT_POST;
+    private String picture;
+    private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
+    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
+    private FloatingActionButton createPostButton;
+    private CircleImageView user_pic, expanded_user_pic;
+    private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
+    private EditText replyText;
+    private TextView reportButton;
+    private Button submitReplyButton, viewReportedButton;
+    //private String getName, getTitle, getContent, getID;
+    private LinearLayout layoutAdjust;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forum);
+        setContentView(R.layout.activity_caregiver_forum);
+        Log.e("TAG", "Caregiver user name "+User.getInstance().getEmail() );
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -94,28 +95,28 @@ private LinearLayout layoutAdjust;
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(ForumActivity.this, emotionActivity.class);
+                        Intent i2 = new Intent(CaregiverForumActivity.this, emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(ForumActivity.this, viewEventActivity.class);
+                        Intent i3 = new Intent(CaregiverForumActivity.this, viewEventActivity.class);
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(ForumActivity.this, eventAssessment.class);
+                        Intent i4 = new Intent(CaregiverForumActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
                     case R.id.navigation_faq:
-                        Intent i5 = new Intent(ForumActivity.this, FAQ.class);
+                        Intent i5 = new Intent(CaregiverForumActivity.this, FAQ.class);
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")){
-                            Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
+                            Intent i6 = new Intent(CaregiverForumActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {
-                            Intent i6 = new Intent(ForumActivity.this, ForumActivity.class);
+                            Intent i6 = new Intent(CaregiverForumActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
                         }
@@ -125,16 +126,16 @@ private LinearLayout layoutAdjust;
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/getForumPost";
-        URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPost/";
-        URL_POST_REPLY = localhost+":3000/postReply/";
-        URL_PIN_POST = localhost+":3000/pinPost/";
-        URL_SEARCH_POST = localhost+":3000/searchPost/";
-        URL_ADD_FAV = localhost+":3000/addToFavourite/";
-        URL_DEL_FAV = localhost+":3000/removeFavourite/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
-        URL_REPORT_POST = localhost+":3000/reportPost/";
+        URL = localhost+":3000/getCaregiverForumPost";
+        URL_GETPIC = localhost+"/jee/getPic2.php";
+        URL_GET_REPLY = localhost+":3000/getReplyPostCaregiver/";
+        URL_POST_REPLY = localhost+":3000/postReplyCaregiver/";
+        URL_PIN_POST = localhost+":3000/pinPostCaregiver/";
+        URL_SEARCH_POST = localhost+":3000/searchPostCaregiver/";
+        URL_ADD_FAV = localhost+":3000/addToFavouriteCaregiver/";
+        URL_DEL_FAV = localhost+":3000/removeFavouriteCaregiver/";
+        URL_GET_IS_FAV = localhost+":3000/getIsFavouriteCaregiver/";
+        URL_REPORT_POST = localhost+":3000/reportPostCaregiver/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
@@ -143,7 +144,7 @@ private LinearLayout layoutAdjust;
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ForumActivity.this, CreatePostActivity.class);
+                Intent i = new Intent(CaregiverForumActivity.this, CaregiverCreatePostActivity.class);
                 startActivity(i);
             }
         });
@@ -153,7 +154,7 @@ private LinearLayout layoutAdjust;
             viewReportedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(ForumActivity.this,ViewReportedPostActivity.class);
+                    Intent i = new Intent(CaregiverForumActivity.this,ViewReportedPostActivity.class);
                     startActivity(i);
                 }
             });
@@ -581,7 +582,7 @@ private LinearLayout layoutAdjust;
     public void onSearch(View v){
         EditText editText = (EditText) ((View)v.getParent()).findViewById(R.id.search_edit_text);
         final String searchText = (String) editText.getText().toString();
-        Intent intent = new Intent(ForumActivity.this,SearchForumActivity.class);
+        Intent intent = new Intent(CaregiverForumActivity.this,CaregiverSearchForumActivity.class);
         intent.putExtra("searchText",searchText);
         startActivity(intent);
     }
@@ -690,7 +691,6 @@ private LinearLayout layoutAdjust;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
-                params.put("forum","Patient");
                 params.put("postID",id);
                 return params;
             }
@@ -737,7 +737,6 @@ private LinearLayout layoutAdjust;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
-                params.put("forum","Patient");
                 params.put("postID",id );
                 return params;
             }
@@ -847,7 +846,7 @@ private LinearLayout layoutAdjust;
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
+        Intent i = new Intent(CaregiverForumActivity.this,CaregiverForumActivity.class);
         startActivity(i);
     }
 
@@ -868,7 +867,7 @@ private LinearLayout layoutAdjust;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             sessionManager.logout();
-            Intent intent = new Intent(ForumActivity.this,MainActivity.class);
+            Intent intent = new Intent(CaregiverForumActivity.this,MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
@@ -877,13 +876,13 @@ private LinearLayout layoutAdjust;
         }
 
         if (id == R.id.action_change_password){
-            Intent intent = new Intent(ForumActivity.this,ChangePassword.class);
+            Intent intent = new Intent(CaregiverForumActivity.this,ChangePassword.class);
             startActivity(intent);
             return true;
         }
 
         if(id == R.id.action_user_profile){
-            Intent intent = new Intent(ForumActivity.this,UserProfileActivity.class);
+            Intent intent = new Intent(CaregiverForumActivity.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }

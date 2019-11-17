@@ -13,7 +13,31 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".SpecialistForumActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".CaregiverSearchForumActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CaregiverEditDeletePostActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CaregiverViewFavouriteList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CaregiverCreatePostActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".CaregiverForumActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".DisplayAnalysisActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".EditDeletePostActivity"
             android:exported="true"
@@ -35,15 +59,17 @@
             android:name=".SearchForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ViewFavouriteList"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ViewFavouriteList"
             android:label="Favourite List"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ViewReportedPostActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name=".ViewReportedPostActivity"
             android:label="Reported Posts"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ChangePassword"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -88,8 +114,9 @@
         <activity
             android:name=".Register2Activity"
             android:label="Caregiver Register" />
-        <activity android:name=".Register3Activity"
-            android:label="Specialist Register"/>
+        <activity
+            android:name=".Register3Activity"
+            android:label="Specialist Register" />
         <activity
             android:name=".AndroidDatabaseManager"
             android:label="User Database" />

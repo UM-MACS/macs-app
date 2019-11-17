@@ -48,16 +48,26 @@ public class UserProfileActivity extends AppCompatActivity {
         viewMyPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserProfileActivity.this, EditDeletePostActivity.class);
-                startActivity(i);
+                if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
+                    Intent i = new Intent(UserProfileActivity.this, CaregiverEditDeletePostActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(UserProfileActivity.this, EditDeletePostActivity.class);
+                    startActivity(i);
+                }
             }
         });
 
         viewMyFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserProfileActivity.this, ViewFavouriteList.class);
-                startActivity(i);
+                if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
+                    Intent i = new Intent(UserProfileActivity.this, CaregiverViewFavouriteList.class);
+                    startActivity(i);
+                } else{
+                    Intent i = new Intent(UserProfileActivity.this, ViewFavouriteList.class);
+                    startActivity(i);
+                }
             }
         });
     }

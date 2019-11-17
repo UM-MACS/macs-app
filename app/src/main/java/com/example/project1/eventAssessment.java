@@ -91,9 +91,19 @@ public class eventAssessment extends AppCompatActivity {
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(eventAssessment.this, ForumActivity.class);
-                        startActivity(i6);
-                        break;
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                            Intent i6 = new Intent(eventAssessment.this, CaregiverForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                            Intent i6 = new Intent(eventAssessment.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else{
+                            Intent i6 = new Intent(eventAssessment.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
                 }
                 return true;
             }
@@ -261,6 +271,12 @@ public class eventAssessment extends AppCompatActivity {
 
         if (id == R.id.action_change_password){
             Intent intent = new Intent(eventAssessment.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(eventAssessment.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }

@@ -33,8 +33,7 @@ import java.util.Map;
 public class ChangePassword extends AppCompatActivity {
 private EditText o1,c1,c2;
 private Button button;
-private String t1, t2, t3,pw1;
-private DatabaseHelper db;
+private String t1, t2, t3;
 private String localhost;
 private static String URL ;
 SessionManager sessionManager;
@@ -114,6 +113,9 @@ SessionManager sessionManager;
                                                 Toast.makeText(getApplicationContext(),
                                                         "Old Password is wrong",
                                                         Toast.LENGTH_SHORT).show();
+                                                o1.setText("");
+                                                c1.setText("");
+                                                c2.setText("");
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();

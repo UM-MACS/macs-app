@@ -113,9 +113,19 @@ public class viewEventActivity extends AppCompatActivity {
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(viewEventActivity.this, ForumActivity.class);
-                        startActivity(i6);
-                        break;
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                            Intent i6 = new Intent(viewEventActivity.this, CaregiverForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                            Intent i6 = new Intent(viewEventActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else{
+                            Intent i6 = new Intent(viewEventActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
                 }
                 return true;
             }
@@ -332,9 +342,13 @@ public class viewEventActivity extends AppCompatActivity {
                 frameLayout.getForeground().setAlpha(0);
                 //check if all field are not empty
                 if (HH == null || mm == null) {
-                    Toast.makeText(getApplicationContext(), "Error!! Please Select a Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please Select a Time", Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
-                } else {
+                } else if(dateText.equals("")){
+                    Toast.makeText(getApplicationContext(), "Please Select a Date", Toast.LENGTH_SHORT).show();
+                    parentLinearLayout.removeView((View) rowView);
+                }
+                else {
                     //get remark text
                     String remarkText = editText.getText().toString();
                     //get date
@@ -773,6 +787,12 @@ public class viewEventActivity extends AppCompatActivity {
 
         if (id == R.id.action_change_password){
             Intent intent = new Intent(viewEventActivity.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(viewEventActivity.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }

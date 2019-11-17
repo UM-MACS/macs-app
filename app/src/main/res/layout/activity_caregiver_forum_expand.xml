@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CaregiverForumActivity">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <include
+            layout="@layout/app_bar_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="50dp">
+            <LinearLayout
+                android:id="@+id/layout_adjust"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_forum_thick"
+                android:padding="15dp"
+                android:orientation="vertical"
+                android:weightSum="4">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/expanded_thread_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/edit_post"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="start"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/delete_post"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:background="@drawable/ic_bin"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
+                <ImageView
+                    android:id="@+id/addFav"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_remove_fav"
+                    android:layout_gravity="end"
+                    android:paddingBottom="15dp"
+                    android:onClick="onFavourite"/>
+                <ImageView
+                    android:id="@+id/removeFav"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_favourite"
+                    android:layout_gravity="end"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    android:onClick="onRemoveFavourite"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_forum"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/expanded_user_profile_pic"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/expanded_user_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="User01"
+                            android:textColor="#000"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/expanded_thread_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="2:07pm" />
+
+                        <TextView
+                            android:id="@+id/expanded_thread_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="0dp"
+                            android:text="Title"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/expanded_thread_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:padding="5dp"
+                    android:text="random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/report_button"
+                    android:background="@color/white"
+                    android:textColor="@color/dodger_blue"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="10sp"
+                    android:text="Report This Post"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/parent_linear_layout_expanded_forum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="40dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border_forum_reply"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/reply_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginEnd="100dp"
+                android:focusable = "true"
+                android:focusableInTouchMode = "true"
+                android:hint="Reply"/>
+            <Button
+                android:id="@+id/submit_reply_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Post"/>
+        </FrameLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -52,12 +52,17 @@ public class emotionActivity extends AppCompatActivity{
     FrameLayout frameLayout;
     private String localhost;
     private static String URL;
+    private static String URL_API_SA;
     Date currentTime;
     private TextView mTextMessage;
     SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(User.getInstance().getUserType().equals("Specialist")){
+            Intent i = new Intent(emotionActivity.this,DisplayAnalysisActivity.class);
+            startActivity(i);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
 
@@ -66,6 +71,7 @@ public class emotionActivity extends AppCompatActivity{
 
         localhost = getString(R.string.localhost);
         URL =localhost+":3000/emotion";
+        URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
         String mEmail = user.get(sessionManager.EMAIL);
@@ -109,9 +115,20 @@ public class emotionActivity extends AppCompatActivity{
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(emotionActivity.this, ForumActivity.class);
-                        startActivity(i6);
-                        break;
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                            Intent i6 = new Intent(emotionActivity.this, CaregiverForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                            Intent i6 = new Intent(emotionActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else{
+                            Intent i6 = new Intent(emotionActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+
 
                 }
                 return true;
@@ -138,7 +155,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Very Happy(def)");
             }
         });
@@ -148,7 +165,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Happy(def)");
             }
         });
@@ -158,7 +175,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Smiling(def)");
             }
         });
@@ -168,7 +185,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Unhappy(def)");
             }
         });
@@ -178,7 +195,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Angry(def)");
             }
         });
@@ -188,7 +205,7 @@ public class emotionActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Date c = Calendar.getInstance().getTime();
                 final String date = c.toString();
-                insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                         "Sad(def)");
             }
         });
@@ -209,10 +226,10 @@ public class emotionActivity extends AppCompatActivity{
                 final String date = c.toString();
                 if (text.equals("")) {
                     Toast.makeText(getApplicationContext(),
-                            "Error! Please Enter something in the text box! ",
+                            "Please enter something in the text box",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    insert(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                    sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                             text);
                 }
             }
@@ -220,7 +237,7 @@ public class emotionActivity extends AppCompatActivity{
     }
 
     private void insert(final String email, final String type, final String date,
-                        final String expressionInput) {
+                        final String expressionInput,final String output) {
         Log.e("TAG", "expression input: "+expressionInput );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
@@ -290,11 +307,65 @@ public class emotionActivity extends AppCompatActivity{
                 params.put("type",type);
                 params.put("date",date);
                 params.put("expression",expressionInput);
+                params.put("output",output);
                 return params;
             }
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    private void sentimentAnalysis(final String email, final String type, final String date,
+                                   final String expressionInput) {
+        final String input =  expressionInput.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_API_SA,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.e("TAG", "object " );
+                            JSONObject object = new JSONObject(response);
+                            JSONArray output = object.getJSONArray("output");
+                            Log.e("TAG", "output1 is "+output );
+//                            output = output.substring(2,output.length()-2);
+
+                            for (int i =0; i<output.length();i++){
+                                insert(email,type,date,expressionInput,output.getString(i));
+                                Log.e("TAG", "output2 is "+output.getString(i) );
+                            }
+//                            updateAnalysis(id,output);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("TAG", "exception e");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("text", input);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> header = new HashMap<>();
+                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
+//                header.put("Content-Type","text/plain");
+                return header;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
@@ -336,6 +407,12 @@ public class emotionActivity extends AppCompatActivity{
 
         if (id == R.id.action_change_password){
             Intent intent = new Intent(emotionActivity.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(emotionActivity.this,UserProfileActivity.class);
             startActivity(intent);
             return true;
         }
