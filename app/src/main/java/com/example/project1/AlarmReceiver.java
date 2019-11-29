@@ -45,7 +45,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MASOCC")                            // required
                     .setSmallIcon(R.drawable.app_icon)
-                    .setContentText("You have an upcoming appointment")
+                    .setContentText("You have an Upcoming Appointment Tomorrow")
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))

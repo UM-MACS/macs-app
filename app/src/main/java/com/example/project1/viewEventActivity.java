@@ -544,9 +544,17 @@ public class viewEventActivity extends AppCompatActivity {
         int Hour = Integer.parseInt(time.substring(0,2));
         int Minute = Integer.parseInt(time.substring(3,5));
         cal.set(Year, (Month - 1), Day, Hour, Minute, 0);
+        long eventTime=cal.getTimeInMillis();//Returns Time in milliseconds
+        long oneDay=AlarmManager.INTERVAL_DAY;//Converts 24 Hrs(1 Day) to milliseconds
+        int noOfDays=1;
+        long reminderTime =eventTime-(noOfDays*oneDay);
+
         Log.e("tag", "" + Year+ (Month - 1)+ Day+ Hour+ Minute);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        Log.e("tag", "reminder time is "+reminderTime);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTime, pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTime, broadcast);
         Log.e("tag", "done setting");
     }
 
