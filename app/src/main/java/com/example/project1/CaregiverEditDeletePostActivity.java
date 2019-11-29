@@ -308,6 +308,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                 Intent i = new Intent(CaregiverEditDeletePostActivity.this,
                                         CaregiverEditDeletePostActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Post Fail",
@@ -384,6 +385,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                 Intent i = new Intent(CaregiverEditDeletePostActivity.this,
                                         CaregiverEditDeletePostActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Error Deleting,",

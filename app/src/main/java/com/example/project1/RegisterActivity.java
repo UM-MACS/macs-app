@@ -261,7 +261,6 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }

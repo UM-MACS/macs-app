@@ -53,7 +53,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_weight="7"
             android:background="@drawable/border"
             android:layout_marginTop="10dp"
             android:elevation="10dp"
@@ -111,29 +111,30 @@
 
         </LinearLayout>
 
-        <TextView
+        <Button
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="@string/newUser"
-            android:textSize="20sp"
+            android:layout_marginBottom="3dp"
+            android:text="Forgot Password"
+            android:textColor="@color/steel_blue"
+            android:background="@android:color/transparent"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            android:onClick="onNavForgotPassword"/>
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:background="@drawable/border"
-            android:padding="5dp"
             android:text="@string/newUser2"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"

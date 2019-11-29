@@ -308,6 +308,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
                                 Intent i = new Intent(EditDeletePostActivity.this,
                                         EditDeletePostActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Post Fail",
@@ -384,6 +385,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
                                 Intent i = new Intent(EditDeletePostActivity.this,
                                         EditDeletePostActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Error Deleting,",

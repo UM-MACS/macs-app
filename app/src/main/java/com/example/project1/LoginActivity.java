@@ -123,6 +123,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 }
                                                 Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
                                                 startActivity(myIntent);
+                                            } else if(success.equals("2")){
+                                                Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                                 progressBar.setVisibility(View.GONE);
@@ -258,7 +262,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 b1.setVisibility(View.VISIBLE);
-                                            } else {
+                                            }
+                                            else {
                                                 Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 b1.setVisibility(View.VISIBLE);
@@ -319,5 +324,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onNavForgotPassword(View v){
+        Intent i = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+        startActivity(i);
     }
 }
