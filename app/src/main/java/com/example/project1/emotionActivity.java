@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -222,8 +223,9 @@ public class emotionActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String text = expression.getText().toString();
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
                 if (text.equals("")) {
                     Toast.makeText(getApplicationContext(),
                             "Please enter something in the text box",
