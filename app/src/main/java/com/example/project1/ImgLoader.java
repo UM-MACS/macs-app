@@ -18,6 +18,7 @@
         import android.content.Context;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
+        import android.util.Base64;
         import android.widget.ImageView;
 
         public class ImgLoader {
@@ -54,31 +55,33 @@
 
     private Bitmap getBitmap(String url)
     {
-        File f=fileCache.getFile(url);
+//        File f=fileCache.getFile(url);
 
         //from SD cache
-        Bitmap b = decodeFile(f);
-        if(b!=null)
-            return b;
+//        Bitmap b = decodeFile(f);
+        byte[] byteArray = Base64.decode(url, Base64.DEFAULT);
+        Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+//        if(b!=null)
+        return b;
 
         //from web
-        try {
-            Bitmap bitmap=null;
-            URL imageUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-            conn.setConnectTimeout(30000);
-            conn.setReadTimeout(30000);
-            conn.setInstanceFollowRedirects(true);
-            InputStream is=conn.getInputStream();
-            OutputStream os = new FileOutputStream(f);
-            Utils.CopyStream(is, os);
-            os.close();
-            bitmap = decodeFile(f);
-            return bitmap;
-        } catch (Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
+//        try {
+//            Bitmap bitmap=null;
+//            URL imageUrl = new URL(url);
+//            HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+//            conn.setConnectTimeout(30000);
+//            conn.setReadTimeout(30000);
+//            conn.setInstanceFollowRedirects(true);
+//            InputStream is=conn.getInputStream();
+//            OutputStream os = new FileOutputStream(f);
+//            Utils.CopyStream(is, os);
+//            os.close();
+//            bitmap = decodeFile(f);
+//            return bitmap;
+//        } catch (Exception ex){
+//            ex.printStackTrace();
+//            return null;
+//        }
     }
 
     //decodes image and scales it to reduce memory consumption

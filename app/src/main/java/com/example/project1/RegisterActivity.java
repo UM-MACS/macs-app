@@ -243,11 +243,8 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     JSONArray jsonArray = new JSONArray(response);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String success = jsonObject.getString("success");
-                    Log.e("TAG", "success of pic "+success );
                     if(success.equals("1")){
-//                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-//                        startActivity(intent);
+                        Log.e("TAG", "set profile pic: success");
                     }
                     else if(success.equals("0")){
 //                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
