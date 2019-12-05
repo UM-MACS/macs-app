@@ -99,13 +99,17 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
                         Intent i4 = new Intent(CaregiverSearchForumActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(CaregiverSearchForumActivity.this, FAQ.class);
-                        startActivity(i5);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(CaregiverSearchForumActivity.this, FAQ.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
                         Intent i6 = new Intent(CaregiverSearchForumActivity.this, CaregiverForumActivity.class);
                         startActivity(i6);
+                        break;
+                    case R.id.navigation_chat:
+                        Intent i7 = new Intent(CaregiverSearchForumActivity.this, ChatActivity.class);
+                        startActivity(i7);
                         break;
                 }
                 return true;
@@ -745,6 +749,12 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(CaregiverSearchForumActivity.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(CaregiverSearchForumActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

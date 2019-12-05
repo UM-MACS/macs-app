@@ -87,6 +87,18 @@ private LinearLayout layoutAdjust;
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+            Button button = (Button)findViewById(R.id.admin_back_button);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ForumActivity.this, SpecialistForumActivity.class);
+                    startActivity(i);
+                }
+            });
+        }
         MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -105,12 +117,13 @@ private LinearLayout layoutAdjust;
                         Intent i4 = new Intent(ForumActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(ForumActivity.this, FAQ.class);
-                        startActivity(i5);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(ForumActivity.this, FAQ.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")){
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                        || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -119,6 +132,10 @@ private LinearLayout layoutAdjust;
                             startActivity(i6);
                             break;
                         }
+                    case R.id.navigation_chat:
+                        Intent i7 = new Intent(ForumActivity.this, ChatActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
@@ -148,6 +165,16 @@ private LinearLayout layoutAdjust;
             }
         });
         if(User.getInstance().getUserType().equals("Specialist")){
+            viewReportedButton = (Button)findViewById(R.id.view_reported_posts);
+            viewReportedButton.setVisibility(View.VISIBLE);
+            viewReportedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(ForumActivity.this,ViewReportedPostActivity.class);
+                    startActivity(i);
+                }
+            });
+        } else if(User.getInstance().getUserType().equals("Admin")){
             viewReportedButton = (Button)findViewById(R.id.view_reported_posts);
             viewReportedButton.setVisibility(View.VISIBLE);
             viewReportedButton.setOnClickListener(new View.OnClickListener() {
@@ -884,6 +911,12 @@ private LinearLayout layoutAdjust;
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(ForumActivity.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(ForumActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

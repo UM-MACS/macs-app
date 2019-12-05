@@ -14,7 +14,7 @@
     <string name="specialistButton">Specialist</string>
 
     <string name="title_activity_emotion">emotionActivity</string>
-    <string name="emotionIntro">How do you feel?</string>
+    <string name="emotionIntro">How do you feel now?</string>
     <string name="emotion1" value="counter1">Happy</string>
     <string name="emotion2" value="counter2">Moderate</string>
     <string name="emotion3" value="counter3">Sad</string>

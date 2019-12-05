@@ -37,47 +37,43 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="30dp"
-        android:gravity="center">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:weightSum="8"
             android:layout_marginTop="80dp"
             android:layout_marginBottom="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/border"
             android:elevation="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:gravity="center">
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/emotionIntro"
-                android:textSize="30sp"
+                android:text= "@string/emotionIntro"
+                android:gravity="center"
+                android:textSize="25sp"
                 app:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical"
-                android:layout_weight="2">
+                android:layout_weight="3"
+                android:layout_marginBottom="20dp">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginStart="20dp"
@@ -88,7 +84,7 @@
                 <Button
                     android:id="@+id/emotion1"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
@@ -97,7 +93,7 @@
                 <Button
                     android:id="@+id/emotion2"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -106,7 +102,7 @@
                 <Button
                     android:id="@+id/emotion3"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -115,18 +111,18 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/emotion4"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -135,7 +131,7 @@
                 <Button
                     android:id="@+id/emotion5"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -144,7 +140,7 @@
                 <Button
                     android:id="@+id/emotion6"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
@@ -155,9 +151,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical"
-                android:layout_weight="4"
+                android:layout_weight="4.5"
                 android:layout_marginBottom="20dp">
             <TextView
                 android:id="@+id/textView2"
@@ -169,8 +165,10 @@
                 android:text="@string/intro" />
 
             <LinearLayout
-                android:layout_width="200dp"
-                android:layout_height="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border"
@@ -180,7 +178,6 @@
                     android:id="@+id/expression"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:background="@null"
                     android:cursorVisible="false"
@@ -200,6 +197,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
 
 </FrameLayout>

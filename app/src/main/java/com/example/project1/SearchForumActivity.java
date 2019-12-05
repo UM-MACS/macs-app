@@ -99,13 +99,17 @@ public class SearchForumActivity extends AppCompatActivity {
                         Intent i4 = new Intent(SearchForumActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(SearchForumActivity.this, FAQ.class);
-                        startActivity(i5);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(SearchForumActivity.this, FAQ.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
                         Intent i6 = new Intent(SearchForumActivity.this, ForumActivity.class);
                         startActivity(i6);
+                        break;
+                    case R.id.navigation_chat:
+                        Intent i7 = new Intent(SearchForumActivity.this, ChatActivity.class);
+                        startActivity(i7);
                         break;
                 }
                 return true;
@@ -745,6 +749,12 @@ public class SearchForumActivity extends AppCompatActivity {
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(SearchForumActivity.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(SearchForumActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

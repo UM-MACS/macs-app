@@ -35,7 +35,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     DatabaseHelper db;
     EditText e1, e2;
-    Button b1,b2;
+    Button b1,b2,b3;
     TextView t1;
     private TextView mTextMessage;
     private ProgressBar progressBar;
@@ -78,13 +78,18 @@ public class LoginActivity extends AppCompatActivity {
         b1 = (Button)findViewById(R.id.login_button);
         b2 = (Button)findViewById(R.id.registerButton);
         t1 = (TextView)findViewById(R.id.textLogin);
+        b3 = (Button)findViewById(R.id.forgotpwButton);
         if(User.getInstance().getUserType().equals("Patient")){
             t1.setText("Patient Login");
         }
         else if(User.getInstance().getUserType().equals("Caregiver")){
             t1.setText("Caregiver Login");
-        } else{
+        } else if(User.getInstance().getUserType().equals("Specialist")){
             t1.setText("Specialist Login");
+        } else{
+            t1.setText("Admin Login");
+            b2.setVisibility(View.GONE);
+            b3.setVisibility(View.GONE);
         }
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
                         requestQueue.add(stringRequest);
 
                         User.getInstance().setEmail(email);
-                    } else {
+                    } else if(User.getInstance().getUserType().equals("Specialist")){
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
@@ -296,6 +301,19 @@ public class LoginActivity extends AppCompatActivity {
 
                         User.getInstance().setEmail(email);
                     }
+
+                    else{
+                        progressBar.setVisibility(View.VISIBLE);
+                        b1.setVisibility(View.GONE);
+                        if(email.equals("masoccadmin")&&password.equals("abc123")){
+                            Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
+                            startActivity(i);
+                            sessionManager.createSession("admin", "masoccadmin", "Admin");
+                        } else{
+                            Toast.makeText(getApplicationContext(),"Wrong Email or Password"
+                            ,Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     getWindow().setSoftInputMode(
                             WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
                     );
@@ -304,7 +322,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
 
         mTextMessage = (TextView) findViewById(R.id.message);
         b2.setOnClickListener(new View.OnClickListener() {

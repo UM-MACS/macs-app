@@ -19,16 +19,17 @@
         android:icon="@drawable/ic_assessment"
         android:title=""/>
 
-    <item
-        android:id="@+id/navigation_faq"
-        android:enabled="true"
-        android:icon="@drawable/ic_faq"
-        android:title=""/>
 
     <item
         android:id="@+id/navigation_forum"
         android:enabled="true"
-        android:icon="@drawable/ic_add_button"
+        android:icon="@drawable/ic_forum"
+        android:title=""/>
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:enabled="true"
+        android:icon="@drawable/ic_chat"
         android:title=""/>
 
 </menu>

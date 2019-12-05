@@ -108,10 +108,10 @@ public class viewEventActivity extends AppCompatActivity {
                         Intent i4 = new Intent(viewEventActivity.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(viewEventActivity.this, FAQ.class);
-                        startActivity(i5);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(viewEventActivity.this, FAQ.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
                             Intent i6 = new Intent(viewEventActivity.this, CaregiverForumActivity.class);
@@ -126,6 +126,10 @@ public class viewEventActivity extends AppCompatActivity {
                             startActivity(i6);
                             break;
                         }
+                    case R.id.navigation_chat:
+                        Intent i6 = new Intent(viewEventActivity.this, ChatActivity.class);
+                        startActivity(i6);
+                        break;
                 }
                 return true;
             }
@@ -801,6 +805,12 @@ public class viewEventActivity extends AppCompatActivity {
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(viewEventActivity.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(viewEventActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

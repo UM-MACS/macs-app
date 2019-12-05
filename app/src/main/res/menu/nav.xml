@@ -18,4 +18,10 @@
         android:orderInCategory="100"
         android:title="My Profile"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_faq"
+        android:orderInCategory="100"
+        android:title="FAQ"
+        app:showAsAction="never"/>
 </menu>

@@ -112,4 +112,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
+    <Button
+        android:id="@+id/admin_back_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dodger_blue"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
+        android:text="Back"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
+
 </RelativeLayout>

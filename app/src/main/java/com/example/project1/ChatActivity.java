@@ -3,24 +3,22 @@ package com.example.project1;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class SpecialistForumActivity extends AppCompatActivity {
-    SessionManager sessionManager;
+public class ChatActivity extends AppCompatActivity {
+    private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specialist_forum);
+        setContentView(R.layout.activity_chat);
         sessionManager = new SessionManager(this);
-        sessionManager.checkLogin();
+
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -29,66 +27,53 @@ public class SpecialistForumActivity extends AppCompatActivity {
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
-            bottomNavigationView.setVisibility(View.GONE);
-        }
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_chat);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(SpecialistForumActivity.this,
+                        Intent i2 = new Intent(ChatActivity.this,
                                 emotionActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(SpecialistForumActivity.this,
+                        Intent i3 = new Intent(ChatActivity.this,
                                 viewEventActivity.class);
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(SpecialistForumActivity.this,
+                        Intent i4 = new Intent(ChatActivity.this,
                                 eventAssessment.class);
                         startActivity(i4);
                         break;
 //                    case R.id.navigation_faq:
-//                        Intent i5 = new Intent(SpecialistForumActivity.this, FAQ.class);
+//                        Intent i5 = new Intent(ChatActivity.this, FAQ.class);
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                            Intent i6 = new Intent(SpecialistForumActivity.this, SpecialistForumActivity.class);
+                        if (User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
+                            Intent i6 = new Intent(ChatActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
-
+                            break;
+                        } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")) {
+                            Intent i6 = new Intent(ChatActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(ChatActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(SpecialistForumActivity.this, ChatActivity.class);
-                        startActivity(i7);
+                        Intent i6 = new Intent(ChatActivity.this, ChatActivity.class);
+                        startActivity(i6);
                         break;
                 }
                 return true;
             }
         });
-    }
-
-    public void onNavPatientForum(View v){
-        Intent i = new Intent(SpecialistForumActivity.this,ForumActivity.class);
-        startActivity(i);
-    }
-
-    public void onNavCaregiverForum(View v){
-        Intent i = new Intent(SpecialistForumActivity.this,CaregiverForumActivity.class);
-        startActivity(i);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -108,29 +93,28 @@ public class SpecialistForumActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             sessionManager.logout();
-            Intent intent = new Intent(SpecialistForumActivity.this,MainActivity.class);
+            Intent intent = new Intent(ChatActivity.this, MainActivity.class);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
             User.getInstance().setUserType("");
-//            finish();
             return true;
         }
 
-        if (id == R.id.action_change_password){
-            Intent intent = new Intent(SpecialistForumActivity.this,ChangePassword.class);
+        if (id == R.id.action_change_password) {
+            Intent intent = new Intent(ChatActivity.this, ChangePassword.class);
             startActivity(intent);
             return true;
         }
 
-        if(id == R.id.action_user_profile){
-            Intent intent = new Intent(SpecialistForumActivity.this,UserProfileActivity.class);
+        if (id == R.id.action_user_profile) {
+            Intent intent = new Intent(ChatActivity.this, UserProfileActivity.class);
             startActivity(intent);
             return true;
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(SpecialistForumActivity.this, FAQ.class);
+            Intent intent = new Intent(ChatActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

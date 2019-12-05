@@ -111,8 +111,8 @@ public class emotionActivity extends AppCompatActivity{
                                 eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(emotionActivity.this, FAQ.class);
+                    case R.id.navigation_chat:
+                        Intent i5 = new Intent(emotionActivity.this, ChatActivity.class);
                         startActivity(i5);
                         break;
                     case R.id.navigation_forum:
@@ -136,6 +136,7 @@ public class emotionActivity extends AppCompatActivity{
             }
         });
 
+
         //end
         frameLayout = (FrameLayout) findViewById(R.id.emotion_page);
         frameLayout.getForeground().setAlpha(0);
@@ -154,60 +155,78 @@ public class emotionActivity extends AppCompatActivity{
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Very Happy(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Very Happy(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Very Happy(def)","Verypositive");
             }
         });
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Happy(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Happy(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Happy(def)","Positive");
             }
         });
 
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Smiling(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Smiling(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Smiling(def)","Neutral");
             }
         });
 
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Unhappy(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Unhappy(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Unhappy(def)","Negative");
             }
         });
 
         b5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Angry(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Angry(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Angry(def)","Negative");
             }
         });
 
         b6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date c = Calendar.getInstance().getTime();
-                final String date = c.toString();
-                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                        "Sad(def)");
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String date = dateFormat.format(d);
+//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        "Sad(def)");
+                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                        date,"Sad(def)","Verynegative");
             }
         });
 
@@ -241,6 +260,7 @@ public class emotionActivity extends AppCompatActivity{
     private void insert(final String email, final String type, final String date,
                         final String expressionInput,final String output) {
         Log.e("TAG", "expression input: "+expressionInput );
+        Log.e("TAG", "date: "+date );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
             @Override
@@ -250,6 +270,7 @@ public class emotionActivity extends AppCompatActivity{
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String success = jsonObject.getString("success");
                 if(success.equals("1")){
+                    Log.e("TAG", "success" );
                     //Create pop up window
                     LayoutInflater inflater1 =
                             (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -415,6 +436,12 @@ public class emotionActivity extends AppCompatActivity{
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(emotionActivity.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(emotionActivity.this, FAQ.class);
             startActivity(intent);
             return true;
         }

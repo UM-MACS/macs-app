@@ -42,8 +42,8 @@ public class FAQ extends AppCompatActivity {
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_faq);
-        item.setChecked(true);
+//        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_faq);
+//        item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -60,10 +60,10 @@ public class FAQ extends AppCompatActivity {
                         Intent i4 = new Intent(FAQ.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(FAQ.this,FAQ.class);
-                        startActivity(i5);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(FAQ.this,FAQ.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
                             Intent i6 = new Intent(FAQ.this, CaregiverForumActivity.class);
@@ -78,6 +78,10 @@ public class FAQ extends AppCompatActivity {
                             startActivity(i6);
                             break;
                         }
+                    case R.id.navigation_chat:
+                        Intent i7 = new Intent(FAQ.this, ChatActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
@@ -163,6 +167,12 @@ public class FAQ extends AppCompatActivity {
 
         if(id == R.id.action_user_profile){
             Intent intent = new Intent(FAQ.this,UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(FAQ.this, FAQ.class);
             startActivity(intent);
             return true;
         }

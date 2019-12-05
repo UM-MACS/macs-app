@@ -68,8 +68,8 @@ SessionManager sessionManager;
                         Intent i4 = new Intent(ChangePassword.this, eventAssessment.class);
                         startActivity(i4);
                         break;
-                    case R.id.navigation_faq:
-                        Intent i5 = new Intent(ChangePassword.this, FAQ.class);
+                    case R.id.navigation_chat:
+                        Intent i5 = new Intent(ChangePassword.this, ChatActivity.class);
                         startActivity(i5);
                         break;
                 }
@@ -177,6 +177,12 @@ SessionManager sessionManager;
         }
         if (id == R.id.action_change_password){
             Intent intent = new Intent(ChangePassword.this,ChangePassword.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(ChangePassword.this, FAQ.class);
             startActivity(intent);
             return true;
         }
