@@ -67,8 +67,8 @@ public class ChatActivity extends AppCompatActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i6 = new Intent(ChatActivity.this, ChatActivity.class);
-                        startActivity(i6);
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                         break;
                 }
                 return true;
@@ -118,6 +118,12 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+
+//        if (id == R.id.action_faq) {
+//            Intent intent = new Intent(ChatActivity.this, FAQ.class);
+//            startActivity(intent);
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

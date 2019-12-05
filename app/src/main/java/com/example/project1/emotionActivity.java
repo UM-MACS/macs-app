@@ -112,8 +112,8 @@ public class emotionActivity extends AppCompatActivity{
                         startActivity(i4);
                         break;
                     case R.id.navigation_chat:
-                        Intent i5 = new Intent(emotionActivity.this, ChatActivity.class);
-                        startActivity(i5);
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                         break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){

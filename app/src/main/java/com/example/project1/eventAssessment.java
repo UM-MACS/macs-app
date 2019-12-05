@@ -105,8 +105,8 @@ public class eventAssessment extends AppCompatActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(eventAssessment.this, ChatActivity.class);
-                        startActivity(i7);
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                         break;
                 }
                 return true;

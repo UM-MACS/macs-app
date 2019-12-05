@@ -133,9 +133,8 @@ private LinearLayout layoutAdjust;
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(ForumActivity.this, ChatActivity.class);
-                        startActivity(i7);
-                        break;
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                 }
                 return true;
             }
