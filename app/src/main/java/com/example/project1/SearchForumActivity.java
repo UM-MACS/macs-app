@@ -2,10 +2,12 @@ package com.example.project1;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -59,10 +61,14 @@ public class SearchForumActivity extends AppCompatActivity {
     private static String URL_PIN_POST;
     private static String URL_SEARCH_POST;
     private static String URL_GET_POSTS;
+    private static String URL_GET_IS_FAV;
+    private static String URL_REPORT_POST;
     private String picture, searchTitle, searchContent;
     private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-    private TextView nullPost, username, threadTitle, threadContent, threadID,threadTime;
+    private TextView nullPost, username, threadTitle, threadContent, threadID,threadTime,
+    emailContainer,typeContainer, reportButton;
     private FloatingActionButton createPostButton;
+    private ImageView fav_icon,unfav_icon;
     private TextView expandedName, expandedTitle, expandedContent, expandedID,expandedTime;
     private CircleImageView user_pic, expanded_user_pic;
     private ImageView pinned_pic, unpinned_pic;
@@ -122,6 +128,8 @@ public class SearchForumActivity extends AppCompatActivity {
         URL_GET_REPLY = localhost+":3000/getReplyPost/";
         URL_POST_REPLY = localhost+":3000/postReply/";
         URL_PIN_POST = localhost+":3000/pinPost/";
+        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
+        URL_REPORT_POST = localhost+":3000/reportPost/";
         URL_SEARCH_POST = localhost+":3000/searchPost/";
         URL_GET_POSTS= localhost+":3000/getPost/";
         sessionManager = new SessionManager(this);
@@ -157,7 +165,13 @@ public class SearchForumActivity extends AppCompatActivity {
     }
 
 
-    public void getPic(final String name, final CircleImageView view){
+    public void getPic(final String email,final String type, final CircleImageView view){
+        if(type.equals("Specialist")){
+            URL_GETPIC = localhost+"/jee/getPic3.php";
+        }else{
+            URL_GETPIC = localhost+"/jee/getPic.php";
+        }
+        Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
                 new Response.Listener<String>() {
                     @Override
@@ -189,7 +203,7 @@ public class SearchForumActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("name",name);
+                params.put("email",email);
                 return params;
             }
         };
@@ -198,6 +212,10 @@ public class SearchForumActivity extends AppCompatActivity {
     }
 
     public void onExpand(View v){
+        emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
+        final String getEmail = emailContainer.getText().toString();
+        typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
+        final String getType = typeContainer.getText().toString();
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
         Log.e("TAG", "get name"+ getName );
@@ -209,8 +227,8 @@ public class SearchForumActivity extends AppCompatActivity {
         Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
-        threadTime = (TextView) ((View) v).findViewById(R.id.thread_time);
-        final String getTime = (String) threadTime.getText().toString();
+        threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
+        final String getTime = threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
@@ -220,12 +238,14 @@ public class SearchForumActivity extends AppCompatActivity {
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        getPic(getName, expanded_user_pic);
+        getPic(getEmail,getType, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
         expandedID.setText(getID);
         expandedTime.setText(getTime);
+
+        getIsFavourite(getID);
         getReplyPost(getID);
         submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
         submitReplyButton.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +254,123 @@ public class SearchForumActivity extends AppCompatActivity {
                 onReply(getID);
             }
         });
+
+        reportButton = (TextView) findViewById(R.id.report_button);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //confirmation pop up window
+                AlertDialog diaBox = AskOption(getID);
+                diaBox.show();
+            }
+        });
+    }
+
+    private void getIsFavourite(final String id) {
+        Log.e("TAG", "getIsFavourite: id "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_IS_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)(findViewById(R.id.addFav));
+                                unfav_icon = (ImageView)(findViewById(R.id.removeFav));
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private AlertDialog AskOption(final String id) {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Report This Post")
+                .setMessage("Are you sure you want to report this post?")
+                .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        onReport(id);
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    public void onReport(final String id){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REPORT_POST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "This post has been reported successfully",
+                                        Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error, please report again",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("report","true" );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void getReplyPost(final String parentID) {
@@ -246,6 +383,8 @@ public class SearchForumActivity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
@@ -256,6 +395,8 @@ public class SearchForumActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
                                 //displaying reply
                                 for(int i=0; i<name.size();i++){
@@ -270,7 +411,7 @@ public class SearchForumActivity extends AppCompatActivity {
                                     expandedContent=(TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expandedID = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_id);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                    getPic(name.get(i),expanded_user_pic);
+                                    getPic(email.get(i),type.get(i),expanded_user_pic);
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
@@ -345,7 +486,7 @@ public class SearchForumActivity extends AppCompatActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getUserName(), expanded_user_pic);
+                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -360,7 +501,7 @@ public class SearchForumActivity extends AppCompatActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error",
+                                    Toast.makeText(getApplicationContext(), "Error replying",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
@@ -378,6 +519,7 @@ public class SearchForumActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", User.getInstance().getEmail());
+                    params.put("type", User.getInstance().getUserType());
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
@@ -407,6 +549,8 @@ public class SearchForumActivity extends AppCompatActivity {
                             ArrayList<String> pinned = new ArrayList<>();
                             ArrayList<String> parentID = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -419,6 +563,8 @@ public class SearchForumActivity extends AppCompatActivity {
                                     pinned.add(object.getString("pinned"));
                                     parentID.add(object.getString("parentID"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
 
                                 }
                                 for (int i =0; i<name.size();i++){
@@ -432,14 +578,17 @@ public class SearchForumActivity extends AppCompatActivity {
                                                 username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                                 username.setText("Anonymous");
                                                 user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                                getPic("lee", user_pic);
+                                                getPic("lee","", user_pic);
                                             } else {
                                                 username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                                 username.setText(name.get(i));
                                                 user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                                getPic(name.get(i), user_pic);
+                                                getPic(email.get(i),type.get(i), user_pic);
                                             }
-
+                                            emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                            emailContainer.setText(email.get(i));
+                                            typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                            typeContainer.setText(type.get(i));
                                             searchTitle = title.get(i).replaceAll("(?i)" + searchText, "<font color='blue'>" + searchText + "</font>");
                                             threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                             threadTitle.setText(Html.fromHtml(searchTitle));
@@ -476,13 +625,17 @@ public class SearchForumActivity extends AppCompatActivity {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
+                                            getPic("lee","", user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
+                                            getPic(email.get(i),type.get(i), user_pic);
                                         }
+                                        emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                        emailContainer.setText(email.get(i));
+                                        typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                        typeContainer.setText(type.get(i));
                                         searchTitle = title.get(i).replaceAll("(?i)"+searchText, "<font color='blue'>"+searchText+"</font>");
                                         threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                         threadTitle.setText(Html.fromHtml(searchTitle));
@@ -548,6 +701,8 @@ public class SearchForumActivity extends AppCompatActivity {
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -558,6 +713,8 @@ public class SearchForumActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -568,7 +725,7 @@ public class SearchForumActivity extends AppCompatActivity {
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
                                     user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                    getPic(name.get(i),user_pic);
+                                    getPic(email.get(i),type.get(i),user_pic);
                                     username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                     username.setText(name.get(i));
                                     threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);

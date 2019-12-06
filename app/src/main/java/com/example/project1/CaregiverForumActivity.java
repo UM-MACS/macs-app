@@ -191,6 +191,9 @@ public class CaregiverForumActivity extends AppCompatActivity {
     }
 
     public void getPic(final String email,final String type, final CircleImageView view){
+        Log.e("TAG", "email get pic: "+ email );
+        Log.e("TAG", "type: "+type );
+
         if(type.equals("Specialist")){
             URL_GETPIC = localhost+"/jee/getPic3.php";
         }else{
@@ -204,7 +207,6 @@ public class CaregiverForumActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             picture = jsonObject.getString("picture");
-                            Log.e("TAG", "pic: "+picture );
 
                             //load picture example
                             int loader = R.drawable.ic_user;
@@ -287,6 +289,10 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                             getPic(email.get(i),type.get(i), user_pic);
                                             Log.e("TAG", "email get pic: "+email.get(i));
                                         }
+                                        emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                        emailContainer.setText(email.get(i));
+                                        typeContainer= (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                        typeContainer.setText(type.get(i));
                                         threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                         threadTitle.setText(title.get(i));
                                         threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
@@ -309,9 +315,6 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                 }
                                 for(int i=0; i<name.size();i++){
                                     if(pinned.get(i).equals("")){
-                                        Log.e("TAG", "name " + name.get(i));
-                                        Log.e("TAG", "title " + title.get(i));
-                                        Log.e("TAG", "content " + content.get(i));
                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                         final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
@@ -333,7 +336,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                         emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
                                         typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
-                                        typeContainer.setText(title.get(i));
+                                        typeContainer.setText(type.get(i));
                                         threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                         threadTitle.setText(title.get(i));
                                         threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
@@ -381,8 +384,10 @@ public class CaregiverForumActivity extends AppCompatActivity {
     public void onExpand(View v){
         emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
         final String getEmail = emailContainer.getText().toString();
+        Log.e("TAG", "get email"+ getEmail );
         typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
         final String getType = typeContainer.getText().toString();
+        Log.e("TAG", "get type"+ getType );
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
         Log.e("TAG", "get name"+ getName );
