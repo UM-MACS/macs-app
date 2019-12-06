@@ -105,7 +105,7 @@ public class viewEventActivity extends AppCompatActivity {
                         startActivity(i3);
                         break;
                     case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(viewEventActivity.this, eventAssessment.class);
+                        Intent i4 = new Intent(viewEventActivity.this, eventActivity.class);
                         startActivity(i4);
                         break;
 //                    case R.id.navigation_faq:

@@ -50,7 +50,7 @@ public class SpecialistForumActivity extends AppCompatActivity {
                         break;
                     case R.id.nagivation_event_assessment:
                         Intent i4 = new Intent(SpecialistForumActivity.this,
-                                eventAssessment.class);
+                                eventActivity.class);
                         startActivity(i4);
                         break;
 //                    case R.id.navigation_faq:
