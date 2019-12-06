@@ -17,7 +17,8 @@
         <activity android:name=".eventActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".GalleryActivity2"/>
+        <activity android:name=".GalleryActivity2"
+            android:exported="true"/>
         <activity android:name=".ChatActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"/>

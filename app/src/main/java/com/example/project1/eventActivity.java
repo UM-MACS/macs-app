@@ -43,9 +43,9 @@ public class eventActivity extends AppCompatActivity {
 
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview.");
-//        RecyclerView recyclerView = findViewById(R.id.recyclerv_view);
-//        RecyclerViewAdapter2 adapter2 = new RecyclerViewAdapter2(this, mNames);
-//        recyclerView.setAdapter(adapter2);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(R.id.recyclerv_view);
+        RecyclerViewAdapter2 adapter2 = new RecyclerViewAdapter2(this, mNames);
+        recyclerView.setAdapter(adapter2);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
