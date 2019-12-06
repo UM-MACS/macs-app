@@ -142,7 +142,7 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
 
                         Log.e("TAG", "log"+ s1+ " "+s2+" "+s5+" "+s6+" "+s7 );
                         registerAccount(s1,s2,s5,s6,s7);
-                        setProfile_pic(s1,s5);
+//                        setProfile_pic(s1,s5);
 
                         /* set user instance */
                         User.getInstance().setEmail(s1); //email
@@ -225,62 +225,7 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
                 params.put("name",name);
                 params.put("contact",contact);
                 params.put("age",age);
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
-
-
-    private void setProfile_pic(final String email, final String name) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOAD, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    String success = jsonObject.getString("success");
-                    Log.e("TAG", "success of pic "+success );
-                    if(success.equals("1")){
-//                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-//                        startActivity(intent);
-                    }
-                    else if(success.equals("0")){
-//                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
-                        loading.setVisibility(View.GONE);
-                        b1.setVisibility(View.VISIBLE);
-                    }
-                    else if(success.equals("-1")){
-//                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
-                        loading.setVisibility(View.GONE);
-                        b1.setVisibility(View.VISIBLE);
-                    }
-                } catch (JSONException e){
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
-                    loading.setVisibility(View.GONE);
-                    b1.setVisibility(View.VISIBLE);
-                }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
-                        loading.setVisibility(View.GONE);
-                        b1.setVisibility(View.VISIBLE);
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email",email);
                 params.put("photo",getStringImage(bitmap));
-                params.put("name",name);
                 return params;
             }
         };
@@ -288,6 +233,62 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
     }
+
+
+//    private void setProfile_pic(final String email, final String name) {
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOAD, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try{
+//                    JSONArray jsonArray = new JSONArray(response);
+//                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+//                    String success = jsonObject.getString("success");
+//                    Log.e("TAG", "success of pic "+success );
+//                    if(success.equals("1")){
+////                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+////                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+////                        startActivity(intent);
+//                    }
+//                    else if(success.equals("0")){
+////                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+//                        loading.setVisibility(View.GONE);
+//                        b1.setVisibility(View.VISIBLE);
+//                    }
+//                    else if(success.equals("-1")){
+////                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+//                        loading.setVisibility(View.GONE);
+//                        b1.setVisibility(View.VISIBLE);
+//                    }
+//                } catch (JSONException e){
+//                    e.printStackTrace();
+//                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+//                    loading.setVisibility(View.GONE);
+//                    b1.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+////                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+//                        loading.setVisibility(View.GONE);
+//                        b1.setVisibility(View.VISIBLE);
+//                    }
+//                })
+//        {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("email",email);
+//                params.put("photo",getStringImage(bitmap));
+//                params.put("name",name);
+//                return params;
+//            }
+//        };
+//
+//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        requestQueue.add(stringRequest);
+//    }
 
 
     private void chooseFile(){
@@ -319,6 +320,7 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
     public String getStringImage(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new
                 ByteArrayOutputStream();
+        bitmap = Bitmap.createScaledBitmap(bitmap,120,120,false);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50,
                 byteArrayOutputStream);
         byte[] imageByteArray = byteArrayOutputStream.toByteArray();

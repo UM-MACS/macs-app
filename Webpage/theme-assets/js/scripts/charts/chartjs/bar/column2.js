@@ -15,7 +15,6 @@ var email = "";
 $("#serachForm").submit(function(e) {
     e.preventDefault();
     email = document.getElementById("search").value
-    document.getElementById("yearButton").style.visibility = "visible";
     
 
     $.ajax({

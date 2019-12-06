@@ -110,6 +110,7 @@ private static String URL;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email",User.getInstance().getEmail());
+                params.put("type",User.getInstance().getUserType());
                 params.put("name",User.getInstance().getUserName());
                 params.put("title", title);
                 params.put("content", content);
