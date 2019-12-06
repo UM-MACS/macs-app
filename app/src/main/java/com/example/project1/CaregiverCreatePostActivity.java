@@ -114,6 +114,7 @@ public class CaregiverCreatePostActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email",email);
+                params.put("type",User.getInstance().getUserType());
                 params.put("name",name);
                 params.put("title", title);
                 params.put("content", content);

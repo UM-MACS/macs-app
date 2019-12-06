@@ -67,7 +67,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
     private static String URL_REPORT_POST;
     private String picture;
     private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
+    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime
+            ,emailContainer ,typeContainer;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
     private FloatingActionButton createPostButton;
     private CircleImageView user_pic, expanded_user_pic;
@@ -189,7 +190,13 @@ public class CaregiverForumActivity extends AppCompatActivity {
         }
     }
 
-    public void getPic(final String name, final CircleImageView view){
+    public void getPic(final String email,final String type, final CircleImageView view){
+        if(type.equals("Specialist")){
+            URL_GETPIC = localhost+"/jee/getPic3.php";
+        }else{
+            URL_GETPIC = localhost+"/jee/getPic2.php";
+        }
+        Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
                 new Response.Listener<String>() {
                     @Override
@@ -221,7 +228,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("name",name);
+                params.put("email",email);
                 return params;
             }
         };
@@ -239,6 +246,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             ArrayList<String> title = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
@@ -250,6 +259,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                 for (int i=0; i<jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                     title.add(object.getString("title"));
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
@@ -268,12 +279,13 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
+                                            getPic("lee","", user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
+                                            getPic(email.get(i),type.get(i), user_pic);
+                                            Log.e("TAG", "email get pic: "+email.get(i));
                                         }
                                         threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                         threadTitle.setText(title.get(i));
@@ -282,6 +294,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
                                         threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+
                                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                         try {
                                             Date d = dateFormat.parse(date.get(i));
@@ -310,13 +323,17 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee", user_pic);
+                                            getPic("lee","", user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(name.get(i), user_pic);
+                                            getPic(email.get(i),type.get(i), user_pic);
                                         }
+                                        emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                        emailContainer.setText(email.get(i));
+                                        typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                        typeContainer.setText(title.get(i));
                                         threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
                                         threadTitle.setText(title.get(i));
                                         threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
@@ -362,6 +379,10 @@ public class CaregiverForumActivity extends AppCompatActivity {
     }
 
     public void onExpand(View v){
+        emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
+        final String getEmail = emailContainer.getText().toString();
+        typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
+        final String getType = typeContainer.getText().toString();
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
         Log.e("TAG", "get name"+ getName );
@@ -384,7 +405,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        getPic(getName, expanded_user_pic);
+        getPic(getEmail,getType, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
@@ -463,6 +484,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
@@ -473,6 +496,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
                                 //displaying reply
                                 for(int i=0; i<name.size();i++){
@@ -487,7 +512,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                     expandedContent=(TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expandedID = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_id);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                    getPic(name.get(i),expanded_user_pic);
+                                    getPic(email.get(i),type.get(i),expanded_user_pic);
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
@@ -562,7 +587,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getUserName(), expanded_user_pic);
+                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -595,6 +620,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", User.getInstance().getEmail());
+                    params.put("type", User.getInstance().getUserType());
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
