@@ -161,7 +161,7 @@ public class emotionActivity extends AppCompatActivity{
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Very Happy(def)","Verypositive");
+                        date,"Happy(def)","Positive");
             }
         });
 
@@ -174,7 +174,7 @@ public class emotionActivity extends AppCompatActivity{
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Happy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Happy(def)","Positive");
+                        date,"Surprised(def)","Positive");
             }
         });
 
@@ -187,7 +187,7 @@ public class emotionActivity extends AppCompatActivity{
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Smiling(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Smiling(def)","Neutral");
+                        date,"Disgusted(def)","Negative");
             }
         });
 
@@ -200,7 +200,7 @@ public class emotionActivity extends AppCompatActivity{
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Unhappy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Unhappy(def)","Negative");
+                        date,"Fear(def)","Neutral");
             }
         });
 
@@ -226,7 +226,7 @@ public class emotionActivity extends AppCompatActivity{
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Sad(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Sad(def)","Verynegative");
+                        date,"Sad(def)","Negative");
             }
         });
 
