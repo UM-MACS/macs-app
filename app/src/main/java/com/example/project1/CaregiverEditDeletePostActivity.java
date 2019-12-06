@@ -48,7 +48,8 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
     private static String URL_DELETE_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
-    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime,
+    emailContainer, typeContainer;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -85,7 +86,6 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
     }
 
     private void getMyPosts(final String email) {
-        nullPost.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
                 new Response.Listener<String>() {
                     @Override
@@ -99,7 +99,8 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
-                            ArrayList<String> parentID = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -110,39 +111,41 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
-                                    parentID.add(object.getString("parentID"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
-                                    if(parentID.get(i).equals("")) {
-                                        nullPost.setVisibility(View.INVISIBLE);
-                                        Log.e("TAG", "name " + name.get(i));
-                                        Log.e("TAG", "title " + title.get(i));
-                                        Log.e("TAG", "content " + content.get(i));
-                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                        forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                        getPic(name.get(i), user_pic);
-                                        username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                        username.setText(name.get(i));
-                                        threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
-                                        threadTitle.setText(title.get(i));
-                                        threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
-                                        threadContent.setText(content.get(i));
-                                        threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
-                                        threadID.setText(id.get(i));
-                                        threadTime = (TextView) ((View) rowView).findViewById(R.id.thread_time);
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        try {
-                                            Date d = dateFormat.parse(date.get(i));
-                                            long epoch = d.getTime();
-                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                            Log.e("TAG", "time: " + time);
-                                            threadTime.setText(time);
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
+                                    Log.e("TAG", "name "+name.get(i));
+                                    Log.e("TAG", "title "+title.get(i));
+                                    Log.e("TAG", "content "+content.get(i));
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                    forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                    getPic(email.get(i),type.get(i),user_pic);
+                                    emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                    emailContainer.setText(email.get(i));
+                                    typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                    typeContainer.setText(type.get(i));
+                                    username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                    username.setText(name.get(i));
+                                    threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                    threadTitle.setText(title.get(i));
+                                    threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                    threadContent.setText(content.get(i));
+                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
+                                    threadID.setText(id.get(i));
+                                    threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date.get(i));
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        threadTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
                                     }
 
                                 }
@@ -173,7 +176,13 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void getPic(final String name, final CircleImageView view){
+    public void getPic(final String email,final String type, final CircleImageView view){
+        if(type.equals("Specialist")){
+            URL_GETPIC = localhost+"/jee/getPic3.php";
+        }else{
+            URL_GETPIC = localhost+"/jee/getPic2.php";
+        }
+        Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
                 new Response.Listener<String>() {
                     @Override
@@ -189,21 +198,23 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                             imgLoader.DisplayImage(picture,loader,view);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
-                                Log.e("TAG", "success load pic" );
+                                Log.e("TAG", "success loading photo" );
                             }
                         } catch (JSONException e) {
+                            Log.e("TAG", "fail to load photo");
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "fail to load photo");
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("name",name);
+                params.put("email",email);
                 return params;
             }
         };
@@ -212,6 +223,10 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
     }
 
     public void onExpand(View v){
+        emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
+        final String getEmail = emailContainer.getText().toString();
+        typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
+        final String getType = typeContainer.getText().toString();
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
         threadTitle = (TextView) ((View) v).findViewById(R.id.thread_title);
@@ -236,7 +251,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
         expandedID = (TextView)findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView)findViewById(R.id.expanded_user_profile_pic);
-        getPic(getName,expanded_user_pic);
+        getPic(getEmail,getType,expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);

@@ -50,7 +50,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
     private static String URL_DELETE_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
-    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
+            ,emailContainer, typeContainer;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -102,6 +103,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -112,6 +115,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -122,7 +127,11 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
                                     user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
-                                    getPic(name.get(i),user_pic);
+                                    getPic(email.get(i),type.get(i),user_pic);
+                                    emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                    emailContainer.setText(email.get(i));
+                                    typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                    typeContainer.setText(type.get(i));
                                     username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                     username.setText(name.get(i));
                                     threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
@@ -162,14 +171,22 @@ public class ViewReportedPostActivity extends AppCompatActivity {
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
+                Map<String,String> params = new HashMap<>();
+                params.put("email",email);
+                return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
-    public void getPic(final String name, final CircleImageView view){
+    public void getPic(final String email,final String type, final CircleImageView view){
+        if(type.equals("Specialist")){
+            URL_GETPIC = localhost+"/jee/getPic3.php";
+        }else{
+            URL_GETPIC = localhost+"/jee/getPic.php";
+        }
+        Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
                 new Response.Listener<String>() {
                     @Override
@@ -185,21 +202,23 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                             imgLoader.DisplayImage(picture,loader,view);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
-                                Log.e("TAG", "success load pic" );
+                                Log.e("TAG", "success loading photo" );
                             }
                         } catch (JSONException e) {
+                            Log.e("TAG", "fail to load photo");
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "fail to load photo");
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("name",name);
+                params.put("email",email);
                 return params;
             }
         };
@@ -208,6 +227,10 @@ public class ViewReportedPostActivity extends AppCompatActivity {
     }
 
     public void onExpand(View v){
+        emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
+        final String getEmail = emailContainer.getText().toString();
+        typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
+        final String getType = typeContainer.getText().toString();
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
         threadTitle = (TextView) ((View) v).findViewById(R.id.thread_title);
@@ -227,7 +250,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        getPic(getName, expanded_user_pic);
+        getPic(getEmail,getType, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
@@ -267,6 +290,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
@@ -277,6 +302,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     content.add(object.getString("content"));
                                     id.add(object.getString("id"));
                                     date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
                                 }
                                 //displaying reply
                                 for(int i=0; i<name.size();i++){
@@ -291,7 +318,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     expandedContent=(TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expandedID = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_id);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                    getPic(name.get(i),expanded_user_pic);
+                                    getPic(email.get(i),type.get(i),expanded_user_pic);
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
@@ -366,7 +393,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getUserName(), expanded_user_pic);
+                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -381,7 +408,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error",
+                                    Toast.makeText(getApplicationContext(), "Error replying",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
@@ -399,6 +426,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", User.getInstance().getEmail());
+                    params.put("type", User.getInstance().getUserType());
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
