@@ -1,14 +1,17 @@
 package com.example.project1;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.session.MediaSessionManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -44,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class emotionActivity extends AppCompatActivity{
     DatabaseHelper db;
@@ -51,6 +56,11 @@ public class emotionActivity extends AppCompatActivity{
     ArrayList<String> arrayList;
     EditText expression;
     FrameLayout frameLayout;
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+    FrameLayout progressBarHolder;
+    Button button;
+    MyTask task;
     private String localhost;
     private static String URL;
     private static String URL_API_SA;
@@ -70,6 +80,7 @@ public class emotionActivity extends AppCompatActivity{
         sessionManager = new SessionManager(this);
         sessionManager.checkLogin();
 
+        progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
         localhost = getString(R.string.localhost);
         URL =localhost+":3000/emotion";
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
@@ -81,6 +92,7 @@ public class emotionActivity extends AppCompatActivity{
         User.getInstance().setEmail(mEmail);
         User.getInstance().setUserName(mName);
         User.getInstance().setUserType(mType);
+        task = new MyTask();
 
 
         //drawer
@@ -138,8 +150,8 @@ public class emotionActivity extends AppCompatActivity{
 
 
         //end
-        frameLayout = (FrameLayout) findViewById(R.id.emotion_page);
-        frameLayout.getForeground().setAlpha(0);
+//        frameLayout = (FrameLayout) findViewById(R.id.emotion_page);
+//        frameLayout.getForeground().setAlpha(0);
         b1 = (Button) findViewById(R.id.emotion1);
         b2 = (Button) findViewById(R.id.emotion2);
         b3 = (Button) findViewById(R.id.emotion3);
@@ -162,6 +174,8 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Very Happy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Happy(def)","Positive");
+                task.execute();
+
             }
         });
 
@@ -175,6 +189,7 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Happy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Surprised(def)","Positive");
+                task.execute();
             }
         });
 
@@ -188,6 +203,7 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Smiling(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Disgusted(def)","Negative");
+                task.execute();
             }
         });
 
@@ -201,6 +217,7 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Unhappy(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Fear(def)","Neutral");
+                task.execute();
             }
         });
 
@@ -214,6 +231,7 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Angry(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Angry(def)","Negative");
+                task.execute();
             }
         });
 
@@ -227,6 +245,7 @@ public class emotionActivity extends AppCompatActivity{
 //                        "Sad(def)");
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
                         date,"Sad(def)","Negative");
+                task.execute();
             }
         });
 
@@ -250,6 +269,7 @@ public class emotionActivity extends AppCompatActivity{
                             "Please enter something in the text box",
                             Toast.LENGTH_LONG).show();
                 } else {
+                    task.execute();
                     sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
                             text);
                 }
@@ -269,57 +289,39 @@ public class emotionActivity extends AppCompatActivity{
                     JSONArray jsonArray = new JSONArray(response);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     String success = jsonObject.getString("success");
+                    Log.e("TAG", "success: "+success );
                 if(success.equals("1")){
                     Log.e("TAG", "success" );
-                    //Create pop up window
-                    LayoutInflater inflater1 =
-                            (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    final View view = inflater1.inflate(R.layout.pop_up_message, null);
-                    // create a focusable PopupWindow with the given layout and correct size
-                    final PopupWindow pw = new PopupWindow(view,
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                    //dim background
-                    frameLayout.getForeground().setAlpha(220);
-                    ((Button) view.findViewById(R.id.pop_up_button)).setOnClickListener
-                            (new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            pw.dismiss();
-                            frameLayout.getForeground().setAlpha(0);
-                            expression.setText("");
-                        }
-                    });
-                    pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                    pw.setTouchInterceptor(new View.OnTouchListener() {
-                        public boolean onTouch(View v, MotionEvent event) {
-                            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                                pw.dismiss();
-                                return true;
-                            }
-                            return false;
-                        }
-                    });
-                    pw.setOutsideTouchable(true);
-                    // display the pop-up in the center
-                    pw.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    AlertDialog diaBox = AskOption();
+                    diaBox.show();
+                    task.cancel(true);
+
                 }
                 else if(success.equals("0")){
-                    Toast.makeText(getApplicationContext(),"Fail to submit",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),"Fail to submit",
+//                            Toast.LENGTH_SHORT).show();
                     expression.setText("");
+                    AlertDialog diaBox = alertError();
+                    diaBox.show();
+                    task.cancel(true);
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
+//                            Toast.LENGTH_SHORT).show();
+                    AlertDialog diaBox = alertError();
+                    diaBox.show();
+                    task.cancel(true);
                 }
         }},
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
+//                                Toast.LENGTH_SHORT).show();
+                        AlertDialog diaBox = alertError();
+                        diaBox.show();
+                        task.cancel(true);
                     }
                 })
         {
@@ -382,7 +384,8 @@ public class emotionActivity extends AppCompatActivity{
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> header = new HashMap<>();
-                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
+//                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
+                header.put("api-key","d92743d6-c2d6-426c-81f1-034b93667aec");
 //                header.put("Content-Type","text/plain");
                 return header;
             }
@@ -390,6 +393,82 @@ public class emotionActivity extends AppCompatActivity{
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    private AlertDialog AskOption() {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Success")
+                .setMessage("Your Feedback is Successfully Recorded")
+                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    private AlertDialog alertError() {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Failed")
+                .setMessage("Please Try Again Later")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            button.setEnabled(false);
+            inAnimation = new AlphaAnimation(0f, 1f);
+            inAnimation.setDuration(200);
+            progressBarHolder.setAnimation(inAnimation);
+            progressBarHolder.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            outAnimation = new AlphaAnimation(1f, 0f);
+            outAnimation.setDuration(200);
+            progressBarHolder.setAnimation(outAnimation);
+            progressBarHolder.setVisibility(View.GONE);
+//            button.setEnabled(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                for (int i = 0; i < 99; i++) {
+                    Log.d("log", "Emulating some task.. Step " + i);
+                    TimeUnit.SECONDS.sleep(1);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     @Override

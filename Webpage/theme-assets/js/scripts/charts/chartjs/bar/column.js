@@ -122,7 +122,7 @@ $("#serachForm").submit(function(e) {
             label: "Very Positive",
             data: veryPositiveData, 
             backgroundColor: "#228B22",
-            hoverBackgroundColor: "rgba(40,208,148,.9)",
+            hoverBackgroundColor: "rgba(34,139,34,.9)",
             borderColor: "transparent"
         }, {
             label: "Positive",
@@ -140,7 +140,7 @@ $("#serachForm").submit(function(e) {
             label: "Negative",
             data: negativeData,
             backgroundColor: "#FF7F50",
-            hoverBackgroundColor: "rgba(255,73,97,.9)",
+            hoverBackgroundColor: "rgba(255,127,80,.9)",
             borderColor: "transparent"
         },{ 
             label: "Very Negative",
@@ -287,12 +287,12 @@ $(".year li").click(function(e){
             label: "Very Positive",
             data: veryPositiveData, 
             backgroundColor: "#228B22",
-            hoverBackgroundColor: "rgba(40,208,148,.9)",
+            hoverBackgroundColor: "rgba(34,139,34,.9)",
             borderColor: "transparent"
         }, {
             label: "Positive",
             data: positiveData, 
-            backgroundColor: "#66CDAA",
+            backgroundColor: "#28D094",
             hoverBackgroundColor: "rgba(40,208,148,.9)",
             borderColor: "transparent"
         }, {
@@ -304,8 +304,8 @@ $(".year li").click(function(e){
         },{
             label: "Negative",
             data: negativeData,
-            backgroundColor: "#FA8072",
-            hoverBackgroundColor: "rgba(255,73,97,.9)",
+            backgroundColor: "#FF7F50",
+            hoverBackgroundColor: "rgba(255,127,80,.9)",
             borderColor: "transparent"
         },{ 
             label: "Very Negative",

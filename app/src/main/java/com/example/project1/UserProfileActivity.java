@@ -42,7 +42,6 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         viewMyPosts = (Button)findViewById(R.id.view_my_posts_button);
-        viewMyEmotions = (Button)findViewById(R.id.view_my_emotions_button);
         viewMyFavourite = (Button)findViewById(R.id.view_my_favourite_button);
 
         viewMyPosts.setOnClickListener(new View.OnClickListener() {

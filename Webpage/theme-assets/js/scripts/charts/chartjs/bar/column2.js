@@ -53,7 +53,7 @@ $("#serachForm").submit(function(e) {
             
 
             for(var i in veryPositive){
-                    index = veryPositive[i].week - dayToday;
+                    index = veryPositive[i].week - dayToday +1;
                     if (index < 0){
                         index = dayArray.length - dayToday+1+ 
                         parseInt(veryPositive[i].week);
@@ -63,7 +63,10 @@ $("#serachForm").submit(function(e) {
             
 
             for(var i in positive){
-                    index = positive[i].week - dayToday;
+                console.log("day today is "+dayToday);
+                console.log("day array length is "+dayArray.length);
+                console.log("data day is "+positive[i].week);
+                    index = positive[i].week - dayToday +1;
                     if (index < 0){
                         index = dayArray.length - dayToday+ 1+
                         parseInt(positive[i].week);
@@ -72,7 +75,7 @@ $("#serachForm").submit(function(e) {
             }
 
             for(var i in neutral){
-                    index = neutral[i].week - dayToday;
+                    index = neutral[i].week - dayToday +1;
                     if (index < 0){
                         index = dayArray.length - dayToday+1+ 
                         parseInt(neutral[i].week);
@@ -81,7 +84,7 @@ $("#serachForm").submit(function(e) {
             }
 
             for(var i in negative){
-                    index = negative[i].week - dayToday;
+                    index = negative[i].week - dayToday+1;
                     if (index < 0){
                         index = dayArray.length - dayToday+ 1+
                         parseInt(negative[i].week);
@@ -90,7 +93,7 @@ $("#serachForm").submit(function(e) {
             }
 
             for(var i in veryNegative){
-                    index = veryNegative[i].week - dayToday;
+                    index = veryNegative[i].week - dayToday+1;
                     if (index < 0){
                         index = dayArray.length - dayToday+ 1+
                         parseInt(veryNegative[i].week);
@@ -119,7 +122,7 @@ $("#serachForm").submit(function(e) {
             label: "Very Positive",
             data: veryPositiveData, 
             backgroundColor: "#228B22",
-            hoverBackgroundColor: "rgba(40,208,148,.9)",
+            hoverBackgroundColor: "rgba(34,139,34,.9)",
             borderColor: "transparent"
         }, {
             label: "Positive",
@@ -137,7 +140,7 @@ $("#serachForm").submit(function(e) {
             label: "Negative",
             data: negativeData,
             backgroundColor: "#FF7F50",
-            hoverBackgroundColor: "rgba(255,73,97,.9)",
+            hoverBackgroundColor: "rgba(255,127,80,.9)",
             borderColor: "transparent"
         },{ 
             label: "Very Negative",

@@ -16,7 +16,7 @@
     <item
         android:id="@+id/action_user_profile"
         android:orderInCategory="100"
-        android:title="My Profile"
+        android:title="My Activity"
         app:showAsAction="never" />
 
     <item
