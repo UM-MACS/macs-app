@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -30,6 +32,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -79,6 +82,7 @@ public class viewEventActivity extends AppCompatActivity {
     private String URL3;
     private String URL4;
     private SessionManager sessionManager;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,13 +150,42 @@ public class viewEventActivity extends AppCompatActivity {
         datePickerLayout = (LinearLayout) findViewById(R.id.container_date_picker);
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         sessionManager = new SessionManager(this);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         getAppointmentData(User.getInstance().getEmail());
+
 
 
 
     }
 
+    private AlertDialog AskOption(final View v, final String text) {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.ic_cancel_button)
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        delAppointment(v,text);
+                    }
+
+                })
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
     private void getAppointmentData(final String email) {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -204,16 +237,21 @@ public class viewEventActivity extends AppCompatActivity {
                                         parentLinearLayout.removeView((View)rowView);
                                     }
                                 }
+                                progressBar.setVisibility(View.GONE);
+                            } else{
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -565,7 +603,8 @@ public class viewEventActivity extends AppCompatActivity {
     public void onDelete(View v){
         idTextView = (TextView)((View)v.getParent()).findViewById(R.id.appointment_id);
         final String text = (String) idTextView.getText();
-        delAppointment(v,text);
+        AlertDialog diaBox = AskOption(v,text);
+        diaBox.show();
     }
 
     public void onEdit(View v) {

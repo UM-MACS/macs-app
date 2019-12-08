@@ -70,10 +70,10 @@ public class emotionActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(User.getInstance().getUserType().equals("Specialist")){
-            Intent i = new Intent(emotionActivity.this,DisplayAnalysisActivity.class);
-            startActivity(i);
-        }
+//        if(User.getInstance().getUserType().equals("Specialist")){
+//            Intent i = new Intent(emotionActivity.this,DisplayAnalysisActivity.class);
+//            startActivity(i);
+//        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
 

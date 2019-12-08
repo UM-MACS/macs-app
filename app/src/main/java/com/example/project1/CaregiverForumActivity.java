@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
     private Button submitReplyButton, viewReportedButton;
     //private String getName, getTitle, getContent, getID;
     private LinearLayout layoutAdjust;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +160,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         getPosts();
         createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
         createPostButton.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +177,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(CaregiverForumActivity.this,ViewReportedPostActivity.class);
+                    i.putExtra("forum","Caregiver");
                     startActivity(i);
                 }
             });
@@ -184,6 +188,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(CaregiverForumActivity.this, ViewReportedPostActivity.class);
+                    i.putExtra("forum","Caregiver");
                     startActivity(i);
                 }
             });
@@ -239,6 +244,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
     }
 
     private void getPosts() {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -356,12 +362,19 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
+                                progressBar.setVisibility(View.GONE);
 
                             } else if (success.equals("-1")){
                                 nullPost.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                    Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -369,7 +382,9 @@ public class CaregiverForumActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
