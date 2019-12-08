@@ -62,6 +62,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
     private Button searchButton, submitReplyButton;
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
+    private String forum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +70,20 @@ public class ViewReportedPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_REPORTED_POST = localhost+":3000/getReportedPost/";
         URL_GETPIC = localhost+"/jee/getPic.php";
         URL_GET_REPLY = localhost+":3000/getReplyPost/";
         URL_POST_REPLY = localhost+":3000/postReply/";
-        URL_DELETE_POST = localhost+":3000/deletePost/";
 
+
+        Intent intent = getIntent();
+        forum = intent.getStringExtra("forum");
+        if(forum.equals("Patient")){
+            URL_GET_REPORTED_POST = localhost+":3000/getReportedPost/";
+            URL_DELETE_POST = localhost+":3000/deletePost/";
+        } else if (forum.equals("Caregiver")){
+            URL_GET_REPORTED_POST = localhost+":3000/getReportedPostCaregiver/";
+            URL_DELETE_POST = localhost+":3000/deletePostCaregiver/";
+        }
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
         searchEditText.setVisibility(View.GONE);
@@ -480,9 +489,12 @@ public class ViewReportedPostActivity extends AppCompatActivity {
                                 Log.e("TAG", "success" );
                                 Toast.makeText(getApplicationContext(),"Post Deleted",
                                         Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(ViewReportedPostActivity.this,
-                                        ViewReportedPostActivity.class);
-                                startActivity(i);
+//                                Intent i = new Intent(ViewReportedPostActivity.this,
+//                                        ViewReportedPostActivity.class);
+//                                startActivity(i);
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Error Deleting,",

@@ -151,6 +151,11 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
                         User.getInstance().setContact(s6);
                         User.getInstance().setAge(s7);
                         Log.e("Tag", "hello");
+                    } else if(s6.length()>11 || s6.length()<10){
+                        Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"
+                                , Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);

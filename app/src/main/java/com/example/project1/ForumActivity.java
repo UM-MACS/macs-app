@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,7 @@ private TextView reportButton;
 private Button submitReplyButton, viewReportedButton;
 //private String getName, getTitle, getContent, getID;
 private LinearLayout layoutAdjust;
+private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +159,7 @@ private LinearLayout layoutAdjust;
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         getPosts();
         createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
         createPostButton.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +176,7 @@ private LinearLayout layoutAdjust;
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this,ViewReportedPostActivity.class);
+                    i.putExtra("forum","Patient");
                     startActivity(i);
                 }
             });
@@ -183,6 +187,7 @@ private LinearLayout layoutAdjust;
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this,ViewReportedPostActivity.class);
+                    i.putExtra("forum","Patient");
                     startActivity(i);
                 }
             });
@@ -236,6 +241,7 @@ private LinearLayout layoutAdjust;
     }
 
     private void getPosts() {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -357,10 +363,14 @@ private LinearLayout layoutAdjust;
                                     }
                                 }
 
+                                progressBar.setVisibility(View.GONE);
+
                             } else if (success.equals("-1")){
+                                progressBar.setVisibility(View.GONE);
                                 nullPost.setVisibility(View.VISIBLE);
                             }
                         } catch (JSONException e) {
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
 
@@ -369,7 +379,7 @@ private LinearLayout layoutAdjust;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressBar.setVisibility(View.GONE);
             }
         }){
             @Override

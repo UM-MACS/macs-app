@@ -135,6 +135,11 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
+                } else if(s6.length()>11 || s6.length()<10){
+                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"
+                            , Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
                 }
                 else {
                     if (s2.equals(s3)) { //check if password matches
