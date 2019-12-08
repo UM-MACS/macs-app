@@ -29,8 +29,8 @@ public class eventActivity extends AppCompatActivity {
         setContentView(R.layout.event);
         Log.d(TAG, "onCreate: star.");
 
-        sessionManager = new SessionManager(this);
-        sessionManager.checkLogin();
+//        sessionManager = new SessionManager(this);
+//        sessionManager.checkLogin();
 
         initImageBitmaps();
 

@@ -53,6 +53,7 @@ public class eventAssessment extends AppCompatActivity {
     private String localhost;
     private static String URL;
     private SessionManager sessionManager;
+    private String eventName;
 
     TextView textView;
     EditText editText;
@@ -61,6 +62,7 @@ public class eventAssessment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_assessment);
+        getIncomingIntent();
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -180,8 +182,8 @@ public class eventAssessment extends AppCompatActivity {
                 String text7 = radioButton7.getText().toString();
                 //edit text
 
-
-                    insertAssessment(User.getInstance().getEmail(),User.getInstance().getUserType(), text, text2, text3, text4, text5, text6, text7, text8);
+                    insertAssessment(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                            text, text2, text3, text4, text5, text6, text7, text8, eventName);
                     editText.setText("");
                     radio1.clearCheck();
                     radio2.clearCheck();
@@ -198,7 +200,18 @@ public class eventAssessment extends AppCompatActivity {
 
     }
 
-    private void insertAssessment(final String email, final String type, final String text, final String text2, final String text3, final String text4, final String text5, final String text6, final String text7, final String text8) {
+    private void getIncomingIntent(){
+        Log.d("TAG", "getIncomingIntent: checking for incoming intents.");
+        if(getIntent().hasExtra("event_name")){
+
+
+            eventName = getIntent().getStringExtra("event_name");
+            Log.d("TAG", "getIncomingIntent: event name: "+eventName);
+
+        }
+    }
+
+    private void insertAssessment(final String email, final String type, final String text, final String text2, final String text3, final String text4, final String text5, final String text6, final String text7, final String text8, final String eventName) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -240,6 +253,7 @@ public class eventAssessment extends AppCompatActivity {
                 params.put("q6",text6);
                 params.put("q7",text7);
                 params.put("q8",text8);
+                params.put("eventName",eventName);
                 return params;
             }
         };

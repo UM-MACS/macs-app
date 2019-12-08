@@ -108,17 +108,19 @@
                         android:id="@+id/radio_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:text="Neutral"
-                        android:layout_marginRight="15dp"/>
+                        android:text="Neutral" />
 
                     <RadioButton
                         android:id="@+id/radio_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:text="Sad"
-                        android:layout_marginRight="15dp"/>
+                        android:text="Sad" />
+
+
                 </RadioGroup>
 
                 <TextView
@@ -162,7 +164,7 @@
                     android:id="@+id/thirdQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="How was the event venue?"
+                    android:text="How satisfied were you with the event venue?"
                     android:textColor="#000" />
 
                 <RadioGroup
@@ -176,14 +178,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Satisfactory"
+                        android:text="Satisfied"
                         android:layout_marginRight="15dp"/>
 
                     <RadioButton
                         android:id="@+id/radio_3_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Unsatisfactory"
+                        android:text="Unsatisfied"
                         />
                 </RadioGroup>
 
@@ -191,7 +193,7 @@
                     android:id="@+id/fourthQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="How was the event moderator?"
+                    android:text="How satisfied were you with the event moderator?"
                     android:textColor="#000" />
 
                 <RadioGroup
@@ -205,21 +207,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Satisfactory"
+                        android:text="Satisfied"
                         android:layout_marginRight="15dp"/>
 
                     <RadioButton
                         android:id="@+id/radio_4_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Unsatisfactory" />
+                        android:text="Unsatisfied" />
                 </RadioGroup>
 
                 <TextView
                     android:id="@+id/fifthQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Did the event meet your expectations?"
+                    android:text="How satisfied were you with the event's relevance?"
                     android:textColor="#000" />
 
                 <RadioGroup
@@ -232,16 +234,16 @@
                         android:id="@+id/radio_5_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
                         android:checked="true"
-                        android:text="Yes"
-                        android:layout_marginRight="15dp"/>
+                        android:text="Satisfied" />
 
                     <RadioButton
                         android:id="@+id/radio_5_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="No"
-                        android:layout_marginRight="15dp"/>
+                        android:layout_marginRight="15dp"
+                        android:text="Unsatisfied" />
 
 
                 </RadioGroup>
@@ -250,7 +252,7 @@
                     android:id="@+id/sixthQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Was the event topic relevant to you?"
+                    android:text="How satisfied were you with the event topic?"
                     android:textColor="#000" />
 
                 <RadioGroup
@@ -281,7 +283,7 @@
                     android:id="@+id/seventhQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="How did you feel before the event?"
+                    android:text="Would you attend a similar event again?"
                     android:textColor="#000" />
 
                 <RadioGroup

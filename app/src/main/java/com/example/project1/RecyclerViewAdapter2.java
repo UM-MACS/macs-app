@@ -48,7 +48,7 @@ public class RecyclerViewAdapter2 extends RecyclerView.Adapter<RecyclerViewAdapt
             public void onClick(View view){
                 Log.d(TAG, "onClick: clicked on: " + mEventNames.get(position));
 
-                Intent intent = new Intent(mContext, GalleryActivity2.class);
+                Intent intent = new Intent(mContext, eventAssessment.class);
                 intent.putExtra("event_name", mEventNames.get(position));
                 mContext.startActivity(intent);
             }
