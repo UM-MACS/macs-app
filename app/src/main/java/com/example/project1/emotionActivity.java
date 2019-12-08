@@ -49,6 +49,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class emotionActivity extends AppCompatActivity{
     DatabaseHelper db;
@@ -270,8 +272,19 @@ public class emotionActivity extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 } else {
                     task.execute();
-                    sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
-                            text);
+                    final String input =  text.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+                    Pattern re = Pattern.compile("[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)",
+                            Pattern.MULTILINE | Pattern.COMMENTS);
+                    Matcher reMatcher = re.matcher(input);
+                    String splitText="";
+                    while (reMatcher.find()) {
+                        splitText = (reMatcher.group());
+                    }
+                    String[] sArray = splitText.split("\\s{2,}");
+                    for (int i =0; i<sArray.length; i++){
+                        sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                                sArray[i]);
+                    }
                 }
             }
         });
@@ -343,7 +356,6 @@ public class emotionActivity extends AppCompatActivity{
 
     private void sentimentAnalysis(final String email, final String type, final String date,
                                    final String expressionInput) {
-        final String input =  expressionInput.replaceAll("[^a-zA-Z ]", "").toLowerCase();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_API_SA,
                 new Response.Listener<String>() {
@@ -377,7 +389,7 @@ public class emotionActivity extends AppCompatActivity{
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("text", input);
+                params.put("text", expressionInput);
                 return params;
             }
 
