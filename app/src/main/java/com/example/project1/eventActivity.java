@@ -91,15 +91,15 @@ public class eventActivity extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
-        mNames.add("Event 1");
+        mNames.add("Oral Cancer and its History.\nDate: 10/12/2019");
 
-        mNames.add("Event 2");
+        mNames.add("How to Gain Emotional Stability?\nDate: 22/11/2019");
 
-        mNames.add("Event 3");
+        mNames.add("Let Your Family Help You\nDate: 5/11/2019");
 
-        mNames.add("Event 4");
+        mNames.add("Think Positive!\nDate: 27/10/2019");
 
-        mNames.add("Event 5");
+        mNames.add("Oral Health Seminar\nDate: 30/9/2019");
 
         initRecyclerView();
     }
