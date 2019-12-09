@@ -38,7 +38,7 @@ public class GalleryActivity extends AppCompatActivity {
                         startActivity(i1);
                         break;
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(GalleryActivity.this,emotionActivity.class);
+                        Intent i2 = new Intent(GalleryActivity.this,EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:

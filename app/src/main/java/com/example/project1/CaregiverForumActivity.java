@@ -111,7 +111,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(CaregiverForumActivity.this, emotionActivity.class);
+                        Intent i2 = new Intent(CaregiverForumActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:
@@ -588,6 +588,8 @@ public class CaregiverForumActivity extends AppCompatActivity {
     public void onReply(final String parentID){
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
+        replyText.setText("");
+        replyText.clearFocus();
         Date d = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final String date = dateFormat.format(d);

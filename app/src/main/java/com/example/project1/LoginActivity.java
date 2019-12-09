@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Patient");
                                                 }
-                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                Intent myIntent = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
                                                 startActivity(myIntent);
                                             } else if(success.equals("2")){
                                                 Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
@@ -152,6 +152,8 @@ public class LoginActivity extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
@@ -197,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                                 }
-                                                Intent myIntent = new Intent(LoginActivity.this, emotionActivity.class);
+                                                Intent myIntent = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
                                                 startActivity(myIntent);
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
@@ -219,6 +221,8 @@ public class LoginActivity extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
@@ -286,6 +290,8 @@ public class LoginActivity extends AppCompatActivity {
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        progressBar.setVisibility(View.GONE);
+                                        b1.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Login Fail", Toast.LENGTH_SHORT).show();
                                     }
                                 }) {

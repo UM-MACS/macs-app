@@ -130,6 +130,10 @@ public class Register3Activity extends AppCompatActivity implements AdapterView.
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
+                } else if(!s1.contains("@")){
+                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
                 }
                 else if (Integer.parseInt(s7)>120){
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();

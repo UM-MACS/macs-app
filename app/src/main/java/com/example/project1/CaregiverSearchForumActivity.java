@@ -94,7 +94,7 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
-                        Intent i2 = new Intent(CaregiverSearchForumActivity.this, emotionActivity.class);
+                        Intent i2 = new Intent(CaregiverSearchForumActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:

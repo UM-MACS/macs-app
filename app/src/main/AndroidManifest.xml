@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
@@ -14,25 +13,34 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".eventActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
-        </activity>
-        <activity android:name=".GalleryActivity2"
-            android:exported="true"/>
-        <activity android:name=".ChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
+        <activity android:name=".EmotionDebug"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".EmotionAssessmentActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".eventActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GalleryActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".SpecialistForumActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CaregiverSearchForumActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CaregiverEditDeletePostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -137,8 +145,8 @@
             android:label="User Database" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

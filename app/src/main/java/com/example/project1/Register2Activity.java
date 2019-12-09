@@ -140,8 +140,13 @@ public class Register2Activity extends AppCompatActivity implements AdapterView.
 
 
                 //check if fields are empty
-                if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals("Please Select One") || s5.equals("") || s6.equals("") || s7.equals("")) {
+                if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals("Please Select One") || s5.equals("") || s6.equals("") || s7.equals(""))
+                {
                     Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
+                } else if(!s1.contains("@")){
+                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }

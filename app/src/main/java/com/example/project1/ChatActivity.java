@@ -35,7 +35,7 @@ public class ChatActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_tracking:
                         Intent i2 = new Intent(ChatActivity.this,
-                                emotionActivity.class);
+                                EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_schedule_appointment:

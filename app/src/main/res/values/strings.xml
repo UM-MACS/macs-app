@@ -6,7 +6,7 @@
     <string name="title_event_assessment">Assessment</string>
     <string name="title_faq">FaQ</string>
 
-    <string name="localhost">http://10.215.73.103</string>
+    <string name="localhost">http://192.168.0.187</string>
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="patientButton">Patient</string>
@@ -63,5 +63,8 @@
     <string name="action_change_password">Change Password</string>
     <string name="menu_home">Logout</string>
     <string name="title_activity_view_user_data">viewUserDataActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
