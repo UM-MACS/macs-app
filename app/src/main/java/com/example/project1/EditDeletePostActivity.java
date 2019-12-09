@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
     private EditText searchEditText;
     private Button searchButton,cancelButton;
     private ImageView fav_icon;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +83,13 @@ public class EditDeletePostActivity extends AppCompatActivity {
         b1.hide();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         getMyPosts(User.getInstance().getEmail());
 
     }
 
     private void getMyPosts(final String email) {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_POSTS,
                 new Response.Listener<String>() {
                     @Override
@@ -149,12 +153,17 @@ public class EditDeletePostActivity extends AppCompatActivity {
                                     }
 
                                 }
+                                progressBar.setVisibility(View.GONE);
 
                             } else if(success.equals("-1")){
                                 nullPost.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            } else{
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                         }
 
 
@@ -298,8 +307,9 @@ public class EditDeletePostActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(EditDeletePostActivity.this, EditDeletePostActivity.class);
-                startActivity(i);
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
             }
         });
     }
@@ -320,10 +330,9 @@ public class EditDeletePostActivity extends AppCompatActivity {
                             if(success.equals("1")){
                                 Toast.makeText(getApplicationContext(),"Update Success",
                                         Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(EditDeletePostActivity.this,
-                                        EditDeletePostActivity.class);
-                                startActivity(i);
+                                Intent intent = getIntent();
                                 finish();
+                                startActivity(intent);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Post Fail",
@@ -359,10 +368,7 @@ public class EditDeletePostActivity extends AppCompatActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_cancel_button)
-
+                .setTitle("Delete Post?")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -397,10 +403,13 @@ public class EditDeletePostActivity extends AppCompatActivity {
                                 Log.e("TAG", "success" );
                                 Toast.makeText(getApplicationContext(),"Post Deleted",
                                         Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(EditDeletePostActivity.this,
-                                        EditDeletePostActivity.class);
-                                startActivity(i);
+//                                Intent i = new Intent(EditDeletePostActivity.this,
+//                                        EditDeletePostActivity.class);
+//                                startActivity(i);
+//                                finish();
+                                Intent intent = getIntent();
                                 finish();
+                                startActivity(intent);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Error Deleting,",

@@ -260,6 +260,8 @@ public class LoginActivity extends AppCompatActivity {
                                                     String jemail = jsonObject.getString("email").trim();
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Specialist");
+                                                    User.getInstance().setEmail(jemail); //email
+                                                    User.getInstance().setUserName(jname);
                                                 }
                                                 Intent myIntent = new Intent(LoginActivity.this, SpecialistForumActivity.class);
                                                 startActivity(myIntent);

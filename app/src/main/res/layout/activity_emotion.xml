@@ -256,6 +256,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:padding="10dp"
                     android:background="@null"
                     android:cursorVisible="false"
                     android:focusableInTouchMode="true"

@@ -108,7 +108,7 @@
             android:layout_marginTop="13dp"
             android:ems="10"
             android:hint="@string/name"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:paddingBottom="15dp" />
 
         <EditText
@@ -151,6 +151,7 @@
             android:layout_marginTop="13dp"
             android:ems="10"
             android:hint="@string/age"
+            android:inputType="number"
             android:paddingBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

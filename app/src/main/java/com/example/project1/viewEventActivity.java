@@ -89,6 +89,8 @@ public class viewEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
 
+        Log.e("TAG", "onCreate: view appointment name: "+User.getInstance().getUserName() );
+
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -161,9 +163,7 @@ public class viewEventActivity extends AppCompatActivity {
     private AlertDialog AskOption(final View v, final String text) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_cancel_button)
+                .setTitle("Delete Appointment?")
 
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
@@ -176,7 +176,6 @@ public class viewEventActivity extends AppCompatActivity {
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 })
                 .create();
@@ -452,6 +451,9 @@ public class viewEventActivity extends AppCompatActivity {
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
                                 setReminder(date,time);
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
                             }
                             else{
                              Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
@@ -495,6 +497,9 @@ public class viewEventActivity extends AppCompatActivity {
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
                                 Log.e("TAG", "update success" );
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
@@ -537,6 +542,9 @@ public class viewEventActivity extends AppCompatActivity {
                             Log.e("TAG", "success insert: "+success );
                             if(success.equals("1")){
                                 parentLinearLayout.removeView((View)v.getParent());
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();

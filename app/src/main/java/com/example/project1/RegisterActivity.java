@@ -325,7 +325,9 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     public String getStringImage(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new
                 ByteArrayOutputStream();
-        bitmap = Bitmap.createScaledBitmap(bitmap,120,120,false);
+        int width = bitmap.getWidth();
+        int height = (int) (bitmap.getHeight() / (float) width * 120.0f);
+        bitmap = Bitmap.createScaledBitmap(bitmap,120,height,false);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50,
                 byteArrayOutputStream);
         byte[] imageByteArray = byteArrayOutputStream.toByteArray();

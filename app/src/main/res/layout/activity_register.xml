@@ -76,7 +76,7 @@
                     android:layout_marginTop="15dp"
                     android:ems="10"
                     android:hint="@string/name"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:paddingBottom="15dp" />
 
                 <EditText

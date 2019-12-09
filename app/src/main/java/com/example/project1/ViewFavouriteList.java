@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class ViewFavouriteList extends AppCompatActivity {
     private Button searchButton, submitReplyButton;
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +93,13 @@ public class ViewFavouriteList extends AppCompatActivity {
         b1.hide();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         getMyPosts(User.getInstance().getEmail());
 
     }
 
     private void getMyPosts(final String email) {
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_FAV,
                 new Response.Listener<String>() {
                     @Override
@@ -159,11 +163,15 @@ public class ViewFavouriteList extends AppCompatActivity {
                                     }
 
                                 }
-
+                                progressBar.setVisibility(View.GONE);
                             } else if(success.equals("-1")){
+                                progressBar.setVisibility(View.GONE);
                                 nullPost.setVisibility(View.VISIBLE);
+                            } else{
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
 

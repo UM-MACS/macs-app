@@ -366,10 +366,18 @@ private ProgressBar progressBar;
                                 progressBar.setVisibility(View.GONE);
 
                             } else if (success.equals("-1")){
+                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                        Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 nullPost.setVisibility(View.VISIBLE);
+                            } else{
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                    Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
@@ -380,6 +388,8 @@ private ProgressBar progressBar;
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -418,7 +428,11 @@ private ProgressBar progressBar;
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        getPic(getEmail,getType, expanded_user_pic);
+        if(getName.equals("Anonymous")) {
+            getPic("lee","", expanded_user_pic);
+        } else{
+            getPic(getEmail, getType, expanded_user_pic);
+        }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
