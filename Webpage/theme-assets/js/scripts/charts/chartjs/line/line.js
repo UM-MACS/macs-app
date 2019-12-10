@@ -249,7 +249,7 @@ $(".year li").click(function(e){
             for(var i in veryPositive){
                 for (var j = 0; j < months.length; j++) {
                     if(veryPositive[i].date===months[j]){
-                        veryPositiveData[j]= veryPositive[i].count;
+                        veryPositiveData[j] = veryPositive[i].count;
                     }
                 }
             }
@@ -257,7 +257,7 @@ $(".year li").click(function(e){
             for(var i in positive){
                 for (var j = 0; j < months.length; j++) {
                     if(positive[i].date===months[j]){
-                        positiveData[j]= positive[i].count;
+                        positiveData[j] = positive[i].count;
                     }
                 }
             }
@@ -295,8 +295,9 @@ $(".year li").click(function(e){
 
     //Get the context of the Chart canvas element we want to select
     //Get the context of the Chart canvas element we want to select
-    var ctx = $("#line-chart");
-
+    var ctx = document.getElementById("line-chart");
+    var context = ctx.getContext('2d');
+    context.clearRect(0, 0, ctx.width, ctx.height);
 
     // Chart Data
     var chartData = {

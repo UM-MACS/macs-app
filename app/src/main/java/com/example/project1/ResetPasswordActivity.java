@@ -46,6 +46,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     public void onResetPassword(View view) {
+        if(User.getInstance().getUserType().equals("Patient")){
+            URL = localhost+":3000/resetPassword";
+        } else if (User.getInstance().getUserType().equals("Caregiver")){
+            URL = localhost+":3000/resetPassword2";
+        } else if(User.getInstance().getUserType().equals("Specialist")){
+            URL = localhost+":3000/resetPassword3";
+        }
         final EditText et1 = (EditText) findViewById(R.id.password);
         final EditText et2 = (EditText) findViewById(R.id.confirm_password);
         final String pw = et1.getText().toString().trim();
@@ -90,7 +97,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", email);
-                    params.put("type", User.getInstance().getUserType());
                     params.put("password", pw);
                     return params;
                 }

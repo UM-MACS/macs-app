@@ -47,6 +47,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     public void onForgotPassword(View v){
+        if(User.getInstance().getUserType().equals("Patient")){
+            URL = localhost+":3000/sendSaltToEmail";
+        } else if (User.getInstance().getUserType().equals("Caregiver")){
+            URL = localhost+":3000/sendSaltToEmail2";
+        } else if(User.getInstance().getUserType().equals("Specialist")){
+            URL = localhost+":3000/sendSaltToEmail3";
+        }
         progressBar.setVisibility(View.VISIBLE);
         buttonSubmit.setVisibility(View.GONE);
         email = etEmail.getText().toString().trim();

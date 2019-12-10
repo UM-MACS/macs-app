@@ -45,11 +45,13 @@ public class MainActivity extends AppCompatActivity {
             User.getInstance().setEmail(mEmail);
             User.getInstance().setUserName(mName);
             User.getInstance().setUserType(mType);
-            Intent myIntent = new Intent(MainActivity.this, emotionActivity.class);
-            startActivity(myIntent);
+            Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);
+            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
             if(mType.equals("Admin")||mType.equals("Specialist")){
-                Intent i = new Intent(MainActivity.this,SpecialistForumActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(MainActivity.this,SpecialistForumActivity.class);
+                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
             }
         }
 

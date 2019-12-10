@@ -12,6 +12,7 @@
 // ------------------------------
 
 var email ="";
+var lineChart = null;
 
 $("#serachForm").submit(function(e) {
     e.preventDefault();
@@ -101,8 +102,10 @@ $("#serachForm").submit(function(e) {
         
 
     //Get the context of the Chart canvas element we want to select
-    var ctx = $("#weekly-line-chart");
-
+    var ctx = document.getElementById("weekly-line-chart");
+    if (lineChart !== null)
+        lineChart.destroy();
+    lineChart = new Chart(ctx, {});
 
     // Chart Data
     var chartData = {
@@ -177,7 +180,7 @@ $("#serachForm").submit(function(e) {
     };
 
     // Create the chart
-    var lineChart = new Chart(ctx, config);
+    lineChart = new Chart(ctx, config);
 
     }, //if error getting data
     error: function(data){

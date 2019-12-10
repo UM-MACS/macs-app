@@ -10,6 +10,7 @@
 
 // Column chart
 var email = "";
+var barChart = null;
 
 
 $("#serachForm").submit(function(e) {
@@ -110,6 +111,9 @@ $("#serachForm").submit(function(e) {
 
     //Get the context of the Chart canvas element we want to select
     var ctx = $("#yearly-chart");
+    if (barChart !== null)
+        barChart.destroy();
+    barChart = new Chart(ctx, {});
 
     // Chart Options
     
@@ -158,7 +162,7 @@ $("#serachForm").submit(function(e) {
     };
 
     // Create the chart
-    var barChart = new Chart(ctx, config);
+    barChart = new Chart(ctx, config);
 
 
         }, //if error getting data
@@ -275,6 +279,9 @@ $(".year li").click(function(e){
 
     //Get the context of the Chart canvas element we want to select
     var ctx = $("#yearly-chart");
+    if (barChart !== null)
+        barChart.destroy();
+    barChart = new Chart(ctx, {});
 
     // Chart Options
     
@@ -323,7 +330,7 @@ $(".year li").click(function(e){
     };
 
     // Create the chart
-    var barChart = new Chart(ctx, config);
+    barChart = new Chart(ctx, config);
 
 
         }, //if error getting data

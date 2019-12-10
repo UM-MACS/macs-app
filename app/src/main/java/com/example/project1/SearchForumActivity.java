@@ -891,6 +891,7 @@ public class SearchForumActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             sessionManager.logout();
             Intent intent = new Intent(SearchForumActivity.this,MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");

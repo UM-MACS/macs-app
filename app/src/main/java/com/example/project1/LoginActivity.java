@@ -126,10 +126,13 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Patient");
                                                 }
-                                                Intent myIntent = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
-                                                startActivity(myIntent);
+                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+                                                i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
                                             } else if(success.equals("2")){
                                                 Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                                                i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                 i.putExtra("email",email);
                                                 startActivity(i);
                                             } else if (success.equals("0")) {
@@ -197,10 +200,16 @@ public class LoginActivity extends AppCompatActivity {
                                                     User.getInstance().setEmail(jemail); //email
                                                     User.getInstance().setUserName(jname);
 
-
                                                 }
-                                                Intent myIntent = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
-                                                startActivity(myIntent);
+                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+                                                i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
+                                            } else if(success.equals("2")){
+                                                Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                                                i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                                 progressBar.setVisibility(View.GONE);
@@ -267,12 +276,19 @@ public class LoginActivity extends AppCompatActivity {
                                                     User.getInstance().setEmail(jemail); //email
                                                     User.getInstance().setUserName(jname);
                                                 }
-                                                Intent myIntent = new Intent(LoginActivity.this, SpecialistForumActivity.class);
-                                                startActivity(myIntent);
+                                                Intent i = new Intent(LoginActivity.this, SpecialistForumActivity.class);
+                                                i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(), "Password is Incorrect", Toast.LENGTH_LONG).show();
                                                 progressBar.setVisibility(View.GONE);
                                                 b1.setVisibility(View.VISIBLE);
+                                            } else if(success.equals("2")){
+                                                Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                                                i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                i.putExtra("email",email);
+                                                startActivity(i);
                                             }
                                             else {
                                                 Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_LONG).show();
@@ -315,6 +331,7 @@ public class LoginActivity extends AppCompatActivity {
                         b1.setVisibility(View.GONE);
                         if(email.equals("masoccadmin")&&password.equals("abc123")){
                             Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
+                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             sessionManager.createSession("admin", "masoccadmin", "Admin");
                         } else{

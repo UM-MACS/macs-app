@@ -51,7 +51,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer, typeContainer;
+            ,emailContainer, typeContainer, reportButton;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -86,6 +86,7 @@ public class ViewReportedPostActivity extends AppCompatActivity {
         }
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
+
         searchEditText.setVisibility(View.GONE);
         searchButton.setVisibility(View.GONE);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
@@ -259,6 +260,8 @@ public class ViewReportedPostActivity extends AppCompatActivity {
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
+        reportButton = (TextView)findViewById(R.id.report_button);
+        reportButton.setVisibility(View.GONE);
         getPic(getEmail,getType, expanded_user_pic);
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);

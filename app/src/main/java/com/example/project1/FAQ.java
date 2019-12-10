@@ -79,8 +79,8 @@ public class FAQ extends AppCompatActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(FAQ.this, ChatActivity.class);
-                        startActivity(i7);
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                         break;
                 }
                 return true;
@@ -152,6 +152,7 @@ public class FAQ extends AppCompatActivity {
         if (id == R.id.action_logout) {
             sessionManager.logout();
             Intent intent = new Intent(FAQ.this,MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");

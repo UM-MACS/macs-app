@@ -60,10 +60,11 @@ public class SpecialistForumActivity extends AppCompatActivity {
                     case R.id.navigation_forum:
                             Intent i6 = new Intent(SpecialistForumActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
+                            break;
 
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(SpecialistForumActivity.this, ChatActivity.class);
-                        startActivity(i7);
+                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+                        startActivity(i);
                         break;
                 }
                 return true;
@@ -108,8 +109,9 @@ public class SpecialistForumActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             sessionManager.logout();
-            Intent intent = new Intent(SpecialistForumActivity.this,MainActivity.class);
-            startActivity(intent);
+            Intent i = new Intent(SpecialistForumActivity.this,MainActivity.class);
+            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
             User.getInstance().setUserType("");

@@ -61,67 +61,71 @@ private static String URL;
         });
     }
 
-    public void onPost(View v){
+    public void onPost(View v) {
         final String title = titleInput.getText().toString();
         final String content = contentInput.getText().toString();
-        final String anonymous;
-        if(checkBox.isChecked()){
-            anonymous = "true";
-        } else{
-            anonymous = "";
-        }
-        Date d = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String date = dateFormat.format(d);
+        if (!title.equals("") || !content.equals("")) {
+            postButton.setEnabled(false);
+            final String anonymous;
+            if (checkBox.isChecked()) {
+                anonymous = "true";
+            } else {
+                anonymous = "";
+            }
+            Date d = Calendar.getInstance().getTime();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            final String date = dateFormat.format(d);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),"Post Success",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                String success = jsonObject.getString("success");
+                                if (success.equals("1")) {
+                                    Toast.makeText(getApplicationContext(), "Post Success",
+                                            Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(CreatePostActivity.this, ForumActivity.class);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Post Fail",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Post Fail",
                                         Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(CreatePostActivity.this, ForumActivity.class);
-                                startActivity(i);
                             }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Post Fail",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Post Fail",
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "Post Fail",
                                     Toast.LENGTH_SHORT).show();
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Post Fail",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email",User.getInstance().getEmail());
-                params.put("type",User.getInstance().getUserType());
-                params.put("name",User.getInstance().getUserName());
-                params.put("title", title);
-                params.put("content", content);
-                params.put("anonymous",anonymous);
-                params.put("date",date);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-                requestQueue.add(stringRequest);
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("email", User.getInstance().getEmail());
+                    params.put("type", User.getInstance().getUserType());
+                    params.put("name", User.getInstance().getUserName());
+                    params.put("title", title);
+                    params.put("content", content);
+                    params.put("anonymous", anonymous);
+                    params.put("date", date);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } else{
+            Toast.makeText(getApplicationContext(),"Please Enter Something",Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
-
 
 }

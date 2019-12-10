@@ -851,7 +851,9 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                 unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.VISIBLE);
                                 unpinned_pic.setVisibility(View.GONE);
-
+                                Intent intent = getIntent();
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error, pin again",
                                         Toast.LENGTH_SHORT).show();
@@ -880,7 +882,9 @@ public class CaregiverForumActivity extends AppCompatActivity {
     }
 
     public void onUnpin(final View v){
-
+        if(User.getInstance().getUserType().equals("Caregiver")){
+            return;
+        }
         threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
@@ -898,7 +902,9 @@ public class CaregiverForumActivity extends AppCompatActivity {
                                 unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.GONE);
                                 unpinned_pic.setVisibility(View.VISIBLE);
-
+                                Intent intent = getIntent();
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error, unpin again",
                                         Toast.LENGTH_SHORT).show();
@@ -952,6 +958,7 @@ public class CaregiverForumActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             sessionManager.logout();
             Intent intent = new Intent(CaregiverForumActivity.this,MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");

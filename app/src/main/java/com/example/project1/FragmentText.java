@@ -241,8 +241,8 @@ public class FragmentText extends Fragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> header = new HashMap<>();
-//                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
-                header.put("api-key","d92743d6-c2d6-426c-81f1-034b93667aec");
+                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
+//                header.put("api-key","d92743d6-c2d6-426c-81f1-034b93667aec");
 //                header.put("Content-Type","text/plain");
                 return header;
             }

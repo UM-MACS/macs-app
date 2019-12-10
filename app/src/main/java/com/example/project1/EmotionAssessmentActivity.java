@@ -171,8 +171,9 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             sessionManager.logout();
-            Intent intent = new Intent(EmotionAssessmentActivity.this,MainActivity.class);
-            startActivity(intent);
+            Intent i = new Intent(EmotionAssessmentActivity.this,MainActivity.class);
+            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");
             User.getInstance().setUserType("");

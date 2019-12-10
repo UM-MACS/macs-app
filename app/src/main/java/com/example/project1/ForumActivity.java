@@ -852,6 +852,9 @@ private ProgressBar progressBar;
                                 unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.VISIBLE);
                                 unpinned_pic.setVisibility(View.GONE);
+                                Intent intent = getIntent();
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error, pin again",
@@ -881,7 +884,9 @@ private ProgressBar progressBar;
     }
 
     public void onUnpin(final View v){
-
+        if(User.getInstance().getUserType().equals("Patient")){
+            return;
+        }
         threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
@@ -899,7 +904,9 @@ private ProgressBar progressBar;
                                 unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.GONE);
                                 unpinned_pic.setVisibility(View.VISIBLE);
-
+                                Intent intent = getIntent();
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error, unpin again",
                                         Toast.LENGTH_SHORT).show();
@@ -953,6 +960,7 @@ private ProgressBar progressBar;
         if (id == R.id.action_logout) {
             sessionManager.logout();
             Intent intent = new Intent(ForumActivity.this,MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
             User.getInstance().setEmail("");

@@ -319,6 +319,11 @@ public class EditDeletePostActivity extends AppCompatActivity {
         postContent = (EditText)findViewById(R.id.post_content);
         final String title = postTitle.getText().toString();
         final String content = postContent.getText().toString();
+        if(title.equals("")||content.equals("")){
+            Toast.makeText(getApplicationContext(),"Please Enter Title and Content",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_POST,
                 new Response.Listener<String>() {
                     @Override
