@@ -30,7 +30,7 @@ $query = sprintf("
 	SELECT WEEKDAY(date) AS week,
 		   analysis,
 		   COUNT(*) AS count 
-	  FROM eventAssessment
+	  FROM eventAssessmentTable
    	 WHERE email='$email' AND date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND analysis='$verySatisfied'
    	 GROUP BY week, analysis" );
 
@@ -38,7 +38,7 @@ $query2 = sprintf("
 	SELECT WEEKDAY(date) AS week,
 		   analysis,
 		   COUNT(*) AS count 
-	  FROM eventAssessment
+	  FROM eventAssessmentTable
    	 WHERE email='$email' AND date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) 
    	 AND DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND analysis='$satisfied'
    	 GROUP BY week, analysis");
@@ -47,7 +47,7 @@ $query3 = sprintf("
 	SELECT WEEKDAY(date) AS week,
 		   analysis,
 		   COUNT(*) AS count 
-	  FROM eventAssessment
+	  FROM eventAssessmentTable
    	 WHERE email='$email' AND date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND analysis='$neutral'
    	 GROUP BY week, analysis");
 
@@ -55,7 +55,7 @@ $query4 = sprintf("
 	SELECT WEEKDAY(date) AS week,
 		   analysis,
 		   COUNT(*) AS count 
-	  FROM eventAssessment
+	  FROM eventAssessmentTable
    	 WHERE email='$email' AND date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND analysis='$unsatisfied'
    	 GROUP BY week, analysis");
 
@@ -63,7 +63,7 @@ $query5 = sprintf("
 	SELECT WEEKDAY(date) AS week,
 		   analysis,
 		   COUNT(*) AS count 
-	  FROM eventAssessment
+	  FROM eventAssessmentTable
    	 WHERE email='$email' AND date BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND analysis='$veryUnsatisfied'
    	 GROUP BY week, analysis");
 
