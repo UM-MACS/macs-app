@@ -18,10 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.exercise.ExerciseActivity;
+import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
-import com.example.project1.selfAssessment.SelfAssessmentListActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.component.EmotionFragmentText;
 import com.example.project1.login.component.SessionManager;
@@ -72,26 +73,26 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_tracking);
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_assessment);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_emotion_tracking:
+                    case R.id.navigation_emotion_assessment:
                         Intent i2 = new Intent(EmotionAssessmentActivity.this,
                                 EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
-                    case R.id.navigation_schedule_appointment:
+                    case R.id.navigation_exercise:
                         Intent i3 = new Intent(EmotionAssessmentActivity.this,
-                                EventReminderActivity.class);
+                                ExerciseDashboardActivity.class);
                         startActivity(i3);
-                        break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(EmotionAssessmentActivity.this,
-                                SelfAssessmentListActivity.class);
-                        startActivity(i4);
                         break;
                     case R.id.navigation_chat:
                         Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");

@@ -26,7 +26,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise_list);
 
         //define all instant variables
-        intentToExercise = new Intent(ExerciseListActivity.this, ExerciseActivity.class);
+        intentToExercise = new Intent(ExerciseListActivity.this, ExerciseDashboardActivity.class);
         sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
         editor = sharedPreferences.edit();
         exerciseType = sharedPreferences.getString("exercise-type", null);
