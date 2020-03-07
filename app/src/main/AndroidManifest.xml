@@ -13,113 +13,102 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmotionDebug"
+        <activity android:name=".emotionAssessment.component.EmotionDebug"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".EmotionAssessmentActivity"
+            android:name=".emotionAssessment.EmotionAssessmentActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".eventActivity"
+            android:name=".selfAssessment.SelfAssessmentListActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".login.ForgotPasswordActivity" />
+        <activity android:name=".login.ResetPasswordActivity" />
+        <activity
+            android:name=".forum.specialist.SpecialistForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GalleryActivity2"
-            android:exported="true" />
-        <activity
-            android:name=".ChatActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".ResetPasswordActivity" />
-        <activity
-            android:name=".SpecialistForumActivity"
+            android:name=".forum.caregiver.CaregiverSearchForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CaregiverSearchForumActivity"
-            android:exported="true"
+            android:name=".forum.caregiver.CaregiverEditDeletePostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CaregiverEditDeletePostActivity"
+            android:name=".forum.caregiver.CaregiverViewForumFavouriteListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CaregiverViewFavouriteList"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CaregiverCreatePostActivity"
+            android:name=".forum.caregiver.CaregiverCreateForumPostActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".CaregiverForumActivity"
+            android:name=".forum.caregiver.CaregiverForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".DisplayAnalysisActivity"
+            android:name=".forum.EditDeleteForumPostActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditDeletePostActivity"
+            android:name=".userProfile.UserProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".forum.CreateForumPostActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreatePostActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ForumActivity"
+            android:name=".forum.ForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SearchForumActivity"
+            android:name=".forum.SearchForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ViewFavouriteList"
+            android:name=".forum.ViewForumFavouriteListActivity"
             android:label="Favourite List"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ViewReportedPostActivity"
+            android:name=".forum.specialist.ViewForumReportedPostActivity"
             android:label="Reported Posts"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ChangePassword"
+            android:name=".changePassword.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".GalleryActivity"
+            android:name=".faq.adapter.FAQActivityAdapter"
             android:label="Answer"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FAQ"
+            android:name=".faq.FAQActivity"
             android:exported="true"
             android:label="FaQ"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".eventAssessment"
+            android:name=".selfAssessment.SelfAssessmentActivity"
             android:exported="true"
             android:label="Event Assessment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".viewEventActivity"
+            android:name=".eventReminder.EventReminderActivity"
             android:exported="true"
             android:label="Schedule Appointment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:label="MASOCC" />
 
-        <receiver android:name=".AlarmReceiver">
+        <receiver android:name=".eventReminder.component.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
 
@@ -128,23 +117,20 @@
         </receiver>
 
         <activity
-            android:name=".emotionActivity"
+            android:name=".emotionAssessment.EmotionButtonAssessmentActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".register.RegisterPatientActivity"
             android:label="Patient Register" />
         <activity
-            android:name=".Register2Activity"
+            android:name=".register.RegisterCaregiverActivity"
             android:label="Caregiver Register" />
         <activity
-            android:name=".Register3Activity"
+            android:name=".register.RegisterSpecialistActivity"
             android:label="Specialist Register" />
         <activity
-            android:name=".AndroidDatabaseManager"
-            android:label="User Database" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".mainPage.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
