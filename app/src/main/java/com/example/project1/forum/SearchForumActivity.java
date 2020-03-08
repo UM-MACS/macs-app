@@ -34,10 +34,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.exercise.ExerciseActivity;
+import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
-import com.example.project1.selfAssessment.SelfAssessmentListActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
@@ -99,18 +100,17 @@ public class SearchForumActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_emotion_tracking:
+                    case R.id.navigation_emotion_assessment:
                         Intent i2 = new Intent(SearchForumActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
-                    case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(SearchForumActivity.this, EventReminderActivity.class);
+                    case R.id.navigation_exercise:
+                        Intent i3 = new Intent(SearchForumActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(SearchForumActivity.this, SelfAssessmentListActivity.class);
-                        startActivity(i4);
-                        break;
+//                    //                        Intent i4 = new Intent(SearchForumActivity.this, SelfAssessmentListActivity.class);
+//                        startActivity(i4);
+//                        break;
 //                    case R.id.navigation_faq:
 //                        Intent i5 = new Intent(SearchForumActivity.this, FAQActivity.class);
 //                        startActivity(i5);

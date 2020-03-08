@@ -21,6 +21,18 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".exercise.ExerciseActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".exercise.ExerciseDashboardActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".exercise.ExerciseListActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".selfAssessment.SelfAssessmentListActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -33,6 +34,7 @@ import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
@@ -124,24 +126,23 @@ public class SelfAssessmentActivity extends AppCompatActivity implements Adapter
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.nagivation_event_assessment);
+        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_chat);
         item.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_emotion_tracking:
+                    case R.id.navigation_emotion_assessment:
                         Intent i2 = new Intent(SelfAssessmentActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
-                    case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(SelfAssessmentActivity.this, EventReminderActivity.class);
+                    case R.id.navigation_exercise:
+                        Intent i3 = new Intent(SelfAssessmentActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(SelfAssessmentActivity.this, SelfAssessmentListActivity.class);
-                        startActivity(i4);
-                        break;
+//                    //                        Intent i4 = new Intent(SelfAssessmentActivity.this, SelfAssessmentListActivity.class);
+//                        startActivity(i4);
+//                        break;
 //                    case R.id.navigation_faq:
 //                        Intent i5 = new Intent(SelfAssessmentActivity.this,FAQActivity.class);
 //                        startActivity(i5);

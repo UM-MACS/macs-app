@@ -23,12 +23,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.exercise.ExerciseActivity;
+import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
-import com.example.project1.selfAssessment.SelfAssessmentListActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,24 +62,36 @@ SessionManager sessionManager;
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_schedule_appointment);
-        item.setChecked(true);
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_emotion_tracking:
+                    case R.id.navigation_emotion_assessment:
                         Intent i2 = new Intent(ChangePasswordActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
-                    case R.id.navigation_schedule_appointment:
-                        Intent i3 = new Intent(ChangePasswordActivity.this, EventReminderActivity.class);
+                    case R.id.navigation_forum:
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                            Intent i6 = new Intent(ChangePasswordActivity.this, CaregiverForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                            Intent i6 = new Intent(ChangePasswordActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else{
+                            Intent i6 = new Intent(ChangePasswordActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+                    case R.id.navigation_exercise:
+                        Intent i3 = new Intent(ChangePasswordActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
-                        break;
-                    case R.id.nagivation_event_assessment:
-                        Intent i4 = new Intent(ChangePasswordActivity.this, SelfAssessmentListActivity.class);
-                        startActivity(i4);
-                        break;
                 }
                 return true;
             }
@@ -191,6 +208,13 @@ SessionManager sessionManager;
             return true;
         }
 
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(ChangePasswordActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
 }

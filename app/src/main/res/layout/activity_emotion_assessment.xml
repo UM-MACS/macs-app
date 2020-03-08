@@ -22,20 +22,19 @@
     </android.support.v4.widget.DrawerLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        app:labelVisibilityMode="labeled"
-        android:background="@drawable/nav_border"
-        app:itemIconSize="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation" />
+    android:id="@+id/navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    android:background="@drawable/nav_border"
+    app:labelVisibilityMode="labeled"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:layout_alignParentBottom="true"
+    app:menu="@menu/navigation" />
 
     <LinearLayout
         android:id="@+id/pageDot"
