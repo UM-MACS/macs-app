@@ -157,7 +157,7 @@ private ProgressBar progressBar;
 
         localhost = getString(R.string.localhost);
         URL = localhost+"/getForumPost";
-        URL_GETPIC = localhost+"/jee/getPic.php";
+        URL_GETPIC = localhost+"/getPatientPic";
 //        URL_GETPIC_SPECIALIST = localhost+"/jee/getPic3.php";
         URL_GET_REPLY = localhost+"/getReplyPost/";
         URL_POST_REPLY = localhost+"/postReply/";
@@ -207,9 +207,9 @@ private ProgressBar progressBar;
 
     public void getPic(final String email,final String type, final CircleImageView view){
         if(type.equals("Specialist")){
-            URL_GETPIC = localhost+"/jee/getPic3.php";
+            URL_GETPIC = localhost+"/getSpecialistPic";
         }else{
-            URL_GETPIC = localhost+"/jee/getPic.php";
+            URL_GETPIC = localhost+"/getPatientPic";
         }
         Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
@@ -217,16 +217,17 @@ private ProgressBar progressBar;
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            picture = jsonObject.getString("picture");
-                            Log.e("TAG", "pic: "+picture );
-
-                            //load picture example
-                            int loader = R.drawable.ic_user;
-                            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-                            imgLoader.DisplayImage(picture,loader,view);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
-                            if(success.equals("1")){
+                            if(success.equals("1")) {
+                                picture = jsonObject.getString("photo");
+                                Log.e("TAG", "pic: " + picture);
+
+                                //load picture example
+                                int loader = R.drawable.ic_user;
+                                ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+                                imgLoader.DisplayImage(picture, loader, view);
                                 Log.e("TAG", "success loading photo" );
                             }
                         } catch (JSONException e) {
@@ -250,6 +251,8 @@ private ProgressBar progressBar;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+
 
     private void getPosts() {
         progressBar.setVisibility(View.VISIBLE);

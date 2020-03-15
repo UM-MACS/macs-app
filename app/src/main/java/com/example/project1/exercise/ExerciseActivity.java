@@ -58,7 +58,7 @@ public class ExerciseActivity extends AppCompatActivity {
     //record related variables
     private List<String> durationList = new ArrayList<>();
     private List<String> exerciseNameList = new ArrayList<>();
-    private String sessionId;
+    private int sessionId;
     private String email = User.getInstance().getEmail();
     private String exerciseLevel, feeling, startTime, endTime, time;
     private boolean saveStatus = true;
@@ -136,7 +136,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         //define start time
         Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         startTime = df.format(c);
 
         tvVideoName.setText(currentExerciseList[exerciseCounter]);
@@ -179,7 +179,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         btnStart.setEnabled(false);
                         //define end time
                         Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         endTime = df.format(c);
                         saveDialog();
                     } else {
@@ -202,7 +202,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         btnStart.setEnabled(false);
                         //define end time
                         Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         endTime = df.format(c);
                         saveDialog();
                     } else {
@@ -361,10 +361,11 @@ public class ExerciseActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+//                                JSONArray jsonArray = new JSONArray(response);
+//                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                JSONObject jsonObject = new JSONObject(response);
                                 String success = jsonObject.getString("success");
-                                sessionId = jsonObject.getString("sessionId");
+                                sessionId = jsonObject.getInt("sessionId");
                                 if (success.equals("1")) {
                                     saveExerciseDetails();
                                 } else {
@@ -413,8 +414,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                JSONObject jsonObject = new JSONObject(response);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
                                     saveStatus = true;
@@ -437,7 +437,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 protected Map<String,String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", email);
-                    params.put("sessionId", sessionId);
+                    params.put("sessionId", Integer.toString(sessionId));
                     params.put("exerciseName", exerciseNameList.get(j));
                     params.put("duration", durationList.get(j));
                     return params;

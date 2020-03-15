@@ -72,7 +72,7 @@ public class EditDeleteForumPostActivity extends AppCompatActivity {
 
         localhost = getString(R.string.localhost);
         URL_GET_POSTS = localhost+"/getMyPost/";
-        URL_GETPIC = localhost+"/jee/getPic.php";
+        URL_GETPIC = localhost+"/getPatientPic";
         URL_UPDATE_POST = localhost+"/updatePost/";
         URL_DELETE_POST = localhost+"/deletePost/";
 
@@ -190,9 +190,9 @@ public class EditDeleteForumPostActivity extends AppCompatActivity {
 
     public void getPic(final String email,final String type, final CircleImageView view){
         if(type.equals("Specialist")){
-            URL_GETPIC = localhost+"/jee/getPic3.php";
+            URL_GETPIC = localhost+"/getSpecialistPic";
         }else{
-            URL_GETPIC = localhost+"/jee/getPic.php";
+            URL_GETPIC = localhost+"/getPatientPic";
         }
         Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
@@ -200,16 +200,17 @@ public class EditDeleteForumPostActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            picture = jsonObject.getString("picture");
-                            Log.e("TAG", "pic: "+picture );
-
-                            //load picture example
-                            int loader = R.drawable.ic_user;
-                            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-                            imgLoader.DisplayImage(picture,loader,view);
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
-                            if(success.equals("1")){
+                            if(success.equals("1")) {
+                                picture = jsonObject.getString("photo");
+                                Log.e("TAG", "pic: " + picture);
+
+                                //load picture example
+                                int loader = R.drawable.ic_user;
+                                ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+                                imgLoader.DisplayImage(picture, loader, view);
                                 Log.e("TAG", "success loading photo" );
                             }
                         } catch (JSONException e) {
