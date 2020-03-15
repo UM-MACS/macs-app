@@ -71,10 +71,10 @@ public class EditDeleteForumPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_POSTS = localhost+":3000/getMyPost/";
+        URL_GET_POSTS = localhost+"/getMyPost/";
         URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_UPDATE_POST = localhost+":3000/updatePost/";
-        URL_DELETE_POST = localhost+":3000/deletePost/";
+        URL_UPDATE_POST = localhost+"/updatePost/";
+        URL_DELETE_POST = localhost+"/deletePost/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

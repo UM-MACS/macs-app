@@ -67,8 +67,8 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
 ////                        startActivity(i4);
 ////                        break;
                     case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
+//                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+//                        startActivity(i);
                         break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){

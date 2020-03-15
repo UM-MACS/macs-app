@@ -172,7 +172,7 @@ public class SelfAssessmentActivity extends AppCompatActivity implements Adapter
         //finish
 
         localhost = getString(R.string.localhost);
-        URL = localhost + ":3000/eAssessment";
+        URL = localhost + "/eAssessment";
         sessionManager = new SessionManager(this);
 //        db = new DatabaseHelper(this);
         b1 = (Button) findViewById(R.id.button_submit_assessment);

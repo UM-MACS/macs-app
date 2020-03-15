@@ -89,7 +89,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
 
         progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
         localhost = getString(R.string.localhost);
-        URL =localhost+":3000/emotion";
+        URL =localhost+"/emotion";
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);

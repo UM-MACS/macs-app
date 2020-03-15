@@ -40,7 +40,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/sendSaltToEmail";
+        URL = localhost+"/sendSaltToEmail";
         etEmail = (EditText)findViewById(R.id.email);
         buttonSubmit = (Button)findViewById(R.id.button);
         textview = (TextView)findViewById(R.id.textView);
@@ -50,11 +50,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void onForgotPassword(View v){
         if(User.getInstance().getUserType().equals("Patient")){
-            URL = localhost+":3000/sendSaltToEmail";
+            URL = localhost+"/sendSaltToEmail";
         } else if (User.getInstance().getUserType().equals("Caregiver")){
-            URL = localhost+":3000/sendSaltToEmail2";
+            URL = localhost+"/sendSaltToEmail2";
         } else if(User.getInstance().getUserType().equals("Specialist")){
-            URL = localhost+":3000/sendSaltToEmail3";
+            URL = localhost+"/sendSaltToEmail3";
         }
         progressBar.setVisibility(View.VISIBLE);
         buttonSubmit.setVisibility(View.GONE);

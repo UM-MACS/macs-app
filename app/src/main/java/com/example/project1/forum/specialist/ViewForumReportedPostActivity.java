@@ -74,18 +74,18 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
 
         localhost = getString(R.string.localhost);
         URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPost/";
-        URL_POST_REPLY = localhost+":3000/postReply/";
+        URL_GET_REPLY = localhost+"/getReplyPost/";
+        URL_POST_REPLY = localhost+"/postReply/";
 
 
         Intent intent = getIntent();
         forum = intent.getStringExtra("forum");
         if(forum.equals("Patient")){
-            URL_GET_REPORTED_POST = localhost+":3000/getReportedPost/";
-            URL_DELETE_POST = localhost+":3000/deletePost/";
+            URL_GET_REPORTED_POST = localhost+"/getReportedPost/";
+            URL_DELETE_POST = localhost+"/deletePost/";
         } else if (forum.equals("Caregiver")){
-            URL_GET_REPORTED_POST = localhost+":3000/getReportedPostCaregiver/";
-            URL_DELETE_POST = localhost+":3000/deletePostCaregiver/";
+            URL_GET_REPORTED_POST = localhost+"/getReportedPostCaregiver/";
+            URL_DELETE_POST = localhost+"/deletePostCaregiver/";
         }
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

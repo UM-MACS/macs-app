@@ -71,10 +71,10 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_caregiver_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_POSTS = localhost+":3000/getMyPostCaregiver/";
+        URL_GET_POSTS = localhost+"/getMyPostCaregiver/";
         URL_GETPIC = localhost+"/jee/getPic2.php";
-        URL_UPDATE_POST = localhost+":3000/updatePostCaregiver/";
-        URL_DELETE_POST = localhost+":3000/deletePostCaregiver/";
+        URL_UPDATE_POST = localhost+"/updatePostCaregiver/";
+        URL_DELETE_POST = localhost+"/deletePostCaregiver/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

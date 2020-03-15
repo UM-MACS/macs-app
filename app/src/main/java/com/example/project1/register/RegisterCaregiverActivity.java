@@ -82,7 +82,7 @@ public class RegisterCaregiverActivity extends AppCompatActivity implements Adap
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_REGIST =localhost+":3000/register2/";
+        URL_REGIST =localhost+"/register2/";
         URL_UPLOAD =localhost+"/jee/setPic2.php";
 //        db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.register2_loading);

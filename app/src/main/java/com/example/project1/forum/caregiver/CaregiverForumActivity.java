@@ -144,16 +144,16 @@ public class CaregiverForumActivity extends AppCompatActivity {
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/getCaregiverForumPost";
+        URL = localhost+"/getCaregiverForumPost";
         URL_GETPIC = localhost+"/jee/getPic2.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPostCaregiver/";
-        URL_POST_REPLY = localhost+":3000/postReplyCaregiver/";
-        URL_PIN_POST = localhost+":3000/pinPostCaregiver/";
-        URL_SEARCH_POST = localhost+":3000/searchPostCaregiver/";
-        URL_ADD_FAV = localhost+":3000/addToFavouriteCaregiver/";
-        URL_DEL_FAV = localhost+":3000/removeFavouriteCaregiver/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavouriteCaregiver/";
-        URL_REPORT_POST = localhost+":3000/reportPostCaregiver/";
+        URL_GET_REPLY = localhost+"/getReplyPostCaregiver/";
+        URL_POST_REPLY = localhost+"/postReplyCaregiver/";
+        URL_PIN_POST = localhost+"/pinPostCaregiver/";
+        URL_SEARCH_POST = localhost+"/searchPostCaregiver/";
+        URL_ADD_FAV = localhost+"/addToFavouriteCaregiver/";
+        URL_DEL_FAV = localhost+"/removeFavouriteCaregiver/";
+        URL_GET_IS_FAV = localhost+"/getIsFavouriteCaregiver/";
+        URL_REPORT_POST = localhost+"/reportPostCaregiver/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);

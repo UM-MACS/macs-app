@@ -75,9 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_LOGIN = localhost+":3000/login/";
-        URL_LOGIN2 = localhost+":3000/login2/";
-        URL_LOGIN3 = localhost+":3000/login3/";
+        URL_LOGIN = localhost+"/login/";
+        URL_LOGIN2 = localhost+"/login2/";
+        URL_LOGIN3 = localhost+"/login3/";
 //        db = new DatabaseHelper(this);
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
         e1 = (EditText)findViewById(R.id.login_email);

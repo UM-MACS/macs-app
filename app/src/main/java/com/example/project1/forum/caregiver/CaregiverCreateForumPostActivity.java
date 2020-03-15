@@ -46,7 +46,7 @@ public class CaregiverCreateForumPostActivity extends AppCompatActivity {
         email = User.getInstance().getEmail();
         name = User.getInstance().getUserName();
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/postingToCaregiverForum/";
+        URL = localhost+"/postingToCaregiverForum/";
 
         titleInput = (EditText)findViewById(R.id.post_title);
         contentInput = (EditText)findViewById(R.id.post_content);

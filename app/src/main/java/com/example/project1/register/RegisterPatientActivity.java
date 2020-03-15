@@ -84,7 +84,7 @@ public class RegisterPatientActivity extends AppCompatActivity implements Adapte
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_REGIST =localhost+":3000/register/";
+        URL_REGIST =localhost+"/register/";
         URL_UPLOAD =localhost+"/jee/setPic.php";
 //        db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.loading);

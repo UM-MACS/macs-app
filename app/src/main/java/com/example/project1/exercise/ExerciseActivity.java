@@ -21,13 +21,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.forum.CreateForumPostActivity;
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.login.component.User;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -40,8 +56,12 @@ public class ExerciseActivity extends AppCompatActivity {
     private int Seconds, Minutes, MilliSeconds;
 
     //record related variables
-    private List<String> timeRecord = new ArrayList<>();
-    private String date, type, time, feeling;
+    private List<String> durationList = new ArrayList<>();
+    private List<String> exerciseNameList = new ArrayList<>();
+    private String sessionId;
+    private String email = User.getInstance().getEmail();
+    private String exerciseLevel, feeling, startTime, endTime, time;
+    private boolean saveStatus = true;
 
     //exercise related variables
     private String[] currentExerciseList;
@@ -56,9 +76,10 @@ public class ExerciseActivity extends AppCompatActivity {
             R.raw.wood_cutter, R.raw.empty_the_can, R.raw.standing_bicycle_crunch};
     private int exerciseCounter = 0;
     private boolean pause_check;
+    private String localhost;
+    private static String SESSION_URL, DETAILS_URL;
 
     private SharedPreferences sharedPreferences;
-//    private ExerciseRecord er;
 
     private final static String EXERCISE_TYPE = "EXERCISE_TYPE";
     private final static int PRIVATE_MODE = 0;
@@ -69,18 +90,23 @@ public class ExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise);
 
         //define all instant variables
+        localhost = getString(R.string.localhost);
+        SESSION_URL = localhost+"/postExercise/";
+        DETAILS_URL = localhost+"/postExercisedetails";
+
         sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
-        type = sharedPreferences.getString("videoType", null);
+        exerciseLevel = sharedPreferences.getString("exercise-type", null);
         String s = sharedPreferences.getString("list", null);
         String str = s.substring(1, s.length() - 1);
         currentExerciseList = str.split(", ");
 
         //define current list with id
-        if (type.contentEquals("exercise level one")) {
+        if (exerciseLevel.contentEquals("exercise-level-one")) {
             for (int i = 0; i < currentExerciseList.length; i++) {
                 for (int j = 0; j < oriExerciseList1.length; j++) {
                     if (currentExerciseList[i].contentEquals(oriExerciseList1[j])) {
                         currentExerciseIdList.add(oriExerciseIdList1[j]);
+                        System.out.println("true");
                     }
                 }
             }
@@ -89,6 +115,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 for (int j = 0; j < oriExerciseList2.length; j++) {
                     if (currentExerciseList[i].contentEquals(oriExerciseList2[j])) {
                         currentExerciseIdList.add(oriExerciseIdList2[j]);
+                        System.out.println("false");
                     }
                 }
             }
@@ -107,10 +134,10 @@ public class ExerciseActivity extends AppCompatActivity {
         view.setMediaController(mc);
         playVideo(view);
 
-        //define date,type
+        //define start time
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        date = df.format(c);
+        startTime = df.format(c);
 
         tvVideoName.setText(currentExerciseList[exerciseCounter]);
         btnEnd.setEnabled(false);
@@ -141,40 +168,51 @@ public class ExerciseActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (type.contentEquals("exercise level one")) {
+//                Map<String,String> temp = new HashMap<>();
+                if (exerciseLevel.contentEquals("exercise level one")) {
                     if (exerciseCounter == 7) {
-                        timeRecord.add(time);
+                        exerciseNameList.add(tvVideoName.getText().toString());
+                        durationList.add(time);
                         handler.removeCallbacks(runnable);
                         btnReset.setEnabled(true);
                         btnEnd.setEnabled(false);
                         btnStart.setEnabled(false);
+                        //define end time
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        endTime = df.format(c);
                         saveDialog();
                     } else {
                         exerciseCounter++;
                         if (exerciseCounter == 7)
                             btnEnd.setText("END");
+                        exerciseNameList.add(tvVideoName.getText().toString());
+                        durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
                         playVideo(view);
-                        timeRecord.add(time);
-
                         btnNextOnClick();
                     }
                 } else {
                     if (exerciseCounter == 6) {
-                        timeRecord.add(time);
+                        exerciseNameList.add(tvVideoName.getText().toString());
+                        durationList.add(time);
                         handler.removeCallbacks(runnable);
                         btnReset.setEnabled(true);
                         btnEnd.setEnabled(false);
                         btnStart.setEnabled(false);
+                        //define end time
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        endTime = df.format(c);
                         saveDialog();
                     } else {
                         exerciseCounter++;
                         if (exerciseCounter == 6)
                             btnEnd.setText("END");
+                        exerciseNameList.add(tvVideoName.getText().toString());
+                        durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
                         playVideo(view);
-                        timeRecord.add(time);
-
                         btnNextOnClick();
                     }
                 }
@@ -317,10 +355,103 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     public void saveExercise() {
-
-        Toast.makeText(ExerciseActivity.this, "Add exercise success!", Toast.LENGTH_LONG).show();
         //SAVE TO DATABASE LOGIC HERE
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                String success = jsonObject.getString("success");
+                                sessionId = jsonObject.getString("sessionId");
+                                if (success.equals("1")) {
+                                    saveExerciseDetails();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("email", email);
+                    params.put("exerciseLevel", exerciseLevel);
+                    params.put("startTime", startTime);
+                    params.put("endTime", endTime);
+                    params.put("feeling", feeling);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+    }
 
+    public void saveExerciseDetails(){
+        //Toast.makeText(ExerciseActivity.this, "Add exercise success!", Toast.LENGTH_LONG).show();
+        //SAVE EXERCISE DETAILS TO DATABASE HERE
+        for(int i = 0; i < exerciseNameList.size(); i++){
+            final int j = i;
+            if(!saveStatus){
+                break;
+            }
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, DETAILS_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                String success = jsonObject.getString("success");
+                                if (success.equals("1")) {
+                                    saveStatus = true;
+                                } else {
+                                    saveStatus = false;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                saveStatus = false;
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            saveStatus = false;
+                        }
+                    }) {
+                @Override
+                protected Map<String,String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("email", email);
+                    params.put("sessionId", sessionId);
+                    params.put("exerciseName", exerciseNameList.get(j));
+                    params.put("duration", durationList.get(j));
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        }
+        if(saveStatus){
+            Toast.makeText(getApplicationContext(), "Save exercise success!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Save exercise fail!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

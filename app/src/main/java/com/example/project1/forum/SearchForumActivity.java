@@ -125,15 +125,15 @@ public class SearchForumActivity extends AppCompatActivity {
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/getForumPost";
+        URL = localhost+"/getForumPost";
         URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPost/";
-        URL_POST_REPLY = localhost+":3000/postReply/";
-        URL_PIN_POST = localhost+":3000/pinPost/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
-        URL_REPORT_POST = localhost+":3000/reportPost/";
-        URL_SEARCH_POST = localhost+":3000/searchPost/";
-        URL_GET_POSTS= localhost+":3000/getPost/";
+        URL_GET_REPLY = localhost+"/getReplyPost/";
+        URL_POST_REPLY = localhost+"/postReply/";
+        URL_PIN_POST = localhost+"/pinPost/";
+        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
+        URL_REPORT_POST = localhost+"/reportPost/";
+        URL_SEARCH_POST = localhost+"/searchPost/";
+        URL_GET_POSTS= localhost+"/getPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);

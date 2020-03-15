@@ -42,7 +42,7 @@ private static String URL;
         setContentView(R.layout.activity_create_post);
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/postingToForum/";
+        URL = localhost+"/postingToForum/";
 
         titleInput = (EditText)findViewById(R.id.post_title);
         contentInput = (EditText)findViewById(R.id.post_content);

@@ -79,7 +79,7 @@ public class EmotionFragmentText extends Fragment {
         View thisFragment = inflater.inflate(R.layout.fragment_emotion_text, container, false);
         progressBarHolder = (FrameLayout) thisFragment.findViewById(R.id.progressBarHolder);
         localhost = getString(R.string.localhost);
-        URL =localhost+":3000/emotion";
+        URL =localhost+"/emotion";
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);

@@ -35,7 +35,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/resetPassword";
+        URL = localhost+"/resetPassword";
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -49,11 +49,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     public void onResetPassword(View view) {
         if(User.getInstance().getUserType().equals("Patient")){
-            URL = localhost+":3000/resetPassword";
+            URL = localhost+"/resetPassword";
         } else if (User.getInstance().getUserType().equals("Caregiver")){
-            URL = localhost+":3000/resetPassword2";
+            URL = localhost+"/resetPassword2";
         } else if(User.getInstance().getUserType().equals("Specialist")){
-            URL = localhost+":3000/resetPassword3";
+            URL = localhost+"/resetPassword3";
         }
         final EditText et1 = (EditText) findViewById(R.id.password);
         final EditText et2 = (EditText) findViewById(R.id.confirm_password);

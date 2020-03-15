@@ -152,10 +152,10 @@ public class EventReminderActivity extends AppCompatActivity {
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/getAppointment";
-        URL2 = localhost+":3000/setAppointment";
-        URL3 = localhost+":3000/deleteAppointment";
-        URL4 = localhost+":3000/updateAppointment";
+        URL = localhost+"/getAppointment";
+        URL2 = localhost+"/setAppointment";
+        URL3 = localhost+"/deleteAppointment";
+        URL4 = localhost+"/updateAppointment";
         parentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout);
         frameLayout = (FrameLayout) findViewById(R.id.foreground_menu);
         frameLayout.getForeground().setAlpha(0);

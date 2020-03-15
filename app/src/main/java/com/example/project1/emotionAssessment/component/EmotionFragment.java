@@ -76,7 +76,7 @@ public class EmotionFragment extends Fragment {
         View thisFragment = inflater.inflate(R.layout.fragment_emotion_button, container, false);
         progressBarHolder = (FrameLayout) thisFragment.findViewById(R.id.progressBarHolder);
         localhost = getString(R.string.localhost);
-        URL =localhost+":3000/emotion";
+        URL =localhost+"/emotion";
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
@@ -107,8 +107,9 @@ public class EmotionFragment extends Fragment {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
+                Log.d("tagd"," email " + User.getInstance().getEmail()+ " type " + User.getInstance().getUserType() + " date " + date);
                 insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
-                        date,"Happy(def)","Positive");
+                        date,"Happy","Positive");
                 task.execute();
 
             }
@@ -248,7 +249,7 @@ public class EmotionFragment extends Fragment {
                             else if(success.equals("0")){
 //                    Toast.makeText(getApplicationContext(),"Fail to submit",
 //                            Toast.LENGTH_SHORT).show();
-                                expression.setText("");
+//                                expression.setText("");
                                 AlertDialog diaBox = alertError();
                                 diaBox.show();
                                 task.cancel(true);
@@ -276,6 +277,12 @@ public class EmotionFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
+                Log.d("param", email);
+                Log.d("param", type);
+                Log.d("param", date);
+                Log.d("param", expressionInput);
+                Log.d("param", output);
+
                 params.put("email",email);
                 params.put("type",type);
                 params.put("date",date);

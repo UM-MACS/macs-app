@@ -76,14 +76,14 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_caregiver_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_FAV = localhost+":3000/myFavouriteListCaregiver/";
-        URL_ADD_FAV = localhost+":3000/addToFavouriteCaregiver/";
-        URL_DEL_FAV = localhost+":3000/removeFavouriteCaregiver/";
+        URL_GET_FAV = localhost+"/myFavouriteListCaregiver/";
+        URL_ADD_FAV = localhost+"/addToFavouriteCaregiver/";
+        URL_DEL_FAV = localhost+"/removeFavouriteCaregiver/";
         URL_GETPIC = localhost+"/jee/getPic2.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPostCaregiver/";
-        URL_POST_REPLY = localhost+":3000/postReplyCaregiver/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
-        URL_REPORT_POST = localhost+":3000/reportPost/";
+        URL_GET_REPLY = localhost+"/getReplyPostCaregiver/";
+        URL_POST_REPLY = localhost+"/postReplyCaregiver/";
+        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
+        URL_REPORT_POST = localhost+"/reportPost/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

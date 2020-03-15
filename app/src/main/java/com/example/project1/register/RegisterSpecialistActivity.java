@@ -84,7 +84,7 @@ public class RegisterSpecialistActivity extends AppCompatActivity implements Ada
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_REGIST =localhost+":3000/register3/";
+        URL_REGIST =localhost+"/register3/";
         URL_UPLOAD =localhost+"/jee/setPic.php";
 //        db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.loading);

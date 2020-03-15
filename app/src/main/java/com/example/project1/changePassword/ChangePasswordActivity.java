@@ -99,7 +99,7 @@ SessionManager sessionManager;
 
 //        db = new DatabaseHelper(this);
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/changepassword";
+        URL = localhost+"/changepassword";
         o1 = (EditText)findViewById(R.id.old_pw);
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);

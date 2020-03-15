@@ -52,7 +52,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise_list);
 
         //define all instant variables
-        intentToExercise = new Intent(ExerciseListActivity.this, ExerciseDashboardActivity.class);
+        intentToExercise = new Intent(ExerciseListActivity.this, ExerciseActivity.class);
         sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
         editor = sharedPreferences.edit();
         exerciseType = sharedPreferences.getString("exercise-type", null);
@@ -62,6 +62,28 @@ public class ExerciseListActivity extends AppCompatActivity {
         btnExerciseStart = findViewById(R.id.button_exercise_start);
         tvTitle = findViewById(R.id.textview_title);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_exercise_list);
+
+        //set value to exercise list
+        if(exerciseType.contentEquals("exercise-level-one")){
+            exerciseList = exerciseList1;
+            exerciseTimeList = exerciseTimeList1;
+        }
+        else{
+            exerciseList = exerciseList2;
+            exerciseTimeList = exerciseTimeList2;
+            tvTitle.setText("Exercise Level 2");
+        }
+
+        //adapter declare
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerViewAdapter = new ExerciseListAdapter(this, exerciseList, exerciseTimeList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+
 
         //overwrites methods elements
         btnRandom.setOnClickListener(new View.OnClickListener() {
@@ -103,24 +125,5 @@ public class ExerciseListActivity extends AppCompatActivity {
             }
         });
 
-        //adapter declare
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerViewAdapter = new ExerciseListAdapter(this, exerciseList, exerciseTimeList);
-        recyclerView.setAdapter(recyclerViewAdapter);
-
-        //set value to exercise list
-        if(exerciseType.contentEquals("exercise-level-one")){
-            exerciseList = exerciseList1;
-            exerciseTimeList = exerciseTimeList1;
-        }
-        else{
-            exerciseList = exerciseList2;
-            exerciseTimeList = exerciseTimeList2;
-            tvTitle.setText("Exercise Level 2");
-        }
     }
 }

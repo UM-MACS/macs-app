@@ -95,8 +95,8 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
                         startActivity(i3);
                         break;
                     case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
+//                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
+//                        startActivity(i);
                         break;
                     case R.id.navigation_forum:
                         if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){

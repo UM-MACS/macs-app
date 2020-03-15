@@ -76,14 +76,14 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum);
 
         localhost = getString(R.string.localhost);
-        URL_GET_FAV = localhost+":3000/myFavouriteList/";
-        URL_ADD_FAV = localhost+":3000/addToFavourite/";
-        URL_DEL_FAV = localhost+":3000/removeFavourite/";
+        URL_GET_FAV = localhost+"/myFavouriteList/";
+        URL_ADD_FAV = localhost+"/addToFavourite/";
+        URL_DEL_FAV = localhost+"/removeFavourite/";
         URL_GETPIC = localhost+"/jee/getPic.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPost/";
-        URL_POST_REPLY = localhost+":3000/postReply/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
-        URL_REPORT_POST = localhost+":3000/reportPost/";
+        URL_GET_REPLY = localhost+"/getReplyPost/";
+        URL_POST_REPLY = localhost+"/postReply/";
+        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
+        URL_REPORT_POST = localhost+"/reportPost/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

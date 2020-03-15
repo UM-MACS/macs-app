@@ -149,25 +149,24 @@ private ProgressBar progressBar;
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
+//                         startActivity(i);
                 }
                 return true;
             }
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+":3000/getForumPost";
+        URL = localhost+"/getForumPost";
         URL_GETPIC = localhost+"/jee/getPic.php";
 //        URL_GETPIC_SPECIALIST = localhost+"/jee/getPic3.php";
-        URL_GET_REPLY = localhost+":3000/getReplyPost/";
-        URL_POST_REPLY = localhost+":3000/postReply/";
-        URL_PIN_POST = localhost+":3000/pinPost/";
-        URL_SEARCH_POST = localhost+":3000/searchPost/";
-        URL_ADD_FAV = localhost+":3000/addToFavourite/";
-        URL_DEL_FAV = localhost+":3000/removeFavourite/";
-        URL_GET_IS_FAV = localhost+":3000/getIsFavourite/";
-        URL_REPORT_POST = localhost+":3000/reportPost/";
+        URL_GET_REPLY = localhost+"/getReplyPost/";
+        URL_POST_REPLY = localhost+"/postReply/";
+        URL_PIN_POST = localhost+"/pinPost/";
+        URL_SEARCH_POST = localhost+"/searchPost/";
+        URL_ADD_FAV = localhost+"/addToFavourite/";
+        URL_DEL_FAV = localhost+"/removeFavourite/";
+        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
+        URL_REPORT_POST = localhost+"/reportPost/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
@@ -388,6 +387,7 @@ private ProgressBar progressBar;
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
+                            Log.e("Error", e.toString());
                             Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                     Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
