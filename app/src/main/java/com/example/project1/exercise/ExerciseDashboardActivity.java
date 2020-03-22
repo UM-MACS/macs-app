@@ -41,8 +41,8 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     //by default
-    private int desiredExerciseDay = 3;
-    private int desiredToBeReminded = 0;
+    private int desiredExerciseDay;
+    private int desiredToBeReminded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,8 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         intentToExerciseList = new Intent(ExerciseDashboardActivity.this, ExerciseListActivity.class);
         sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS,PublicComponent.PRIVATE_MODE);
         editor = sharedPreferences.edit();
+        desiredExerciseDay = sharedPreferences.getInt(PublicComponent.DESIRE_EXERCISE_DAY, 3);
+        desiredToBeReminded = sharedPreferences.getInt(PublicComponent.DESIRE_TO_BE_REMIND, 0);
 
         //define all elements
         btnStartExercise1 = findViewById(R.id.button_exercise_one);
@@ -154,9 +156,12 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
+                        editor.putInt(PublicComponent.DESIRE_EXERCISE_DAY, Integer.parseInt(spinner.getSelectedItem().toString()));
                         if(checkBox.isChecked()){
                             desiredToBeReminded = 1;
+                            editor.putInt(PublicComponent.DESIRE_TO_BE_REMIND, 1);
                         }
+                        editor.apply();
                         arg0.dismiss();
                     }
                 });

@@ -1,6 +1,7 @@
 package com.example.project1.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
@@ -133,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Patient");
                                                 }
+
                                                 Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 i.putExtra("email",email);
