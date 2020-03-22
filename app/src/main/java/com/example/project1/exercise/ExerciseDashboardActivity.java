@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,7 +41,8 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     //by default
-    private int intentedExerciseDay = 3;
+    private int desiredExerciseDay = 3;
+    private int desiredToBeReminded = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,11 +147,16 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.checkbox_dialog);
+
         alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>OK</font>"),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        intentedExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
+                        desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
+                        if(checkBox.isChecked()){
+                            desiredToBeReminded = 1;
+                        }
                         arg0.dismiss();
                     }
                 });
