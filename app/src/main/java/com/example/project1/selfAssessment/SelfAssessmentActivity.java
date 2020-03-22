@@ -312,8 +312,6 @@ public class SelfAssessmentActivity extends AppCompatActivity implements Adapter
         private void getIncomingIntent () {
             Log.d("TAG", "getIncomingIntent: checking for incoming intents.");
             if (getIntent().hasExtra("event_name")) {
-
-
                 eventName = getIntent().getStringExtra("event_name");
                 Log.d("TAG", "getIncomingIntent: activity_self_assessment_list name: " + eventName);
 

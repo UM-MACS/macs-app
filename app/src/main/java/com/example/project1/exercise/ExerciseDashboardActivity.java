@@ -1,17 +1,24 @@
 package com.example.project1.exercise;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
@@ -28,11 +35,12 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     private Button btnStartExercise1, btnStartExercise2;
+    private TextView tvCustomize;
     private Intent intentToExerciseList;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private final static String EXERCISE_TYPE = "EXERCISE_TYPE";
-    private final static int PRIVATE_MODE = 0;
+    //by default
+    private int intentedExerciseDay = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-    //Bottom Navigation Bar
+        //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.navigation);
         MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
@@ -62,10 +70,6 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
                                 ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    ////                        Intent i4 = new Intent(EmotionAssessmentActivity.this,
-////                                SelfAssessmentListActivity.class);
-////                        startActivity(i4);
-////                        break;
                     case R.id.navigation_chat:
 //                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
 //                        startActivity(i);
@@ -89,24 +93,24 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
             }
         });
 
-        sessionManager = new SessionManager(this);
-
 
 
         //define all instant variables
+        sessionManager = new SessionManager(this);
         intentToExerciseList = new Intent(ExerciseDashboardActivity.this, ExerciseListActivity.class);
-        sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
+        sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS,PublicComponent.PRIVATE_MODE);
         editor = sharedPreferences.edit();
 
         //define all elements
         btnStartExercise1 = findViewById(R.id.button_exercise_one);
         btnStartExercise2 = findViewById(R.id.button_exercise_two);
+        tvCustomize = findViewById(R.id.tv_customize);
 
         //overwrites methods elements
         btnStartExercise1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("exercise-type","exercise-level-one");
+                editor.putString(PublicComponent.EXERCISE_TYPE,"exercise-level-one");
                 editor.apply();
                 startActivity(intentToExerciseList);
             }
@@ -114,15 +118,51 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         btnStartExercise2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("exercise-type","exercise-level-two");
+                editor.putString(PublicComponent.EXERCISE_TYPE,"exercise-level-two");
                 editor.apply();
                 startActivity(intentToExerciseList);
             }
         });
+        tvCustomize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
+    //TODO
     //PUT DASHBOARD LOGIC
 
+    public void showDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+        alertDialogBuilder.setTitle("Customize My Exercise Plan");
+        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
+
+        final Spinner spinner = (Spinner)dialogView.findViewById(R.id.spinner_dialog);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.exercise_day));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>OK</font>"),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        intentedExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
+                        arg0.dismiss();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        arg0.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

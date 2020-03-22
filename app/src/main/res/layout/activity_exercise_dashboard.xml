@@ -69,13 +69,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_customize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingBottom="16dp"
-                        android:text="Days completed exercise"
+                        android:clickable="true"
+                        android:text="Customize my exercise plan"
                         android:textAlignment="center"
                         android:textSize="14dp" />
 

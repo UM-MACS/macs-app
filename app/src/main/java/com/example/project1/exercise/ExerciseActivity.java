@@ -1,14 +1,11 @@
 package com.example.project1.exercise;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -28,12 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.R;
-import com.example.project1.forum.CreateForumPostActivity;
-import com.example.project1.forum.ForumActivity;
 import com.example.project1.login.component.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,9 +76,6 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
-    private final static String EXERCISE_TYPE = "EXERCISE_TYPE";
-    private final static int PRIVATE_MODE = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +86,9 @@ public class ExerciseActivity extends AppCompatActivity {
         SESSION_URL = localhost+"/postExercise/";
         DETAILS_URL = localhost+"/postExercisedetails";
 
-        sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
-        exerciseLevel = sharedPreferences.getString("exercise-type", null);
-        String s = sharedPreferences.getString("list", null);
+        sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS,PublicComponent.PRIVATE_MODE);
+        exerciseLevel = sharedPreferences.getString(PublicComponent.EXERCISE_TYPE, null);
+        String s = sharedPreferences.getString(PublicComponent.EXERCISE_LIST, null);
         String str = s.substring(1, s.length() - 1);
         currentExerciseList = str.split(", ");
 
@@ -239,27 +231,17 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     public Runnable runnable = new Runnable() {
-
         public void run() {
-
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-
             UpdateTime = TimeBuff + MillisecondTime;
-
             Seconds = (int) (UpdateTime / 1000);
-
             Minutes = Seconds / 60;
-
             Seconds = Seconds % 60;
-
             MilliSeconds = (int) (UpdateTime % 1000) / 10;
-
             time = ("" + String.format("%02d", Minutes) + ":"
                     + String.format("%02d", Seconds) + ":"
                     + String.format("%02d", MilliSeconds));
-
             tvStopwatchName.setText(time);
-
             handler.postDelayed(this, 0);
         }
 
@@ -300,7 +282,7 @@ public class ExerciseActivity extends AppCompatActivity {
         view.start();
     }
 
-    //save record
+    //ask wish to save
     public void saveDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Do you want to save this exercise?");
@@ -312,7 +294,6 @@ public class ExerciseActivity extends AppCompatActivity {
                         feelingDialog();
                     }
                 });
-
         alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>No</font>"),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -320,11 +301,11 @@ public class ExerciseActivity extends AppCompatActivity {
                         arg0.cancel();
                     }
                 });
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
+    //ask feeling
     public void feelingDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("What is your feeling after doing this exercise?");
@@ -340,7 +321,6 @@ public class ExerciseActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
         alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -349,11 +329,11 @@ public class ExerciseActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
+    //save exercise session
     public void saveExercise() {
         //SAVE TO DATABASE LOGIC HERE
             StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
@@ -361,8 +341,6 @@ public class ExerciseActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
-//                                JSONArray jsonArray = new JSONArray(response);
-//                                JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 JSONObject jsonObject = new JSONObject(response);
                                 String success = jsonObject.getString("success");
                                 sessionId = jsonObject.getInt("sessionId");
@@ -401,8 +379,8 @@ public class ExerciseActivity extends AppCompatActivity {
             requestQueue.add(stringRequest);
     }
 
+    //save exercise details of session
     public void saveExerciseDetails(){
-        //Toast.makeText(ExerciseActivity.this, "Add exercise success!", Toast.LENGTH_LONG).show();
         //SAVE EXERCISE DETAILS TO DATABASE HERE
         for(int i = 0; i < exerciseNameList.size(); i++){
             final int j = i;

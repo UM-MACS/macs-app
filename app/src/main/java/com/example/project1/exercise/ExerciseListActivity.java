@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.exercise.adapter.ExerciseListAdapter;
 
@@ -43,9 +44,6 @@ public class ExerciseListActivity extends AppCompatActivity {
             "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"));
     private ArrayList<String> exerciseTimeList2 = new ArrayList<>(Arrays.asList("30s","30s","30s","30s","30s","30s","30s"));
 
-    private final static String EXERCISE_TYPE = "EXERCISE_TYPE";
-    private final static int PRIVATE_MODE = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +51,9 @@ public class ExerciseListActivity extends AppCompatActivity {
 
         //define all instant variables
         intentToExercise = new Intent(ExerciseListActivity.this, ExerciseActivity.class);
-        sharedPreferences = getSharedPreferences(EXERCISE_TYPE,PRIVATE_MODE);
+        sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS, PublicComponent.PRIVATE_MODE);
         editor = sharedPreferences.edit();
-        exerciseType = sharedPreferences.getString("exercise-type", null);
+        exerciseType = sharedPreferences.getString(PublicComponent.EXERCISE_TYPE, null);
 
         //define all elements
         btnRandom = findViewById(R.id.button_random);
@@ -82,8 +80,6 @@ public class ExerciseListActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerViewAdapter = new ExerciseListAdapter(this, exerciseList, exerciseTimeList);
         recyclerView.setAdapter(recyclerViewAdapter);
-
-
 
         //overwrites methods elements
         btnRandom.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +113,8 @@ public class ExerciseListActivity extends AppCompatActivity {
         btnExerciseStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("list",exerciseList.toString());
-                editor.putString("timelist",exerciseTimeList.toString());
-                editor.putString("videoType", exerciseType);
+                editor.putString(PublicComponent.EXERCISE_LIST,exerciseList.toString());
+//                editor.putString("timelist",exerciseTimeList.toString());
                 editor.apply();
                 startActivity(intentToExercise);
             }
