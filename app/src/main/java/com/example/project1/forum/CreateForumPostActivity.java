@@ -3,6 +3,7 @@ package com.example.project1.forum;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -73,6 +74,7 @@ private static String URL;
             Date d = Calendar.getInstance().getTime();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             final String date = dateFormat.format(d);
+            Log.e("TAG", "onPost: Date: "+date );
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                     new Response.Listener<String>() {

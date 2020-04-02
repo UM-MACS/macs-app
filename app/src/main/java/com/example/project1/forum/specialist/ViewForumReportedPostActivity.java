@@ -33,6 +33,7 @@ import com.example.project1.forum.imageFile.ImgLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,6 +67,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
     private String forum;
+    private TextView userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
         b1.hide();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
+        userType = (TextView)findViewById(R.id.UserTypeTV);
         getMyPosts(User.getInstance().getEmail());
 
     }
@@ -135,9 +138,17 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
                                 for(int i=0; i<name.size();i++){
                                     Log.e("TAG", "name "+name.get(i));
                                     Log.e("TAG", "title "+title.get(i));
-                                    Log.e("TAG", "content "+content.get(i));
+                                    Log.e("TAG", "time "+date.get(i));
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                    //Show User type
+                                    userType = (TextView)((View)rowView).findViewById(R.id.UserTypeTV);
+                                    userType.setVisibility(View.VISIBLE);
+                                    if(type.get(i).equalsIgnoreCase("patient")){
+                                        userType.setText("Posted in Patient Forum");
+                                    } else {
+                                        userType.setText("Posted in Caregiver Forum");
+                                    }
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
                                     user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
                                     getPic(email.get(i),type.get(i),user_pic);
