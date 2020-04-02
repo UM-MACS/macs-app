@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -976,6 +977,12 @@ public class CaregiverForumActivity extends AppCompatActivity {
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(CaregiverForumActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(CaregiverForumActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }

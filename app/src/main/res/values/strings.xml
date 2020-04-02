@@ -77,7 +77,21 @@
         <item>7</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="questionnaire">Physical Activity Questionnaire</string>
+    <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing.</string>
+    <string name="questionnaire_desc">1 (Strongly disagree) - 5 (Strongly agree) </string>
+    <string name="questionnaire_q1">I enjoy it</string>
+    <string name="questionnaire_q2">I feel interested</string>
+    <string name="questionnaire_q3">I like it</string>
+    <string name="questionnaire_q4">I find it pleasurable</string>
+    <string name="questionnaire_q5">I am very absorbed in this activity</string>
+    <string name="questionnaire_q6">It\'s a lot of fun</string>
+    <string name="questionnaire_q7">It\'s very pleasant</string>
+    <string name="questionnaire_q8">I felt as though there was nothing else I would rather be doing</string>
+    <string name="questionnaire_ans1">1</string>
+    <string name="questionnaire_ans2">2</string>
+    <string name="questionnaire_ans3">3</string>
+    <string name="questionnaire_ans4">4</string>
+    <string name="questionnaire_ans5">5</string>
 
 </resources>

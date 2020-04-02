@@ -1,7 +1,9 @@
 package com.example.project1.exercise;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,12 +12,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
@@ -26,8 +34,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
+import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.faq.FAQActivity;
 import com.example.project1.login.component.User;
+import com.example.project1.mainPage.MainActivity;
+import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -285,6 +298,7 @@ public class ExerciseActivity extends AppCompatActivity {
     //ask wish to save
     public void saveDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Save Exercise");
         alertDialogBuilder.setMessage("Do you want to save this exercise?");
         alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>Yes</font>"),
                 new DialogInterface.OnClickListener() {
@@ -308,17 +322,90 @@ public class ExerciseActivity extends AppCompatActivity {
     //ask feeling
     public void feelingDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("What is your feeling after doing this exercise?");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        alertDialogBuilder.setView(input);
+//        alertDialogBuilder.setTitle("Your Feeling");
+
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_feeling, null);
+
+        final ToggleButton b1,b2,b3,b4,b5,b6;
+        b1 = dialogView.findViewById(R.id.emotion1);
+        b2 = dialogView.findViewById(R.id.emotion2);
+        b3 = dialogView.findViewById(R.id.emotion3);
+        b4 = dialogView.findViewById(R.id.emotion4);
+        b5 = dialogView.findViewById(R.id.emotion5);
+        b6 = dialogView.findViewById(R.id.emotion6);
+        final ToggleButton[] tbArray = new ToggleButton[]{b1,b2,b3,b4,b5,b6};
+
+        final LinearLayout layout1,layout2,layout3,layout4,layout5,layout6;
+        layout1 = dialogView.findViewById(R.id.layout1);
+        layout2 = dialogView.findViewById(R.id.layout2);
+        layout3 = dialogView.findViewById(R.id.layout3);
+        layout4 = dialogView.findViewById(R.id.layout4);
+        layout5 = dialogView.findViewById(R.id.layout5);
+        layout6 = dialogView.findViewById(R.id.layout6);
+
+
+        b1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout1, isChecked);
+            }
+        });
+        b2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout2, isChecked);
+            }
+        });
+        b3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout3, isChecked);
+            }
+        });
+        b4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout4, isChecked);
+            }
+        });
+        b5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout5, isChecked);
+            }
+        });
+        b6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onCheckedChange(layout6, isChecked);
+            }
+        });
+
         alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>Save</font>"),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        feeling = input.getText().toString().trim();
-                        saveExercise();
-                        finish();
+//                        int counter = 0, feelingPosition = -1;
+//                        for(int i = 0; i < tbArray.length; i++){
+//                            if(tbArray[i].isChecked()){
+//                                counter++;
+//                                feelingPosition = i;
+//                            }
+//                        }
+//                        feeling = getFeeling(feelingPosition);
+//
+//                        if(counter == 1) {
+//                            saveExercise();
+//                            finish();
+//                        }
+//                        else if(counter > 1){
+//                            Toast.makeText(getApplicationContext(),"Please select one emotion only!",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                        else{
+//                            Toast.makeText(getApplicationContext(),"Please select at least one emotion!",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 });
         alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
@@ -329,8 +416,38 @@ public class ExerciseActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int counter = 0, feelingPosition = -1;
+                for(int i = 0; i < tbArray.length; i++){
+                    if(tbArray[i].isChecked()){
+                        counter++;
+                        feelingPosition = i;
+                    }
+                }
+                feeling = getFeeling(feelingPosition);
+
+                if(counter == 1) {
+                    alertDialog.dismiss();
+                    saveExercise();
+                    finish();
+                }
+                else if(counter > 1){
+                    Toast.makeText(getApplicationContext(),"Please select one emotion only!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Please select at least one emotion!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     //save exercise session
@@ -426,9 +543,39 @@ public class ExerciseActivity extends AppCompatActivity {
         }
         if(saveStatus){
             Toast.makeText(getApplicationContext(), "Save exercise success!", Toast.LENGTH_SHORT).show();
+            //TODO
+            //save latest exercise date in sharedpreferences
         }
         else{
             Toast.makeText(getApplicationContext(), "Save exercise fail!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onCheckedChange(LinearLayout layout, Boolean isChecked){
+        if(isChecked){
+            layout.setBackgroundColor(getResources().getColor(R.color.almond));
+        }
+        else{
+            layout.setBackgroundColor(Color.WHITE);
+        }
+    }
+
+    public String getFeeling(int i){
+        switch(i){
+            case 0:
+                return "Happy";
+            case 1:
+                return "Surprised";
+            case 2:
+                return "Digusted";
+            case 3:
+                return "Fear";
+            case 4:
+                return "Angry";
+            case 5:
+                return "Sad";
+            default:
+                return "";
         }
     }
 
@@ -442,5 +589,7 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onPause();
         overridePendingTransition(0, 0);
     }
+
+
 
 }

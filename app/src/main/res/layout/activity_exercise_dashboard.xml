@@ -56,17 +56,27 @@
                 android:textColor="@color/dodger_blue"
                 android:textSize="30sp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_exercise_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="32dp"
+                        android:textColor="@color/black"
+                        android:text="You haven't create your exercise plan!"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/tv_customize"
@@ -77,13 +87,11 @@
                         android:paddingRight="16dp"
                         android:paddingBottom="16dp"
                         android:clickable="true"
-                        android:text="Customize my exercise plan"
+                        android:text="Customize my exercise plan here"
                         android:textAlignment="center"
                         android:textSize="14dp" />
 
                 </LinearLayout>
-
-            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

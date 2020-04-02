@@ -1,7 +1,11 @@
 package com.example.project1.exercise;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +25,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.project1.PublicComponent;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
+import com.example.project1.eventReminder.component.AlarmReceiver;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
@@ -32,11 +39,16 @@ import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ExerciseDashboardActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     private Button btnStartExercise1, btnStartExercise2;
-    private TextView tvCustomize;
+    private TextView tvCustomize, tvExerciseDay;
     private Intent intentToExerciseList;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -95,20 +107,19 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
             }
         });
 
-
-
         //define all instant variables
         sessionManager = new SessionManager(this);
         intentToExerciseList = new Intent(ExerciseDashboardActivity.this, ExerciseListActivity.class);
         sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS,PublicComponent.PRIVATE_MODE);
         editor = sharedPreferences.edit();
-        desiredExerciseDay = sharedPreferences.getInt(PublicComponent.DESIRE_EXERCISE_DAY, 3);
+        desiredExerciseDay = sharedPreferences.getInt(PublicComponent.DESIRE_EXERCISE_DAY, 0);
         desiredToBeReminded = sharedPreferences.getInt(PublicComponent.DESIRE_TO_BE_REMIND, 0);
 
         //define all elements
         btnStartExercise1 = findViewById(R.id.button_exercise_one);
         btnStartExercise2 = findViewById(R.id.button_exercise_two);
         tvCustomize = findViewById(R.id.tv_customize);
+        tvExerciseDay = findViewById(R.id.tv_exercise_day);
 
         //overwrites methods elements
         btnStartExercise1.setOnClickListener(new View.OnClickListener() {
@@ -130,22 +141,24 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         tvCustomize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showDialog();
             }
         });
+
+        if(desiredExerciseDay > 0){
+            tvExerciseDay.setText("You will exercise " + desiredExerciseDay + " days per week!");
+        }
+
     }
 
-    //TODO
-    //PUT DASHBOARD LOGIC
-
     public void showDialog(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ExerciseDashboardActivity.this);
         alertDialogBuilder.setTitle("Customize My Exercise Plan");
-        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
+//        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
 
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
         final Spinner spinner = (Spinner)dialogView.findViewById(R.id.spinner_dialog);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.exercise_day));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ExerciseDashboardActivity.this,android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.exercise_day));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -156,9 +169,14 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
+                        if(desiredExerciseDay > 0){
+                            tvExerciseDay.setText("You will exercise " + desiredExerciseDay + " days per week!");
+                        }
                         editor.putInt(PublicComponent.DESIRE_EXERCISE_DAY, Integer.parseInt(spinner.getSelectedItem().toString()));
                         if(checkBox.isChecked()){
                             desiredToBeReminded = 1;
+                            System.out.println("err " + desiredToBeReminded);
+                            setReminder();
                             editor.putInt(PublicComponent.DESIRE_TO_BE_REMIND, 1);
                         }
                         editor.apply();
@@ -172,8 +190,49 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
                         arg0.cancel();
                     }
                 });
+
+        alertDialogBuilder.setView(dialogView);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void setReminder(){
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY,22);
+//        calendar.set(Calendar.MINUTE,48);
+//        calendar.set(Calendar.SECOND,30);
+//        Intent intent = new Intent(getApplicationContext(),Notification_Receiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),200,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+        //alarmService
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        final String action = "ConnectivityManager.CONNECTIVITY_ACTION";
+        IntentFilter intentFilter = new IntentFilter(action);
+        intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        Notification_Receiver mReceiver = new Notification_Receiver();
+        getApplicationContext().registerReceiver(mReceiver, intentFilter);
+        Intent i2 = new Intent(action);
+        final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i2, 0);
+
+        //Notification for api less than 26
+        Intent notificationIntent = new Intent("android.media.action.exercise.DISPLAY_NOTIFICATION");
+        notificationIntent.addCategory("android.intent.category.exercise.DEFAULT");
+        final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,14);
+        calendar.set(Calendar.MINUTE,21);
+        calendar.set(Calendar.SECOND,0);
+
+        Log.e("tag", "remind");
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pi);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, broadcast);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
+        Log.e("tag", "done setting");
     }
 
     @Override
@@ -216,6 +275,12 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(ExerciseDashboardActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_questionnaire) {
+            Intent intent = new Intent(ExerciseDashboardActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }

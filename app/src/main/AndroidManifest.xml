@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_ALARM"/>
 
     <application
         android:allowBackup="true"
@@ -32,10 +33,6 @@
             android:name=".exercise.ExerciseListActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".selfAssessment.SelfAssessmentListActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".login.ForgotPasswordActivity" />
         <activity android:name=".login.ResetPasswordActivity" />
         <activity
@@ -107,7 +104,7 @@
             android:label="FaQ"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".selfAssessment.SelfAssessmentActivity"
+            android:name=".Questionnaire.QuestionnaireActivity"
             android:exported="true"
             android:label="Event Assessment"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -120,10 +117,16 @@
             android:name=".login.LoginActivity"
             android:label="MASOCC" />
 
+        <receiver android:name=".exercise.Notification_Receiver">
+            <intent-filter>
+                <action android:name="android.media.action.exercise.DISPLAY_NOTIFICATION" />
+                <category android:name="android.intent.category.exercise.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".eventReminder.component.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

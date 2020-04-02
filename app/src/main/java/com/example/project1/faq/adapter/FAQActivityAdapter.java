@@ -62,7 +62,7 @@ public class FAQActivityAdapter extends AppCompatActivity {
                         Intent i3 = new Intent(FAQActivityAdapter.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(FAQActivityAdapter.this, SelfAssessmentListActivity.class);
+//                    //                        Intent i4 = new Intent(FAQActivityAdapter.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:

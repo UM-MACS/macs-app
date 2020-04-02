@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -130,7 +131,7 @@ private ProgressBar progressBar;
                         Intent i3 = new Intent(ForumActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    Intent i4 = new Intent(ForumActivity.this, SelfAssessmentListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
@@ -997,6 +998,12 @@ private ProgressBar progressBar;
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(ForumActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(ForumActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }

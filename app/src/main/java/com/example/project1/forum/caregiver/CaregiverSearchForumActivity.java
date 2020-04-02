@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -108,7 +109,7 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
                         Intent i3 = new Intent(CaregiverSearchForumActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(CaregiverSearchForumActivity.this, SelfAssessmentListActivity.class);
+//                    //                        Intent i4 = new Intent(CaregiverSearchForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
@@ -916,6 +917,12 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(CaregiverSearchForumActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(CaregiverSearchForumActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }

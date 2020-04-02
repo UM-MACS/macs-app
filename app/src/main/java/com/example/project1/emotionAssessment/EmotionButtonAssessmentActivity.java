@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -126,7 +127,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
                         startActivity(i3);
                         break;
 //                    //                        Intent i4 = new Intent(EmotionButtonAssessmentActivity.this,
-//                                SelfAssessmentListActivity.class);
+//                                QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
                     case R.id.navigation_chat:
@@ -538,6 +539,12 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(EmotionButtonAssessmentActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(EmotionButtonAssessmentActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }

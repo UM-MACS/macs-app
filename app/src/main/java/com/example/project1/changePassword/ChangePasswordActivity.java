@@ -22,8 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.eventReminder.EventReminderActivity;
-import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
@@ -33,6 +31,7 @@ import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONArray;
@@ -213,6 +212,14 @@ SessionManager sessionManager;
             startActivity(intent);
             return true;
         }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(ChangePasswordActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }

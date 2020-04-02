@@ -41,6 +41,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
@@ -121,7 +122,7 @@ public class EventReminderActivity extends AppCompatActivity {
                         Intent i3 = new Intent(EventReminderActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(EventReminderActivity.this, SelfAssessmentListActivity.class);
+//                    //                        Intent i4 = new Intent(EventReminderActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
@@ -869,6 +870,12 @@ public class EventReminderActivity extends AppCompatActivity {
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(EventReminderActivity.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(EventReminderActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }
