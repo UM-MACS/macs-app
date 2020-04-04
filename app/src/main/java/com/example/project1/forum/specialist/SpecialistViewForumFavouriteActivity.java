@@ -12,14 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.project1.Questionnaire.QuestionnaireActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.faq.FAQActivity;
-import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.ViewForumFavouriteListActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.caregiver.CaregiverViewForumFavouriteListActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;

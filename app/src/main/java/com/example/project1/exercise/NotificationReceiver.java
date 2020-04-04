@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.project1.R;
 
-public class Notification_Receiver extends BroadcastReceiver {
+public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,7 +59,7 @@ public class Notification_Receiver extends BroadcastReceiver {
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MASC")                            // required
                     .setSmallIcon(R.drawable.app_icon)
-                    .setContentText("Remember to exercise today")
+                    .setContentText("Do you need to exercise today? Check it out!")
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
@@ -73,7 +73,7 @@ public class Notification_Receiver extends BroadcastReceiver {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MASC")                            // required
-                    .setContentText("Remember to exercise today")
+                    .setContentText("Do you need to exercise today? Check it out!")
                     .setSmallIcon(R.drawable.app_icon)
                     .setTicker("MASC")
                     .setAutoCancel(true)
