@@ -43,11 +43,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="layoutResourceFile" />
         <option value="valueResourceFile" />
         <option value="resourceFile" />
         <option value="Class" />
         <option value="Singleton" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -84,6 +84,7 @@
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/res/mipmap-mdpi" />
       <recent name="C:\Users\Asus\Downloads\Desktop\android\app\src\main\res\color" />
     </key>
   </component>

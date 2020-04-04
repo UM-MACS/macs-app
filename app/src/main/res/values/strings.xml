@@ -7,7 +7,7 @@
     <string name="title_faq">FaQ</string>
 
     <string name="localhost">https://masc-server.herokuapp.com</string>
-<!--    <string name="localhost">localhost:3000</string>-->
+    <!--    <string name="localhost">localhost:3000</string>-->
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="patientButton">Patient</string>

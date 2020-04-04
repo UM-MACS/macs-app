@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +14,18 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".emotionAssessment.component.EmotionDebug"
+        <activity
+            android:name=".forum.specialist.SpecialistEditDeleteForumPostActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".forum.specialist.SpecialistViewForumFavouriteActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".emotionAssessment.component.EmotionDebug"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".emotionAssessment.EmotionAssessmentActivity"
             android:exported="true"
@@ -24,15 +33,15 @@
         <activity
             android:name=".exercise.ExerciseActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".exercise.ExerciseDashboardActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".exercise.ExerciseListActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".login.ForgotPasswordActivity" />
         <activity android:name=".login.ResetPasswordActivity" />
         <activity
@@ -120,13 +129,14 @@
         <receiver android:name=".exercise.Notification_Receiver">
             <intent-filter>
                 <action android:name="android.media.action.exercise.DISPLAY_NOTIFICATION" />
+
                 <category android:name="android.intent.category.exercise.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".eventReminder.component.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

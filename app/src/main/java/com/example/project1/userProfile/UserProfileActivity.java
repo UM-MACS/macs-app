@@ -11,6 +11,8 @@ import com.example.project1.forum.caregiver.CaregiverViewForumFavouriteListActiv
 import com.example.project1.forum.EditDeleteForumPostActivity;
 import com.example.project1.R;
 import com.example.project1.forum.ViewForumFavouriteListActivity;
+import com.example.project1.forum.specialist.SpecialistEditDeleteForumPostActivity;
+import com.example.project1.forum.specialist.SpecialistViewForumFavouriteActivity;
 import com.example.project1.login.component.User;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -34,6 +36,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")){
                     Intent i = new Intent(UserProfileActivity.this, EditDeleteForumPostActivity.class);
                     startActivity(i);
+                } else if (User.getInstance().getUserType().equalsIgnoreCase("Specialist")) {
+                    Intent i = new Intent(UserProfileActivity.this, SpecialistEditDeleteForumPostActivity.class);
+                    startActivity(i);
                 }
             }
         });
@@ -44,9 +49,11 @@ public class UserProfileActivity extends AppCompatActivity {
                 if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
                     Intent i = new Intent(UserProfileActivity.this, CaregiverViewForumFavouriteListActivity.class);
                     startActivity(i);
-                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")
-                        || User.getInstance().getUserType().equalsIgnoreCase("Specialist")){
+                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")){
                     Intent i = new Intent(UserProfileActivity.this, ViewForumFavouriteListActivity.class);
+                    startActivity(i);
+                } else if (User.getInstance().getUserType().equalsIgnoreCase("Specialist")) {
+                    Intent i = new Intent(UserProfileActivity.this, SpecialistViewForumFavouriteActivity.class);
                     startActivity(i);
                 }
             }

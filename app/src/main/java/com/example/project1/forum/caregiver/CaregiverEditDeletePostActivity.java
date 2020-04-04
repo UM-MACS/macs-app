@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +65,8 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
     private Button searchButton,cancelButton;
     private ImageView fav_icon;
     private ProgressBar progressBar;
+    private CheckBox anonymousCheckbox;
+    private TextView isAnonymousTV, displayAnonymousTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                             ArrayList<String> date = new ArrayList<>();
                             ArrayList<String> email = new ArrayList<>();
                             ArrayList<String> type = new ArrayList<>();
+                            ArrayList<String> anonymous = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -120,6 +124,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                     date.add(object.getString("date"));
                                     email.add(object.getString("email"));
                                     type.add(object.getString("type"));
+                                    anonymous.add(object.getString("anonymous"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -144,6 +149,10 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    if (anonymous.get(i).equals("true")) {
+                                        isAnonymousTV = (TextView)((View)rowView.findViewById(R.id.isAnonymoustv));
+                                        isAnonymousTV.setText("Anonymous");
+                                    }
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
@@ -251,6 +260,8 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
         final String getID = (String) threadID.getText().toString();
         threadTime = (TextView) ((View) v).findViewById(R.id.thread_time);
         final String getTime = (String) threadTime.getText().toString();
+        isAnonymousTV = (TextView)((View)v.findViewById(R.id.isAnonymoustv));
+        final String isAnonymous = (String) isAnonymousTV.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         editButton = (Button)findViewById(R.id.edit_post);
@@ -271,6 +282,10 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
         expandedContent.setText(getContent);
         expandedID.setText(getID);
         expandedTime.setText(getTime);
+        if(isAnonymous.equals("Anonymous")){
+            displayAnonymousTV = (TextView)findViewById(R.id.anonymous_post_tv);
+            displayAnonymousTV.setVisibility(View.VISIBLE);
+        }
 
         //click on edit button
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -293,6 +308,8 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
 
     public void onEditPost(final String ID, final String title, final String content){
         setContentView(R.layout.activity_create_post);
+        anonymousCheckbox = (CheckBox)findViewById(R.id.anonymous_checkbox);
+        anonymousCheckbox.setVisibility(View.GONE);
         postButton = (Button) findViewById(R.id.post_button);
         postButton.setVisibility(View.GONE);
         updateButton = (Button)findViewById(R.id.update_button);

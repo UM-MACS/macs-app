@@ -82,8 +82,8 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
         URL_GETPIC = localhost+"/getCaregiverPic";
         URL_GET_REPLY = localhost+"/getReplyPostCaregiver/";
         URL_POST_REPLY = localhost+"/postReplyCaregiver/";
-        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
-        URL_REPORT_POST = localhost+"/reportPost/";
+        URL_GET_IS_FAV = localhost+"/getIsFavouriteCaregiver/";
+        URL_REPORT_POST = localhost+"/reportPostCaregiver/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);

@@ -39,34 +39,58 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/expanded_thread_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/edit_post"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="start"
-                    android:background="@drawable/ic_edit"
-                    android:visibility="gone"/>
+                    android:background="@drawable/button_border"
+                    android:text="Edit"
+                    android:padding="0dp"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/delete_post"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="end"
-                    android:background="@drawable/ic_bin"
-                    android:visibility="gone"/>
+                    android:background="@drawable/button_border"
+                    android:text="Delete"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible" />
+
+
 
             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+            <TextView
+                android:id="@+id/anonymous_post_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="start"
+                android:text="Posted as Anonymous"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:padding="7dp"
+                android:visibility="gone"/>
+
             <ImageView
                 android:id="@+id/addFav"
                 android:layout_width="40dp"
@@ -84,6 +108,7 @@
                 android:paddingBottom="15dp"
                 android:visibility="gone"
                 android:onClick="onRemoveFavourite"/>
+            </FrameLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +127,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/ic_user_icon" />
 
                     <TextView
                         android:id="@+id/expanded_user_name"

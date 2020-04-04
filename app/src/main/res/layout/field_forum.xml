@@ -9,6 +9,12 @@
     android:onClick="onExpand">
 
     <TextView
+        android:id="@+id/isAnonymoustv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/UserTypeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +45,7 @@
             android:id="@+id/user_profile_pic"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_user_icon"
             android:layout_gravity="center"/>
 
         <TextView
