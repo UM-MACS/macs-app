@@ -51,8 +51,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -253,8 +257,6 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
-
-
     private void getPosts() {
         progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
@@ -319,7 +321,9 @@ private ProgressBar progressBar;
                                         threadID.setText(id.get(i));
                                         threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
 
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        Log.e("TAG", "onResponse: Date from database: "+date.get(i) );
+
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                         try {
                                             Date d = dateFormat.parse(date.get(i));
                                             long epoch = d.getTime();
@@ -365,8 +369,7 @@ private ProgressBar progressBar;
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
                                         threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        try {
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");                                        try {
                                             Date d = dateFormat.parse(date.get(i));
                                             long epoch = d.getTime();
                                             CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
@@ -560,7 +563,7 @@ private ProgressBar progressBar;
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -606,7 +609,7 @@ private ProgressBar progressBar;
         replyText.setText("");
         replyText.clearFocus();
         Date d = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
@@ -635,7 +638,7 @@ private ProgressBar progressBar;
                                     getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
                                         long epoch = d.getTime();

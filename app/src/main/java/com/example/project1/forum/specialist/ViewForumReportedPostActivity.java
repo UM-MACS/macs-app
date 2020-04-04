@@ -67,7 +67,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
     private String forum;
-    private TextView userType;
+//    private TextView userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +89,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
             URL_GET_REPORTED_POST = localhost+"/getReportedPostCaregiver/";
             URL_DELETE_POST = localhost+"/deletePostCaregiver/";
         }
+        Log.e("TAG", "onCreate: URL is "+URL_GET_REPORTED_POST );
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
 
@@ -100,7 +101,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
         b1.hide();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
-        userType = (TextView)findViewById(R.id.UserTypeTV);
+//        userType = (TextView)findViewById(R.id.UserTypeTV);
         getMyPosts(User.getInstance().getEmail());
 
     }
@@ -142,13 +143,13 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                     //Show User type
-                                    userType = (TextView)((View)rowView).findViewById(R.id.UserTypeTV);
-                                    userType.setVisibility(View.VISIBLE);
-                                    if(type.get(i).equalsIgnoreCase("patient")){
-                                        userType.setText("Posted in Patient Forum");
-                                    } else {
-                                        userType.setText("Posted in Caregiver Forum");
-                                    }
+//                                    userType = (TextView)((View)rowView).findViewById(R.id.UserTypeTV);
+//                                    userType.setVisibility(View.VISIBLE);
+//                                    if(type.get(i).equalsIgnoreCase("patient")){
+//                                        userType.setText("Posted in Patient Forum");
+//                                    } else {
+//                                        userType.setText("Posted in Caregiver Forum");
+//                                    }
                                     forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
                                     user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
                                     getPic(email.get(i),type.get(i),user_pic);
@@ -165,7 +166,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -352,7 +353,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -396,7 +397,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         Date d = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
@@ -425,7 +426,7 @@ public class ViewForumReportedPostActivity extends AppCompatActivity {
                                     getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
                                         long epoch = d.getTime();

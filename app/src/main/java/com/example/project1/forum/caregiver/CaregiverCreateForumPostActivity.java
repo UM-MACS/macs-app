@@ -75,7 +75,7 @@ public class CaregiverCreateForumPostActivity extends AppCompatActivity {
                 anonymous = "";
             }
             Date d = Calendar.getInstance().getTime();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             final String date = dateFormat.format(d);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,

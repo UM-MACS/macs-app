@@ -175,7 +175,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
@@ -190,7 +190,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Happy(def)");
@@ -204,7 +204,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Smiling(def)");
@@ -218,7 +218,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Unhappy(def)");
@@ -232,7 +232,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Angry(def)");
@@ -246,7 +246,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Sad(def)");
@@ -269,7 +269,7 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String text = expression.getText().toString();
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
                 if (text.equals("")) {
                     Toast.makeText(getApplicationContext(),

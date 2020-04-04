@@ -54,6 +54,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
     private static String URL_POST_REPLY;
     private static String URL_GET_IS_FAV;
     private static String URL_REPORT_POST;
+    private static String URL_GET_FAV_SPECIALIST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
@@ -69,6 +70,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
     private ProgressBar progressBar;
+    private TextView userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
         URL_POST_REPLY = localhost+"/postReply/";
         URL_GET_IS_FAV = localhost+"/getIsFavourite/";
         URL_REPORT_POST = localhost+"/reportPost/";
+        URL_GET_FAV_SPECIALIST = localhost+"/mySpecialistFavouriteList/";
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
@@ -96,7 +99,11 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getMyPosts(User.getInstance().getEmail());
+        if (User.getInstance().getUserType().equalsIgnoreCase("Patient")) {
+            getMyPosts(User.getInstance().getEmail());
+        } else if (User.getInstance().getUserType().equalsIgnoreCase("Specialist")){
+            getSpecialistMyPosts(User.getInstance().getEmail());
+        }
 
     }
 
@@ -153,7 +160,111 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    try {
+                                        Date d = dateFormat.parse(date.get(i));
+                                        long epoch = d.getTime();
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: "+time );
+                                        threadTime.setText(time);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                                progressBar.setVisibility(View.GONE);
+                            } else if(success.equals("-1")){
+                                progressBar.setVisibility(View.GONE);
+                                nullPost.setVisibility(View.VISIBLE);
+                            } else{
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        } catch (JSONException e) {
+                            progressBar.setVisibility(View.GONE);
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("email",email);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void getSpecialistMyPosts(final String email) {
+        progressBar.setVisibility(View.VISIBLE);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_FAV_SPECIALIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            ArrayList<String> name = new ArrayList<>();
+                            ArrayList<String> title = new ArrayList<>();
+                            ArrayList<String> content = new ArrayList<>();
+                            ArrayList<String> id = new ArrayList<>();
+                            ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> email = new ArrayList<>();
+                            ArrayList<String> type = new ArrayList<>();
+                            Log.e("TAG", "success"+success );
+
+                            if(success.equals("1")){
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    name.add(object.getString("name"));
+                                    title.add(object.getString("title"));
+                                    content.add(object.getString("content"));
+                                    id.add(object.getString("id"));
+                                    date.add(object.getString("date"));
+                                    email.add(object.getString("email"));
+                                    type.add(object.getString("type"));
+                                }
+
+                                for(int i=0; i<name.size();i++){
+                                    Log.e("TAG", "name "+name.get(i));
+                                    Log.e("TAG", "title "+title.get(i));
+                                    Log.e("TAG", "content "+content.get(i));
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
+                                    forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
+//                                    Show User type
+                                    userType = (TextView)((View)rowView).findViewById(R.id.UserTypeTV);
+                                    userType.setVisibility(View.VISIBLE);
+                                    if(type.get(i).equalsIgnoreCase("patient")){
+                                        userType.setText("Posted in Patient Forum");
+                                    } else {
+                                        userType.setText("Posted in Caregiver Forum");
+                                    }
+                                    user_pic = (CircleImageView)((View)rowView).findViewById(R.id.user_profile_pic);
+                                    getPic(email.get(i),type.get(i),user_pic);
+                                    emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                    emailContainer.setText(email.get(i));
+                                    typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
+                                    typeContainer.setText(type.get(i));
+                                    username = (TextView) ((View) rowView).findViewById(R.id.user_name);
+                                    username.setText(name.get(i));
+                                    threadTitle = (TextView) ((View) rowView).findViewById(R.id.thread_title);
+                                    threadTitle.setText(title.get(i));
+                                    threadContent = (TextView) ((View) rowView).findViewById(R.id.thread_content);
+                                    threadContent.setText(content.get(i));
+                                    threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
+                                    threadID.setText(id.get(i));
+                                    threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -448,7 +559,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -492,7 +603,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         Date d = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
@@ -521,7 +632,7 @@ public class ViewForumFavouriteListActivity extends AppCompatActivity {
                                     getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
                                         long epoch = d.getTime();

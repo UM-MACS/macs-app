@@ -144,7 +144,7 @@ public class CaregiverEditDeletePostActivity extends AppCompatActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();

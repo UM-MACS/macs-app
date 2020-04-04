@@ -31,7 +31,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
                     Intent i = new Intent(UserProfileActivity.this, CaregiverEditDeletePostActivity.class);
                     startActivity(i);
-                } else {
+                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")){
                     Intent i = new Intent(UserProfileActivity.this, EditDeleteForumPostActivity.class);
                     startActivity(i);
                 }
@@ -44,7 +44,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
                     Intent i = new Intent(UserProfileActivity.this, CaregiverViewForumFavouriteListActivity.class);
                     startActivity(i);
-                } else{
+                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")
+                        || User.getInstance().getUserType().equalsIgnoreCase("Specialist")){
                     Intent i = new Intent(UserProfileActivity.this, ViewForumFavouriteListActivity.class);
                     startActivity(i);
                 }

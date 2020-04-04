@@ -110,7 +110,7 @@ public class EmotionFragmentText extends Fragment {
             public void onClick(View v) {
                 String text = expression.getText().toString();
                 Date d = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
                 if (text.equals("")) {
                     Toast.makeText(getContext(),

@@ -72,7 +72,7 @@ private static String URL;
                 anonymous = "";
             }
             Date d = Calendar.getInstance().getTime();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             final String date = dateFormat.format(d);
             Log.e("TAG", "onPost: Date: "+date );
 

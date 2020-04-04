@@ -153,7 +153,7 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -449,7 +449,7 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
@@ -493,7 +493,7 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         Date d = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
             Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
@@ -522,7 +522,7 @@ public class CaregiverViewForumFavouriteListActivity extends AppCompatActivity {
                                     getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
                                         long epoch = d.getTime();
