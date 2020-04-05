@@ -66,4 +66,46 @@ public class SessionManager {
         editor.commit();
     }
 
+    public int isFirstTimeUser(){
+        SharedPreferences sp = context.getSharedPreferences("FIRST_TIME_USER", PRIVATE_MODE);
+        SharedPreferences.Editor ed = sp.edit();
+
+        // 0 is first time, 1 is not first time
+        int n = sp.getInt("IS_FIRST_TIME_USER",0);
+
+        if(n == 0){
+            editor.putInt("IS_FIRST_TIME_USER", 1);
+            editor.apply();
+        }
+        return n;
+    }
+
+    public int isFirstTimeCaregiver(){
+        SharedPreferences sp = context.getSharedPreferences("FIRST_TIME_CAREGIVER", PRIVATE_MODE);
+        SharedPreferences.Editor ed = sp.edit();
+
+        // 0 is first time, 1 is not first time
+        int n = sp.getInt("IS_FIRST_TIME_CAREGIVER",0);
+
+        if(n == 0){
+            editor.putInt("IS_FIRST_TIME_CAREGIVER", 1);
+            editor.apply();
+        }
+        return n;
+    }
+
+    public int isFirstTimeSpecialist(){
+        SharedPreferences sp = context.getSharedPreferences("FIRST_TIME_SPECIALIST", PRIVATE_MODE);
+        SharedPreferences.Editor ed = sp.edit();
+
+        // 0 is first time, 1 is not first time
+        int n = sp.getInt("IS_FIRST_TIME_SPECIALIST",0);
+
+        if(n == 0){
+            editor.putInt("IS_FIRST_TIME_SPECIALIST", 1);
+            editor.apply();
+        }
+        return n;
+    }
+
 }

@@ -30,6 +30,7 @@ import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.register.RegisterCaregiverActivity;
 import com.example.project1.register.RegisterPatientActivity;
 import com.example.project1.register.RegisterSpecialistActivity;
@@ -135,8 +136,13 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Patient");
                                                 }
-
-                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+//                                                if(sessionManager.isFirstTimeUser() == 0){
+//                                                    Intent i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+//                                                }
+//                                                else{
+//                                                    Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+//                                                }
+                                                Intent i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 i.putExtra("email",email);
                                                 startActivity(i);
