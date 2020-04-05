@@ -136,13 +136,14 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jemail, "Patient");
                                                 }
-//                                                if(sessionManager.isFirstTimeUser() == 0){
-//                                                    Intent i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
-//                                                }
-//                                                else{
-//                                                    Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
-//                                                }
-                                                Intent i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+                                                Intent i;
+                                                if(sessionManager.isFirstTimeUser() == 0){
+                                                    i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+                                                }
+                                                else{
+                                                    i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+                                                }
+//                                                Intent i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 i.putExtra("email",email);
                                                 startActivity(i);
@@ -217,7 +218,14 @@ public class LoginActivity extends AppCompatActivity {
                                                     User.getInstance().setUserName(jname);
 
                                                 }
-                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+                                                Intent i;
+                                                if(sessionManager.isFirstTimeCaregiver() == 0){
+                                                    i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+                                                }
+                                                else{
+                                                    i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
+                                                }
+//                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 i.putExtra("email",email);
                                                 startActivity(i);
@@ -292,7 +300,14 @@ public class LoginActivity extends AppCompatActivity {
                                                     User.getInstance().setEmail(jemail); //email
                                                     User.getInstance().setUserName(jname);
                                                 }
-                                                Intent i = new Intent(LoginActivity.this, SpecialistForumActivity.class);
+                                                Intent i;
+                                                if(sessionManager.isFirstTimeSpecialist() == 0){
+                                                    i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+                                                }
+                                                else{
+                                                    i = new Intent(LoginActivity.this, SpecialistForumActivity.class);
+                                                }
+//                                                Intent i = new Intent(LoginActivity.this, SpecialistForumActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 i.putExtra("email",email);
                                                 startActivity(i);

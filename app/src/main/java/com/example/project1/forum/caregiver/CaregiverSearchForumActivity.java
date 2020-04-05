@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
@@ -914,7 +915,7 @@ public class CaregiverSearchForumActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(CaregiverSearchForumActivity.this, FAQActivity.class);
+            Intent intent = new Intent(CaregiverSearchForumActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }

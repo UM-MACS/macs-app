@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
@@ -132,7 +133,7 @@ public class SpecialistForumActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(SpecialistForumActivity.this, FAQActivity.class);
+            Intent intent = new Intent(SpecialistForumActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }

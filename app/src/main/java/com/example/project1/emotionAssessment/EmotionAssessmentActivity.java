@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
@@ -209,7 +210,7 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(EmotionAssessmentActivity.this, FAQActivity.class);
+            Intent intent = new Intent(EmotionAssessmentActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }
