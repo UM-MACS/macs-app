@@ -296,58 +296,58 @@ public class EmotionFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    private void sentimentAnalysis(final String email, final String type, final String date,
-                                   final String expressionInput) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_API_SA,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.e("TAG", "object " );
-                            JSONObject object = new JSONObject(response);
-                            JSONArray output = object.getJSONArray("output");
-                            Log.e("TAG", "output1 is "+output );
-//                            output = output.substring(2,output.length()-2);
-
-                            for (int i =0; i<output.length();i++){
-                                insert(email,type,date,expressionInput,output.getString(i));
-                                Log.e("TAG", "output2 is "+output.getString(i) );
-                            }
-//                            updateAnalysis(id,output);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("TAG", "exception e");
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("text", expressionInput);
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> header = new HashMap<>();
-//                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
-                header.put("api-key","d92743d6-c2d6-426c-81f1-034b93667aec");
-//                header.put("Content-Type","text/plain");
-                return header;
-            }
-
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
-    }
+//    private void sentimentAnalysis(final String email, final String type, final String date,
+//                                   final String expressionInput) {
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_API_SA,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            Log.e("TAG", "object " );
+//                            JSONObject object = new JSONObject(response);
+//                            JSONArray output = object.getJSONArray("output");
+//                            Log.e("TAG", "output1 is "+output );
+////                            output = output.substring(2,output.length()-2);
+//
+//                            for (int i =0; i<output.length();i++){
+//                                insert(email,type,date,expressionInput,output.getString(i));
+//                                Log.e("TAG", "output2 is "+output.getString(i) );
+//                            }
+////                            updateAnalysis(id,output);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.e("TAG", "exception e");
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getContext(), "Error",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("text", expressionInput);
+//                return params;
+//            }
+//
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String,String> header = new HashMap<>();
+////                header.put("api-key","369aa822-9f19-4ae2-826f-df963534c2c9");
+//                header.put("api-key","d92743d6-c2d6-426c-81f1-034b93667aec");
+////                header.put("Content-Type","text/plain");
+//                return header;
+//            }
+//
+//        };
+//        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//        requestQueue.add(stringRequest);
+//    }
 
     private AlertDialog AskOption() {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(getContext())

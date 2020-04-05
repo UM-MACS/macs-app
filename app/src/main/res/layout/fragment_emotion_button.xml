@@ -51,9 +51,10 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <Button
+                        android:layout_gravity="center"
                         android:id="@+id/emotion1"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_happy" />
 
                     <TextView
@@ -74,8 +75,9 @@
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/emotion2"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_surprised" />
 
                     <TextView
@@ -96,8 +98,9 @@
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/emotion3"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_disgusted" />
 
                     <TextView
@@ -129,8 +132,9 @@
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/emotion4"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_fear" />
 
                     <TextView
@@ -151,8 +155,9 @@
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/emotion5"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_angry" />
 
                     <TextView
@@ -173,8 +178,9 @@
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/emotion6"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:background="@drawable/ic_emotion_sad" />
 
                     <TextView
