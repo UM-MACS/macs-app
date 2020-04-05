@@ -29,6 +29,10 @@
             android:layout_marginEnd="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_border"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
             android:text="My Forum Posts"/>
 
         <Button
@@ -40,6 +44,10 @@
             android:layout_marginEnd="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_border"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
             android:text="My Favourite Posts"/>
 
 

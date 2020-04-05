@@ -39,8 +39,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion1"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_happy" />
@@ -65,8 +66,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_surprised" />
@@ -91,8 +93,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_disgusted" />
@@ -128,8 +131,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion4"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_fear" />
@@ -154,8 +158,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion5"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_angry" />
@@ -180,8 +185,9 @@
             android:orientation="vertical">
             <ToggleButton
                 android:id="@+id/emotion6"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
                 android:background="@drawable/ic_emotion_sad" />

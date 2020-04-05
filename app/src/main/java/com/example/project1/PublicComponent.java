@@ -8,4 +8,8 @@ public class PublicComponent {
     public static final String EXERCISE_LIST = "EXERCISE_LIST";
     public static final String DESIRE_TO_BE_REMIND = "DESIRE_TO_BE_REMIND";
     public static final String DESIRE_EXERCISE_DAY = "DESIRE_EXERCISE_DAY";
+
+    public static final String PATIENT = "Patient";
+    public static final String CAREGIVER = "Caregiver";
+    public static final String SPECIALIST = "Specialist";
 }

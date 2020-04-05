@@ -21,10 +21,20 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -38,7 +48,21 @@ import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjuster;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ExerciseDashboardActivity extends AppCompatActivity {
 
@@ -51,13 +75,22 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
     //by default
     private int desiredExerciseDay;
     private int desiredToBeReminded;
+    //database
+    private String localhost;
+    private static String GET_SESSION_URL;
+    private int completedExerciseDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_dashboard);
 
+        //define all instant variables
+        localhost = getString(R.string.localhost);
+        GET_SESSION_URL = localhost+"/getExercise/";
+
         //call database
+        completedExerciseDay = 0;
         getExerciseRecord();
 
         //drawer
@@ -145,13 +178,70 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         });
 
         if(desiredExerciseDay > 0){
-            tvExerciseDay.setText("You will exercise " + desiredExerciseDay + " days per week!");
+            tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
         }
 
     }
 
     private void getExerciseRecord() {
         //implement database logic here
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_SESSION_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            ArrayList<String> datetime = new ArrayList<>();
+                            if (success.equals("1")) {
+                                for (int i=0; i<jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    datetime.add(object.getString("startTime"));
+                                }
+                                Calendar cal = Calendar.getInstance();
+                                cal.add( Calendar.DAY_OF_WEEK, -(Calendar.SUNDAY - cal.get( Calendar.DAY_OF_WEEK )) );
+                                Date sunday = cal.getTime();
+                                for(int i = 0; i < datetime.size(); i++){
+                                    Date currentDate =  new SimpleDateFormat("yyyy-MM-dd").parse(datetime.get(i).substring(0,10));
+                                    long diffInMillies = Math.abs(sunday.getTime() - currentDate.getTime());
+                                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                                    int compare = Integer.parseInt(Long.toString(diff));
+                                    Log.e("TAG", "compare: " + compare);
+                                    if(compare < 7){
+                                        completedExerciseDay++;
+                                        Log.e("TAG", "completed: " + completedExerciseDay);
+                                    }
+                                }
+                                if(desiredExerciseDay > 0){
+                                    tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", sessionManager.getUserDetail().get(sessionManager.EMAIL));
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     public void showDialog(){
@@ -173,7 +263,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
                         if(desiredExerciseDay > 0){
-                            tvExerciseDay.setText("You will exercise " + desiredExerciseDay + " days per week!");
+                            tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
                         }
                         editor.putInt(PublicComponent.DESIRE_EXERCISE_DAY, Integer.parseInt(spinner.getSelectedItem().toString()));
                         if(checkBox.isChecked()){
@@ -226,7 +316,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,10);
+        calendar.set(Calendar.HOUR_OF_DAY,9);
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
 
@@ -277,7 +367,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(ExerciseDashboardActivity.this, FAQActivity.class);
+            Intent intent = new Intent(ExerciseDashboardActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }

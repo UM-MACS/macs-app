@@ -8,15 +8,16 @@ import android.view.ViewGroup;
 
 import com.example.project1.R;
 
-public class OnboardingForumFragment extends Fragment {
-    public OnboardingForumFragment(){}
+public class OnboardingForum2Fragment extends Fragment {
+    public OnboardingForum2Fragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View thisFragment = inflater.inflate(R.layout.fragment_startup_forum1, container, false);
+        View thisFragment = inflater.inflate(R.layout.fragment_startup_forum2, container, false);
 
         return thisFragment;
     }
+
 }

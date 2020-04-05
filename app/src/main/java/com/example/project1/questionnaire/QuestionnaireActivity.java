@@ -29,6 +29,7 @@ import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.faq.FAQActivity;
@@ -338,7 +339,7 @@ public class QuestionnaireActivity extends AppCompatActivity implements AdapterV
             }
 
             if (id == R.id.action_faq) {
-                Intent intent = new Intent(QuestionnaireActivity.this, FAQActivity.class);
+                Intent intent = new Intent(QuestionnaireActivity.this, OnboardingBaseActivity.class);
                 startActivity(intent);
                 return true;
             }

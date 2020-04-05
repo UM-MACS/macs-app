@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".onboarding.component.OnboardingGeneralFragment">
+    tools:context=".onboarding.component.OnboardingForumFragment">
 
     <LinearLayout
         android:id="@+id/startup_emotion"
@@ -30,34 +30,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:fontFamily="sans-serif-medium"
                 android:textColor="@color/dodger_blue"
-                android:text="Getting Started" />
+                android:text="Forum Page" />
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:fontFamily="sans-serif-medium"
-                android:text="You will only see this on your first time login or when you click FAQ" />
+                android:text="Ask Questions or Share your Experience!" />
+
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
-                android:src="@drawable/app_icon" />
+                android:src="@drawable/img_startup_forum2" />
 
         </LinearLayout>
     </LinearLayout>

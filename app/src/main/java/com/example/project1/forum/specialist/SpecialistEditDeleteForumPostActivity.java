@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -134,7 +135,7 @@ public class SpecialistEditDeleteForumPostActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(SpecialistEditDeleteForumPostActivity.this, FAQActivity.class);
+            Intent intent = new Intent(SpecialistEditDeleteForumPostActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }

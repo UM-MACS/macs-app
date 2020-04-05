@@ -115,7 +115,7 @@
         <activity
             android:name=".questionnaire.QuestionnaireActivity"
             android:exported="true"
-            android:label="Event Assessment"
+            android:label="Exercise Questionnaire"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".eventReminder.EventReminderActivity"

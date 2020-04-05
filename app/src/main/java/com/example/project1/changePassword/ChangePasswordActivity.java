@@ -31,6 +31,7 @@ import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
@@ -202,7 +203,7 @@ SessionManager sessionManager;
         }
 
         if (id == R.id.action_faq) {
-            Intent intent = new Intent(ChangePasswordActivity.this, FAQActivity.class);
+            Intent intent = new Intent(ChangePasswordActivity.this, OnboardingBaseActivity.class);
             startActivity(intent);
             return true;
         }
