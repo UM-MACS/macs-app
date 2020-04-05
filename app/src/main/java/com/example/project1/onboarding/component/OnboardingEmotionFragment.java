@@ -1,4 +1,6 @@
 package com.example.project1.onboarding.component;
 
-public class OnboardingEmotionFragment {
+import android.support.v4.app.Fragment;
+
+public class OnboardingEmotionFragment extends Fragment {
 }
