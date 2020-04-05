@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".emotionAssessment.component.EmotionFragmentText">
+    tools:context=".onboarding.component.OnboardingEmotionFragment">
 
     <LinearLayout
         android:id="@+id/startup_emotion"

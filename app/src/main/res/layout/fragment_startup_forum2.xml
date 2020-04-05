@@ -46,7 +46,7 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 app:fontFamily="sans-serif-medium"
-                android:text="Explore the Community.. Meet New Friends!" />
+                android:text="Ask Questions or Share your Experience!" />
 
 
             <ImageView
@@ -56,7 +56,7 @@
                 android:layout_marginEnd="10dp"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
-                android:src="@drawable/img_startup_forum1" />
+                android:src="@drawable/img_startup_forum2" />
 
         </LinearLayout>
     </LinearLayout>
