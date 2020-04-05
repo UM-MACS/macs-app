@@ -12,8 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.project1.Questionnaire.QuestionnaireActivity;
-import com.example.project1.exercise.ExerciseActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
@@ -22,7 +21,6 @@ import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.faq.adapter.FAQActivityAdapter2;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;

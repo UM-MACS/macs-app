@@ -31,7 +31,7 @@ import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
-import com.example.project1.Questionnaire.QuestionnaireActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONArray;

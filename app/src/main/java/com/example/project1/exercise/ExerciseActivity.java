@@ -1,7 +1,6 @@
 package com.example.project1.exercise;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,16 +10,11 @@ import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -34,13 +28,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
-import com.example.project1.Questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
-import com.example.project1.changePassword.ChangePasswordActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.login.component.User;
-import com.example.project1.mainPage.MainActivity;
-import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

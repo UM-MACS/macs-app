@@ -113,7 +113,7 @@
             android:label="FaQ"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Questionnaire.QuestionnaireActivity"
+            android:name=".questionnaire.QuestionnaireActivity"
             android:exported="true"
             android:label="Event Assessment"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -126,7 +126,7 @@
             android:name=".login.LoginActivity"
             android:label="MASOCC" />
 
-        <receiver android:name=".exercise.Notification_Receiver">
+        <receiver android:name=".exercise.NotificationReceiver">
             <intent-filter>
                 <action android:name="android.media.action.exercise.DISPLAY_NOTIFICATION" />
 

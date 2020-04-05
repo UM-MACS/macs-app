@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.project1.Questionnaire.QuestionnaireActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;

@@ -25,11 +25,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.project1.PublicComponent;
-import com.example.project1.Questionnaire.QuestionnaireActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.eventReminder.component.AlarmReceiver;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
@@ -39,10 +38,7 @@ import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class ExerciseDashboardActivity extends AppCompatActivity {
 
@@ -60,6 +56,9 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_dashboard);
+
+        //call database
+        getExerciseRecord();
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -151,6 +150,10 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
 
     }
 
+    private void getExerciseRecord() {
+        //implement database logic here
+    }
+
     public void showDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ExerciseDashboardActivity.this);
         alertDialogBuilder.setTitle("Customize My Exercise Plan");
@@ -201,7 +204,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
 //        calendar.set(Calendar.HOUR_OF_DAY,22);
 //        calendar.set(Calendar.MINUTE,48);
 //        calendar.set(Calendar.SECOND,30);
-//        Intent intent = new Intent(getApplicationContext(),Notification_Receiver.class);
+//        Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),200,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 //
 //        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -212,7 +215,7 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         final String action = "ConnectivityManager.CONNECTIVITY_ACTION";
         IntentFilter intentFilter = new IntentFilter(action);
         intentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        Notification_Receiver mReceiver = new Notification_Receiver();
+        NotificationReceiver mReceiver = new NotificationReceiver();
         getApplicationContext().registerReceiver(mReceiver, intentFilter);
         Intent i2 = new Intent(action);
         final PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i2, 0);
@@ -223,15 +226,15 @@ public class ExerciseDashboardActivity extends AppCompatActivity {
         final PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,14);
-        calendar.set(Calendar.MINUTE,21);
+        calendar.set(Calendar.HOUR_OF_DAY,10);
+        calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
 
         Log.e("tag", "remind");
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pi);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, broadcast);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pi);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, broadcast);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
         Log.e("tag", "done setting");
     }
 
