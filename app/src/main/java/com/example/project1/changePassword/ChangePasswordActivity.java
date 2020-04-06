@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
@@ -216,6 +217,12 @@ SessionManager sessionManager;
 
         if(id == R.id.action_questionnaire){
             Intent intent = new Intent(ChangePasswordActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(ChangePasswordActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;
         }

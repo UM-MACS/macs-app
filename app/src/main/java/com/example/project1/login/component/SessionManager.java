@@ -74,8 +74,8 @@ public class SessionManager {
         int n = sp.getInt("IS_FIRST_TIME_USER",0);
 
         if(n == 0){
-            editor.putInt("IS_FIRST_TIME_USER", 1);
-            editor.apply();
+            ed.putInt("IS_FIRST_TIME_USER", 1);
+            ed.apply();
         }
         return n;
     }
@@ -88,8 +88,8 @@ public class SessionManager {
         int n = sp.getInt("IS_FIRST_TIME_CAREGIVER",0);
 
         if(n == 0){
-            editor.putInt("IS_FIRST_TIME_CAREGIVER", 1);
-            editor.apply();
+            ed.putInt("IS_FIRST_TIME_CAREGIVER", 1);
+            ed.apply();
         }
         return n;
     }
@@ -102,8 +102,8 @@ public class SessionManager {
         int n = sp.getInt("IS_FIRST_TIME_SPECIALIST",0);
 
         if(n == 0){
-            editor.putInt("IS_FIRST_TIME_SPECIALIST", 1);
-            editor.apply();
+            ed.putInt("IS_FIRST_TIME_SPECIALIST", 1);
+            ed.apply();
         }
         return n;
     }

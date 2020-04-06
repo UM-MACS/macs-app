@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
@@ -346,6 +347,12 @@ public class QuestionnaireActivity extends AppCompatActivity implements AdapterV
 
             if(id == R.id.action_questionnaire){
                 Intent intent = new Intent(QuestionnaireActivity.this, QuestionnaireActivity.class);
+                startActivity(intent);
+                return true;
+            }
+
+            if(id == R.id.action_event_reminder){
+                Intent intent = new Intent(QuestionnaireActivity.this, EventReminderActivity.class);
                 startActivity(intent);
                 return true;
             }

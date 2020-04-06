@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
@@ -184,6 +185,12 @@ public class FAQActivity extends AppCompatActivity {
 
         if(id == R.id.action_questionnaire){
             Intent intent = new Intent(FAQActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(FAQActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;
         }

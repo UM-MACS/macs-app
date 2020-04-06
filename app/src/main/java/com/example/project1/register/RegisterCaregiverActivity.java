@@ -237,13 +237,17 @@ public class RegisterCaregiverActivity extends AppCompatActivity implements Adap
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                String img= "";
+                if (bitmap != null){
+                    img = getStringImage(bitmap);
+                }
                 params.put("name",name);
                 params.put("email",email);
                 params.put("password",password);
                 params.put("contact",contact);
                 params.put("age",age);
                 params.put("relationship",relationship);
-                params.put("photo",getStringImage(bitmap));
+                params.put("photo",img);
                 return params;
             }
         };

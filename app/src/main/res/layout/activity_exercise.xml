@@ -69,7 +69,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorAccent"
+                android:background="@android:color/holo_red_light"
+                android:textColor="@color/white"
                 android:text="start" />
 
             <Button
@@ -78,7 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@color/cardview_dark_background"
+                android:textColor="@color/white"
                 android:text="next" />
 
         </LinearLayout>
@@ -87,13 +89,14 @@
             android:id="@+id/button_reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_gravity="center"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="50dp"
             android:layout_marginBottom="32dp"
-            android:background="@color/colorPrimary"
+            android:layout_weight="2"
+            android:background="@color/dodger_blue"
+            android:textColor="@color/white"
             android:text="reset" />
     </LinearLayout>
 

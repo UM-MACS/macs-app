@@ -227,14 +227,17 @@ public class RegisterPatientActivity extends AppCompatActivity implements Adapte
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                String img= "";
+                if (bitmap != null){
+                    img = getStringImage(bitmap);
+                }
                 Map<String, String> params = new HashMap<>();
                 params.put("email",email);
                 params.put("password",password);
                 params.put("name",name);
                 params.put("contact",contact);
                 params.put("age",age);
-                params.put("photo",getStringImage(bitmap));
-//                                params.put("photo",getStringImage(bitmap));
+                params.put("photo",img);
                 return params;
             }
         };

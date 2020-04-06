@@ -22,13 +22,15 @@
     <Button
         android:id="@+id/btn_done"
         android:layout_width="96dp"
-        android:layout_height="48dp"
+        android:layout_height="36dp"
         android:visibility="gone"
         android:textSize="12sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
+        android:background="@drawable/button_border"
+        android:textColor="@color/white"
         android:text="Done" />
 
 </RelativeLayout>

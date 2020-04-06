@@ -9,15 +9,15 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_change_password"
-        android:orderInCategory="100"
-        android:title="@string/action_change_password"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_questionnaire"
         android:orderInCategory="100"
         android:title="Exercise Questionnaire"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_event_reminder"
+        android:orderInCategory="100"
+        android:title="Event Reminder"
         app:showAsAction="never"/>
 
     <item
@@ -25,6 +25,12 @@
         android:orderInCategory="100"
         android:title="FAQ"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_change_password"
+        android:orderInCategory="100"
+        android:title="@string/action_change_password"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_logout"

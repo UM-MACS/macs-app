@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -217,6 +218,12 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
 
         if(id == R.id.action_questionnaire){
             Intent intent = new Intent(EmotionAssessmentActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(EmotionAssessmentActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;
         }

@@ -144,8 +144,6 @@ public class EventReminderActivity extends AppCompatActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
                         break;
                 }
                 return true;
@@ -876,6 +874,12 @@ public class EventReminderActivity extends AppCompatActivity {
 
         if(id == R.id.action_questionnaire){
             Intent intent = new Intent(EventReminderActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(EventReminderActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;
         }
