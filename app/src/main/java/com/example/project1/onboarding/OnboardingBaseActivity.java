@@ -17,6 +17,7 @@ import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.onboarding.component.OnboardingEmotionFragment;
 import com.example.project1.onboarding.component.OnboardingExercise2Fragment;
@@ -26,7 +27,7 @@ import com.example.project1.onboarding.component.OnboardingForumFragment;
 import com.example.project1.onboarding.component.OnboardingGeneralFragment;
 import com.example.project1.onboarding.component.OnboardingQuestionnaireFragment;
 
-public class OnboardingBaseActivity extends AppCompatActivity {
+public class OnboardingBaseActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;

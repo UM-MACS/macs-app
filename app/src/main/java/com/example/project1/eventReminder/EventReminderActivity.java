@@ -41,6 +41,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -68,7 +69,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventReminderActivity extends AppCompatActivity {
+public class EventReminderActivity extends BaseActivity {
     private LinearLayout parentLinearLayout;
     private LinearLayout datePickerLayout;
     private LinearLayout clickableView;

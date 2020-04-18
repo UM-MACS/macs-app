@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
@@ -26,7 +27,7 @@ import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
-public class SpecialistViewForumFavouriteActivity extends AppCompatActivity {
+public class SpecialistViewForumFavouriteActivity extends BaseActivity {
 
     SessionManager sessionManager;
 

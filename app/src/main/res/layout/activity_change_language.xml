@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".changeLanguage.ChangeLanguageActivity">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <include
+            layout="@layout/app_bar_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:labelVisibilityMode="labeled"
+        android:background="@drawable/nav_border"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/navigation" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="@string/switch_language"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="125dp"/>
+
+    <LinearLayout
+        android:layout_below="@id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
+        android:padding="25dp"
+        android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/checkbox_en"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_en"
+        android:padding="10dp"
+        android:text="@string/english"
+        android:textSize="25sp"
+        android:includeFontPadding="true"
+        android:drawablePadding="10dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_ms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:drawableStart="@drawable/ic_ms"
+        android:padding="10dp"
+        android:text="@string/malay"
+        android:textSize="25sp"
+        android:includeFontPadding="true"
+        android:drawablePadding="10dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

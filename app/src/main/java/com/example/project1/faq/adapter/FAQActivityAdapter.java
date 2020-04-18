@@ -19,12 +19,13 @@ import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
 
-public class FAQActivityAdapter extends AppCompatActivity {
+public class FAQActivityAdapter extends BaseActivity {
     private static final String TAG = "FAQActivityAdapter";
     private SessionManager sessionManager;
 

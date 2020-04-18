@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".changeLanguage.ChangeLanguageActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".forum.specialist.SpecialistEditDeleteForumPostActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -166,7 +170,7 @@
         </activity>
         <activity
             android:name=".onboarding.OnboardingBaseActivity"
-            android:label="Onboarding"/>
+            android:label="Onboarding" />
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.User;
 import com.example.project1.forum.imageFile.ImgLoader;
 
@@ -45,7 +46,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewForumReportedPostActivity extends AppCompatActivity {
+public class ViewForumReportedPostActivity extends BaseActivity {
     private String localhost;
     private static String URL_GET_REPORTED_POST;
     private static String URL_GETPIC;

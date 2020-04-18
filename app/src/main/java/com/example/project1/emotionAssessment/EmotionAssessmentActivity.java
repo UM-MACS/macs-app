@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -34,7 +36,7 @@ import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 
-public class EmotionAssessmentActivity extends AppCompatActivity {
+public class EmotionAssessmentActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
@@ -65,6 +67,8 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         sessionManager.checkLogin();
+        sessionManager.getLanguagePref(this);
+
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -224,6 +228,12 @@ public class EmotionAssessmentActivity extends AppCompatActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(EmotionAssessmentActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_change_language){
+            Intent intent = new Intent(EmotionAssessmentActivity.this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

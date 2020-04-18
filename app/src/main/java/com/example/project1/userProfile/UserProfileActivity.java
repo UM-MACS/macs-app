@@ -13,9 +13,10 @@ import com.example.project1.R;
 import com.example.project1.forum.ViewForumFavouriteListActivity;
 import com.example.project1.forum.specialist.SpecialistEditDeleteForumPostActivity;
 import com.example.project1.forum.specialist.SpecialistViewForumFavouriteActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.User;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     private Button viewMyPosts, viewMyEmotions, viewMyFavourite;
 
 

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
@@ -29,7 +30,7 @@ import com.example.project1.forum.specialist.SpecialistForumActivity;
 
 import java.util.ArrayList;
 
-public class FAQActivity extends AppCompatActivity {
+public class FAQActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private SessionManager sessionManager;

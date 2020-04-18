@@ -6,15 +6,15 @@
     <string name="title_event_assessment">Assessment</string>
     <string name="title_faq">FaQ</string>
 
-    <string name="localhost">https://masc-server.herokuapp.com</string>
+    <string name="localhost" translatable="false">https://masc-server.herokuapp.com</string>
     <!--    <string name="localhost">localhost:3000</string>-->
 
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="patientButton">Patient</string>
     <string name="caregiverButton">Caregiver</string>
     <string name="specialistButton">Specialist</string>
 
-    <string name="title_activity_emotion">emotionActivity</string>
+    <string name="title_activity_emotion" translatable="false">emotionActivity</string>
     <string name="emotionIntro">How do you feel now?</string>
     <string name="emotion1" value="counter1">Happy</string>
     <string name="emotion2" value="counter2">Moderate</string>
@@ -45,25 +45,25 @@
         <item>Others</item>
     </string-array>
 
-    <string name="title_activity_schedule">scheduleActivity</string>
+    <string name="title_activity_schedule" translatable="false">scheduleActivity</string>
     <string name="submitButton">Submit</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
 
-    <string name="title_activity_register2">Registration</string>
+    <string name="title_activity_register2" translatable="false">Registration</string>
     <string name="caregiverRelation">Relationship with Patient</string>
     <string name="descriptionOfSpinner">What is your Relationship with the Patient? I am their..</string>
-    <string name="title_activity_view_event">viewEventActivity</string>
-    <string name="title_activity_nav">NavActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_activity_view_event" translatable="false">viewEventActivity</string>
+    <string name="title_activity_nav" translatable="false">NavActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_logout">Logout</string>
     <string name="action_change_password">Change Password</string>
     <string name="menu_home">Logout</string>
-    <string name="title_activity_view_user_data">viewUserDataActivity</string>
+    <string name="title_activity_view_user_data" translatable="false">viewUserDataActivity</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="exercise_level_1">Exercise Level 1</string>
@@ -88,10 +88,15 @@
     <string name="questionnaire_q6">It\'s a lot of fun</string>
     <string name="questionnaire_q7">It\'s very pleasant</string>
     <string name="questionnaire_q8">I felt as though there was nothing else I would rather be doing</string>
-    <string name="questionnaire_ans1">1</string>
-    <string name="questionnaire_ans2">2</string>
-    <string name="questionnaire_ans3">3</string>
-    <string name="questionnaire_ans4">4</string>
-    <string name="questionnaire_ans5">5</string>
+    <string name="questionnaire_ans1" translatable="false">1</string>
+    <string name="questionnaire_ans2" translatable="false">2</string>
+    <string name="questionnaire_ans3" translatable="false">3</string>
+    <string name="questionnaire_ans4" translatable="false">4</string>
+    <string name="questionnaire_ans5" translatable="false">5</string>
+    <string name="happy">Happy</string>
+    <string name="search">Search</string>
+    <string name="switch_language">Switch Language</string>
+    <string name="english">English</string>
+    <string name="malay">Malay</string>
 
 </resources>

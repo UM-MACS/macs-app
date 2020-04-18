@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.User;
 
 import org.json.JSONArray;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
     private String email;
     private String localhost;
     private static String URL ;

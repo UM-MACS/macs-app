@@ -1,7 +1,10 @@
 package com.example.project1.emotionAssessment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,7 +32,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
@@ -57,8 +62,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EmotionButtonAssessmentActivity extends AppCompatActivity{
-//    DatabaseHelper db;
+import static android.content.pm.PackageManager.GET_META_DATA;
+
+public class EmotionButtonAssessmentActivity extends BaseActivity {
+    //    DatabaseHelper db;
     Button b1,b2,b3,b4,b5,b6,submitButton;
     ArrayList<String> arrayList;
     EditText expression;
@@ -300,37 +307,37 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
         Log.e("TAG", "date: "+date );
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    String success = jsonObject.getString("success");
-                    Log.e("TAG", "success: "+success );
-                if(success.equals("1")){
-                    Log.e("TAG", "success" );
-                    AlertDialog diaBox = AskOption();
-                    diaBox.show();
-                    task.cancel(true);
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            Log.e("TAG", "success: "+success );
+                            if(success.equals("1")){
+                                Log.e("TAG", "success" );
+                                AlertDialog diaBox = AskOption();
+                                diaBox.show();
+                                task.cancel(true);
 
-                }
-                else if(success.equals("0")){
+                            }
+                            else if(success.equals("0")){
 //                    Toast.makeText(getApplicationContext(),"Fail to submit",
 //                            Toast.LENGTH_SHORT).show();
-                    expression.setText("");
-                    AlertDialog diaBox = alertError();
-                    diaBox.show();
-                    task.cancel(true);
-                }
-            }catch (JSONException e) {
-                    e.printStackTrace();
+                                expression.setText("");
+                                AlertDialog diaBox = alertError();
+                                diaBox.show();
+                                task.cancel(true);
+                            }
+                        }catch (JSONException e) {
+                            e.printStackTrace();
 //                    Toast.makeText(getApplicationContext(),"Error, Please Try Again Later",
 //                            Toast.LENGTH_SHORT).show();
-                    AlertDialog diaBox = alertError();
-                    diaBox.show();
-                    task.cancel(true);
-                }
-        }},
+                            AlertDialog diaBox = alertError();
+                            diaBox.show();
+                            task.cancel(true);
+                        }
+                    }},
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -554,6 +561,14 @@ public class EmotionButtonAssessmentActivity extends AppCompatActivity{
             return true;
         }
 
+        if(id == R.id.action_change_language){
+            Intent intent = new Intent(EmotionButtonAssessmentActivity.this, ChangeLanguageActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+
 }

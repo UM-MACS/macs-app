@@ -3,11 +3,19 @@ package com.example.project1.login.component;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.support.annotation.StringDef;
 
 import com.example.project1.login.LoginActivity;
 import com.example.project1.emotionAssessment.EmotionButtonAssessmentActivity;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class SessionManager {
 
@@ -22,6 +30,21 @@ public class SessionManager {
     public static final String EMAIL = "EMAIL";
     public static final String TYPE = "TYPE";
 
+    /* Language Declare */
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({ENGLISH, MALAY})
+    public @interface LocaleDef {
+        String[] SUPPORTED_LOCALES = { ENGLISH, MALAY};
+    }
+
+    public static final String ENGLISH = "en";
+    public static final String MALAY = "ms";
+    private static final String LANGUAGE_KEY = "language_key";
+
+    /* End of Language Declare */
+
+
+    /* Check Login */
     public SessionManager(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -106,6 +129,70 @@ public class SessionManager {
             ed.apply();
         }
         return n;
+    }
+
+    /* End of Check Login*/
+
+    /* Check Language*/
+
+    /**
+     * set current pref locale
+     */
+    public static Context setLocale(Context mContext) {
+        return updateResources(mContext, getLanguagePref(mContext));
+    }
+
+    /**
+     * Set new Locale with context
+     */
+    public static Context setNewLocale(Context mContext, @LocaleDef String language) {
+        setLanguagePref(mContext, language);
+        return updateResources(mContext, language);
+    }
+
+    /**
+     * get current locale
+     */
+    public static Locale getLocale(Resources res) {
+        Configuration config = res.getConfiguration();
+        return Build.VERSION.SDK_INT >= 24 ? config.getLocales().get(0) : config.locale;
+    }
+
+    /**
+     * Get saved Locale from SharedPreferences
+     *
+     * @param mContext current context
+     * @return current locale key by default return english locale
+     */
+    public static String getLanguagePref(Context mContext) {
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPreferences.getString(LANGUAGE_KEY, null);
+    }
+
+    /**
+     * set pref key
+     */
+    private static void setLanguagePref(Context mContext, String localeKey) {
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPreferences.edit().putString(LANGUAGE_KEY, localeKey).apply();
+    }
+
+    /**
+     * update resource
+     */
+    private static Context updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Resources res = context.getResources();
+        Configuration config = new Configuration(res.getConfiguration());
+        if (Build.VERSION.SDK_INT >= 17) {
+            config.setLocale(locale);
+            context = context.createConfigurationContext(config);
+        } else {
+            config.locale = locale;
+            res.updateConfiguration(config, res.getDisplayMetrics());
+        }
+        return context;
     }
 
 }

@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.login.LoginActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 
@@ -44,7 +45,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RegisterCaregiverActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegisterCaregiverActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
     private String localhost;
     private static String URL_REGIST;

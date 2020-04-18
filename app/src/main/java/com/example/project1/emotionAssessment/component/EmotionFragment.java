@@ -73,6 +73,7 @@ public class EmotionFragment extends Fragment {
         sessionManager = new SessionManager(getContext());
         sessionManager.checkLogin();
 
+
         View thisFragment = inflater.inflate(R.layout.fragment_emotion_button, container, false);
         progressBarHolder = (FrameLayout) thisFragment.findViewById(R.id.progressBarHolder);
         localhost = getString(R.string.localhost);

@@ -29,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.User;
 
 import org.json.JSONException;
@@ -42,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends BaseActivity {
 
     private Button btnStart, btnEnd, btnReset;
     private TextView tvStopwatchName, tvVideoName;

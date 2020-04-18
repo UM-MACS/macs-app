@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.login.LoginActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.User;
@@ -44,7 +45,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RegisterSpecialistActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegisterSpecialistActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     private ProgressBar loading;
     //    private static String URL_REGIST ="http://192.168.0.187/jee/register.php";
     private String localhost;

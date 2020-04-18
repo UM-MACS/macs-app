@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.project1.R;
+import com.example.project1.login.component.BaseActivity;
 
-public class EmotionDebug extends AppCompatActivity {
+public class EmotionDebug extends BaseActivity {
 
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;

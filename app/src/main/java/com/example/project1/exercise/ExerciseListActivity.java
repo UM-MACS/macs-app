@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.exercise.adapter.ExerciseListAdapter;
+import com.example.project1.login.component.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class ExerciseListActivity extends AppCompatActivity {
+public class ExerciseListActivity extends BaseActivity {
 
     private Button btnRandom, btnExerciseStart;
     private TextView tvTitle;

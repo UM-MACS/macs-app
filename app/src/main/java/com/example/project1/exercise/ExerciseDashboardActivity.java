@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
@@ -64,7 +65,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ExerciseDashboardActivity extends AppCompatActivity {
+public class ExerciseDashboardActivity extends BaseActivity {
 
     private SessionManager sessionManager;
     private Button btnStartExercise1, btnStartExercise2;

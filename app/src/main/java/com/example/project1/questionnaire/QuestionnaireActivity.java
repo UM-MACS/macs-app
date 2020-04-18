@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
+import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -48,7 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QuestionnaireActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class QuestionnaireActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     Button b1;
     RadioGroup radio1,radio2,radio3,radio4,radio5,radio6,radio7,radio8;
