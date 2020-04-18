@@ -83,7 +83,7 @@ private static String URL_REPORT_POST;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
 private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime,
-        emailContainer, typeContainer;
+        emailContainer, typeContainer, fav_des;
 private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
 private FloatingActionButton createPostButton;
 private CircleImageView user_pic, expanded_user_pic;
@@ -498,6 +498,8 @@ private ProgressBar progressBar;
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -776,6 +778,9 @@ private ProgressBar progressBar;
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "An error occured, please try again",
@@ -806,7 +811,7 @@ private ProgressBar progressBar;
     }
 
     public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 
@@ -821,8 +826,12 @@ private ProgressBar progressBar;
                             if (success.equals("1")) {
                                 fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
                                 fav_icon.setVisibility(View.VISIBLE);
                                 unfav_icon.setVisibility(View.GONE);
+
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error, please try removing again",

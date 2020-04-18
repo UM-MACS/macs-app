@@ -58,7 +58,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer, typeContainer, reportButton;
+            ,emailContainer, typeContainer, reportButton, fav_des;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -316,6 +316,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -584,6 +586,9 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), R.string.try_later,
@@ -613,7 +618,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 
@@ -630,6 +635,9 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.VISIBLE);
                                 unfav_icon.setVisibility(View.GONE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), R.string.try_later,

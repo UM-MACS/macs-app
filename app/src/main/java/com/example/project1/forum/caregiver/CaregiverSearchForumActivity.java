@@ -71,11 +71,13 @@ public class CaregiverSearchForumActivity extends BaseActivity {
     private static String URL_SEARCH_POST;
     private static String URL_GET_POSTS;
     private static String URL_GET_IS_FAV;
+    private static String URL_ADD_FAV;
+    private static String URL_DEL_FAV;
     private static String URL_REPORT_POST;
     private String picture, searchTitle, searchContent;
     private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
     private TextView nullPost, username, threadTitle, threadContent, threadID,threadTime, emailContainer
-            ,typeContainer, reportButton;
+            ,typeContainer, reportButton, fav_des;
     private ImageView fav_icon,unfav_icon;
     private FloatingActionButton createPostButton;
     private TextView expandedName, expandedTitle, expandedContent, expandedID,expandedTime;
@@ -134,6 +136,8 @@ public class CaregiverSearchForumActivity extends BaseActivity {
         URL_PIN_POST = localhost+"/pinPostCaregiver/";
         URL_SEARCH_POST = localhost+"/searchPostCaregiver/";
         URL_GET_IS_FAV = localhost+"/getIsFavourite/";
+        URL_ADD_FAV = localhost+"/addToFavouriteCaregiver/";
+        URL_DEL_FAV = localhost+"/removeFavouriteCaregiver/";
         URL_REPORT_POST = localhost+"/reportPost/";
         URL_GET_POSTS= localhost+"/getPostCaregiver/";
         sessionManager = new SessionManager(this);
@@ -287,6 +291,8 @@ public class CaregiverSearchForumActivity extends BaseActivity {
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -305,6 +311,107 @@ public class CaregiverSearchForumActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
                 params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onFavourite(final View v){
+        threadID = (TextView) ((View)v.getParent().getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "An error occured, please try again",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("forum","Patient");
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onRemoveFavourite (final View v){
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
+                                fav_icon.setVisibility(View.VISIBLE);
+                                unfav_icon.setVisibility(View.GONE);
+
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error, please try removing again",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("forum","Patient");
+                params.put("postID",id );
                 return params;
             }
         };

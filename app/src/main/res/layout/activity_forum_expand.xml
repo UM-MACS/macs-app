@@ -119,9 +119,11 @@
                     android:onClick="onRemoveFavourite"/>
 
                 <TextView
+                    android:id="@+id/fav_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:textColor="@color/dodger_blue"
                     android:text="@string/add_favourite"/>
             </LinearLayout>
 

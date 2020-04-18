@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MASC</string>
+    <string name="app_name">MACS</string>
     <string name="title_home">Rumah</string>
     <string name="title_emotion">Perasaan</string>
     <string name="title_schedule">Pelantikan</string>

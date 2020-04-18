@@ -2,11 +2,13 @@ package com.example.project1.forum;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,9 +29,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.forum.specialist.SpecialistViewForumFavouriteActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.User;
 import com.example.project1.forum.imageFile.ImgLoader;
+import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +63,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer,typeContainer, reportButton;
+            ,emailContainer,typeContainer, reportButton, fav_des;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -87,6 +91,27 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         URL_POST_REPLY = localhost+"/postReply/";
         URL_GET_IS_FAV = localhost+"/getIsFavourite/";
         URL_REPORT_POST = localhost+"/reportPost/";
+
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(User.getInstance().getUserType().equals("Specialist")) {
+                    Intent i = new Intent(ViewForumFavouriteListActivity.this,
+                            SpecialistViewForumFavouriteActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(ViewForumFavouriteListActivity.this,
+                            UserProfileActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
 
         searchEditText = (EditText)findViewById(R.id.search_edit_text);
         searchButton = (Button)findViewById(R.id.search_button);
@@ -266,6 +291,18 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         final String getTime = threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ViewForumFavouriteListActivity.this,ViewForumFavouriteListActivity.class);
+                startActivity(i);
+            }
+        });
+
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
         expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
@@ -317,6 +354,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -585,6 +624,9 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error",
@@ -614,7 +656,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 
@@ -631,6 +673,9 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.VISIBLE);
                                 unfav_icon.setVisibility(View.GONE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Error",
