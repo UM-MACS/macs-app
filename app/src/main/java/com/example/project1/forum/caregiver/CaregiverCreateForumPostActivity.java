@@ -88,17 +88,17 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Post Success",
+                                    Toast.makeText(getApplicationContext(), R.string.post_success,
                                             Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(CaregiverCreateForumPostActivity.this, CaregiverForumActivity.class);
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Post Fail",
+                                    Toast.makeText(getApplicationContext(), R.string.post_fail,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Post Fail",
+                                Toast.makeText(getApplicationContext(), R.string.post_fail,
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -106,7 +106,7 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Post Fail",
+                            Toast.makeText(getApplicationContext(), R.string.post_fail,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }) {
@@ -126,7 +126,7 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
         } else{
-            Toast.makeText(getApplicationContext(),"Please Enter Something",Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(),R.string.enter_something_forum,Toast.LENGTH_SHORT)
                     .show();
         }
     }

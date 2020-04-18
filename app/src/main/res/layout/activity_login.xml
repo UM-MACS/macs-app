@@ -118,7 +118,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="3dp"
-            android:text="Forgot Password"
+            android:text="@string/forgot_password"
             android:textColor="@color/steel_blue"
             android:background="@android:color/transparent"
             android:textSize="15sp"

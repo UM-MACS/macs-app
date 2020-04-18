@@ -50,7 +50,7 @@
                     android:layout_gravity="end"
                     android:background="@color/white"
                     android:onClick="onPost"
-                    android:text="Post"
+                    android:text="@string/post"
                     android:textColor="@color/dodger_blue"/>
 
                 <Button
@@ -73,7 +73,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/border_forum"
-                android:text="Post Anonymous"
+                android:text="@string/post_anonymous"
                 android:textStyle="italic" />
 
             <EditText
@@ -84,7 +84,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/border_forum"
-                android:hint="Title"
+                android:hint="@string/title"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -103,7 +103,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@color/white"
-                android:hint="Content"
+                android:hint="@string/content"
                 android:textColor="@color/black"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"

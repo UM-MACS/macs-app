@@ -34,7 +34,7 @@
             android:gravity="center"
             android:textSize="25sp"
             app:fontFamily="sans-serif-medium"
-            android:text="Tell us how you feel" />
+            android:text="@string/intro" />
 
         <LinearLayout
             android:layout_width="match_parent"

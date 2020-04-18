@@ -33,7 +33,7 @@
             android:background="@drawable/button_border"
             android:textColor="@android:color/white"
             android:textSize="17sp"
-            android:text="My Forum Posts"/>
+            android:text="@string/my_forum_posts"/>
 
         <Button
             android:id="@+id/view_my_favourite_button"
@@ -48,7 +48,7 @@
             android:background="@drawable/button_border"
             android:textColor="@android:color/white"
             android:textSize="17sp"
-            android:text="My Favourite Posts"/>
+            android:text="@string/my_favourite_posts"/>
 
 
 

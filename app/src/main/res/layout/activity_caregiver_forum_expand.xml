@@ -22,7 +22,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,50 +41,91 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/expanded_thread_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"/>
+                        android:visibility="visible" />
 
                     <Button
                         android:id="@+id/edit_post"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
                         android:layout_gravity="start"
-                        android:background="@drawable/ic_edit"
-                        android:visibility="gone"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_border"
+                        android:text="@string/edit"
+                        android:padding="0dp"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/delete_post"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
                         android:layout_gravity="end"
-                        android:background="@drawable/ic_bin"
-                        android:visibility="gone"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_border"
+                        android:text="@string/delete"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />
+
+
 
                 </FrameLayout>
-                <ImageView
-                    android:id="@+id/addFav"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_remove_fav"
-                    android:layout_gravity="end"
-                    android:paddingBottom="15dp"
-                    android:onClick="onFavourite"/>
-                <ImageView
-                    android:id="@+id/removeFav"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_favourite"
-                    android:layout_gravity="end"
-                    android:paddingBottom="15dp"
-                    android:visibility="gone"
-                    android:onClick="onRemoveFavourite"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/anonymous_post_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="start"
+                        android:text="Posted as Anonymous"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textStyle="bold"
+                        android:padding="7dp"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="end">
+
+                        <ImageView
+                            android:id="@+id/addFav"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_remove_fav"
+                            android:paddingBottom="5dp"
+                            android:layout_gravity="center"
+                            android:onClick="onFavourite"/>
+                        <ImageView
+                            android:id="@+id/removeFav"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_favourite"
+                            android:paddingBottom="5dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:onClick="onRemoveFavourite"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="@string/add_favourite"/>
+                    </LinearLayout>
+
+                </FrameLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:textSize="10sp"
-                    android:text="Report This Post"/>
+                    android:text="@string/report_post"/>
 
             </LinearLayout>
             <LinearLayout
@@ -203,13 +245,13 @@
                 android:layout_marginEnd="100dp"
                 android:focusable = "true"
                 android:focusableInTouchMode = "true"
-                android:hint="Reply"/>
+                android:hint="@string/reply"/>
             <Button
                 android:id="@+id/submit_reply_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="Post"/>
+                android:text="@string/post"/>
         </FrameLayout>
     </ScrollView>
 

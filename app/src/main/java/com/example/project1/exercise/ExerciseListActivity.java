@@ -70,7 +70,7 @@ public class ExerciseListActivity extends BaseActivity {
         else{
             exerciseList = exerciseList2;
             exerciseTimeList = exerciseTimeList2;
-            tvTitle.setText("Exercise Level 2");
+            tvTitle.setText(R.string.exercise_level_2);
         }
 
         //adapter declare

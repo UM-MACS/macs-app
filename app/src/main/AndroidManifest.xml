@@ -128,7 +128,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.LoginActivity"
-            android:label="MASOCC" />
+            android:label="MACS" />
 
         <receiver android:name=".exercise.NotificationReceiver">
             <intent-filter>

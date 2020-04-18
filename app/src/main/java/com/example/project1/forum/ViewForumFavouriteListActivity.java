@@ -568,7 +568,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 

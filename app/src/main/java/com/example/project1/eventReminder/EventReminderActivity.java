@@ -173,9 +173,9 @@ public class EventReminderActivity extends BaseActivity {
     private AlertDialog AskOption(final View v, final String text) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete Appointment?")
+                .setTitle(R.string.delete_app)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         delAppointment(v,text);
@@ -183,7 +183,7 @@ public class EventReminderActivity extends BaseActivity {
 
                 })
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -252,7 +252,7 @@ public class EventReminderActivity extends BaseActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -261,7 +261,7 @@ public class EventReminderActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -393,10 +393,10 @@ public class EventReminderActivity extends BaseActivity {
                 frameLayout.getForeground().setAlpha(0);
                 //check if all field_event_reminder are not empty
                 if (HH == null || mm == null) {
-                    Toast.makeText(getApplicationContext(), "Please Select a Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.please_select_time, Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 } else if(dateText.equals("")){
-                    Toast.makeText(getApplicationContext(), "Please Select a Date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.please_select_date, Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 }
                 else {
@@ -419,7 +419,7 @@ public class EventReminderActivity extends BaseActivity {
                     s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                     Log.e("tag", "s1 is " + s1);
                     if (s2 >= s1) {
-                        Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
                         parentLinearLayout.removeView((View) rowView);
                     } else {
                         remarkTextView.setText(remarkText);
@@ -466,17 +466,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                             Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -512,17 +512,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -557,17 +557,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -790,7 +790,7 @@ public class EventReminderActivity extends BaseActivity {
                 s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                 Log.e("tag", "s1 is "+s1);
                 if(s2>=s1){
-                    Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     remarkTextView.setText(remarkText);

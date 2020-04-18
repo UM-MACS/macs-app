@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingLeft="8dp"
-                    android:text="Exercise"
+                    android:text="@string/exercise"
                     android:textColor="#000"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
-                    android:text="Recommended Time"
+                    android:text="@string/recommended_time"
                     android:textColor="#000"
                     android:textSize="16dp"
                     android:textStyle="bold" />

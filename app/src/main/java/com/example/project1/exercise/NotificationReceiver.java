@@ -59,7 +59,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MASC")                            // required
                     .setSmallIcon(R.drawable.app_icon)
-                    .setContentText("Do you need to exercise today? Check it out!")
+                    .setContentText(context.getResources().getString(R.string.exercise_noti))
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
@@ -73,7 +73,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MASC")                            // required
-                    .setContentText("Do you need to exercise today? Check it out!")
+                    .setContentText(context.getResources().getString(R.string.exercise_noti))
                     .setSmallIcon(R.drawable.app_icon)
                     .setTicker("MASC")
                     .setAutoCancel(true)

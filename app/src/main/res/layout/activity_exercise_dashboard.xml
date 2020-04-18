@@ -74,7 +74,7 @@
                         android:paddingRight="16dp"
                         android:paddingBottom="32dp"
                         android:textColor="@color/black"
-                        android:text="You haven't create your exercise plan!"
+                        android:text="@string/no_exercise_plan"
                         android:textAlignment="center"
                         android:textSize="20dp" />
 
@@ -87,7 +87,7 @@
                         android:paddingRight="16dp"
                         android:paddingBottom="16dp"
                         android:clickable="true"
-                        android:text="Customize my exercise plan here"
+                        android:text="@string/customize_exercise_plan"
                         android:textAlignment="center"
                         android:textSize="14dp" />
 
@@ -113,7 +113,7 @@
                 android:drawableRight="@drawable/ic_point_to_right"
                 android:drawablePadding="16dp"
                 android:padding="15dp"
-                android:text="Exercise Level 1" />
+                android:text="@string/exercise_level_1" />
 
             <Button
                 android:id="@+id/button_exercise_two"
@@ -125,7 +125,7 @@
                 android:drawableRight="@drawable/ic_point_to_right"
                 android:drawablePadding="16dp"
                 android:padding="15dp"
-                android:text="Exercise Level 2" />
+                android:text="@string/exercise_level_2" />
         </LinearLayout>
 
         </LinearLayout>

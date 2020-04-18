@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="Add new Appointment" />
+            android:text="@string/add_new_appointment" />
 
     </LinearLayout>
     </LinearLayout>

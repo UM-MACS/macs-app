@@ -48,6 +48,7 @@ public class ChangePasswordActivity extends BaseActivity {
 private EditText o1,c1,c2;
 private Button button;
 private String t1, t2, t3;
+private String toastSuccess, toastError, toastWrongOldPW, toastUnmatchPW;
 private String localhost;
 private static String URL ;
 SessionManager sessionManager;
@@ -99,12 +100,15 @@ SessionManager sessionManager;
             }
         });
 
-//        db = new DatabaseHelper(this);
         localhost = getString(R.string.localhost);
         URL = localhost+"/changepassword";
         o1 = (EditText)findViewById(R.id.old_pw);
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);
+        toastSuccess = getResources().getString(R.string.update_pw_success);
+        toastError = getResources().getString(R.string.update_fail);
+        toastWrongOldPW = getResources().getString(R.string.wrong_old_pw);
+        toastUnmatchPW = getResources().getString(R.string.unmatch_new_pw);
         button = (Button)findViewById(R.id.submit_change_password);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,15 +129,15 @@ SessionManager sessionManager;
                                             String success = jsonObject.getString("success");
                                             if (success.equals("1")) {
                                                 Toast.makeText(getApplicationContext(),
-                                                        "Update is Successful!",
+                                                        toastSuccess,
                                                         Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(),
-                                                        "Error, Please Try Again Later!",
+                                                        toastError,
                                                         Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("-1")) {
                                                 Toast.makeText(getApplicationContext(),
-                                                        "Old Password is wrong",
+                                                        toastWrongOldPW,
                                                         Toast.LENGTH_SHORT).show();
                                                 o1.setText("");
                                                 c1.setText("");
@@ -148,7 +152,7 @@ SessionManager sessionManager;
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         Toast.makeText(getApplicationContext(),
-                                                "Error, Please Try Again Later!",
+                                                toastError,
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
@@ -166,7 +170,7 @@ SessionManager sessionManager;
                         requestQueue.add(stringRequest);
                     }
                 else {
-                    Toast.makeText(getApplicationContext(),"New Passwords are not same!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),toastUnmatchPW,Toast.LENGTH_LONG).show();
                     c1.setText("");
                     c2.setText("");
                 }

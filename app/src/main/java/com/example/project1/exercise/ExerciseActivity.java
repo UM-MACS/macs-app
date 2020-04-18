@@ -143,14 +143,14 @@ public class ExerciseActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (pause_check) {
-                    btnStart.setText("Start");
+                    btnStart.setText(R.string.start);
                     TimeBuff += MillisecondTime;
                     pause_check = false;
                     btnReset.setEnabled(true);
                     handler.removeCallbacks(runnable);
                 } else {
                     StartTime = SystemClock.uptimeMillis();
-                    btnStart.setText("Pause");
+                    btnStart.setText(R.string.pause);
                     pause_check = true;
                     btnEnd.setEnabled(true);
                     btnReset.setEnabled(false);
@@ -180,7 +180,7 @@ public class ExerciseActivity extends BaseActivity {
                     } else {
                         exerciseCounter++;
                         if (exerciseCounter == 7)
-                            btnEnd.setText("END");
+                            btnEnd.setText(R.string.end);
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
@@ -203,7 +203,7 @@ public class ExerciseActivity extends BaseActivity {
                     } else {
                         exerciseCounter++;
                         if (exerciseCounter == 6)
-                            btnEnd.setText("END");
+                            btnEnd.setText(R.string.end);
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
@@ -268,7 +268,7 @@ public class ExerciseActivity extends BaseActivity {
         tvStopwatchName.setText("00:00:00");
         //
         StartTime = SystemClock.uptimeMillis();
-        btnStart.setText("Pause");
+        btnStart.setText(R.string.pause);
         pause_check = true;
         btnEnd.setEnabled(true);
         btnReset.setEnabled(false);
@@ -288,8 +288,8 @@ public class ExerciseActivity extends BaseActivity {
     //ask wish to save
     public void saveDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Save Exercise");
-        alertDialogBuilder.setMessage("Do you want to save this exercise?");
+        alertDialogBuilder.setTitle(R.string.save_exercise);
+        alertDialogBuilder.setMessage(R.string.save_exercise_confirm);
         alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>Yes</font>"),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -429,11 +429,11 @@ public class ExerciseActivity extends BaseActivity {
                     finish();
                 }
                 else if(counter > 1){
-                    Toast.makeText(getApplicationContext(),"Please select one emotion only!",
+                    Toast.makeText(getApplicationContext(),R.string.one_emotion_only,
                             Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Please select at least one emotion!",
+                    Toast.makeText(getApplicationContext(),R.string.at_least_one_emotion,
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -454,12 +454,12 @@ public class ExerciseActivity extends BaseActivity {
                                 if (success.equals("1")) {
                                     saveExerciseDetails();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                                    Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                                Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -467,7 +467,7 @@ public class ExerciseActivity extends BaseActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Save exercise fail!",
+                            Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }) {
@@ -532,12 +532,12 @@ public class ExerciseActivity extends BaseActivity {
             requestQueue.add(stringRequest);
         }
         if(saveStatus){
-            Toast.makeText(getApplicationContext(), "Save exercise success!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.save_exercise_success, Toast.LENGTH_SHORT).show();
             //TODO
             //save latest exercise date in sharedpreferences
         }
         else{
-            Toast.makeText(getApplicationContext(), "Save exercise fail!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.save_exercise_fail, Toast.LENGTH_SHORT).show();
         }
     }
 

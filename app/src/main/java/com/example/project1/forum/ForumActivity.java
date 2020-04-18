@@ -440,6 +440,8 @@ private ProgressBar progressBar;
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
 
+        Log.e("TAG", "onExpand: get Thread ID "+getID );
+
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
@@ -757,7 +759,7 @@ private ProgressBar progressBar;
     }
 
     public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 

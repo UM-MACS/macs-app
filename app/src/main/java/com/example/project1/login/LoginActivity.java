@@ -91,14 +91,14 @@ public class LoginActivity extends BaseActivity {
         t1 = (TextView)findViewById(R.id.textLogin);
         b3 = (Button)findViewById(R.id.forgotpwButton);
         if(User.getInstance().getUserType().equals("Patient")){
-            t1.setText("Patient Login");
+            t1.setText(R.string.patientLogin);
         }
         else if(User.getInstance().getUserType().equals("Caregiver")){
-            t1.setText("Caregiver Login");
+            t1.setText(R.string.caregiverLogin);
         } else if(User.getInstance().getUserType().equals("Specialist")){
-            t1.setText("Specialist Login");
+            t1.setText(R.string.specialistLogin);
         } else{
-            t1.setText("Admin Login");
+            t1.setText(R.string.adminLogin);
             b2.setVisibility(View.GONE);
             b3.setVisibility(View.GONE);
         }

@@ -179,7 +179,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
         });
 
         if(desiredExerciseDay > 0){
-            tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
+            tvExerciseDay.setText(R.string.exercise_2_day + completedExerciseDay + "/" + desiredExerciseDay + R.string.exercise_2_day);
         }
 
     }
@@ -215,7 +215,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
                                     }
                                 }
                                 if(desiredExerciseDay > 0){
-                                    tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
+                                    tvExerciseDay.setText(R.string.exercise_1_day + completedExerciseDay + "/" + desiredExerciseDay + R.string.exercise_2_day);
                                 }
                             } else {
 //                                Toast.makeText(getApplicationContext(), "Error",
@@ -264,7 +264,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
                         if(desiredExerciseDay > 0){
-                            tvExerciseDay.setText("You have exercised " + completedExerciseDay + "/" + desiredExerciseDay + " days this week!");
+                            tvExerciseDay.setText(R.string.exercise_1_day + completedExerciseDay + "/" + desiredExerciseDay + R.string.exercise_2_day);
                         }
                         editor.putInt(PublicComponent.DESIRE_EXERCISE_DAY, Integer.parseInt(spinner.getSelectedItem().toString()));
                         if(checkBox.isChecked()){
