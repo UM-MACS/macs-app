@@ -51,4 +51,5 @@
     <string name="questionnaire_q8">Saya berasa seolah-olah tiada perkara lain yang lebih saya gemari</string>
     <string name="happy">Gembira</string>
     <string name="search">Cari</string>
+    <string name="empty_chat">Anda tidak ada sejarah perbualan. Mulakan perbualan dengan kawan anda sekarang!</string>
 </resources>

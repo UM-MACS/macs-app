@@ -67,33 +67,33 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.content.pm.PackageManager.GET_META_DATA;
 
 public class ForumActivity extends BaseActivity {
-private SessionManager sessionManager;
-private String localhost;
-private static String URL;
-private static String URL_GETPIC;
-private static String URL_GETPIC_SPECIALIST;
-private static String URL_GET_REPLY;
-private static String URL_POST_REPLY;
-private static String URL_PIN_POST;
-private static String URL_SEARCH_POST;
-private static String URL_ADD_FAV;
-private static String URL_DEL_FAV;
-private static String URL_GET_IS_FAV;
-private static String URL_REPORT_POST;
-private String picture;
-private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime,
-        emailContainer, typeContainer;
-private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
-private FloatingActionButton createPostButton;
-private CircleImageView user_pic, expanded_user_pic;
-private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
-private EditText replyText;
-private TextView reportButton;
-private Button submitReplyButton, viewReportedButton;
-//private String getName, getTitle, getContent, getID;
-private LinearLayout layoutAdjust;
-private ProgressBar progressBar;
+    private SessionManager sessionManager;
+    private String localhost;
+    private static String URL;
+    private static String URL_GETPIC;
+    private static String URL_GETPIC_SPECIALIST;
+    private static String URL_GET_REPLY;
+    private static String URL_POST_REPLY;
+    private static String URL_PIN_POST;
+    private static String URL_SEARCH_POST;
+    private static String URL_ADD_FAV;
+    private static String URL_DEL_FAV;
+    private static String URL_GET_IS_FAV;
+    private static String URL_REPORT_POST;
+    private String picture;
+    private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
+    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime,
+            emailContainer, typeContainer;
+    private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
+    private FloatingActionButton createPostButton;
+    private CircleImageView user_pic, expanded_user_pic;
+    private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
+    private EditText replyText;
+    private TextView reportButton;
+    private Button submitReplyButton, viewReportedButton;
+    //private String getName, getTitle, getContent, getID;
+    private LinearLayout layoutAdjust;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +105,9 @@ private ProgressBar progressBar;
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if (User.getInstance().getUserType().equals("Admin")) {
             bottomNavigationView.setVisibility(View.GONE);
-            Button button = (Button)findViewById(R.id.admin_back_button);
+            Button button = (Button) findViewById(R.id.admin_back_button);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,8 +117,8 @@ private ProgressBar progressBar;
                 }
             });
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if (User.getInstance().getUserType().equals("Caregiver") ||
+                User.getInstance().getUserType().equals("Specialist")) {
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -144,8 +144,8 @@ private ProgressBar progressBar;
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                        || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if (User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")) {
                             Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -162,21 +162,21 @@ private ProgressBar progressBar;
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+"/getForumPost";
-        URL_GETPIC = localhost+"/getPatientPic";
+        URL = localhost + "/getForumPost";
+        URL_GETPIC = localhost + "/getPatientPic";
 //        URL_GETPIC_SPECIALIST = localhost+"/jee/getPic3.php";
-        URL_GET_REPLY = localhost+"/getReplyPost/";
-        URL_POST_REPLY = localhost+"/postReply/";
-        URL_PIN_POST = localhost+"/pinPost/";
-        URL_SEARCH_POST = localhost+"/searchPost/";
-        URL_ADD_FAV = localhost+"/addToFavourite/";
-        URL_DEL_FAV = localhost+"/removeFavourite/";
-        URL_GET_IS_FAV = localhost+"/getIsFavourite/";
-        URL_REPORT_POST = localhost+"/reportPost/";
+        URL_GET_REPLY = localhost + "/getReplyPost/";
+        URL_POST_REPLY = localhost + "/postReply/";
+        URL_PIN_POST = localhost + "/pinPost/";
+        URL_SEARCH_POST = localhost + "/searchPost/";
+        URL_ADD_FAV = localhost + "/addToFavourite/";
+        URL_DEL_FAV = localhost + "/removeFavourite/";
+        URL_GET_IS_FAV = localhost + "/getIsFavourite/";
+        URL_REPORT_POST = localhost + "/reportPost/";
         sessionManager = new SessionManager(this);
-        forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
+        forumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         getPosts();
         createPostButton = (FloatingActionButton) findViewById(R.id.create_post_button);
         createPostButton.setOnClickListener(new View.OnClickListener() {
@@ -186,38 +186,38 @@ private ProgressBar progressBar;
                 startActivity(i);
             }
         });
-        if(User.getInstance().getUserType().equals("Specialist")){
-            viewReportedButton = (Button)findViewById(R.id.view_reported_posts);
+        if (User.getInstance().getUserType().equals("Specialist")) {
+            viewReportedButton = (Button) findViewById(R.id.view_reported_posts);
             viewReportedButton.setVisibility(View.VISIBLE);
             viewReportedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this, ViewForumReportedPostActivity.class);
-                    i.putExtra("forum","Patient");
+                    i.putExtra("forum", "Patient");
                     startActivity(i);
                 }
             });
-        } else if(User.getInstance().getUserType().equals("Admin")){
-            viewReportedButton = (Button)findViewById(R.id.view_reported_posts);
+        } else if (User.getInstance().getUserType().equals("Admin")) {
+            viewReportedButton = (Button) findViewById(R.id.view_reported_posts);
             viewReportedButton.setVisibility(View.VISIBLE);
             viewReportedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this, ViewForumReportedPostActivity.class);
-                    i.putExtra("forum","Patient");
+                    i.putExtra("forum", "Patient");
                     startActivity(i);
                 }
             });
         }
     }
 
-    public void getPic(final String email,final String type, final CircleImageView view){
-        if(type.equals("Specialist")){
-            URL_GETPIC = localhost+"/getSpecialistPic";
-        }else{
-            URL_GETPIC = localhost+"/getPatientPic";
+    public void getPic(final String email, final String type, final CircleImageView view) {
+        if (type.equals("Specialist")) {
+            URL_GETPIC = localhost + "/getSpecialistPic";
+        } else {
+            URL_GETPIC = localhost + "/getPatientPic";
         }
-        Log.e("TAG", "getPic: get pic url"+URL_GETPIC );
+        Log.e("TAG", "getPic: get pic url" + URL_GETPIC);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
                 new Response.Listener<String>() {
                     @Override
@@ -226,7 +226,7 @@ private ProgressBar progressBar;
                             JSONArray jsonArray = new JSONArray(response);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
-                            if(success.equals("1")) {
+                            if (success.equals("1")) {
                                 picture = jsonObject.getString("photo");
                                 Log.e("TAG", "pic: " + picture);
 
@@ -234,7 +234,7 @@ private ProgressBar progressBar;
                                 int loader = R.drawable.ic_user;
                                 ImgLoader imgLoader = new ImgLoader(getApplicationContext());
                                 imgLoader.DisplayImage(picture, loader, view);
-                                Log.e("TAG", "success loading photo" );
+                                Log.e("TAG", "success loading photo");
                             }
                         } catch (JSONException e) {
                             Log.e("TAG", "fail to load photo");
@@ -246,11 +246,11 @@ private ProgressBar progressBar;
             public void onErrorResponse(VolleyError error) {
                 Log.e("TAG", "fail to load photo");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email);
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
                 return params;
             }
         };
@@ -278,8 +278,8 @@ private ProgressBar progressBar;
                             ArrayList<String> pinned = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
 
-                            if(success.equals("1")){
-                                for (int i=0; i<jsonArray.length(); i++){
+                            if (success.equals("1")) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
                                     email.add(object.getString("email"));
@@ -291,26 +291,26 @@ private ProgressBar progressBar;
                                     pinned.add(object.getString("pinned"));
                                     date.add(object.getString("date"));
                                 }
-                                for (int i =0; i<name.size();i++){
-                                    if(pinned.get(i).equals("true")) {
+                                for (int i = 0; i < name.size(); i++) {
+                                    if (pinned.get(i).equals("true")) {
                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                         final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
+                                        pinned_pic = (ImageView) ((View) rowView).findViewById(R.id.pinned);
                                         pinned_pic.setVisibility(View.VISIBLE);
                                         if (anonymous.get(i).equals("true")) {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+                                            getPic("lee", "", user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
-                                            Log.e("TAG", "email get pic: "+email.get(i));
+                                            getPic(email.get(i), type.get(i), user_pic);
+                                            Log.e("TAG", "email get pic: " + email.get(i));
                                         }
-                                        emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                        emailContainer = (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
                                         typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
                                         typeContainer.setText(type.get(i));
@@ -320,46 +320,46 @@ private ProgressBar progressBar;
                                         threadContent.setText(content.get(i));
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
-                                        threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        threadTime = (TextView) ((View) rowView).findViewById(R.id.thread_time);
 
-                                        Log.e("TAG", "onResponse: Date from database: "+date.get(i) );
+                                        Log.e("TAG", "onResponse: Date from database: " + date.get(i));
 
                                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                         try {
                                             Date d = dateFormat.parse(date.get(i));
                                             long epoch = d.getTime();
-                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                            Log.e("TAG", "time: "+time );
+                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                            Log.e("TAG", "time: " + time);
                                             threadTime.setText(time);
                                         } catch (ParseException e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 }
-                                for(int i=0; i<name.size();i++){
-                                    if(pinned.get(i).equals("")){
+                                for (int i = 0; i < name.size(); i++) {
+                                    if (pinned.get(i).equals("")) {
                                         Log.e("TAG", "name " + name.get(i));
                                         Log.e("TAG", "title " + title.get(i));
                                         Log.e("TAG", "content " + content.get(i));
                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                         final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        if(User.getInstance().getUserType().equals("Specialist")){
-                                            unpinned_pic = (ImageView) ((View)rowView).findViewById(R.id.unpinned);
+                                        if (User.getInstance().getUserType().equals("Specialist")) {
+                                            unpinned_pic = (ImageView) ((View) rowView).findViewById(R.id.unpinned);
                                             unpinned_pic.setVisibility(View.VISIBLE);
                                         }
                                         if (anonymous.get(i).equals("true")) {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+                                            getPic("lee", "", user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
+                                            getPic(email.get(i), type.get(i), user_pic);
                                         }
-                                        emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
+                                        emailContainer = (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
                                         typeContainer = (TextView) ((View) rowView).findViewById(R.id.type_container);
                                         typeContainer.setText(type.get(i));
@@ -369,12 +369,13 @@ private ProgressBar progressBar;
                                         threadContent.setText(content.get(i));
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
-                                        threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");                                        try {
+                                        threadTime = (TextView) ((View) rowView).findViewById(R.id.thread_time);
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                        try {
                                             Date d = dateFormat.parse(date.get(i));
                                             long epoch = d.getTime();
-                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                            Log.e("TAG", "time: "+time );
+                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                            Log.e("TAG", "time: " + time);
                                             threadTime.setText(time);
                                         } catch (ParseException e) {
                                             e.printStackTrace();
@@ -384,12 +385,12 @@ private ProgressBar progressBar;
 
                                 progressBar.setVisibility(View.GONE);
 
-                            } else if (success.equals("-1")){
+                            } else if (success.equals("-1")) {
                                 Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                         Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 nullPost.setVisibility(View.VISIBLE);
-                            } else{
+                            } else {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                         Toast.LENGTH_SHORT).show();
@@ -411,7 +412,7 @@ private ProgressBar progressBar;
                 Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                         Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return super.getParams();
@@ -421,23 +422,23 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
-    public void onExpand(View v){
-        emailContainer = (TextView)((View)v).findViewById(R.id.email_container);
+    public void onExpand(View v) {
+        emailContainer = (TextView) ((View) v).findViewById(R.id.email_container);
         final String getEmail = emailContainer.getText().toString();
-        typeContainer = (TextView)((View)v).findViewById(R.id.type_container);
+        typeContainer = (TextView) ((View) v).findViewById(R.id.type_container);
         final String getType = typeContainer.getText().toString();
         username = (TextView) ((View) v).findViewById(R.id.user_name);
         final String getName = username.getText().toString();
-        Log.e("TAG", "get name"+ getName );
+        Log.e("TAG", "get name" + getName);
         threadTitle = (TextView) ((View) v).findViewById(R.id.thread_title);
         final String getTitle = (String) threadTitle.getText().toString();
-        Log.e("TAG", "get title"+ getTitle );
+        Log.e("TAG", "get title" + getTitle);
         threadContent = (TextView) ((View) v).findViewById(R.id.thread_content);
         final String getContent = (String) threadContent.getText().toString();
-        Log.e("TAG", "get content"+ getContent );
+        Log.e("TAG", "get content" + getContent);
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
-        threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
+        threadTime = (TextView) ((View) v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
@@ -448,9 +449,9 @@ private ProgressBar progressBar;
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
-        if(getName.equals("Anonymous")) {
-            getPic("lee","", expanded_user_pic);
-        } else{
+        if (getName.equals("Anonymous")) {
+            getPic("lee", "", expanded_user_pic);
+        } else {
             getPic(getEmail, getType, expanded_user_pic);
         }
         expandedName.setText(getName);
@@ -461,7 +462,7 @@ private ProgressBar progressBar;
 
         getIsFavourite(getID);
         getReplyPost(getID);
-        submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
+        submitReplyButton = (Button) findViewById(R.id.submit_reply_button);
         submitReplyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -481,7 +482,7 @@ private ProgressBar progressBar;
     }
 
     private void getIsFavourite(final String id) {
-        Log.e("TAG", "getIsFavourite: id "+id );
+        Log.e("TAG", "getIsFavourite: id " + id);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_IS_FAV,
                 new Response.Listener<String>() {
@@ -492,8 +493,8 @@ private ProgressBar progressBar;
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                fav_icon = (ImageView)(findViewById(R.id.addFav));
-                                unfav_icon = (ImageView)(findViewById(R.id.removeFav));
+                                fav_icon = (ImageView) (findViewById(R.id.addFav));
+                                unfav_icon = (ImageView) (findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
 
@@ -513,7 +514,7 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
-                params.put("postID",id);
+                params.put("postID", id);
                 return params;
             }
         };
@@ -536,8 +537,8 @@ private ProgressBar progressBar;
                             ArrayList<String> content = new ArrayList<>();
                             ArrayList<String> id = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
-                            if(success.equals("1")){
-                                for (int i=0; i<jsonArray.length(); i++){
+                            if (success.equals("1")) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     name.add(object.getString("name"));
                                     content.add(object.getString("content"));
@@ -547,29 +548,29 @@ private ProgressBar progressBar;
                                     type.add(object.getString("type"));
                                 }
                                 //displaying reply
-                                for(int i=0; i<name.size();i++){
-                                    Log.e("TAG", "name "+name.get(i));
-                                    Log.e("TAG", "content "+content.get(i));
-                                    expandedForumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_expanded_forum);
+                                for (int i = 0; i < name.size(); i++) {
+                                    Log.e("TAG", "name " + name.get(i));
+                                    Log.e("TAG", "content " + content.get(i));
+                                    expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum_expand, expandedForumParentLinearLayout, false);
                                     expandedForumParentLinearLayout.addView(rowView, expandedForumParentLinearLayout.getChildCount() - 1);
-                                    Log.e("TAG", "number "+(expandedForumParentLinearLayout.getChildCount() + 1 ));
+                                    Log.e("TAG", "number " + (expandedForumParentLinearLayout.getChildCount() + 1));
                                     expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
-                                    expandedContent=(TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
+                                    expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expandedID = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_id);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                    getPic(email.get(i),type.get(i),expanded_user_pic);
+                                    getPic(email.get(i), type.get(i), expanded_user_pic);
                                     expandedName.setText(name.get(i));
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
-                                    threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
+                                    threadTime = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_time);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
                                         long epoch = d.getTime();
-                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                        Log.e("TAG", "time: "+time );
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: " + time);
                                         threadTime.setText(time);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
@@ -583,20 +584,20 @@ private ProgressBar progressBar;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("parentID",parentID);
+                Map<String, String> params = new HashMap<>();
+                params.put("parentID", parentID);
                 return params;
             }
         };
@@ -604,7 +605,7 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
-    public void onReply(final String parentID){
+    public void onReply(final String parentID) {
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         replyText.setText("");
@@ -612,8 +613,8 @@ private ProgressBar progressBar;
         Date d = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
-        if(text.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
+        if (text.equals("")) {
+            Toast.makeText(getApplicationContext(), "Please Write Something in the text box",
                     Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
@@ -635,16 +636,16 @@ private ProgressBar progressBar;
                                     expandedName = (TextView) ((View) rowView).findViewById(R.id.expanded_user_name);
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
-                                    expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
+                                    expandedTime = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_time);
+                                    getPic(User.getInstance().getEmail(), User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
                                         long epoch = d.getTime();
-                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                        Log.e("TAG", "time: "+time );
+                                        CharSequence time = DateUtils.getRelativeTimeSpanString(epoch, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+                                        Log.e("TAG", "time: " + time);
                                         expandedTime.setText(time);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
@@ -673,7 +674,7 @@ private ProgressBar progressBar;
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
-                    params.put("date",date);
+                    params.put("date", date);
                     return params;
                 }
             };
@@ -682,15 +683,15 @@ private ProgressBar progressBar;
         }
     }
 
-    public void onSearch(View v){
-        EditText editText = (EditText) ((View)v.getParent()).findViewById(R.id.search_edit_text);
+    public void onSearch(View v) {
+        EditText editText = (EditText) ((View) v.getParent()).findViewById(R.id.search_edit_text);
         final String searchText = (String) editText.getText().toString();
         Intent intent = new Intent(ForumActivity.this, SearchForumActivity.class);
-        intent.putExtra("searchText",searchText);
+        intent.putExtra("searchText", searchText);
         startActivity(intent);
     }
 
-    public void onReport(final String id){
+    public void onReport(final String id) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REPORT_POST,
                 new Response.Listener<String>() {
@@ -724,7 +725,7 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", id);
-                params.put("report","true" );
+                params.put("report", "true");
                 return params;
             }
         };
@@ -733,7 +734,7 @@ private ProgressBar progressBar;
     }
 
     private AlertDialog AskOption(final String id) {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Report This Post")
                 .setMessage("Are you sure you want to report this post?")
@@ -756,10 +757,10 @@ private ProgressBar progressBar;
 
     }
 
-    public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+    public void onFavourite(final View v) {
+        threadID = (TextView) ((View) v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
+        Log.e("TAG", "id is " + id);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
                 new Response.Listener<String>() {
@@ -770,8 +771,8 @@ private ProgressBar progressBar;
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon = (ImageView) ((View) v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView) ((View) v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
 
@@ -794,8 +795,8 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
-                params.put("forum","Patient");
-                params.put("postID",id);
+                params.put("forum", "Patient");
+                params.put("postID", id);
                 return params;
             }
         };
@@ -803,10 +804,10 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
-    public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+    public void onRemoveFavourite(final View v) {
+        threadID = (TextView) ((View) v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
+        Log.e("TAG", "id is " + id);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
                 new Response.Listener<String>() {
@@ -817,8 +818,8 @@ private ProgressBar progressBar;
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
-                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon = (ImageView) ((View) v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView) ((View) v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.VISIBLE);
                                 unfav_icon.setVisibility(View.GONE);
 
@@ -841,8 +842,8 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", User.getInstance().getEmail());
-                params.put("forum","Patient");
-                params.put("postID",id );
+                params.put("forum", "Patient");
+                params.put("postID", id);
                 return params;
             }
         };
@@ -851,13 +852,12 @@ private ProgressBar progressBar;
     }
 
 
-
     //for specialists only
-    public void onPin(final View v){
+    public void onPin(final View v) {
 
-        threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
+        threadID = (TextView) ((View) v.getParent()).findViewById(R.id.thread_id);
         final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
+        Log.e("TAG", "id is " + id);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_PIN_POST,
                 new Response.Listener<String>() {
@@ -868,8 +868,8 @@ private ProgressBar progressBar;
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                pinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.pinned);
-                                unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
+                                pinned_pic = (ImageView) ((View) v.getParent()).findViewById(R.id.pinned);
+                                unpinned_pic = (ImageView) ((View) v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.VISIBLE);
                                 unpinned_pic.setVisibility(View.GONE);
                                 Intent intent = getIntent();
@@ -895,7 +895,7 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", id);
-                params.put("pin","true" );
+                params.put("pin", "true");
                 return params;
             }
         };
@@ -903,13 +903,13 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
-    public void onUnpin(final View v){
-        if(User.getInstance().getUserType().equals("Patient")){
+    public void onUnpin(final View v) {
+        if (User.getInstance().getUserType().equals("Patient")) {
             return;
         }
-        threadID = (TextView) ((View)v.getParent()).findViewById(R.id.thread_id);
+        threadID = (TextView) ((View) v.getParent()).findViewById(R.id.thread_id);
         final String id = (String) threadID.getText().toString();
-        Log.e("TAG", "id is "+id );
+        Log.e("TAG", "id is " + id);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_PIN_POST,
                 new Response.Listener<String>() {
@@ -920,8 +920,8 @@ private ProgressBar progressBar;
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                pinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.pinned);
-                                unpinned_pic = (ImageView)((View)v.getParent()).findViewById(R.id.unpinned);
+                                pinned_pic = (ImageView) ((View) v.getParent()).findViewById(R.id.pinned);
+                                unpinned_pic = (ImageView) ((View) v.getParent()).findViewById(R.id.unpinned);
                                 pinned_pic.setVisibility(View.GONE);
                                 unpinned_pic.setVisibility(View.VISIBLE);
                                 Intent intent = getIntent();
@@ -946,7 +946,7 @@ private ProgressBar progressBar;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", id);
-                params.put("pin","" );
+                params.put("pin", "");
                 return params;
             }
         };
@@ -955,10 +955,9 @@ private ProgressBar progressBar;
     }
 
 
-
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
+        Intent i = new Intent(ForumActivity.this, ForumActivity.class);
         startActivity(i);
     }
 
@@ -988,13 +987,13 @@ private ProgressBar progressBar;
             return true;
         }
 
-        if (id == R.id.action_change_password){
+        if (id == R.id.action_change_password) {
             Intent intent = new Intent(ForumActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
             return true;
         }
 
-        if(id == R.id.action_user_profile){
+        if (id == R.id.action_user_profile) {
             Intent intent = new Intent(ForumActivity.this, UserProfileActivity.class);
             startActivity(intent);
             return true;
@@ -1006,13 +1005,13 @@ private ProgressBar progressBar;
             return true;
         }
 
-        if(id == R.id.action_questionnaire){
+        if (id == R.id.action_questionnaire) {
             Intent intent = new Intent(ForumActivity.this, QuestionnaireActivity.class);
             startActivity(intent);
             return true;
         }
 
-        if(id == R.id.action_event_reminder){
+        if (id == R.id.action_event_reminder) {
             Intent intent = new Intent(ForumActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;

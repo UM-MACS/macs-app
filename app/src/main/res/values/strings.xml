@@ -95,6 +95,9 @@
     <string name="questionnaire_ans5" translatable="false">5</string>
     <string name="happy">Happy</string>
     <string name="search">Search</string>
+
+    <string name="empty_chat">You don\'t have any chat history. Start chatting with your friend now!</string>
+
     <string name="switch_language">Switch Language</string>
     <string name="english">English</string>
     <string name="malay">Malay</string>
