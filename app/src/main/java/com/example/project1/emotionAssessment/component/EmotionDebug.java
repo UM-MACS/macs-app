@@ -55,6 +55,15 @@ public class EmotionDebug extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
+        ImageView forwardArrow = new ImageView(this);
+        forwardArrow.setImageResource(R.drawable.left_arrow);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(15, 0, 15, 0);
+        dotList.addView(forwardArrow);
+
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
             dots[i].setImageResource(R.drawable.non_active_dot);
@@ -62,11 +71,16 @@ public class EmotionDebug extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(8, 0, 8, 0);
+            params.setMargins(8, 8, 8, 0);
             dotList.addView(dots[i], params);
         }
 
         dots[0].setImageResource(R.drawable.active_dot);
+
+        ImageView backwardArrow = new ImageView(this);
+        backwardArrow.setImageResource(R.drawable.right_arrow);
+        layoutParams.setMargins(8, 0, 8, 0);
+        dotList.addView(backwardArrow);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

@@ -175,7 +175,8 @@
         </activity>
         <activity
             android:name=".onboarding.OnboardingBaseActivity"
-            android:label="Onboarding" />
+            android:label="Onboarding"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

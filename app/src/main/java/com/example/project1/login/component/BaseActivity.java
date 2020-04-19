@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 
@@ -19,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(SessionManager.setLocale(base));
+            super.attachBaseContext(SessionManager.setLocale(base));
     }
 
     protected void resetTitles() {

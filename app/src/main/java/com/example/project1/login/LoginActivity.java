@@ -140,6 +140,7 @@ public class LoginActivity extends BaseActivity {
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeUser() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
+                                                    i.putExtra("isFirstTime","true");
                                                 }
                                                 else{
                                                     i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
