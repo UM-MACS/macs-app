@@ -82,21 +82,38 @@
     </string-array>
 
     <string name="questionnaire">Physical Activity Questionnaire</string>
-    <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing.</string>
-    <string name="questionnaire_desc">1 (Strongly disagree) - 5 (Strongly agree) </string>
-    <string name="questionnaire_q1">I enjoy it</string>
-    <string name="questionnaire_q2">I feel interested</string>
-    <string name="questionnaire_q3">I like it</string>
-    <string name="questionnaire_q4">I find it pleasurable</string>
-    <string name="questionnaire_q5">I am very absorbed in this activity</string>
-    <string name="questionnaire_q6">It\'s a lot of fun</string>
-    <string name="questionnaire_q7">It\'s very pleasant</string>
-    <string name="questionnaire_q8">I felt as though there was nothing else I would rather be doing</string>
+    <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing. \n(8 questions)</string>
+    <string name="questionnaire_desc">(Rate according to the question with scale 1 - 7)</string>
+
+    <string name="questionnaire_q1_min">I enjoy it</string>
+    <string name="questionnaire_q2_min">I feel bored</string>
+    <string name="questionnaire_q3_min">I dislike it</string>
+    <string name="questionnaire_q4_min">I find it pleasurable</string>
+    <string name="questionnaire_q5_min">I am very absorbed in this activity</string>
+    <string name="questionnaire_q6_min">It\'s no fun at all</string>
+    <string name="questionnaire_q7_min">It\'s very pleasant</string>
+    <string name="questionnaire_q8_min">I felt as though I would rather be doing something else</string>
+    <string name="questionnaire_q1_max">I hate it</string>
+    <string name="questionnaire_q2_max">I feel interested</string>
+    <string name="questionnaire_q3_max">I like it</string>
+    <string name="questionnaire_q4_max">I find it unpleasurable</string>
+    <string name="questionnaire_q5_max">I am not at all absorbed in this activity</string>
+    <string name="questionnaire_q6_max">It\'s a lot of fun</string>
+    <string name="questionnaire_q7_max">It\'s very unpleasant</string>
+    <string name="questionnaire_q8_max">I felt as though there was nothing else I would rather be doing</string>
+
     <string name="questionnaire_ans1" translatable="false">1</string>
     <string name="questionnaire_ans2" translatable="false">2</string>
     <string name="questionnaire_ans3" translatable="false">3</string>
     <string name="questionnaire_ans4" translatable="false">4</string>
     <string name="questionnaire_ans5" translatable="false">5</string>
+    <string name="questionnaire_ans6" translatable="false">6</string>
+    <string name="questionnaire_ans7" translatable="false">7</string>
+
+    <string name="btn_previous">previous</string>
+    <string name="btn_next">next</string>
+    <string name="btn_submit">submit</string>
+
     <string name="happy">Happy</string>
     <string name="search">Search</string>
     <string name="switch_language">Switch Language</string>
@@ -128,7 +145,7 @@
     <string name="customize_exercise_plan">Customize my exercise plan here</string>
     <string name="exercise">Exercise</string>
     <string name="recommended_time">Recommended Duration</string>
-    <string name="question">Question</string>
+    <string name="question">Question\t</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="enter_email_temp_pw">Enter Your Email \nto receive a Temporary Password</string>
     <string name="upload_photo">Upload Photo</string>
