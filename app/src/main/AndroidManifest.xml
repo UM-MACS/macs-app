@@ -21,10 +21,12 @@
         <activity
             android:name=".forum.specialist.SpecialistEditDeleteForumPostActivity"
             android:exported="true"
+            android:label="@string/my_forum_posts"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.specialist.SpecialistViewForumFavouriteActivity"
             android:exported="true"
+            android:label="@string/my_fav_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".emotionAssessment.component.EmotionDebug"
@@ -58,9 +60,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.caregiver.CaregiverEditDeletePostActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/my_forum_posts"/>
         <activity
             android:name=".forum.caregiver.CaregiverViewForumFavouriteListActivity"
+            android:label="@string/my_fav_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.caregiver.CaregiverCreateForumPostActivity"
@@ -75,10 +79,12 @@
         <activity
             android:name=".forum.EditDeleteForumPostActivity"
             android:exported="true"
+            android:label="@string/my_forum_posts"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".userProfile.UserProfileActivity"
             android:exported="true"
+            android:label="@string/my_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.CreateForumPostActivity"
@@ -96,7 +102,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".forum.ViewForumFavouriteListActivity"
-            android:label="Favourite List"
+            android:label="@string/my_fav_list"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -106,7 +112,7 @@
 
         <activity
             android:name=".forum.specialist.ViewForumReportedPostActivity"
-            android:label="Reported Posts"
+            android:label="@string/reported_posts"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -114,7 +120,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".faq.adapter.FAQActivityAdapter"
-            android:label="Answer"
+            android:label="@string/answer"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".faq.FAQActivity"
@@ -124,16 +130,16 @@
         <activity
             android:name=".questionnaire.QuestionnaireActivity"
             android:exported="true"
-            android:label="Exercise Questionnaire"
+            android:label="@string/exercise_questionnaire"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".eventReminder.EventReminderActivity"
             android:exported="true"
-            android:label="Schedule Appointment"
+            android:label="@string/schedule_app"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.LoginActivity"
-            android:label="MACS" />
+            android:label="@string/app_name" />
 
         <receiver android:name=".exercise.NotificationReceiver">
             <intent-filter>
@@ -156,13 +162,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".register.RegisterPatientActivity"
-            android:label="Patient Register" />
+            android:label="@string/patient_register" />
         <activity
             android:name=".register.RegisterCaregiverActivity"
-            android:label="Caregiver Register" />
+            android:label="@string/caregiver_register" />
         <activity
             android:name=".register.RegisterSpecialistActivity"
-            android:label="Specialist Register" />
+            android:label="@string/specialist_register" />
         <activity
             android:name=".mainPage.MainActivity"
             android:label="@string/app_name"
@@ -175,7 +181,6 @@
         </activity>
         <activity
             android:name=".onboarding.OnboardingBaseActivity"
-            android:label="Onboarding"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

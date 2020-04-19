@@ -5,20 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.eventReminder.EventReminderActivity;
-import com.example.project1.exercise.ExerciseActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
@@ -41,20 +41,21 @@ public class FAQActivityAdapter extends BaseActivity {
         setSupportActionBar(toolbar);
 
         //Bottom Navigation Bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
         if(User.getInstance().getUserType().equals("Caregiver")||
                 User.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.navigation_home:
-                        Intent i1 = new Intent(FAQActivityAdapter.this, MainActivity.class);
-                        startActivity(i1);
-                        break;
+                switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_assessment:
                         Intent i2 = new Intent(FAQActivityAdapter.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
@@ -63,17 +64,26 @@ public class FAQActivityAdapter extends BaseActivity {
                         Intent i3 = new Intent(FAQActivityAdapter.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(FAQActivityAdapter.this, QuestionnaireListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
-//                        Intent i5 = new Intent(FAQActivityAdapter.this,FAQActivity.class);
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(FAQActivityAdapter.this, ForumActivity.class);
-                        startActivity(i6);
-                        break;
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            Intent i6 = new Intent(FAQActivityAdapter.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(FAQActivityAdapter.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+                    case R.id.navigation_chat:
+//                         startActivity(i);
                 }
                 return true;
             }
@@ -106,9 +116,15 @@ public class FAQActivityAdapter extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

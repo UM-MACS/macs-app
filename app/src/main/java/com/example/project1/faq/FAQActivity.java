@@ -3,7 +3,6 @@ package com.example.project1.faq;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +52,9 @@ public class FAQActivity extends BaseActivity {
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
+        MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_assessment);
+        menuItem.setChecked(true);
+
         if(User.getInstance().getUserType().equals("Caregiver")||
                 User.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
@@ -143,9 +145,15 @@ public class FAQActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

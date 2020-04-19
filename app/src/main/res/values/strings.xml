@@ -205,6 +205,15 @@
     <string name="add_favourite" translatable="false">Add Favourite</string>
     <string name="remove_favourite" translatable="false">Remove Favourite</string>
     <string name="edit" translatable="false">Edit</string>
+    <string name="my_activity">My Activity</string>
+    <string name="my_fav_list">My Favourite Posts</string>
+    <string name="reported_posts">Reported Posts</string>
+    <string name="answer">Answer</string>
+    <string name="exercise_questionnaire">Exercise Questionnaire</string>
+    <string name="schedule_app">Schedule Appointment</string>
+    <string name="patient_register">Patient Register</string>
+    <string name="caregiver_register">Caregiver Register</string>
+    <string name="specialist_register">Specialist Register</string>
 
 
 </resources>

@@ -98,43 +98,49 @@ public class ExerciseDashboardActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Bottom Navigation Bar
-        BottomNavigationView bottomNavigationView =
-                (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
-        item.setChecked(true);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_assessment:
-                        Intent i2 = new Intent(ExerciseDashboardActivity.this,
-                                EmotionAssessmentActivity.class);
+                        Intent i2 = new Intent(ExerciseDashboardActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_exercise:
-                        Intent i3 = new Intent(ExerciseDashboardActivity.this,
-                                ExerciseDashboardActivity.class);
+                        Intent i3 = new Intent(ExerciseDashboardActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-                    case R.id.navigation_chat:
-//                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-//                        startActivity(i);
-                        break;
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
+//                        startActivity(i4);
+//                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
-                            Intent i6 = new Intent(ExerciseDashboardActivity.this, CaregiverForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
-                            Intent i6 = new Intent(ExerciseDashboardActivity.this, ForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else{
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(ExerciseDashboardActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
+                        } else {
+                            Intent i6 = new Intent(ExerciseDashboardActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
                         }
+                    case R.id.navigation_chat:
+//                         startActivity(i);
                 }
                 return true;
             }

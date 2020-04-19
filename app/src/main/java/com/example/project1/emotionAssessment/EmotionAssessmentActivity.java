@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,7 +22,6 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -192,8 +190,13 @@ public class EmotionAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
 
     @Override

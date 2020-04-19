@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
@@ -38,7 +37,6 @@ import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
@@ -949,9 +947,15 @@ public class CaregiverForumActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

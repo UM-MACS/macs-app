@@ -3,13 +3,10 @@ package com.example.project1.forum;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
@@ -40,7 +37,6 @@ import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
@@ -63,8 +59,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.content.pm.PackageManager.GET_META_DATA;
 
 public class ForumActivity extends BaseActivity {
 private SessionManager sessionManager;
@@ -103,9 +97,9 @@ private ProgressBar progressBar;
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         if(User.getInstance().getUserType().equals("Admin")){
+
             bottomNavigationView.setVisibility(View.GONE);
             Button button = (Button)findViewById(R.id.admin_back_button);
             button.setVisibility(View.VISIBLE);
@@ -976,8 +970,13 @@ private ProgressBar progressBar;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
 
     @Override

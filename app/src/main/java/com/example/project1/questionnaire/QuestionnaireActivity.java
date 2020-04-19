@@ -107,8 +107,16 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_chat);
-        item.setChecked(true);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -121,31 +129,26 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         Intent i3 = new Intent(QuestionnaireActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(QuestionnaireActivity.this, QuestionnaireListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
-//                        Intent i5 = new Intent(QuestionnaireActivity.this,FAQActivity.class);
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if (User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
-                            Intent i6 = new Intent(QuestionnaireActivity.this, CaregiverForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")) {
-                            Intent i6 = new Intent(QuestionnaireActivity.this, ForumActivity.class);
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            Intent i6 = new Intent(QuestionnaireActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {
-                            Intent i6 = new Intent(QuestionnaireActivity.this, SpecialistForumActivity.class);
+                            Intent i6 = new Intent(QuestionnaireActivity.this, ForumActivity.class);
                             startActivity(i6);
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i = getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
-                        break;
+//                         startActivity(i);
                 }
                 return true;
             }

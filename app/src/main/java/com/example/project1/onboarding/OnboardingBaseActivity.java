@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,22 +81,13 @@ public class OnboardingBaseActivity extends BaseActivity {
             BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
             if(User.getInstance().getUserType().equals("Admin")){
                 bottomNavigationView.setVisibility(View.GONE);
-                Button button = (Button)findViewById(R.id.admin_back_button);
-                button.setVisibility(View.VISIBLE);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(OnboardingBaseActivity.this, SpecialistForumActivity.class);
-                        startActivity(i);
-                    }
-                });
             }
             if(User.getInstance().getUserType().equals("Caregiver")||
                     User.getInstance().getUserType().equals("Specialist")){
                 MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
                 item.setVisible(false);
             }
-            MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+            MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_assessment);
             itemForum.setChecked(true);
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -172,7 +162,12 @@ public class OnboardingBaseActivity extends BaseActivity {
             fragments = temp;
         }
         else{
-            fragments = new Fragment[0];
+            Fragment[] temp = {
+                    new OnboardingGeneralFragment(),
+                    new OnboardingForumFragment(),
+                    new OnboardingForum2Fragment()
+            };
+            fragments = temp;
         }
 
         pagerAdapter = new ScreenSlidePagerAdapter(
@@ -223,7 +218,7 @@ public class OnboardingBaseActivity extends BaseActivity {
                 else if(sessionManager.getUserDetail().get(sessionManager.TYPE).equals(PublicComponent.SPECIALIST))
                     i = new Intent(getApplicationContext(), SpecialistForumActivity.class);
                 else
-                    i = new Intent(getApplicationContext(), EmotionAssessmentActivity.class);
+                    i = new Intent(getApplicationContext(), SpecialistForumActivity.class);
 
                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra("email",sessionManager.getUserDetail().get(sessionManager.EMAIL));
@@ -279,9 +274,15 @@ public class OnboardingBaseActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
