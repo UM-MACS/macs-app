@@ -252,6 +252,14 @@ private ProgressBar progressBar;
         requestQueue.add(stringRequest);
     }
 
+    public void getPicTest(final String photo, final CircleImageView view){
+        //load picture example
+        int loader = R.drawable.ic_user;
+        ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+        imgLoader.DisplayImage(photo, loader, view);
+        Log.e("TAG", "success loading photo" );
+    }
+
     private void getPosts() {
         progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
@@ -271,6 +279,7 @@ private ProgressBar progressBar;
                             ArrayList<String> anonymous = new ArrayList<>();
                             ArrayList<String> pinned = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> photo = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -284,6 +293,7 @@ private ProgressBar progressBar;
                                     anonymous.add(object.getString("anonymous"));
                                     pinned.add(object.getString("pinned"));
                                     date.add(object.getString("date"));
+                                    photo.add(object.getString("photo"));
                                 }
                                 for (int i =0; i<name.size();i++){
                                     if(pinned.get(i).equals("true")) {
@@ -296,13 +306,19 @@ private ProgressBar progressBar;
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+//                                            getPic("lee","", user_pic);
+                                            getPicTest("",user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
-                                            Log.e("TAG", "email get pic: "+email.get(i));
+//                                            getPic(email.get(i),type.get(i), user_pic);
+                                            if(type.get(i).equals("Specialist")){
+                                                getPic(email.get(i),type.get(i),user_pic);
+                                            } else {
+                                                getPicTest(photo.get(i), user_pic);
+                                                Log.e("TAG", "email get pic: " + email.get(i));
+                                            }
                                         }
                                         emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
@@ -346,12 +362,19 @@ private ProgressBar progressBar;
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText("Anonymous");
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+//                                            getPic("lee","", user_pic);
+                                            getPicTest("",user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
+//                                            getPic(email.get(i),type.get(i), user_pic);
+                                            if(type.get(i).equals("Specialist")){
+                                                getPic(email.get(i),type.get(i),user_pic);
+                                            } else {
+                                                getPicTest(photo.get(i), user_pic);
+                                                Log.e("TAG", "email get pic: " + email.get(i));
+                                            }
                                         }
                                         emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
