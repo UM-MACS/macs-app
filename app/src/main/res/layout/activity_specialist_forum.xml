@@ -33,7 +33,7 @@
         android:textSize="20sp"
         android:background="@drawable/button_border"
         android:textColor="@android:color/white"
-        android:text="Patient Forum"
+        android:text="@string/patient_forum"
         android:onClick="onNavPatientForum"/>
 
     <Button
@@ -48,12 +48,13 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@+id/button_to_patient_forum"
-        android:text="Caregiver Forum"
+        android:text="@string/caregiver_forum"
         android:onClick="onNavCaregiverForum"/>
 
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
+        app:labelVisibilityMode="labeled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

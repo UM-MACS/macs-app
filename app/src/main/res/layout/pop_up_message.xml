@@ -23,7 +23,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Your feedback is successfully recorded!"
+        android:text="@string/feedback_recorded"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="217dp" />
@@ -35,7 +35,7 @@
         android:layout_marginStart="70dp"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="20dp"
-        android:text="Return"
+        android:text="@string/return_to"
         android:background="@color/dodger_blue"
         android:textColor="@color/white"
         android:textSize="15sp" />

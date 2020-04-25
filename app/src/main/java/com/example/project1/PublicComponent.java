@@ -21,6 +21,9 @@ public class PublicComponent {
     public static final String URL_SPECIALIST_PIC = LOCALHOST + "/getSpecialistPic/";
     public static final String URL_PATIENT_PIC = LOCALHOST + "/getPatientPic/";
     public static final String URL_CAREGIVER_PIC = LOCALHOST + "/getCaregiverPic/";
+    public static final String URL_GET_ALL_PATIENT = LOCALHOST + "/getAllPatient/";
+    public static final String URL_GET_ALL_CAREGIVER = LOCALHOST + "/getAllCaregiver/";
+    public static final String URL_GET_ALL_SPECIALIST = LOCALHOST + "/getAllSpecialist/";
     public static final String API_CALL_STATUS = "success";
 
     //firebase database reference key

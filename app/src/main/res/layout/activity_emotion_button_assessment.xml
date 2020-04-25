@@ -97,7 +97,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Happy"/>
+                        android:text="@string/happy"/>
 
                 </LinearLayout>
 
@@ -119,7 +119,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Surprised"/>
+                        android:text="@string/surprised"/>
 
                 </LinearLayout>
 
@@ -141,7 +141,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Disgusted"/>
+                        android:text="@string/disgusted"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -174,7 +174,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Fear"/>
+                        android:text="@string/fear"/>
 
                 </LinearLayout>
 
@@ -196,7 +196,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Angry"/>
+                        android:text="@string/angry"/>
 
                 </LinearLayout>
 
@@ -218,7 +218,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="Sad"/>
+                        android:text="@string/sad"/>
 
                 </LinearLayout>
 
@@ -238,7 +238,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Tell us how you feel." />
+                android:text="@string/intro" />
 
             <LinearLayout
                 android:layout_width="match_parent"

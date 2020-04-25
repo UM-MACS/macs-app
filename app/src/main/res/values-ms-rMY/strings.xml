@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MASC</string>
+    <string name="app_name">MACS</string>
     <string name="title_home">Rumah</string>
     <string name="title_emotion">Perasaan</string>
     <string name="title_schedule">Pelantikan</string>
     <string name="title_event_assessment">Penilaian</string>
     <string name="title_faq">FaQ</string>
     <string name="patientButton">Pesakit</string>
-    <string name="caregiverButton">Pengasuh</string>
+    <string name="caregiverButton">Pelindung</string>
     <string name="specialistButton">Doktor</string>
     <string name="emotionIntro">Apakah Perasaan Anda Sekarang?</string>
     <string name="emotion1">Gembira</string>
@@ -22,7 +22,7 @@
     <string name="newUser2">Klik sini untuk mendaftar</string>
     <string name="login">Log Masuk</string>
     <string name="register">Pendaftaran</string>
-    <string name="email">Email</string>
+    <string name="email">E-mel</string>
     <string name="name">Nama</string>
     <string name="password">Kata Laluan</string>
     <string name="confirmPassword">Pengesahan Kata Laluan</string>
@@ -39,17 +39,82 @@
     <string name="exercise_level_2">Senaman Tahap 2</string>
     <string name="exercise_random">Secara Rawak</string>
     <string name="questionnaire">Soal Selidik Aktiviti Fizikal</string>
-    <string name="questionnaire_title">Sila nilaikan perasaan anda pada masa ini mengenai aktiviti fizikal yang telah anda lakukan.</string>
-    <string name="questionnaire_desc">1 (Sangat tidak setuju) - 5 (Sangat setuju)</string>
-    <string name="questionnaire_q1">Saya menikmatinya</string>
-    <string name="questionnaire_q2">Saya rasa berminat</string>
-    <string name="questionnaire_q3">Saya sukanya</string>
-    <string name="questionnaire_q4">Saya berasa senang</string>
-    <string name="questionnaire_q5">Saya banyak menumpukan perhatian dalam Aktiviti tersebut</string>
-    <string name="questionnaire_q6">Sangat menyeronokkan</string>
-    <string name="questionnaire_q7">Sangat menyenangkan</string>
-    <string name="questionnaire_q8">Saya berasa seolah-olah tiada perkara lain yang lebih saya gemari</string>
+    <string name="questionnaire_title">Sila nilaikan perasaan anda pada masa ini mengenai aktiviti fizikal yang telah anda lakukan. \n(8 soalan)</string>
+    <string name="questionnaire_desc">(Nilaikan mengikuti soalan dengan skala 1 - 7)</string>
+    <string name="questionnaire_q1_min">Saya menikmatinya</string>
+    <string name="questionnaire_q2_min">Saya berasa bosan</string>
+    <string name="questionnaire_q3_min">Saya tidak sukanya</string>
+    <string name="questionnaire_q4_min">Saya berasa senang</string>
+    <string name="questionnaire_q5_min">Saya banyak menumpukan perhatian dalam Aktiviti tersebut</string>
+    <string name="questionnaire_q6_min">Tidak menyeronokkan sama sekali</string>
+    <string name="questionnaire_q7_min">Sangat menyenangkan</string>
+    <string name="questionnaire_q8_min">Saya berasa seolah-olah lebih suka melakukan perkara lain</string>
+    <string name="questionnaire_q1_max">Saya bencinya</string>
+    <string name="questionnaire_q2_max">Saya rasa berminat</string>
+    <string name="questionnaire_q3_max">Saya sukanya</string>
+    <string name="questionnaire_q4_max">Saya berasa tidak senang</string>
+    <string name="questionnaire_q5_max">Saya tidak menumpukan apa-apa perhatian dalam Aktiviti tersebut</string>
+    <string name="questionnaire_q6_max">Sangat menyeronokkan</string>
+    <string name="questionnaire_q7_max">Tidak menyenangkan sama sekali</string>
+    <string name="questionnaire_q8_max">Saya berasa seolah-olah tiada perkara lain yang lebih saya gemari</string>
+    <string name="btn_previous">kembali</string>
+    <string name="btn_next">seterusnya</string>
+    <string name="btn_submit">hantar</string>
     <string name="happy">Gembira</string>
-    <string name="search">Cari</string>
-    <string name="empty_chat">Anda tidak ada sejarah perbualan. Mulakan perbualan dengan kawan anda sekarang!</string>
+    <string name="search">Carian</string>
+
+    <string-array name="relationship">
+        <item>Sila Pilih Satu</item>
+        <item>Ibu Bapa</item>
+        <item>Anak</item>
+        <item>Suami Isteri</item>
+        <item>Keluarga</item>
+        <item>Lain-lain</item>
+    </string-array>
+    <string name="switch_language">Tukar Bahasa</string>
+    <string name="post_anonymous">Hantar Tanpa Name</string>
+    <string name="post">Hantar</string>
+    <string name="title">Tajuk</string>
+    <string name="content">Kandungan</string>
+    <string name="patientLogin">Log Masuk sebagai Pesakit</string>
+    <string name="caregiverLogin">Log Masuk sebagai Pelindung</string>
+    <string name="specialistLogin">Log Masuk sebagai Doktor</string>
+    <string name="adminLogin">Log Masuk sebagai Pentadbir</string>
+    <string name="report_post">Laporkan Siaran ini</string>
+    <string name="reply">Komen</string>
+    <string name="old_password">Kata Laluan Lama</string>
+    <string name="new_password">Kata Laluan Baru</string>
+    <string name="confirm_new_password">Sahkan Kata Laluan Baru</string>
+    <string name="surprised">Terkejut</string>
+    <string name="disgusted">Jijik</string>
+    <string name="fear">Takut</string>
+    <string name="angry">Marah</string>
+    <string name="sad">Sedih</string>
+    <string name="add_new_appointment">Tambah Pelantikan Baru</string>
+    <string name="video_name">Nama Video</string>
+    <string name="exercises_time">Tempoh Senaman</string>
+    <string name="start">mula</string>
+    <string name="next">seterusnya</string>
+    <string name="reset">semula</string>
+    <string name="no_exercise_plan">Anda belum membuat rancangan senaman anda!</string>
+    <string name="customize_exercise_plan">Sesuaikan rancangan senaman saya di sini</string>
+    <string name="exercise">Senaman</string>
+    <string name="recommended_time">Tempoh yang disyorkan</string>
+    <string name="question">Soalan\t</string>
+    <string name="forgot_password">Lupa Kata Laluan</string>
+    <string name="enter_email_temp_pw">Masukkan E-mel anda \nuntuk mendapatkan kata laluan sementara</string>
+    <string name="upload_photo">Muat naik Gambar</string>
+    <string name="reset_password">Menetapkan semula kata laluan</string>
+    <string name="select_date">Pilih Tarikh</string>
+    <string name="select_time">Pilih Masa</string>
+    <string name="add_remark">Tambah Komen</string>
+    <string name="view_my_posts_in">Lihat Siaran saya di..</string>
+    <string name="patient_forum">Forum Pesakit</string>
+    <string name="caregiver_forum">Forum Pelindung</string>
+    <string name="view_fav_in">Lihat Siaran Kegemaran anda di..</string>
+    <string name="my_forum_posts">Siaran Saya</string>
+    <string name="my_favourite_posts">Siaran Kegemaran Saya</string>
+    <string name="days_to_exercise">Berapa hari anda ingin bersenam dalam setiap minggu?</string>
+    <string name="remind_me_to_exercise">Ingatkan saya untuk bersenam</string>
+    <string name="feedback_recorded">Maklum balas anda telah berjaya direkodkan!</string>
 </resources>

@@ -39,7 +39,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:textSize="25sp"
-        android:text="Select Date" />
+        android:text="@string/select_date" />
 
     <!--<DatePicker-->
         <!--android:id="@+id/datePicker"-->
@@ -74,7 +74,7 @@
         android:background="@drawable/date_picker_border"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:text="Select Time"
+        android:text="@string/select_time"
         android:padding="10dp"
         android:textSize="25sp"
         android:textAlignment="center"/>
@@ -100,7 +100,7 @@
             android:ems="10"
             android:gravity="center"
             android:textSize="20dp"
-            android:hint="Add Remark"
+            android:hint="@string/add_remark"
             android:background="@null"
             android:layout_marginBottom="10dp"
             android:focusableInTouchMode="true"

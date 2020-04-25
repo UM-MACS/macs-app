@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +29,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.imageFile.ImgLoader;
@@ -36,6 +39,10 @@ import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.mainPage.MainActivity;
+import com.example.project1.onboarding.OnboardingBaseActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
+import com.example.project1.userProfile.UserProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,7 +76,6 @@ public class ChatChannelListActivity extends BaseActivity {
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
-    //emailFrom, emailTo, chatChannelId
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,7 +169,7 @@ public class ChatChannelListActivity extends BaseActivity {
                                     tempMap.put(RECEIVER_NAME,object.getString(RECEIVER_NAME));
                                     tempMap.put(RECEIVER_TYPE,object.getString(RECEIVER_TYPE));
 
-                                    DatabaseReference tempRef = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE);
+                                    DatabaseReference tempRef = databaseReference;
                                     tempRef.child(tempMap.get(CHAT_CHANNEL_ID)).orderByChild(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -183,35 +189,41 @@ public class ChatChannelListActivity extends BaseActivity {
                                     });
                                 }
 
-                                //TODO
                                 //if list is empty show sth else
-                                for(int i = 0; i < receiverList.size(); i++){
-                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
-                                    linearLayoutChatList.addView(rowView);
+                                if (receiverList.size() > 0) {
+                                    for (int i = 0; i < receiverList.size(); i++) {
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
+                                        linearLayoutChatList.addView(rowView);
 
-                                    HashMap<String,String> tempMap = receiverList.get(i);
+                                        final HashMap<String, String> tempMap = receiverList.get(i);
 
-                                    CircleImageView civReceiverProfilePic = (CircleImageView) ((View)rowView).findViewById(R.id.civ_receiver_profile_pic);
-                                    TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
-                                    TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
-                                    TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
-                                    TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
-                                    TextView tvEmailTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
+                                        CircleImageView civReceiverProfilePic = (CircleImageView) ((View) rowView).findViewById(R.id.civ_receiver_profile_pic);
+                                        TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
+                                        TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
+                                        TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
+                                        TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
+                                        TextView tvEmailTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
 
-                                    getPic(tempMap.get(EMAIL_TO),tempMap.get(RECEIVER_TYPE),civReceiverProfilePic);
-                                    tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
-                                    tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
-                                    tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
-                                    tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
-                                    tvEmailTo.setText(tempMap.get(EMAIL_TO));
+                                        getPic(tempMap.get(EMAIL_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
+                                        tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
+                                        tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
+                                        tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
+                                        tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
+                                        tvEmailTo.setText(tempMap.get(EMAIL_TO));
 
-                                    rowView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            //TODO
-                                        }
-                                    });
+                                        rowView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
+                                                i.putExtra(EMAIL_TO, tempMap.get(EMAIL_TO));
+                                                i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
+                                                i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
+                                                i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
+                                                startActivity(i);
+                                            }
+                                        });
+                                    }
                                 }
                             }
                             else{
@@ -236,7 +248,14 @@ public class ChatChannelListActivity extends BaseActivity {
                         Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                 Toast.LENGTH_SHORT).show();
                     }
-                });
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("emailFrom", sessionManager.getUserDetail().get("EMAIL"));
+                        return params;
+                    }
+                };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
@@ -292,8 +311,78 @@ public class ChatChannelListActivity extends BaseActivity {
         requestQueue.add(stringRequest);
     }
 
-    //TODO
     public void createNewChat(){
+        Intent i = new Intent(ChatChannelListActivity.this, CreateChatChannelActivity.class);
+        startActivity(i);
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this,ChatChannelListActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            sessionManager.logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            User.getInstance().setUserName("");
+            User.getInstance().setEmail("");
+            User.getInstance().setUserType("");
+            return true;
+        }
+
+        if (id == R.id.action_change_password){
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(this, OnboardingBaseActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_questionnaire){
+            Intent intent = new Intent(this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

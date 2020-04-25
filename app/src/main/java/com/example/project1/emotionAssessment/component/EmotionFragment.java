@@ -351,11 +351,12 @@ public class EmotionFragment extends Fragment {
 //    }
 
     private AlertDialog AskOption() {
+        String success= getResources().getString(R.string.success);
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(getContext())
                 //set message, title, and icon
-                .setTitle("Success")
-                .setMessage("Your Feedback is Successfully Recorded")
-                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                .setTitle(success)
+                .setMessage(getString(R.string.feedback_recorded))
+                .setPositiveButton(R.string.return_to, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
@@ -373,9 +374,9 @@ public class EmotionFragment extends Fragment {
     private AlertDialog alertError() {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(getContext())
                 //set message, title, and icon
-                .setTitle("Failed")
-                .setMessage("Please Try Again Later")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.fail)
+                .setMessage(R.string.try_later)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();

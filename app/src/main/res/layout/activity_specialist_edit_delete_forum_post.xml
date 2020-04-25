@@ -31,7 +31,7 @@
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="View My Posts in.. "/>
+        android:text="@string/view_my_posts_in"/>
 
     <Button
         android:id="@+id/button_to_patient_forum"
@@ -46,7 +46,7 @@
         android:textSize="20sp"
         android:background="@drawable/button_border"
         android:textColor="@android:color/white"
-        android:text="Patient Forum"
+        android:text="@string/patient_forum"
         android:onClick="onNavMyPostsPatientForum"/>
 
     <Button
@@ -61,7 +61,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@+id/button_to_patient_forum"
-        android:text="Caregiver Forum"
+        android:text="@string/caregiver_forum"
         android:onClick="onNavMyPostsCaregiverForum"/>
 
 
@@ -72,6 +72,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        app:labelVisibilityMode="labeled"
         android:layout_alignParentBottom="true"
         android:background="@drawable/nav_border"
         app:menu="@menu/navigation" />

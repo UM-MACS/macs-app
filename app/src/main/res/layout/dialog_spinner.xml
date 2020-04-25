@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="How many days do you want to exercise per week?"
+        android:text="@string/days_to_exercise"
         android:textSize="18dp"
         android:textColor="@color/black"
         android:textAlignment="center"
@@ -27,6 +27,6 @@
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remind me to exercise" />
+        android:text="@string/remind_me_to_exercise" />
 
 </LinearLayout>

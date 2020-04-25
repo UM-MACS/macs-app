@@ -1,5 +1,6 @@
 package com.example.project1.mainPage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ import com.example.project1.login.LoginActivity;
 
 import java.util.HashMap;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
     LinearLayout l1,l2,l3;
     private TextView mTextMessage;
     SessionManager sessionManager;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity {
                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
+
         }
 
         l1 = (LinearLayout) findViewById(R.id.userPatient);
@@ -111,5 +113,7 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

@@ -139,12 +139,13 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
-                } else if(s6.length()>11 || s6.length()<10){
-                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"
-                            , Toast.LENGTH_SHORT).show();
-                    loading.setVisibility(View.GONE);
-                    b1.setVisibility(View.VISIBLE);
                 }
+//                else if(s6.length()>11 || s6.length()<10){
+//                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"
+//                            , Toast.LENGTH_SHORT).show();
+//                    loading.setVisibility(View.GONE);
+//                    b1.setVisibility(View.VISIBLE);
+//                }
                 else {
                     if (s2.equals(s3)) { //check if password matches
                         /* mysql posting */
@@ -205,7 +206,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                         b1.setVisibility(View.VISIBLE);
                     }
                     else if(success.equals("-1")){
-                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Email entered already has an account", Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }

@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,7 +22,6 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -139,6 +137,15 @@ public class EmotionAssessmentActivity extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
+        ImageView forwardArrow = new ImageView(this);
+        forwardArrow.setImageResource(R.drawable.left_arrow);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(15, 0, 15, 0);
+        dotList.addView(forwardArrow);
+
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
             dots[i].setImageResource(R.drawable.non_active_dot);
@@ -146,11 +153,16 @@ public class EmotionAssessmentActivity extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(8, 0, 8, 0);
+            params.setMargins(8, 8, 8, 0);
             dotList.addView(dots[i], params);
         }
 
         dots[0].setImageResource(R.drawable.active_dot);
+
+        ImageView backwardArrow = new ImageView(this);
+        backwardArrow.setImageResource(R.drawable.right_arrow);
+        layoutParams.setMargins(8, 0, 8, 0);
+        dotList.addView(backwardArrow);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -178,8 +190,13 @@ public class EmotionAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
 
     @Override

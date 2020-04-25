@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
@@ -45,7 +44,6 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -55,7 +53,6 @@ import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.ForumActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 
 import org.json.JSONArray;
@@ -109,8 +106,16 @@ public class EventReminderActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-//        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
-//        item.setChecked(true);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -123,29 +128,26 @@ public class EventReminderActivity extends BaseActivity {
                         Intent i3 = new Intent(EventReminderActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(EventReminderActivity.this, QuestionnaireListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
-//                        Intent i5 = new Intent(EventReminderActivity.this, FAQActivity.class);
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
-                            Intent i6 = new Intent(EventReminderActivity.this, CaregiverForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
-                            Intent i6 = new Intent(EventReminderActivity.this, ForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else{
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(EventReminderActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(EventReminderActivity.this, ForumActivity.class);
                             startActivity(i6);
                             break;
                         }
                     case R.id.navigation_chat:
-                        break;
+//                         startActivity(i);
                 }
                 return true;
             }
@@ -173,9 +175,9 @@ public class EventReminderActivity extends BaseActivity {
     private AlertDialog AskOption(final View v, final String text) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete Appointment?")
+                .setTitle(R.string.delete_app)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         delAppointment(v,text);
@@ -183,7 +185,7 @@ public class EventReminderActivity extends BaseActivity {
 
                 })
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -252,7 +254,7 @@ public class EventReminderActivity extends BaseActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -261,7 +263,7 @@ public class EventReminderActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -393,10 +395,10 @@ public class EventReminderActivity extends BaseActivity {
                 frameLayout.getForeground().setAlpha(0);
                 //check if all field_event_reminder are not empty
                 if (HH == null || mm == null) {
-                    Toast.makeText(getApplicationContext(), "Please Select a Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.please_select_time, Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 } else if(dateText.equals("")){
-                    Toast.makeText(getApplicationContext(), "Please Select a Date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.please_select_date, Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 }
                 else {
@@ -419,7 +421,7 @@ public class EventReminderActivity extends BaseActivity {
                     s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                     Log.e("tag", "s1 is " + s1);
                     if (s2 >= s1) {
-                        Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
                         parentLinearLayout.removeView((View) rowView);
                     } else {
                         remarkTextView.setText(remarkText);
@@ -466,17 +468,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                             Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -512,17 +514,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -557,17 +559,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Fail to Insert",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -790,7 +792,7 @@ public class EventReminderActivity extends BaseActivity {
                 s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                 Log.e("tag", "s1 is "+s1);
                 if(s2>=s1){
-                    Toast.makeText(getApplicationContext(), "Error!! Please enter a valid Date and Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     remarkTextView.setText(remarkText);
@@ -832,9 +834,15 @@ public class EventReminderActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

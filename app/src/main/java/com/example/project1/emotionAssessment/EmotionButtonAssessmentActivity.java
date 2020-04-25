@@ -1,10 +1,7 @@
 package com.example.project1.emotionAssessment;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +9,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -45,7 +41,6 @@ import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.forum.ForumActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 
 import org.json.JSONArray;
@@ -61,8 +56,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.content.pm.PackageManager.GET_META_DATA;
 
 public class EmotionButtonAssessmentActivity extends BaseActivity {
     //    DatabaseHelper db;
@@ -114,48 +107,49 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         //Bottom Navigation Bar
-        BottomNavigationView bottomNavigationView =
-                (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_emotion_assessment);
-        item.setChecked(true);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_assessment:
-                        Intent i2 = new Intent(EmotionButtonAssessmentActivity.this,
-                                EmotionButtonAssessmentActivity.class);
+                        Intent i2 = new Intent(EmotionButtonAssessmentActivity.this, EmotionAssessmentActivity.class);
                         startActivity(i2);
                         break;
                     case R.id.navigation_exercise:
-                        Intent i3 = new Intent(EmotionButtonAssessmentActivity.this,
-                                ExerciseDashboardActivity.class);
+                        Intent i3 = new Intent(EmotionButtonAssessmentActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(EmotionButtonAssessmentActivity.this,
-//                                QuestionnaireListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
-                    case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
-                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
+//                        startActivity(i5);
+//                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
-                            Intent i6 = new Intent(EmotionButtonAssessmentActivity.this, CaregiverForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
-                            Intent i6 = new Intent(EmotionButtonAssessmentActivity.this, ForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else{
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(EmotionButtonAssessmentActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
+                        } else {
+                            Intent i6 = new Intent(EmotionButtonAssessmentActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
                         }
-
-
+                    case R.id.navigation_chat:
+//                         startActivity(i);
                 }
                 return true;
             }
@@ -279,7 +273,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
                 if (text.equals("")) {
                     Toast.makeText(getApplicationContext(),
-                            "Please enter something in the text box",
+                            R.string.enter_something,
                             Toast.LENGTH_LONG).show();
                 } else {
                     task.execute();
@@ -421,9 +415,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
     private AlertDialog AskOption() {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Success")
-                .setMessage("Your Feedback is Successfully Recorded")
-                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.success)
+                .setMessage(R.string.feedback_recorded)
+                .setPositiveButton(R.string.return_to, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
@@ -441,9 +435,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
     private AlertDialog alertError() {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Failed")
-                .setMessage("Please Try Again Later")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.fail)
+                .setMessage(R.string.try_later)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
@@ -507,8 +501,13 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
 
     @Override

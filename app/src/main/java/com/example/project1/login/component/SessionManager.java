@@ -166,7 +166,7 @@ public class SessionManager {
      */
     public static String getLanguagePref(Context mContext) {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPreferences.getString(LANGUAGE_KEY, null);
+        return mPreferences.getString(LANGUAGE_KEY, ENGLISH);
     }
 
     /**

@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".userProfile.UserProfileActivity">
 
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <include
+            layout="@layout/app_bar_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.DrawerLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +47,7 @@
             android:background="@drawable/button_border"
             android:textColor="@android:color/white"
             android:textSize="17sp"
-            android:text="My Forum Posts"/>
+            android:text="@string/my_forum_posts"/>
 
         <Button
             android:id="@+id/view_my_favourite_button"
@@ -48,10 +62,25 @@
             android:background="@drawable/button_border"
             android:textColor="@android:color/white"
             android:textSize="17sp"
-            android:text="My Favourite Posts"/>
+            android:text="@string/my_favourite_posts"/>
 
 
 
     </LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        app:labelVisibilityMode="labeled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/nav_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
 
 </FrameLayout>

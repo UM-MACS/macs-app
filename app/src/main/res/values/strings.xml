@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MASC</string>
+    <string name="app_name">MACS</string>
     <string name="title_home">Home</string>
     <string name="title_emotion">Feeling</string>
     <string name="title_schedule">Appointments</string>
@@ -13,6 +13,10 @@
     <string name="patientButton">Patient</string>
     <string name="caregiverButton">Caregiver</string>
     <string name="specialistButton">Specialist</string>
+    <string name="patientLogin">Patient Login</string>
+    <string name="caregiverLogin">Caregiver Login</string>
+    <string name="specialistLogin">Specialist Login</string>
+    <string name="adminLogin">Admin Login</string>
 
     <string name="title_activity_emotion" translatable="false">emotionActivity</string>
     <string name="emotionIntro">How do you feel now?</string>
@@ -78,28 +82,158 @@
     </string-array>
 
     <string name="questionnaire">Physical Activity Questionnaire</string>
-    <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing.</string>
-    <string name="questionnaire_desc">1 (Strongly disagree) - 5 (Strongly agree) </string>
-    <string name="questionnaire_q1">I enjoy it</string>
-    <string name="questionnaire_q2">I feel interested</string>
-    <string name="questionnaire_q3">I like it</string>
-    <string name="questionnaire_q4">I find it pleasurable</string>
-    <string name="questionnaire_q5">I am very absorbed in this activity</string>
-    <string name="questionnaire_q6">It\'s a lot of fun</string>
-    <string name="questionnaire_q7">It\'s very pleasant</string>
-    <string name="questionnaire_q8">I felt as though there was nothing else I would rather be doing</string>
+    <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing. \n(8 questions)</string>
+    <string name="questionnaire_desc">(Rate according to the question with scale 1 - 7)</string>
+
+    <string name="questionnaire_q1_min">I enjoy it</string>
+    <string name="questionnaire_q2_min">I feel bored</string>
+    <string name="questionnaire_q3_min">I dislike it</string>
+    <string name="questionnaire_q4_min">I find it pleasurable</string>
+    <string name="questionnaire_q5_min">I am very absorbed in this activity</string>
+    <string name="questionnaire_q6_min">It\'s no fun at all</string>
+    <string name="questionnaire_q7_min">It\'s very pleasant</string>
+    <string name="questionnaire_q8_min">I felt as though I would rather be doing something else</string>
+    <string name="questionnaire_q1_max">I hate it</string>
+    <string name="questionnaire_q2_max">I feel interested</string>
+    <string name="questionnaire_q3_max">I like it</string>
+    <string name="questionnaire_q4_max">I find it unpleasurable</string>
+    <string name="questionnaire_q5_max">I am not at all absorbed in this activity</string>
+    <string name="questionnaire_q6_max">It\'s a lot of fun</string>
+    <string name="questionnaire_q7_max">It\'s very unpleasant</string>
+    <string name="questionnaire_q8_max">I felt as though there was nothing else I would rather be doing</string>
+
     <string name="questionnaire_ans1" translatable="false">1</string>
     <string name="questionnaire_ans2" translatable="false">2</string>
     <string name="questionnaire_ans3" translatable="false">3</string>
     <string name="questionnaire_ans4" translatable="false">4</string>
     <string name="questionnaire_ans5" translatable="false">5</string>
+    <string name="questionnaire_ans6" translatable="false">6</string>
+    <string name="questionnaire_ans7" translatable="false">7</string>
+
+    <string name="btn_previous">previous</string>
+    <string name="btn_next">next</string>
+    <string name="btn_submit">submit</string>
+
     <string name="happy">Happy</string>
     <string name="search">Search</string>
 
     <string name="empty_chat">You don\'t have any chat history. Start chatting with your friend now!</string>
 
     <string name="switch_language">Switch Language</string>
-    <string name="english">English</string>
-    <string name="malay">Malay</string>
+    <string name="english" translatable="false">English</string>
+    <string name="malay" translatable="false">Bahasa Melayu</string>
+    <string name="post_anonymous">Post Anonymous</string>
+    <string name="post">Post</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="report_post">Report This Post</string>
+    <string name="reply">Reply</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="surprised">Surprised</string>
+    <string name="disgusted">Disgusted</string>
+    <string name="fear">Fear</string>
+    <string name="angry">Angry</string>
+    <string name="sad">Sad</string>
+    <string name="add_new_appointment">Add New Appointment</string>
+    <string name="video_name">video name</string>
+    <string name="exercises_time">Exercises Duration</string>
+    <string name="start">start</string>
+    <string name="pause" translatable="false">pause</string>
+    <string name="end" translatable="false">end</string>
+    <string name="next">next</string>
+    <string name="reset">reset</string>
+    <string name="no_exercise_plan">You haven\'t created your exercise plan yet!</string>
+    <string name="customize_exercise_plan">Customize my exercise plan here</string>
+    <string name="exercise">Exercise</string>
+    <string name="recommended_time">Recommended Duration</string>
+    <string name="question">Question\t</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="enter_email_temp_pw">Enter Your Email \nto receive a Temporary Password</string>
+    <string name="upload_photo">Upload Photo</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="add_remark">Add Remark</string>
+    <string name="view_my_posts_in">View My Posts in..</string>
+    <string name="patient_forum">Patient Forum</string>
+    <string name="caregiver_forum">Caregiver Forum</string>
+    <string name="view_fav_in">View Your Favourite Posts in..</string>
+    <string name="my_forum_posts">My Forum Posts</string>
+    <string name="my_favourite_posts">My Favourite Posts</string>
+    <string name="days_to_exercise">How many days do you want to exercise per week?</string>
+    <string name="remind_me_to_exercise">Remind me to exercise</string>
+    <string name="feedback_recorded">Your feedback is successfully recorded!</string>
+
+
+    //java
+    //change password activity
+    <string name="update_pw_success" translatable="false">Change Password Success</string>
+    <string name="update_fail" translatable="false">Error, Please Try Again Later!</string>
+    <string name="wrong_old_pw" translatable="false">Incorrect Old Password</string>
+    <string name="unmatch_new_pw" translatable="false">New Passwords are not same!</string>
+
+    <string name="success" translatable="false">Success</string>
+    <string name="return_to" translatable="false">Return</string>
+    <string name="fail" translatable="false">Failed</string>
+    <string name="try_later" translatable="false">Error Occurred, Please Try Again Later</string>
+    <string name="ok" translatable="false">Ok</string>
+
+    //emotion
+    <string name="enter_something" translatable="false">Please enter something in the text box</string>
+
+    //alert + appointment
+    <string name="upcoming_app" translatable="false">You have an Upcoming Appointment</string>
+    <string name="delete_app" translatable="false">Delete Appointment?</string>
+    <string name="delete" translatable="false">Delete</string>
+    <string name="cancel" translatable="false">Cancel</string>
+    <string name="error" translatable="false">Error</string>
+    <string name="please_select_time" translatable="false">Please Select a Time</string>
+    <string name="please_select_date" translatable="false">Please Select a Date</string>
+    <string name="invalid_datetime" translatable="false">Error, Please enter a valid Date and Time</string>
+    <string name="insert_fail" translatable="false">Fail to Insert</string>
+
+    //exercise
+    <string name="save_exercise" translatable="false">Save Exercise</string>
+    <string name="save_exercise_confirm" translatable="false">Do you want to save this exercise?</string>
+    <string name="one_emotion_only" translatable="false">Please select one emotion only!</string>
+    <string name="at_least_one_emotion" translatable="false">Please select at least one emotion!</string>
+    <string name="save_exercise_fail" translatable="false">Save exercise fail</string>
+    <string name="save_exercise_success" translatable="false">Save exercise success</string>
+    <string name="exercise_1_day" translatable="false">You have exercised </string>
+    <string name="exercise_2_day" translatable="false"> days this week!</string>
+    <string name="exercise_noti" translatable="false">Do you need to exercise today? Check it out!</string>
+
+    //forum
+    <string name="post_success" translatable="false">Successfully Posted</string>
+    <string name="post_fail" translatable="false">Post Fail</string>
+    <string name="enter_something_forum" translatable="false">Please Enter Something</string>
+    <string name="view_reported_posts" translatable="false">View Reported Posts</string>
+    <string name="no_posts" translatable="false">No Posts yet</string>
+    <string name="back" translatable="false">Back</string>
+    <string name="enter_title_content" translatable="false">Please Enter Title and Content</string>
+    <string name="update_success" translatable="false">Update Post Success</string>
+    <string name="delete_post" translatable="false">Delete Post?</string>
+    <string name="delete_post_success" translatable="false">Post Deleted</string>
+    <string name="anonymous" translatable="false">Anonymous</string>
+    <string name="error_loading" translatable="false">Error Loading</string>
+    <string name="report_success" translatable="false">This post has been reported successfully</string>
+    <string name="report_post_confirm" translatable="false">Are you sure you want to report this post?</string>
+    <string name="report" translatable="false">Report</string>
+    <string name="no_search_result" translatable="false">No Search Result for </string>
+    <string name="add_favourite" translatable="false">Add Favourite</string>
+    <string name="remove_favourite" translatable="false">Remove Favourite</string>
+    <string name="edit" translatable="false">Edit</string>
+    <string name="my_activity">My Activity</string>
+    <string name="my_fav_list">My Favourite Posts</string>
+    <string name="reported_posts">Reported Posts</string>
+    <string name="answer">Answer</string>
+    <string name="exercise_questionnaire">Exercise Questionnaire</string>
+    <string name="schedule_app">Schedule Appointment</string>
+    <string name="patient_register">Patient Register</string>
+    <string name="caregiver_register">Caregiver Register</string>
+    <string name="specialist_register">Specialist Register</string>
+
 
 </resources>

@@ -57,14 +57,14 @@ public class NotificationReceiver extends BroadcastReceiver {
             intent = new Intent(context, ExerciseDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            builder.setContentTitle("MASC")                            // required
+            builder.setContentTitle("MACS")                            // required
                     .setSmallIcon(R.drawable.app_icon)
-                    .setContentText("Do you need to exercise today? Check it out!")
+                    .setContentText(context.getResources().getString(R.string.exercise_noti))
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
                     .setContentIntent(pendingIntent)
-                    .setTicker("MASC")
+                    .setTicker("MACS")
                     .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
         }
         else {
@@ -72,10 +72,10 @@ public class NotificationReceiver extends BroadcastReceiver {
             intent = new Intent(context, ExerciseDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            builder.setContentTitle("MASC")                            // required
-                    .setContentText("Do you need to exercise today? Check it out!")
+            builder.setContentTitle("MACS")                            // required
+                    .setContentText(context.getResources().getString(R.string.exercise_noti))
                     .setSmallIcon(R.drawable.app_icon)
-                    .setTicker("MASC")
+                    .setTicker("MACS")
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
                     .setDefaults(Notification.DEFAULT_ALL)

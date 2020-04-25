@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -32,13 +31,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
@@ -72,10 +71,12 @@ public class SearchForumActivity extends BaseActivity {
     private static String URL_GET_POSTS;
     private static String URL_GET_IS_FAV;
     private static String URL_REPORT_POST;
+    private static String URL_ADD_FAV;
+    private static String URL_DEL_FAV;
     private String picture, searchTitle, searchContent;
     private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
     private TextView nullPost, username, threadTitle, threadContent, threadID,threadTime,
-    emailContainer,typeContainer, reportButton;
+    emailContainer,typeContainer, reportButton,fav_des;
     private FloatingActionButton createPostButton;
     private ImageView fav_icon,unfav_icon;
     private TextView expandedName, expandedTitle, expandedContent, expandedID,expandedTime;
@@ -96,8 +97,25 @@ public class SearchForumActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
-        item.setChecked(true);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+            Button button = (Button)findViewById(R.id.admin_back_button);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SearchForumActivity.this, SpecialistForumActivity.class);
+                    startActivity(i);
+                }
+            });
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+//        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -110,17 +128,26 @@ public class SearchForumActivity extends BaseActivity {
                         Intent i3 = new Intent(SearchForumActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
                         break;
-//                    //                        Intent i4 = new Intent(SearchForumActivity.this, QuestionnaireListActivity.class);
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
 //                    case R.id.navigation_faq:
-//                        Intent i5 = new Intent(SearchForumActivity.this, FAQActivity.class);
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        Intent i6 = new Intent(SearchForumActivity.this, ForumActivity.class);
-                        startActivity(i6);
-                        break;
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            Intent i6 = new Intent(SearchForumActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(SearchForumActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+                    case R.id.navigation_chat:
+//                         startActivity(i);
                 }
                 return true;
             }
@@ -136,6 +163,8 @@ public class SearchForumActivity extends BaseActivity {
         URL_REPORT_POST = localhost+"/reportPost/";
         URL_SEARCH_POST = localhost+"/searchPost/";
         URL_GET_POSTS= localhost+"/getPost/";
+        URL_ADD_FAV = localhost+"/addToFavouriteCaregiver/";
+        URL_DEL_FAV = localhost+"/removeFavouriteCaregiver/";
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
@@ -287,6 +316,8 @@ public class SearchForumActivity extends BaseActivity {
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -334,6 +365,107 @@ public class SearchForumActivity extends BaseActivity {
                 .create();
         return myQuittingDialogBox;
 
+    }
+
+    public void onFavourite(final View v){
+        threadID = (TextView) ((View)v.getParent().getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_icon.setVisibility(View.GONE);
+                                unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "An error occured, please try again",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("forum","Patient");
+                params.put("postID",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void onRemoveFavourite (final View v){
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        final String id = (String) threadID.getText().toString();
+        Log.e("TAG", "id is "+id );
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DEL_FAV,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                fav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.addFav);
+                                unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
+                                fav_icon.setVisibility(View.VISIBLE);
+                                unfav_icon.setVisibility(View.GONE);
+
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error, please try removing again",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", User.getInstance().getEmail());
+                params.put("forum","Patient");
+                params.put("postID",id );
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     public void onReport(final String id){
@@ -881,9 +1013,15 @@ public class SearchForumActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
-        return true;
+        if(User.getInstance().getUserType().equals("Patient")){
+            getMenuInflater().inflate(R.menu.nav, menu);
+            return true;
+        } else {
+            getMenuInflater().inflate(R.menu.other_users_nav, menu);
+            return true;
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

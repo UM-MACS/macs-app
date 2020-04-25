@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,11 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiver_forum);
+
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         localhost = getString(R.string.localhost);
         URL_GET_POSTS = localhost+"/getMyPostCaregiver/";
@@ -152,7 +158,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
                                     if (anonymous.get(i).equals("true")) {
                                         isAnonymousTV = (TextView)((View)rowView.findViewById(R.id.isAnonymoustv));
-                                        isAnonymousTV.setText("Anonymous");
+                                        isAnonymousTV.setText(R.string.anonymous);
                                     }
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
@@ -283,7 +289,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         expandedContent.setText(getContent);
         expandedID.setText(getID);
         expandedTime.setText(getTime);
-        if(isAnonymous.equals("Anonymous")){
+        if(isAnonymous.equalsIgnoreCase(getResources().getString(R.string.anonymous))){
             displayAnonymousTV = (TextView)findViewById(R.id.anonymous_post_tv);
             displayAnonymousTV.setVisibility(View.VISIBLE);
         }
@@ -343,7 +349,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         final String title = postTitle.getText().toString();
         final String content = postContent.getText().toString();
         if(title.equals("")||content.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Enter Title and Content",
+            Toast.makeText(getApplicationContext(),R.string.enter_title_content,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -356,19 +362,19 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),"Update Success",
+                                Toast.makeText(getApplicationContext(),R.string.update_success,
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 finish();
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Post Fail",
+                                Toast.makeText(getApplicationContext(),R.string.post_fail,
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Post Fail",
+                            Toast.makeText(getApplicationContext(),R.string.post_fail,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -376,7 +382,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Post Fail",
+                        Toast.makeText(getApplicationContext(),R.string.post_fail,
                                 Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -396,9 +402,9 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete Post?")
+                .setTitle(R.string.delete_post)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onDeletePost(id);
@@ -407,7 +413,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
 
                 })
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -430,7 +436,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Log.e("TAG", "success" );
-                                Toast.makeText(getApplicationContext(),"Post Deleted",
+                                Toast.makeText(getApplicationContext(),R.string.delete_post_success,
                                         Toast.LENGTH_SHORT).show();
 //                                Intent i = new Intent(CaregiverEditDeletePostActivity.this,
 //                                        CaregiverEditDeletePostActivity.class);
@@ -441,7 +447,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                                Toast.makeText(getApplicationContext(),R.string.try_later,
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -452,7 +458,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                Toast.makeText(getApplicationContext(),R.string.try_later,
                         Toast.LENGTH_SHORT).show();
             }
         }){

@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,7 +59,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer, typeContainer, reportButton;
+            ,emailContainer, typeContainer, reportButton, fav_des;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -75,6 +76,11 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiver_forum);
+
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         localhost = getString(R.string.localhost);
         URL_GET_FAV = localhost+"/myFavouriteListCaregiver/";
@@ -316,6 +322,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)(findViewById(R.id.removeFav));
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView) (findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.remove_favourite);
 
                             }
                         } catch (JSONException e) {
@@ -325,7 +333,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
+                Toast.makeText(getApplicationContext(), R.string.try_later,
                         Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -353,11 +361,11 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        "This post has been reported successfully",
+                                        R.string.report_success,
                                         Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, please report again",
+                                Toast.makeText(getApplicationContext(), R.string.try_later,
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -367,7 +375,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
+                Toast.makeText(getApplicationContext(), R.string.try_later,
                         Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -386,16 +394,16 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Report This Post")
-                .setMessage("Are you sure you want to report this post?")
-                .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.report_post)
+                .setMessage(R.string.report_post_confirm)
+                .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onReport(id);
                         dialog.dismiss();
                     }
 
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -465,18 +473,18 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.try_later, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),R.string.try_later,Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.try_later,Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -497,7 +505,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
+            Toast.makeText(getApplicationContext(),R.string.enter_something,
                     Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
@@ -509,7 +517,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Successfully Posted",
+                                    Toast.makeText(getApplicationContext(), R.string.post_success,
                                             Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
@@ -535,7 +543,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error replying",
+                                    Toast.makeText(getApplicationContext(), R.string.try_later,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
@@ -545,7 +553,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error",
+                    Toast.makeText(getApplicationContext(), R.string.try_later,
                             Toast.LENGTH_SHORT).show();
                 }
             }) {
@@ -567,7 +575,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onFavourite(final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 
@@ -584,9 +592,12 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.GONE);
                                 unfav_icon.setVisibility(View.VISIBLE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error",
+                                Toast.makeText(getApplicationContext(), R.string.try_later,
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -596,7 +607,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
+                Toast.makeText(getApplicationContext(), R.string.try_later,
                         Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -613,7 +624,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onRemoveFavourite (final View v){
-        threadID = (TextView) ((View)v.getParent().getParent()).findViewById(R.id.expanded_thread_id);
+        threadID = (TextView) ((View)v.getParent().getParent().getParent()).findViewById(R.id.expanded_thread_id);
         final String id = (String) threadID.getText().toString();
         Log.e("TAG", "id is "+id );
 
@@ -630,9 +641,12 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 unfav_icon = (ImageView)((View)v.getParent()).findViewById(R.id.removeFav);
                                 fav_icon.setVisibility(View.VISIBLE);
                                 unfav_icon.setVisibility(View.GONE);
+                                fav_des = (TextView)((View)((View) v.getParent())
+                                        .findViewById(R.id.fav_des));
+                                fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error",
+                                Toast.makeText(getApplicationContext(), R.string.try_later,
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -642,7 +656,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
+                Toast.makeText(getApplicationContext(), R.string.try_later,
                         Toast.LENGTH_SHORT).show();
             }
         }) {

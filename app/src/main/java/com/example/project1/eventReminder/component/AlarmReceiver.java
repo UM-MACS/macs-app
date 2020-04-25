@@ -40,15 +40,15 @@ public class AlarmReceiver extends BroadcastReceiver{
             intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            builder.setContentTitle("MASOCC")                            // required
+            builder.setContentTitle("MACS")                            // required
                     .setSmallIcon(R.drawable.app_icon)
                     .setBadgeIconType(R.drawable.app_icon)
-                    .setContentText("You have an Upcoming Appointment")
+                    .setContentText(context.getResources().getString(R.string.upcoming_app))
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
                     .setContentIntent(pendingIntent)
-                    .setTicker("MASOCC")
+                    .setTicker("MACS")
                     .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
         }
         else {
@@ -56,11 +56,11 @@ public class AlarmReceiver extends BroadcastReceiver{
             intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            builder.setContentTitle("MASOCC")                            // required
-                    .setContentText("You have an upcoming appointment")
+            builder.setContentTitle("MACS")                            // required
+                    .setContentText(context.getResources().getString(R.string.upcoming_app))
                     .setSmallIcon(R.drawable.app_icon)
                     .setBadgeIconType(R.drawable.app_icon)
-                    .setTicker("MASOCC")
+                    .setTicker("MACS")
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
                     .setDefaults(Notification.DEFAULT_ALL)
