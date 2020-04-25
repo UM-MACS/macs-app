@@ -387,8 +387,8 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -560,8 +560,8 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
             return true;
         }
 
-        if(id == R.id.action_change_language){
-            Intent intent = new Intent(EmotionButtonAssessmentActivity.this, ChangeLanguageActivity.class);
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

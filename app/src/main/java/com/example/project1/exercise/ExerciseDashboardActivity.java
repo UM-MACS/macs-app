@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -107,8 +108,8 @@ public class ExerciseDashboardActivity extends BaseActivity {
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
-//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
-//        itemForum.setChecked(true);
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -253,7 +254,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
     public void showDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ExerciseDashboardActivity.this);
-        alertDialogBuilder.setTitle("Customize My Exercise Plan");
+        alertDialogBuilder.setTitle(R.string.customize_exercise_plan);
 //        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
@@ -381,6 +382,12 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
         if (id == R.id.action_questionnaire) {
             Intent intent = new Intent(ExerciseDashboardActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

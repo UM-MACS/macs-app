@@ -12,8 +12,10 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.project1.R;
+import com.example.project1.login.component.SessionManager;
 
 public class NotificationReceiver extends BroadcastReceiver {
+    private SessionManager sessionManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -35,6 +37,12 @@ public class NotificationReceiver extends BroadcastReceiver {
 //        notificationManager.notify(200,builder.build());
 
         NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        String s = sessionManager.getLanguagePref(context);
+        if(s.equals("en")){
+            s = context.getResources().getString(R.string.exercise_noti);
+        } else{
+            s = "Perlukah anda bersenam hari ini? Klik Masuk untuk tahu!";
+        }
 
         final int NOTIFY_ID = 2; // ID of notification
         String id = "Channel 2"; // default_channel_id
@@ -59,7 +67,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required
                     .setSmallIcon(R.drawable.app_icon)
-                    .setContentText(context.getResources().getString(R.string.exercise_noti))
+                    .setContentText(s)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
@@ -73,7 +81,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required
-                    .setContentText(context.getResources().getString(R.string.exercise_noti))
+                    .setContentText(s)
                     .setSmallIcon(R.drawable.app_icon)
                     .setTicker("MACS")
                     .setAutoCancel(true)

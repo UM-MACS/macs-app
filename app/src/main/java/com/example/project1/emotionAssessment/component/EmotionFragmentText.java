@@ -230,8 +230,8 @@ public class EmotionFragmentText extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

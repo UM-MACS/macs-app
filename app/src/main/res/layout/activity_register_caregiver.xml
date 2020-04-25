@@ -189,12 +189,12 @@
 
             <Button
                 android:id="@+id/login"
-                android:layout_width="211dp"
+                android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="120dp"
                 android:background="@drawable/border"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:text="@string/registeredUser2"
                 android:textSize="15sp" />
         </LinearLayout>

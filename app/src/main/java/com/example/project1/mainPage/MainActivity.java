@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
@@ -22,7 +23,7 @@ import com.example.project1.login.LoginActivity;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     LinearLayout l1,l2,l3;
     private TextView mTextMessage;
     SessionManager sessionManager;
@@ -107,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_admin_login){
             User.getInstance().setUserType("Admin");
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.login.component.BaseActivity;
@@ -50,8 +51,8 @@ public class SpecialistForumActivity extends BaseActivity {
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
-//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
-//        itemForum.setChecked(true);
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
+        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -169,6 +170,12 @@ public class SpecialistForumActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(SpecialistForumActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

@@ -375,18 +375,18 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_loading),Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error_loading),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -407,8 +407,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_something),
+                                        Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
                     new Response.Listener<String>() {
@@ -419,8 +419,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Successfully Posted",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -445,8 +445,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error replying",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -455,8 +455,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -479,11 +479,11 @@ public class ViewForumReportedPostActivity extends BaseActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
+                .setTitle(R.string.delete)
+                .setMessage(R.string.delete_post)
                 .setIcon(R.drawable.ic_cancel_button)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onDeletePost(id);
@@ -492,7 +492,7 @@ public class ViewForumReportedPostActivity extends BaseActivity {
 
                 })
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -515,7 +515,7 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Log.e("TAG", "success" );
-                                Toast.makeText(getApplicationContext(),"Post Deleted",
+                                Toast.makeText(getApplicationContext(), getString(R.string.delete_post_success),
                                         Toast.LENGTH_SHORT).show();
 //                                Intent i = new Intent(ViewForumReportedPostActivity.this,
 //                                        ViewForumReportedPostActivity.class);
@@ -525,7 +525,7 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -536,8 +536,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Deleting,",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

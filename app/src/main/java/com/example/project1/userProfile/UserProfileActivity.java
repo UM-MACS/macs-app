@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -190,6 +191,12 @@ public class UserProfileActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(UserProfileActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

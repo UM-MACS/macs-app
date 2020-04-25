@@ -24,10 +24,6 @@ public class User {
     private User() {
     }
 
-    public String getAppointment() {
-        return appointment;
-    }
-
     public void setUserType (String type){
         this.userType = type;
     }
@@ -39,10 +35,6 @@ public class User {
     public void setAppointment(String app) {
         this.appointment = app;
     }
-
-    public void setAppointmentId(int id){ this.appointmentId = id; }
-
-    public int getAppointmentId(){return appointmentId;}
 
     public String getUserName() {
         return Name;
@@ -64,16 +56,8 @@ public class User {
         this.Password = password;
     }
 
-    public String getAge() {
-        return Age;
-    }
-
     public void setAge(String age) {
         this.Age= age;
-    }
-
-    public String getContact() {
-        return Contact;
     }
 
     public void setContact(String contact) {

@@ -221,7 +221,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")) {
                                 picture = jsonObject.getString("photo");
-                                Log.e("TAG", "pic: " + picture);
+//                                Log.e("TAG", "pic: " + picture);
 
                                 //load picture example
                                 int loader = R.drawable.ic_user;
@@ -348,8 +348,8 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         final String title = postTitle.getText().toString();
         final String content = postContent.getText().toString();
         if(title.equals("")||content.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Enter Title and Content",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_title_content),
+                                        Toast.LENGTH_SHORT).show();
             return;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_POST,
@@ -361,28 +361,28 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),"Update Success",
+                                Toast.makeText(getApplicationContext(), getString(R.string.update_success),
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 finish();
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Post Fail",
+                                Toast.makeText(getApplicationContext(),getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Post Fail",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Post Fail",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -401,8 +401,8 @@ public class EditDeleteForumPostActivity extends BaseActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Delete Post?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.delete_post)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onDeletePost(id);
@@ -411,7 +411,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
 
                 })
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -434,7 +434,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Log.e("TAG", "success" );
-                                Toast.makeText(getApplicationContext(),"Post Deleted",
+                                Toast.makeText(getApplicationContext(), getString(R.string.delete_post_success),
                                         Toast.LENGTH_SHORT).show();
 //                                Intent i = new Intent(EditDeleteForumPostActivity.this,
 //                                        EditDeleteForumPostActivity.class);
@@ -445,7 +445,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"Error Deleting,",
+                                Toast.makeText(getApplicationContext(),getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -456,8 +456,8 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Deleting,",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

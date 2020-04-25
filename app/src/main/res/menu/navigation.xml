@@ -5,25 +5,25 @@
         android:id="@+id/navigation_emotion_assessment"
         android:enabled="true"
         android:icon="@drawable/ic_emotion"
-        android:title="Emotion"/>
+        android:title="@string/btm_nav_emotion"/>
 
     <item
         android:id="@+id/navigation_chat"
         android:enabled="true"
         android:icon="@drawable/ic_chat"
-        android:title="Chat"/>
+        android:title="@string/btm_nav_chat"/>
 
     <item
         android:id="@+id/navigation_forum"
         android:enabled="true"
         android:icon="@drawable/ic_forum"
-        android:title="Forum"/>
+        android:title="@string/btm_nav_forum"/>
 
     <item
         android:id="@+id/navigation_exercise"
         android:enabled="true"
         android:icon="@drawable/ic_exercise"
-        android:title="Exercise"/>
+        android:title="@string/btm_nav_exercise"/>
 
 
 

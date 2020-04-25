@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
@@ -209,7 +210,7 @@ public class CaregiverForumActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")) {
                                 picture = jsonObject.getString("photo");
-                                Log.e("TAG", "pic: " + picture);
+//                                Log.e("TAG", "pic: " + picture);
 
                                 //load picture example
                                 int loader = R.drawable.ic_user;
@@ -239,6 +240,14 @@ public class CaregiverForumActivity extends BaseActivity {
         requestQueue.add(stringRequest);
     }
 
+    public void getPicTest(final String photo, final CircleImageView view){
+        //load picture example
+        int loader = R.drawable.ic_user;
+        ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+        imgLoader.DisplayImage(photo, loader, view);
+        Log.e("TAG", "success loading photo" );
+    }
+
     private void getPosts() {
         progressBar.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
@@ -258,6 +267,7 @@ public class CaregiverForumActivity extends BaseActivity {
                             ArrayList<String> anonymous = new ArrayList<>();
                             ArrayList<String> pinned = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
+                            ArrayList<String> photo = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -271,6 +281,7 @@ public class CaregiverForumActivity extends BaseActivity {
                                     anonymous.add(object.getString("anonymous"));
                                     pinned.add(object.getString("pinned"));
                                     date.add(object.getString("date"));
+                                    photo.add(object.getString("photo"));
                                 }
                                 for (int i =0; i<name.size();i++){
                                     if(pinned.get(i).equals("true")) {
@@ -283,13 +294,18 @@ public class CaregiverForumActivity extends BaseActivity {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(R.string.anonymous);
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+                                            getPicTest("",user_pic);
+
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
-                                            Log.e("TAG", "email get pic: "+email.get(i));
+                                            if(type.get(i).equals("Specialist")){
+                                                getPic(email.get(i),type.get(i),user_pic);
+                                            } else {
+                                                getPicTest(photo.get(i), user_pic);
+                                                Log.e("TAG", "email get pic: " + email.get(i));
+                                            }
                                         }
                                         emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
@@ -328,12 +344,17 @@ public class CaregiverForumActivity extends BaseActivity {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(R.string.anonymous);
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic("lee","", user_pic);
+                                            getPicTest("",user_pic);
                                         } else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            getPic(email.get(i),type.get(i), user_pic);
+                                            if(type.get(i).equals("Specialist")){
+                                                getPic(email.get(i),type.get(i),user_pic);
+                                            } else {
+                                                getPicTest(photo.get(i), user_pic);
+                                                Log.e("TAG", "email get pic: " + email.get(i));
+                                            }
                                         }
                                         emailContainer= (TextView) ((View) rowView).findViewById(R.id.email_container);
                                         emailContainer.setText(email.get(i));
@@ -363,18 +384,18 @@ public class CaregiverForumActivity extends BaseActivity {
                             } else if (success.equals("-1")){
                                 nullPost.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.no_posts),
                                         Toast.LENGTH_SHORT).show();
                             } else{
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), R.string.try_later,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -383,8 +404,8 @@ public class CaregiverForumActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -416,6 +437,9 @@ public class CaregiverForumActivity extends BaseActivity {
         final String getID = (String) threadID.getText().toString();
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
+        user_pic = (CircleImageView) ((View) v).findViewById(R.id.user_profile_pic);
+
+
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
@@ -484,8 +508,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -558,18 +582,18 @@ public class CaregiverForumActivity extends BaseActivity {
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.error_loading, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_loading), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.error_loading,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_loading),Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.error_loading,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error_loading),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -592,8 +616,8 @@ public class CaregiverForumActivity extends BaseActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),R.string.enter_something,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_something),
+                                        Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
                     new Response.Listener<String>() {
@@ -604,8 +628,8 @@ public class CaregiverForumActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), R.string.post_success,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -630,8 +654,8 @@ public class CaregiverForumActivity extends BaseActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), R.string.try_later,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -640,8 +664,8 @@ public class CaregiverForumActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), R.string.try_later,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -681,11 +705,12 @@ public class CaregiverForumActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        R.string.report_success,
+                                            getString(
+                                        R.string.report_success),
                                         Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -695,8 +720,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -758,7 +783,7 @@ public class CaregiverForumActivity extends BaseActivity {
                                 fav_des.setText(R.string.remove_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -768,8 +793,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -807,7 +832,7 @@ public class CaregiverForumActivity extends BaseActivity {
                                 fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -817,8 +842,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -859,7 +884,7 @@ public class CaregiverForumActivity extends BaseActivity {
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -869,8 +894,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -910,7 +935,7 @@ public class CaregiverForumActivity extends BaseActivity {
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -920,8 +945,8 @@ public class CaregiverForumActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1002,6 +1027,12 @@ public class CaregiverForumActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(CaregiverForumActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

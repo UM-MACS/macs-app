@@ -249,8 +249,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             return true;
         }
 
-        if(id == R.id.action_change_language){
-            Intent intent = new Intent(EmotionAssessmentActivity.this, ChangeLanguageActivity.class);
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

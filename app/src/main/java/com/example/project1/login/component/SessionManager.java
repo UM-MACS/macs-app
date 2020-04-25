@@ -9,6 +9,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringDef;
 
+import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.login.LoginActivity;
 import com.example.project1.emotionAssessment.EmotionButtonAssessmentActivity;
 
@@ -70,7 +71,7 @@ public class SessionManager {
         if (!this.isLogin()){
             Intent i = new Intent(context, LoginActivity.class);
             context.startActivity(i);
-            ((EmotionButtonAssessmentActivity) context).finish();
+            ((EmotionAssessmentActivity) context).finish();
         }
     }
 

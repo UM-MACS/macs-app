@@ -106,7 +106,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onClick(View v) {
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
@@ -143,7 +143,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onClick(View v) {
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
@@ -182,7 +182,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
                 // check all questions has answer
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     String answer = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                     answerArr[currentPage - 1] = answer;
@@ -193,7 +193,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
                     period = Integer.toString(Integer.parseInt(period) + 1);
 
-                    insertAssessment(User.getInstance().getEmail(),date, period,answerArr.toString());
+                    insertAssessment(User.getInstance().getEmail(),date, period,Arrays.toString(answerArr));
 
                 }
             }
@@ -212,22 +212,22 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         String success = jsonObject.getString("success");
                         Log.e("TAG", "success" + success);
                         if (success.equals("1")) {
-                            Toast.makeText(getApplicationContext(), "Your Feedback is Recorded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.feedback_recorded), Toast.LENGTH_SHORT).show();
                             Intent i2 = new Intent(QuestionnaireActivity.this, EmotionAssessmentActivity.class);
                             startActivity(i2);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 }
             },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -262,18 +262,18 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         period = "0";
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                 }
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override

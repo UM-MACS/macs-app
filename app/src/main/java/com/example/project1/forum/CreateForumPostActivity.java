@@ -86,17 +86,17 @@ private static String URL;
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Post Success",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(CreateForumPostActivity.this, ForumActivity.class);
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Post Fail",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Post Fail",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -104,8 +104,8 @@ private static String URL;
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Post Fail",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -124,8 +124,8 @@ private static String URL;
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
         } else{
-            Toast.makeText(getApplicationContext(),"Please Enter Something",Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getApplicationContext(),
+                                            getString(R.string.enter_title_content),Toast.LENGTH_SHORT).show();
         }
     }
 

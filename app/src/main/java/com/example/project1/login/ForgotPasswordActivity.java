@@ -70,11 +70,11 @@ public class ForgotPasswordActivity extends BaseActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                textview.setText("A temporary password has been sent to your email");
+                                textview.setText(R.string.temp_pw_sent);
                                 etEmail.setVisibility(View.INVISIBLE);
                                 progressBar.setVisibility(View.GONE);
                                 buttonSubmit.setVisibility(View.VISIBLE);
-                                buttonSubmit.setText("Back to Login");
+                                buttonSubmit.setText(R.string.back_login);
                                 buttonSubmit.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -85,13 +85,13 @@ public class ForgotPasswordActivity extends BaseActivity {
                                 });
                             } else if (success.equals("-1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        "Email not found, please register a new account",
+                                        getString(R.string.email_not_registered),
                                         Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 buttonSubmit.setVisibility(View.VISIBLE);
                             } else{
                                 Toast.makeText(getApplicationContext(),
-                                        "Error, Please Try Again Later",
+                                        getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 buttonSubmit.setVisibility(View.VISIBLE);
@@ -106,8 +106,8 @@ public class ForgotPasswordActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(),
-                                "Error, Please Try Again Later!",
-                                Toast.LENGTH_SHORT).show();
+                                getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override

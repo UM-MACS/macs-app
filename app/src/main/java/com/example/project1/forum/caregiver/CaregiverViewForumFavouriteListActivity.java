@@ -333,8 +333,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -361,11 +361,11 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        R.string.report_success,
+                                        getString(R.string.report_success),
                                         Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -375,8 +375,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -473,18 +473,18 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.try_later,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.try_later,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -505,8 +505,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),R.string.enter_something,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_something),
+                                        Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
                     new Response.Listener<String>() {
@@ -517,8 +517,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), R.string.post_success,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -543,8 +543,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), R.string.try_later,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -553,8 +553,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), R.string.try_later,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -597,7 +597,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -607,8 +607,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -646,7 +646,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -656,8 +656,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

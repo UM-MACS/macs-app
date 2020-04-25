@@ -290,7 +290,9 @@ public class ExerciseActivity extends BaseActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.save_exercise);
         alertDialogBuilder.setMessage(R.string.save_exercise_confirm);
-        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>Yes</font>"),
+        String yes = "<font color='#228B22'>"+getString(R.string.yes)+"</font>";
+        String no = "<font color='#228B22'>"+getString(R.string.no)+"</font>";
+        alertDialogBuilder.setPositiveButton(Html.fromHtml(yes),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -298,7 +300,7 @@ public class ExerciseActivity extends BaseActivity {
                         feelingDialog();
                     }
                 });
-        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>No</font>"),
+        alertDialogBuilder.setNegativeButton(Html.fromHtml(no),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -371,7 +373,9 @@ public class ExerciseActivity extends BaseActivity {
             }
         });
 
-        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>Save</font>"),
+        String save = "<font color='#228B22'>"+getString(R.string.save)+"</font>";
+        String cancel = "<font color='#228B22'>"+getString(R.string.cancel)+"</font>";
+        alertDialogBuilder.setPositiveButton(Html.fromHtml(save),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -398,7 +402,7 @@ public class ExerciseActivity extends BaseActivity {
 //                        }
                     }
                 });
-        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
+        alertDialogBuilder.setNegativeButton(Html.fromHtml(cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -429,12 +433,12 @@ public class ExerciseActivity extends BaseActivity {
                     finish();
                 }
                 else if(counter > 1){
-                    Toast.makeText(getApplicationContext(),R.string.one_emotion_only,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.one_emotion_only),
+                                        Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),R.string.at_least_one_emotion,
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.at_least_one_emotion),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -454,12 +458,12 @@ public class ExerciseActivity extends BaseActivity {
                                 if (success.equals("1")) {
                                     saveExerciseDetails();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
+                                Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -467,8 +471,8 @@ public class ExerciseActivity extends BaseActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), R.string.save_exercise_fail,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -532,12 +536,12 @@ public class ExerciseActivity extends BaseActivity {
             requestQueue.add(stringRequest);
         }
         if(saveStatus){
-            Toast.makeText(getApplicationContext(), R.string.save_exercise_success, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_success), Toast.LENGTH_SHORT).show();
             //TODO
             //save latest exercise date in sharedpreferences
         }
         else{
-            Toast.makeText(getApplicationContext(), R.string.save_exercise_fail, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail), Toast.LENGTH_SHORT).show();
         }
     }
 

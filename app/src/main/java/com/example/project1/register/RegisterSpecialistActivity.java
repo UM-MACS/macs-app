@@ -126,16 +126,16 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
 
                 //check if fields are empty
                 if (s1.equals("") || s2.equals("") || s3.equals("") || s5.equals("") || s6.equals("") || s7.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 } else if(!s1.contains("@")){
-                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
                 else if (Integer.parseInt(s7)>120){
-                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_age), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
@@ -162,7 +162,7 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
 //                        b1.setVisibility(View.VISIBLE);
 //                    }
                     else {
-                        Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.unmatch_pw), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
@@ -196,23 +196,23 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
                     String success = jsonObject.getString("success");
                     Log.e("TAG", "success"+success );
                     if(success.equals("1")){
-                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterSpecialistActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
                     else if(success.equals("0")){
-                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
                     else if(success.equals("-1")){
-                        Toast.makeText(getApplicationContext(),"Email is Used", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.email_used), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
@@ -221,7 +221,7 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
@@ -310,7 +310,7 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
-                "Select Photo"),1);
+                getString(R.string.select_photo)),1);
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -329,6 +330,12 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(OnboardingBaseActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }
