@@ -55,6 +55,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
+    private final String RECEIVER_PIC = "receiverPic";
 
     class ContactListViewHolder extends RecyclerView.ViewHolder {
 
@@ -85,7 +86,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(@NonNull ContactListAdapter.ContactListViewHolder contactListViewHolder, int i) {
         final ContactItem currentItem = contactItemList.get(i);
 
-        getPic(currentItem.getEmail(), currentItem.getType(), contactListViewHolder.civContactProfilePic);
+        getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
         contactListViewHolder.tvContactName.setText(currentItem.getName());
 
         contactListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +107,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         final String receiverType = currentItem.getType();
         final String emailTo = currentItem.getEmail();
         final String emailFrom = sessionManager.getUserDetail().get("EMAIL");
+        final String pic = currentItem.getPhoto();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, PublicComponent.URL_POST_CHAT_CHANNEL,
                 new Response.Listener<String>() {
@@ -122,6 +124,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                                 i.putExtra(RECEIVER_NAME, receiverName);
                                 i.putExtra(RECEIVER_TYPE, receiverType);
                                 i.putExtra(CHAT_CHANNEL_ID, chatChannelId);
+                                i.putExtra(RECEIVER_PIC, pic);
                                 context.startActivity(i);
                             }
                             else{
@@ -202,53 +205,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     };
 
-    public void getPic(final String email, final String type, final CircleImageView view) {
-        String URL_GETPIC;
-        if (type.equals(PublicComponent.SPECIALIST)) {
-            URL_GETPIC = PublicComponent.URL_SPECIALIST_PIC;
-        } else if (type.equals(PublicComponent.CAREGIVER)){
-            URL_GETPIC = PublicComponent.URL_CAREGIVER_PIC;
-        } else {
-            URL_GETPIC = PublicComponent.URL_PATIENT_PIC;
-        }
-//        Log.e("TAG", "getPic: get pic url" + URL_GETPIC);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GETPIC,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                String picture = jsonObject.getString("photo");
-                                Log.e("TAG", "pic: " + picture);
-
-                                //load picture example
-                                int loader = R.drawable.ic_user;
-                                ImgLoader imgLoader = new ImgLoader(context);
-                                imgLoader.DisplayImage(picture, loader, view);
-                                Log.e("TAG", "success loading photo");
-                            }
-                        } catch (JSONException e) {
-                            Log.e("TAG", "fail to load photo");
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", "fail to load photo");
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+    public void getPic(final String photo, final CircleImageView view) {
+        int loader = R.drawable.ic_user;
+        ImgLoader imgLoader = new ImgLoader(context);
+        imgLoader.DisplayImage(photo, loader, view);
     }
 }

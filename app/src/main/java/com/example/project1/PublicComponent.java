@@ -2,13 +2,22 @@ package com.example.project1;
 
 public class PublicComponent {
 
+    //shared preference common
     public static final int PRIVATE_MODE = 0;
+
+    //exercise shared preference
     public static final String EXERCISE_ACCESS = "EXERCISE_ACCESS";
     public static final String EXERCISE_TYPE = "EXERCISE_TYPE";
     public static final String EXERCISE_LIST = "EXERCISE_LIST";
     public static final String DESIRE_TO_BE_REMIND = "DESIRE_TO_BE_REMIND";
     public static final String DESIRE_EXERCISE_DAY = "DESIRE_EXERCISE_DAY";
 
+    //sqlite shared preference
+    public static final String SQLITE_ACCESS = "SQLITE_ACCESS";
+    public static final String IS_CHAT_CHANNEL_LIST_LOAD = "IS_CHAT_CHANNEL_LIST_LOAD";
+    public static final String IS_CONTACT_LIST_LOAD = "IS_CONTACT_LIST_LOAD";
+
+    //user type
     public static final String PATIENT = "Patient";
     public static final String CAREGIVER = "Caregiver";
     public static final String SPECIALIST = "Specialist";
@@ -36,7 +45,9 @@ public class PublicComponent {
     public static final String FIREBASE_CHAT_HISTORY_MEDIA_URL = "mediaUrl";
     public static final String FIREBASE_CHAT_HISTORY_MESSAGE = "message";
     public static final String FIREBASE_CHAT_HISTORY_EMAIL_FROM = "emailFrom";
+    public static final String FIREBASE_CHAT_HISTORY_EMAIL_TO = "emailTo";
     public static final String FIREBASE_CHAT_HISTORY_TIMESTAMP = "timestamp";
+    public static final String FIREBASE_CHAT_UNREAD_BASE = "unread";
 
     //TODO
     public static String parseTimestampToString(String timestamp){

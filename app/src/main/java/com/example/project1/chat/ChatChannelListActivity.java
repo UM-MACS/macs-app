@@ -71,7 +71,8 @@ public class ChatChannelListActivity extends BaseActivity {
     private ArrayList<HashMap<String,String>> receiverList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private final String EMAIL_FROM = "emailFrom";
+    private String tempPic = "";
+    private final String RECEIVER_PIC = "receiverPic";
     private final String EMAIL_TO = "emailTo";
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
@@ -205,7 +206,7 @@ public class ChatChannelListActivity extends BaseActivity {
                                         TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
                                         TextView tvEmailTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
 
-                                        getPic(tempMap.get(EMAIL_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
+                                        final String temp = getPic(tempMap.get(EMAIL_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
                                         tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
                                         tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
                                         tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
@@ -220,6 +221,7 @@ public class ChatChannelListActivity extends BaseActivity {
                                                 i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
                                                 i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
                                                 i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
+                                                i.putExtra(RECEIVER_PIC,temp);
                                                 startActivity(i);
                                             }
                                         });
@@ -261,7 +263,7 @@ public class ChatChannelListActivity extends BaseActivity {
     }
 
     //Get Pic function from Forum Activity
-    public void getPic(final String email, final String type, final CircleImageView view) {
+    public String getPic(final String email, final String type, final CircleImageView view) {
         String URL_GETPIC;
         if (type.equals(PublicComponent.SPECIALIST)) {
             URL_GETPIC = PublicComponent.URL_SPECIALIST_PIC;
@@ -281,7 +283,7 @@ public class ChatChannelListActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 String picture = jsonObject.getString("photo");
-                                Log.e("TAG", "pic: " + picture);
+                                tempPic = picture;
 
                                 //load picture example
                                 int loader = R.drawable.ic_user;
@@ -309,6 +311,8 @@ public class ChatChannelListActivity extends BaseActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+
+        return tempPic;
     }
 
     public void createNewChat(){

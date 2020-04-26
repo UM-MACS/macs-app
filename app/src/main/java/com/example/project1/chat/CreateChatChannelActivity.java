@@ -1,5 +1,6 @@
 package com.example.project1.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +22,7 @@ import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.chat.adapter.ContactListAdapter;
 import com.example.project1.chat.component.ContactItem;
-import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,25 +33,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CreateChatChannelActivity extends BaseActivity {
 
     private SearchView searchViewContactList;
     private RecyclerView recyclerViewContactList;
     private ProgressBar progressBarContactList;
-    private SessionManager sessionManager;
     private ContactListAdapter contactListAdapter;
     private String NAME = "name";
     private String EMAIL = "email";
+    private String PHOTO = "photo";
     private List<ContactItem> contactItemList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chat_channel);
-
-        sessionManager = new SessionManager(this);
 
         searchViewContactList = findViewById(R.id.search_view_contact_list);
         recyclerViewContactList = findViewById(R.id.recycler_view_exercise_list);
@@ -103,7 +99,7 @@ public class CreateChatChannelActivity extends BaseActivity {
                             if(apiStatus.equals("1")){
                                 for(int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    final ContactItem item = new ContactItem(object.getString(NAME),object.getString(EMAIL),type);
+                                    final ContactItem item = new ContactItem(object.getString(NAME),object.getString(EMAIL),type,object.getString(PHOTO));
                                     contactItemList.add(item);
                                 }
                             }
@@ -140,4 +136,9 @@ public class CreateChatChannelActivity extends BaseActivity {
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this,ChatChannelListActivity.class);
+        startActivity(i);
+    }
 }

@@ -5,11 +5,21 @@ public class ContactItem {
     private String name;
     private String email;
     private String type;
+    private String photo;
 
-    public ContactItem(String name, String email, String type) {
+    public ContactItem(String name, String email, String type, String photo) {
         this.name = name;
         this.email = email;
         this.type = type;
+        this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getEmail() {
