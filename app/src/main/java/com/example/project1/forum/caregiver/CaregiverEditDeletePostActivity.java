@@ -277,6 +277,8 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         deleteButton.setVisibility(View.VISIBLE);
         fav_icon = (ImageView)findViewById(R.id.addFav);
         fav_icon.setVisibility(View.GONE);
+        TextView favDes = (TextView)findViewById(R.id.fav_des);
+        favDes.setVisibility(View.GONE);
         expandedName = (TextView)findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView)findViewById(R.id.expanded_thread_title);
         expandedContent=(TextView)findViewById(R.id.expanded_thread_content);

@@ -303,6 +303,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
         });
         fav_icon = (ImageView)findViewById(R.id.addFav);
         fav_icon.setVisibility(View.GONE);
+        TextView favDes = (TextView)findViewById(R.id.fav_des);
+        favDes.setVisibility(View.GONE);
         unfav_icon = (ImageView)findViewById(R.id.removeFav);
         unfav_icon.setVisibility(View.GONE);
         deleteButton = (Button)findViewById(R.id.delete_post);
