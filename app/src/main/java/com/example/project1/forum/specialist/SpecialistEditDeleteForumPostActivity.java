@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
@@ -140,7 +141,7 @@ public class SpecialistEditDeleteForumPostActivity extends BaseActivity {
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
 //            finish();
             return true;
@@ -172,6 +173,12 @@ public class SpecialistEditDeleteForumPostActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(SpecialistEditDeleteForumPostActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

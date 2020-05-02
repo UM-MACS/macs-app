@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -107,7 +108,7 @@ SessionManager sessionManager;
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);
         toastSuccess = getResources().getString(R.string.update_pw_success);
-        toastError = getResources().getString(R.string.update_fail);
+        toastError = getResources().getString(R.string.try_later);
         toastWrongOldPW = getResources().getString(R.string.wrong_old_pw);
         toastUnmatchPW = getResources().getString(R.string.unmatch_new_pw);
         button = (Button)findViewById(R.id.submit_change_password);
@@ -131,15 +132,15 @@ SessionManager sessionManager;
                                             if (success.equals("1")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastSuccess,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastError,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("-1")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastWrongOldPW,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                                 o1.setText("");
                                                 c1.setText("");
                                                 c2.setText("");
@@ -154,13 +155,13 @@ SessionManager sessionManager;
                                     public void onErrorResponse(VolleyError error) {
                                         Toast.makeText(getApplicationContext(),
                                                 toastError,
-                                                Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<>();
-                                params.put("email", User.getInstance().getEmail());
+                                params.put("email", User.getInstance().getNRIC());
                                 params.put("type", User.getInstance().getUserType());
                                 params.put("password", t1);
                                 params.put("newPass", t2);
@@ -205,7 +206,7 @@ SessionManager sessionManager;
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setPassword("");
             return true;
         }
@@ -235,6 +236,12 @@ SessionManager sessionManager;
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(ChangePasswordActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

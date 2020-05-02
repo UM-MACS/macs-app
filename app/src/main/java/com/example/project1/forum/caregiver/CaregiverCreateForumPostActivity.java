@@ -1,7 +1,6 @@
 package com.example.project1.forum.caregiver;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,8 +42,8 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
-        Log.e("TAG", "Caregiver user name "+ User.getInstance().getEmail() );
-        email = User.getInstance().getEmail();
+        Log.e("TAG", "Caregiver user name "+ User.getInstance().getNRIC() );
+        email = User.getInstance().getNRIC();
         name = User.getInstance().getUserName();
         localhost = getString(R.string.localhost);
         URL = localhost+"/postingToCaregiverForum/";
@@ -88,17 +87,17 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), R.string.post_success,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(CaregiverCreateForumPostActivity.this, CaregiverForumActivity.class);
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), R.string.post_fail,
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), R.string.post_fail,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -106,8 +105,8 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), R.string.post_fail,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -126,7 +125,7 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
         } else{
-            Toast.makeText(getApplicationContext(),R.string.enter_something_forum,Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_title_content),Toast.LENGTH_SHORT)
                     .show();
         }
     }

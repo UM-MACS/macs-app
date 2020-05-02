@@ -40,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -165,7 +166,7 @@ public class EventReminderActivity extends BaseActivity {
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         sessionManager = new SessionManager(this);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getAppointmentData(User.getInstance().getEmail());
+        getAppointmentData(User.getInstance().getNRIC());
 
 
 
@@ -254,7 +255,7 @@ public class EventReminderActivity extends BaseActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -263,7 +264,7 @@ public class EventReminderActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),R.string.error,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -395,10 +396,10 @@ public class EventReminderActivity extends BaseActivity {
                 frameLayout.getForeground().setAlpha(0);
                 //check if all field_event_reminder are not empty
                 if (HH == null || mm == null) {
-                    Toast.makeText(getApplicationContext(), R.string.please_select_time, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.please_select_time), Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 } else if(dateText.equals("")){
-                    Toast.makeText(getApplicationContext(), R.string.please_select_date, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                     parentLinearLayout.removeView((View) rowView);
                 }
                 else {
@@ -421,7 +422,7 @@ public class EventReminderActivity extends BaseActivity {
                     s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                     Log.e("tag", "s1 is " + s1);
                     if (s2 >= s1) {
-                        Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_datetime), Toast.LENGTH_SHORT).show();
                         parentLinearLayout.removeView((View) rowView);
                     } else {
                         remarkTextView.setText(remarkText);
@@ -429,7 +430,7 @@ public class EventReminderActivity extends BaseActivity {
                         appointmentTimeText.setText(timeSelected);
                         User.getInstance().setAppointment(dateSelected);
                         Log.e("tag", "date selected is " + dateSelected);
-                        setAppointment(User.getInstance().getEmail(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
+                        setAppointment(User.getInstance().getNRIC(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
                     }
                 }
             }
@@ -468,17 +469,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                             Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -514,17 +515,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -559,17 +560,17 @@ public class EventReminderActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.insert_fail,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -792,7 +793,7 @@ public class EventReminderActivity extends BaseActivity {
                 s1 = Long.parseLong(yearSet + "" + monthSet + "" + daySet + "" + HH + "" + mm);
                 Log.e("tag", "s1 is "+s1);
                 if(s2>=s1){
-                    Toast.makeText(getApplicationContext(), R.string.invalid_datetime, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_datetime), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     remarkTextView.setText(remarkText);
@@ -858,7 +859,7 @@ public class EventReminderActivity extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setPassword("");
             return true;
         }
@@ -889,6 +890,12 @@ public class EventReminderActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(EventReminderActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

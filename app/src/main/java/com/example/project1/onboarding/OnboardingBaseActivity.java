@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -221,7 +222,7 @@ public class OnboardingBaseActivity extends BaseActivity {
                     i = new Intent(getApplicationContext(), SpecialistForumActivity.class);
 
                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("email",sessionManager.getUserDetail().get(sessionManager.EMAIL));
+                i.putExtra("email",sessionManager.getUserDetail().get(sessionManager.NRIC));
                 startActivity(i);
             }
         });
@@ -298,7 +299,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
             return true;
         }
@@ -329,6 +330,12 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(OnboardingBaseActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

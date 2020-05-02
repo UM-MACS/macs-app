@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -124,7 +123,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getMyPosts(User.getInstance().getEmail());
+        getMyPosts(User.getInstance().getNRIC());
 
     }
 
@@ -365,14 +364,14 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -393,11 +392,11 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        "This post has been reported successfully",
+                                        getString(R.string.report_success),
                                         Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, please report again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -407,8 +406,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -426,16 +425,16 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Report This Post")
-                .setMessage("Are you sure you want to report this post?")
-                .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.report_post)
+                .setMessage(R.string.report_post_confirm)
+                .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onReport(id);
                         dialog.dismiss();
                     }
 
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -505,18 +504,18 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -537,8 +536,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_something),
+                                        Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
                     new Response.Listener<String>() {
@@ -549,8 +548,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Successfully Posted",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -560,7 +559,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
+                                    getPic(User.getInstance().getNRIC(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -575,8 +574,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error replying",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -585,14 +584,14 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("email", User.getInstance().getEmail());
+                    params.put("email", User.getInstance().getNRIC());
                     params.put("type", User.getInstance().getUserType());
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
@@ -629,7 +628,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 fav_des.setText(R.string.remove_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -639,14 +638,14 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -678,7 +677,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                 fav_des.setText(R.string.add_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -688,14 +687,14 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("postID",id );
                 return params;
             }

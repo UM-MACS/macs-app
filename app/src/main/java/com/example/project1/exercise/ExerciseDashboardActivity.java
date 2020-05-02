@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -21,10 +20,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,15 +31,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
@@ -55,9 +51,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,8 +100,8 @@ public class ExerciseDashboardActivity extends BaseActivity {
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
-//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
-//        itemForum.setChecked(true);
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -243,7 +236,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", sessionManager.getUserDetail().get(sessionManager.EMAIL));
+                params.put("email", sessionManager.getUserDetail().get(sessionManager.NRIC));
                 return params;
             }
         };
@@ -253,7 +246,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
     public void showDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ExerciseDashboardActivity.this);
-        alertDialogBuilder.setTitle("Customize My Exercise Plan");
+        alertDialogBuilder.setTitle(R.string.customize_exercise_plan);
 //        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
@@ -356,7 +349,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
             return true;
         }
@@ -381,6 +374,12 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
         if (id == R.id.action_questionnaire) {
             Intent intent = new Intent(ExerciseDashboardActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

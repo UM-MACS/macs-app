@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
@@ -304,7 +305,7 @@ private ProgressBar progressBar;
                                         pinned_pic.setVisibility(View.VISIBLE);
                                         if (anonymous.get(i).equals("true")) {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText("Anonymous");
+                                            username.setText(R.string.anonymous);
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
 //                                            getPic("lee","", user_pic);
                                             getPicTest("",user_pic);
@@ -360,7 +361,7 @@ private ProgressBar progressBar;
                                         }
                                         if (anonymous.get(i).equals("true")) {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
-                                            username.setText("Anonymous");
+                                            username.setText(R.string.anonymous);
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
 //                                            getPic("lee","", user_pic);
                                             getPicTest("",user_pic);
@@ -402,19 +403,19 @@ private ProgressBar progressBar;
                                 progressBar.setVisibility(View.GONE);
 
                             } else if (success.equals("-1")){
-                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                Toast.makeText(getApplicationContext(), getString(R.string.no_posts),
                                         Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 nullPost.setVisibility(View.VISIBLE);
                             } else{
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             Log.e("Error", e.toString());
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                         }
@@ -425,8 +426,8 @@ private ProgressBar progressBar;
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -526,14 +527,14 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -600,18 +601,18 @@ private ProgressBar progressBar;
                             } else if (success.equals("-1")) {
                                 Log.e("TAG", "no reply post");
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error Loading", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"Error Loading",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.try_later),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -634,8 +635,8 @@ private ProgressBar progressBar;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final String date = dateFormat.format(d);
         if(text.equals("")){
-            Toast.makeText(getApplicationContext(),"Please Write Something in the text box",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_something),
+                                        Toast.LENGTH_SHORT).show();
         } else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_POST_REPLY,
                     new Response.Listener<String>() {
@@ -646,8 +647,8 @@ private ProgressBar progressBar;
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Successfully Posted",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.post_success),
+                                        Toast.LENGTH_SHORT).show();
                                     replyText.setText("");
                                     expandedForumParentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout_expanded_forum);
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -657,7 +658,7 @@ private ProgressBar progressBar;
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getEmail(),User.getInstance().getUserType(), expanded_user_pic);
+                                    getPic(User.getInstance().getNRIC(),User.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(User.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -672,8 +673,8 @@ private ProgressBar progressBar;
                                     }
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error replying",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -682,14 +683,14 @@ private ProgressBar progressBar;
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("email", User.getInstance().getEmail());
+                    params.put("email", User.getInstance().getNRIC());
                     params.put("type", User.getInstance().getUserType());
                     params.put("name", User.getInstance().getUserName());
                     params.put("content", text);
@@ -723,11 +724,11 @@ private ProgressBar progressBar;
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        "This post has been reported successfully",
+                                        getString(R.string.report_success),
                                         Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, please report again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -737,8 +738,8 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -756,16 +757,16 @@ private ProgressBar progressBar;
     private AlertDialog AskOption(final String id) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
                 //set message, title, and icon
-                .setTitle("Report This Post")
-                .setMessage("Are you sure you want to report this post?")
-                .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.report_post)
+                .setMessage(R.string.report_post_confirm)
+                .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         onReport(id);
                         dialog.dismiss();
                     }
 
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
@@ -800,7 +801,7 @@ private ProgressBar progressBar;
                                 fav_des.setText(R.string.remove_favourite);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "An error occured, please try again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -810,14 +811,14 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("forum","Patient");
                 params.put("postID",id);
                 return params;
@@ -851,7 +852,7 @@ private ProgressBar progressBar;
 
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, please try removing again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -861,14 +862,14 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getEmail());
+                params.put("email", User.getInstance().getNRIC());
                 params.put("forum","Patient");
                 params.put("postID",id );
                 return params;
@@ -905,7 +906,7 @@ private ProgressBar progressBar;
                                 startActivity(intent);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, pin again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -915,8 +916,8 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -956,7 +957,7 @@ private ProgressBar progressBar;
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error, unpin again",
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -966,8 +967,8 @@ private ProgressBar progressBar;
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -1016,7 +1017,7 @@ private ProgressBar progressBar;
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
             return true;
         }
@@ -1047,6 +1048,12 @@ private ProgressBar progressBar;
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(ForumActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

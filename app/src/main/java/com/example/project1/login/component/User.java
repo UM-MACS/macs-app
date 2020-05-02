@@ -4,7 +4,7 @@ public class User {
     private String appointment;
     private int id;
     private String Name;
-    private String Email;
+    private String NRIC;
     private String Password;
     private String Contact;
     private String Age;
@@ -24,10 +24,6 @@ public class User {
     private User() {
     }
 
-    public String getAppointment() {
-        return appointment;
-    }
-
     public void setUserType (String type){
         this.userType = type;
     }
@@ -40,10 +36,6 @@ public class User {
         this.appointment = app;
     }
 
-    public void setAppointmentId(int id){ this.appointmentId = id; }
-
-    public int getAppointmentId(){return appointmentId;}
-
     public String getUserName() {
         return Name;
     }
@@ -52,28 +44,20 @@ public class User {
         this.Name = name;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getNRIC() {
+        return NRIC;
     }
 
-    public void setEmail(String email) {
-        this.Email= email;
+    public void setNRIC(String nric) {
+        this.NRIC= nric;
     }
 
     public void setPassword(String password) {
         this.Password = password;
     }
 
-    public String getAge() {
-        return Age;
-    }
-
     public void setAge(String age) {
         this.Age= age;
-    }
-
-    public String getContact() {
-        return Contact;
     }
 
     public void setContact(String contact) {
