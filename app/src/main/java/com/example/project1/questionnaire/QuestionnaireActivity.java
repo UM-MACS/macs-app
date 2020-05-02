@@ -136,10 +136,12 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 //                if (radioGroup.getCheckedRadioButtonId() == -1) {
 //                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
 //                } else {
+                if (radioGroup.getCheckedRadioButtonId() != -1) {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
                     answerArr[currentPage - 1] = answer;
                     answerIdArr[currentPage - 1] = btn.getId();
+                }
 
                     currentPage--;
                     radioGroup.clearCheck();
