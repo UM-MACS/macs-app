@@ -86,7 +86,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
         btnPrev.setVisibility(View.INVISIBLE);
         btnNext = (Button) findViewById(R.id.button_next_assessment);
         btnNext.setVisibility(View.VISIBLE);
-        tvQuestionNum = (TextView) findViewById(R.id.tvQuestionNum);
+//        tvQuestionNum = (TextView) findViewById(R.id.tvQuestionNum);
         tvQuestionMin = (TextView) findViewById(R.id.tvQuestionMin);
         tvQuestionMax = (TextView) findViewById(R.id.tvQuestionMax);
 
@@ -112,7 +112,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         check.setChecked(true);
                     }
 
-                    tvQuestionNum.setText(Integer.toString(currentPage));
+//                    tvQuestionNum.setText(Integer.toString(currentPage));
                     tvQuestionMin.setText(questionMinArr[currentPage-1]);
                     tvQuestionMax.setText(questionMaxArr[currentPage-1]);
 
@@ -133,13 +133,15 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
-                } else {
+//                if (radioGroup.getCheckedRadioButtonId() == -1) {
+//                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
+//                } else {
+                if (radioGroup.getCheckedRadioButtonId() != -1) {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
                     answerArr[currentPage - 1] = answer;
                     answerIdArr[currentPage - 1] = btn.getId();
+                }
 
                     currentPage--;
                     radioGroup.clearCheck();
@@ -149,7 +151,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         check.setChecked(true);
                     }
 
-                    tvQuestionNum.setText(Integer.toString(currentPage));
+//                    tvQuestionNum.setText(Integer.toString(currentPage));
                     tvQuestionMin.setText(questionMinArr[currentPage-1]);
                     tvQuestionMax.setText(questionMaxArr[currentPage-1]);
 
@@ -163,7 +165,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         btnPrev.setVisibility(View.INVISIBLE);
                         btnNext.setVisibility(View.VISIBLE);
                     }
-                }
+//                }
             }
         });
 

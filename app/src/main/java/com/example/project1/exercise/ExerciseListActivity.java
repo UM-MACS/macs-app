@@ -3,18 +3,34 @@ package com.example.project1.exercise;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.exercise.adapter.ExerciseListAdapter;
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.SessionManager;
+import com.example.project1.login.component.User;
+import com.example.project1.mainPage.MainActivity;
+import com.example.project1.onboarding.OnboardingBaseActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
+import com.example.project1.userProfile.UserProfileActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +46,7 @@ public class ExerciseListActivity extends BaseActivity {
     private Intent intentToExercise;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private SessionManager sessionManager;
 
     //exercise related variables
     private String exerciseType;
@@ -50,11 +67,64 @@ public class ExerciseListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_list);
 
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+        itemForum.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_emotion_assessment:
+                        Intent i2 = new Intent(ExerciseListActivity.this, EmotionAssessmentActivity.class);
+                        startActivity(i2);
+                        break;
+                    case R.id.navigation_exercise:
+                        Intent i3 = new Intent(ExerciseListActivity.this, ExerciseDashboardActivity.class);
+                        startActivity(i3);
+                        break;
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
+//                        startActivity(i4);
+//                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
+//                        startActivity(i5);
+//                        break;
+                    case R.id.navigation_forum:
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            Intent i6 = new Intent(ExerciseListActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(ExerciseListActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+                    case R.id.navigation_chat:
+//                         startActivity(i);
+                }
+                return true;
+            }
+        });
+
         //define all instant variables
         intentToExercise = new Intent(ExerciseListActivity.this, ExerciseActivity.class);
         sharedPreferences = getSharedPreferences(PublicComponent.EXERCISE_ACCESS, PublicComponent.PRIVATE_MODE);
         editor = sharedPreferences.edit();
         exerciseType = sharedPreferences.getString(PublicComponent.EXERCISE_TYPE, null);
+        sessionManager = new SessionManager(this);
 
         //define all elements
         btnRandom = findViewById(R.id.button_random);
@@ -121,5 +191,64 @@ public class ExerciseListActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            sessionManager.logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            User.getInstance().setUserName("");
+            User.getInstance().setNRIC("");
+            User.getInstance().setUserType("");
+            return true;
+        }
+
+        if (id == R.id.action_change_password){
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(this, OnboardingBaseActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_questionnaire) {
+            Intent intent = new Intent(this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
