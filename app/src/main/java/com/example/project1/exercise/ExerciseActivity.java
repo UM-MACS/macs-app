@@ -1,14 +1,20 @@
 package com.example.project1.exercise;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -28,8 +34,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.SessionManager;
 import com.example.project1.login.component.User;
+import com.example.project1.mainPage.MainActivity;
+import com.example.project1.onboarding.OnboardingBaseActivity;
+import com.example.project1.questionnaire.QuestionnaireActivity;
+import com.example.project1.userProfile.UserProfileActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +75,7 @@ public class ExerciseActivity extends BaseActivity {
     private String email = User.getInstance().getNRIC();
     private String exerciseLevel, feeling, startTime, endTime, time;
     private boolean saveStatus = true;
+    private SessionManager sessionManager;
 
     //exercise related variables
     private String[] currentExerciseList;
@@ -83,6 +100,58 @@ public class ExerciseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        //drawer
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if(User.getInstance().getUserType().equals("Admin")){
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+        if(User.getInstance().getUserType().equals("Caregiver")||
+                User.getInstance().getUserType().equals("Specialist")){
+            MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+            item.setVisible(false);
+        }
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+        itemForum.setChecked(true);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_emotion_assessment:
+                        Intent i2 = new Intent(ExerciseActivity.this, EmotionAssessmentActivity.class);
+                        startActivity(i2);
+                        break;
+                    case R.id.navigation_exercise:
+                        Intent i3 = new Intent(ExerciseActivity.this, ExerciseDashboardActivity.class);
+                        startActivity(i3);
+                        break;
+//                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
+//                        startActivity(i4);
+//                        break;
+//                    case R.id.navigation_faq:
+//                        Intent i5 = new Intent(ForumActivity.this, FAQActivity.class);
+//                        startActivity(i5);
+//                        break;
+                    case R.id.navigation_forum:
+                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            Intent i6 = new Intent(ExerciseActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else {
+                            Intent i6 = new Intent(ExerciseActivity.this, ForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        }
+                    case R.id.navigation_chat:
+//                         startActivity(i);
+                }
+                return true;
+            }
+        });
+
         //define all instant variables
         localhost = getString(R.string.localhost);
         SESSION_URL = localhost+"/postExercise/";
@@ -93,6 +162,7 @@ public class ExerciseActivity extends BaseActivity {
         String s = sharedPreferences.getString(PublicComponent.EXERCISE_LIST, null);
         String str = s.substring(1, s.length() - 1);
         currentExerciseList = str.split(", ");
+        sessionManager = new SessionManager(this);
 
         //define current list with id
         if (exerciseLevel.contentEquals("exercise-level-one")) {
@@ -319,19 +389,20 @@ public class ExerciseActivity extends BaseActivity {
 
         final ToggleButton b1,b2,b3,b4,b5,b6;
         b1 = dialogView.findViewById(R.id.emotion1);
-        b2 = dialogView.findViewById(R.id.emotion2);
+//        b2 = dialogView.findViewById(R.id.emotion2);
         b3 = dialogView.findViewById(R.id.emotion3);
         b4 = dialogView.findViewById(R.id.emotion4);
-        b5 = dialogView.findViewById(R.id.emotion5);
+//        b5 = dialogView.findViewById(R.id.emotion5);
         b6 = dialogView.findViewById(R.id.emotion6);
-        final ToggleButton[] tbArray = new ToggleButton[]{b1,b2,b3,b4,b5,b6};
+//        final ToggleButton[] tbArray = new ToggleButton[]{b1,b2,b3,b4,b5,b6};
+        final ToggleButton[] tbArray = new ToggleButton[]{b1,b3,b4,b6};
 
         final LinearLayout layout1,layout2,layout3,layout4,layout5,layout6;
         layout1 = dialogView.findViewById(R.id.layout1);
-        layout2 = dialogView.findViewById(R.id.layout2);
+//        layout2 = dialogView.findViewById(R.id.layout2);
         layout3 = dialogView.findViewById(R.id.layout3);
         layout4 = dialogView.findViewById(R.id.layout4);
-        layout5 = dialogView.findViewById(R.id.layout5);
+//        layout5 = dialogView.findViewById(R.id.layout5);
         layout6 = dialogView.findViewById(R.id.layout6);
 
 
@@ -341,12 +412,12 @@ public class ExerciseActivity extends BaseActivity {
                 onCheckedChange(layout1, isChecked);
             }
         });
-        b2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onCheckedChange(layout2, isChecked);
-            }
-        });
+//        b2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                onCheckedChange(layout2, isChecked);
+//            }
+//        });
         b3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -359,12 +430,12 @@ public class ExerciseActivity extends BaseActivity {
                 onCheckedChange(layout4, isChecked);
             }
         });
-        b5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onCheckedChange(layout5, isChecked);
-            }
-        });
+//        b5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                onCheckedChange(layout5, isChecked);
+//            }
+//        });
         b6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -556,17 +627,17 @@ public class ExerciseActivity extends BaseActivity {
     public String getFeeling(int i){
         switch(i){
             case 0:
-                return "Happy";
+                return "Enjoyment";
             case 1:
-                return "Surprised";
+                return "Satisfied/Relaxed";
             case 2:
-                return "Digusted";
+                return "Normal";
             case 3:
-                return "Fear";
-            case 4:
-                return "Angry";
-            case 5:
-                return "Sad";
+                return "Dissatisfaction/Down";
+//            case 4:
+//                return "Angry";
+//            case 5:
+//                return "Sad";
             default:
                 return "";
         }
@@ -583,6 +654,63 @@ public class ExerciseActivity extends BaseActivity {
         overridePendingTransition(0, 0);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            sessionManager.logout();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            User.getInstance().setUserName("");
+            User.getInstance().setNRIC("");
+            User.getInstance().setUserType("");
+            return true;
+        }
+
+        if (id == R.id.action_change_password){
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_user_profile){
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_faq) {
+            Intent intent = new Intent(this, OnboardingBaseActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_questionnaire) {
+            Intent intent = new Intent(this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

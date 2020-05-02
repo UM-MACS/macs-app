@@ -36,6 +36,10 @@
     <string name="dashboard">Papan Pemuka</string>
     <string name="exercise_level_1">Senaman Tahap 1</string>
     <string name="exercise_level_2">Senaman Tahap 2</string>
+    <string name="enjoyment">Seronok</string>
+    <string name="satisfied">Memuaskan/Tenang</string>
+    <string name="normal">Biasa</string>
+    <string name="dissatisfaction">Tidak Memuaskan/Sedih</string>
     <string name="exercise_random">Secara Rawak</string>
     <string name="questionnaire">Soal Selidik Aktiviti Fizikal</string>
     <string name="questionnaire_title">Sila nilaikan perasaan anda pada masa ini mengenai aktiviti fizikal yang telah anda lakukan. \n(8 soalan)</string>

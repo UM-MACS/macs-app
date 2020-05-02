@@ -196,6 +196,10 @@
     <string name="exercise_1_day">You have exercised </string>
     <string name="exercise_2_day"> days this week!</string>
     <string name="exercise_noti">Do you need to exercise today? Check it out!</string>
+    <string name="enjoyment">Enjoyment</string>
+    <string name="satisfied">Satisfied/Relaxed</string>
+    <string name="normal">Normal</string>
+    <string name="dissatisfaction">Dissatisfaction/Down</string>
 
     //forum
     <string name="post_success">Successfully Posted</string>
