@@ -82,7 +82,7 @@
 
     <string name="questionnaire">Physical Activity Questionnaire</string>
     <string name="questionnaire_title">Please rate how you feel at the moment about the physical activity you have been doing. \n(8 questions)</string>
-    <string name="questionnaire_desc">(Rate according to the question with scale 1 - 7)</string>
+    <string name="questionnaire_desc">(Rate with scale 1 - 7)</string>
 
     <string name="questionnaire_q1_min">I enjoy it</string>
     <string name="questionnaire_q2_min">I feel bored</string>

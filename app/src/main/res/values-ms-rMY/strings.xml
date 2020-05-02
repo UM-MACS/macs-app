@@ -39,7 +39,7 @@
     <string name="exercise_random">Secara Rawak</string>
     <string name="questionnaire">Soal Selidik Aktiviti Fizikal</string>
     <string name="questionnaire_title">Sila nilaikan perasaan anda pada masa ini mengenai aktiviti fizikal yang telah anda lakukan. \n(8 soalan)</string>
-    <string name="questionnaire_desc">(Nilaikan mengikuti soalan dengan skala 1 - 7)</string>
+    <string name="questionnaire_desc">(Nilaikan dengan skala 1 - 7)</string>
     <string name="questionnaire_q1_min">Saya menikmatinya</string>
     <string name="questionnaire_q2_min">Saya berasa bosan</string>
     <string name="questionnaire_q3_min">Saya tidak sukanya</string>
