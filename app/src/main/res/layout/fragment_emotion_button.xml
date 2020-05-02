@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".emotionAssessment.component.EmotionFragment">
 
@@ -14,7 +14,7 @@
         android:gravity="center"
         android:layout_margin="15dp"
         android:background="@drawable/border"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,7 +195,16 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/scroll_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="end|center"-->
+<!--        android:background="@drawable/ic_add_button" />-->
+
 
     <FrameLayout
         android:id="@+id/progressBarHolder"
