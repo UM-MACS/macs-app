@@ -161,7 +161,7 @@ SessionManager sessionManager;
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<>();
-                                params.put("email", User.getInstance().getEmail());
+                                params.put("email", User.getInstance().getNRIC());
                                 params.put("type", User.getInstance().getUserType());
                                 params.put("password", t1);
                                 params.put("newPass", t2);
@@ -206,7 +206,7 @@ SessionManager sessionManager;
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setPassword("");
             return true;
         }

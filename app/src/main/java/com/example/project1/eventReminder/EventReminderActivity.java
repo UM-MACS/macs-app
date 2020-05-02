@@ -166,7 +166,7 @@ public class EventReminderActivity extends BaseActivity {
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         sessionManager = new SessionManager(this);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getAppointmentData(User.getInstance().getEmail());
+        getAppointmentData(User.getInstance().getNRIC());
 
 
 
@@ -430,7 +430,7 @@ public class EventReminderActivity extends BaseActivity {
                         appointmentTimeText.setText(timeSelected);
                         User.getInstance().setAppointment(dateSelected);
                         Log.e("tag", "date selected is " + dateSelected);
-                        setAppointment(User.getInstance().getEmail(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
+                        setAppointment(User.getInstance().getNRIC(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
                     }
                 }
             }
@@ -859,7 +859,7 @@ public class EventReminderActivity extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setPassword("");
             return true;
         }

@@ -1,9 +1,7 @@
 package com.example.project1.mainPage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -43,10 +41,10 @@ public class MainActivity extends BaseActivity {
         if(login){
             HashMap<String,String> user = sessionManager.getUserDetail();
             String mName = user.get(sessionManager.NAME);
-            String mEmail = user.get(sessionManager.EMAIL);
+            String mEmail = user.get(sessionManager.NRIC);
             String mType = user.get(sessionManager.TYPE);
             Log.e("TAG", "shared preference name is "+mName );
-            User.getInstance().setEmail(mEmail);
+            User.getInstance().setNRIC(mEmail);
             User.getInstance().setUserName(mName);
             User.getInstance().setUserType(mType);
             Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);

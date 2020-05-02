@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -51,7 +50,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
     private static String URL_REGIST;
     private static String URL_UPLOAD ;
 //    private DatabaseHelper db;
-    private EditText e1,e2,e3,e5,e6,e7;
+    private EditText e1,e2,e3,e5,e6,e7, nricEditText;
     private Button b1,b2;
     private Spinner spinner;
     private TextView inputLabel;
@@ -93,6 +92,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
         e5 = (EditText)findViewById(R.id.editText); //name
         e6 = (EditText)findViewById(R.id.editText3); //contact no
         e7 = (EditText)findViewById(R.id.editText4); //age
+        nricEditText = (EditText)findViewById(R.id.nric);
         b1 = (Button)findViewById(R.id.register);
         b2 = (Button)findViewById(R.id.login);
         uploadButton = (Button)findViewById(R.id.upload_button);
@@ -132,6 +132,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
                 loading.setVisibility(View.VISIBLE);
                 b1.setVisibility(View.GONE);
                 final String s1 = e1.getText().toString().trim(); //email
+                final String nric = nricEditText.getText().toString().trim(); //nric
                 final String s2 = e2.getText().toString().trim(); //pw
                 String s3 = e3.getText().toString(); //confirm pw
                 final String s4 = spinner.getSelectedItem().toString(); //relationship
@@ -141,12 +142,13 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
 
 
                 //check if fields are empty
-                if (s1.equals("") || s2.equals("") || s3.equals("") || s4.equals(getString(R.string.please_select_one)) || s5.equals("") || s6.equals("") || s7.equals(""))
+                if (nric.equals("") || s2.equals("") || s3.equals("") || s4.equals(getString(R.string.please_select_one)) || s5.equals("") || s6.equals("") || s7.equals(""))
                 {
                     Toast.makeText(getApplicationContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
-                } else if(!s1.contains("@")){
+                }
+                else if(!s1.equals("") && !s1.contains("@")){
                     Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
@@ -156,9 +158,14 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
+                else if (nric.length() != 12){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_nric), Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
+                }
                 else {
                     if (s2.equals(s3)) { //check if password matches
-                        registerAccount(s1,s5,s6,s2,s4,s7);
+                        registerAccount(s1,s5,s6,s2,s4,s7,nric);
 
 //                        setProfile_pic(s1,s5);
 
@@ -193,7 +200,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
 
     private void registerAccount(final String email, final String name, final String contact
                                 ,final String password, final String relationship
-                                ,final String age){
+                                ,final String age, final String nric){
         /* mysql posting */
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
             @Override
@@ -214,7 +221,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
                         b1.setVisibility(View.VISIBLE);
                     }
                     else if(success.equals("-1")){
-                        Toast.makeText(getApplicationContext(), getString(R.string.email_used), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.nric_used), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
@@ -249,6 +256,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
                 params.put("age",age);
                 params.put("relationship",relationship);
                 params.put("photo",img);
+                params.put("nric",nric);
                 return params;
             }
         };

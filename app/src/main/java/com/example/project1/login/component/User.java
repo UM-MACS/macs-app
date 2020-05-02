@@ -4,7 +4,7 @@ public class User {
     private String appointment;
     private int id;
     private String Name;
-    private String Email;
+    private String NRIC;
     private String Password;
     private String Contact;
     private String Age;
@@ -44,12 +44,12 @@ public class User {
         this.Name = name;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getNRIC() {
+        return NRIC;
     }
 
-    public void setEmail(String email) {
-        this.Email= email;
+    public void setNRIC(String nric) {
+        this.NRIC= nric;
     }
 
     public void setPassword(String password) {

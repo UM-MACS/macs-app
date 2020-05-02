@@ -22,7 +22,6 @@
     <string name="newUser2">Klik sini untuk mendaftar</string>
     <string name="login">Log Masuk</string>
     <string name="register">Mendaftar</string>
-    <string name="email">E-mel</string>
     <string name="name">Nama</string>
     <string name="password">Kata Laluan</string>
     <string name="confirmPassword">Pengesahan Kata Laluan</string>
@@ -68,7 +67,7 @@
         <item>Ibu Bapa</item>
         <item>Anak</item>
         <item>Suami Isteri</item>
-        <item>Keluarga</item>
+        <item>Ahli Keluarga Lain</item>
         <item>Lain-lain</item>
     </string-array>
 
@@ -173,18 +172,18 @@
     <string name="specialist_register">Pendaftaran untuk Doktor</string>
     <string name="temp_pw_sent">Kata laluan sementara telah dihantar ke e-mel anda</string>
     <string name="back_login">Kembali ke Log Masuk</string>
-    <string name="email_not_registered">E-mel tidak dijumpai, Sila daftar Akaun Baru</string>
+    <string name="nric_not_registered">NRIC tidak dijumpai, Sila daftar Akaun Baru</string>
     <string name="empty_fields">Sila lengkapkan setiap bidang</string>
-    <string name="email_not_exist">E-mel tidak wujud</string>
+    <string name="nric_not_exist">NRIC tidak wujud</string>
     <string name="incorrect_pw">Salah Kata Laluan</string>
-    <string name="wrong_email_pw">Salah E-mel atau Kata Laluan</string>
+    <string name="wrong_nric_pw">Salah NRIC atau Kata Laluan</string>
     <string name="reset_pw_success">Kata laluan telah berjaya ditetapkan semula!</string>
     <string name="make_sure_ques_answered">Sila pastikan Soalan Dijawab</string>
     <string name="enter_valid_email">Sila masukkan E-mel yang sah</string>
     <string name="enter_valid_age">Sila masukkan Umur yang sah</string>
     <string name="unmatch_pw">Kata Laluan tidak sama</string>
     <string name="register_success">Pendaftaran telah Berjaya</string>
-    <string name="email_used">E-mel yang dimasukkan sudah mempunyai akaun</string>
+    <string name="nric_used">NRIC yang dimasukkan sudah mempunyai akaun</string>
     <string name="select_photo">Pilih Gambar</string>
     <string name="menu_sign_in_as_admin">Log Masuk Sebagai Pentadbir</string>
     <string name="menu_event_reminder">Peringatan Acara</string>
@@ -193,4 +192,5 @@
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="save">S</string>
+    <string name="email_register">E-mel ( Tidak diwajibkan )</string>
 </resources>

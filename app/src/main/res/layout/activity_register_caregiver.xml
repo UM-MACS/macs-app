@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:ems="10"
-            android:hint="@string/email"
+            android:hint="@string/email_register"
             android:inputType="textEmailAddress"
             android:paddingBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +109,16 @@
             android:ems="10"
             android:hint="@string/name"
             android:inputType="textCapWords"
+            android:paddingBottom="15dp" />
+
+        <EditText
+            android:id="@+id/nric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="@string/nric_register"
+            android:inputType="number"
             android:paddingBottom="15dp" />
 
         <EditText

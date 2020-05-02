@@ -1,7 +1,6 @@
 package com.example.project1.forum.caregiver;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,8 +42,8 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
-        Log.e("TAG", "Caregiver user name "+ User.getInstance().getEmail() );
-        email = User.getInstance().getEmail();
+        Log.e("TAG", "Caregiver user name "+ User.getInstance().getNRIC() );
+        email = User.getInstance().getNRIC();
         name = User.getInstance().getUserName();
         localhost = getString(R.string.localhost);
         URL = localhost+"/postingToCaregiverForum/";

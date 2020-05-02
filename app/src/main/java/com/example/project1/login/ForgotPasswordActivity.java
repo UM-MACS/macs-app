@@ -1,7 +1,6 @@
 package com.example.project1.login;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -85,7 +84,7 @@ public class ForgotPasswordActivity extends BaseActivity {
                                 });
                             } else if (success.equals("-1")) {
                                 Toast.makeText(getApplicationContext(),
-                                        getString(R.string.email_not_registered),
+                                        getString(R.string.nric_not_registered),
                                         Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 buttonSubmit.setVisibility(View.VISIBLE);

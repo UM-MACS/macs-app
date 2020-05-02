@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +56,7 @@ public class ExerciseActivity extends BaseActivity {
     private List<String> durationList = new ArrayList<>();
     private List<String> exerciseNameList = new ArrayList<>();
     private int sessionId;
-    private String email = User.getInstance().getEmail();
+    private String email = User.getInstance().getNRIC();
     private String exerciseLevel, feeling, startTime, endTime, time;
     private boolean saveStatus = true;
 
