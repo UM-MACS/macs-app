@@ -213,7 +213,7 @@ public class EmotionAssessmentActivity extends BaseActivity {
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
 //            finish();
             return true;
@@ -249,8 +249,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             return true;
         }
 
-        if(id == R.id.action_change_language){
-            Intent intent = new Intent(EmotionAssessmentActivity.this, ChangeLanguageActivity.class);
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

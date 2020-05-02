@@ -83,10 +83,10 @@ public class EmotionFragmentText extends Fragment {
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
-        String mEmail = user.get(sessionManager.EMAIL);
+        String mEmail = user.get(sessionManager.NRIC);
         String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
-        User.getInstance().setEmail(mEmail);
+        User.getInstance().setNRIC(mEmail);
         User.getInstance().setUserName(mName);
         User.getInstance().setUserType(mType);
         task = new MyTask();
@@ -128,7 +128,7 @@ public class EmotionFragmentText extends Fragment {
                     }
                     String[] sArray = splitText.split("\\s{2,}");
                     for (int i =0; i<sArray.length; i++){
-                        sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        sentimentAnalysis(User.getInstance().getNRIC(), User.getInstance().getUserType(), date,
                                 sArray[i]);
                     }
                 }
@@ -230,8 +230,8 @@ public class EmotionFragmentText extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

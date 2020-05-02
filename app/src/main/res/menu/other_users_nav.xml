@@ -5,19 +5,19 @@
     <item
         android:id="@+id/action_user_profile"
         android:orderInCategory="100"
-        android:title="My Activity"
+        android:title="@string/my_activity"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_event_reminder"
         android:orderInCategory="100"
-        android:title="Event Reminder"
+        android:title="@string/menu_event_reminder"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_faq"
         android:orderInCategory="100"
-        android:title="FAQ"
+        android:title="@string/menu_faq"
         app:showAsAction="never"/>
 
     <item
@@ -27,9 +27,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_change_language"
+        android:id="@+id/action_switch_language"
         android:orderInCategory="100"
-        android:title="Switch App Language"
+        android:title="@string/switch_language"
         app:showAsAction="never" />
 
     <item

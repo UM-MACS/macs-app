@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -140,7 +140,7 @@ public class FAQActivityAdapter extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
             return true;
         }
@@ -153,6 +153,12 @@ public class FAQActivityAdapter extends BaseActivity {
 
         if (id == R.id.action_faq) {
             Intent intent = new Intent(FAQActivityAdapter.this, FAQActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

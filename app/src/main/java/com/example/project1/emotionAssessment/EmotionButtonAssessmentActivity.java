@@ -93,10 +93,10 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
         URL_API_SA ="https://api.deepai.org/api/sentiment-analysis";
         HashMap<String,String> user = sessionManager.getUserDetail();
         String mName = user.get(sessionManager.NAME);
-        String mEmail = user.get(sessionManager.EMAIL);
+        String mEmail = user.get(sessionManager.NRIC);
         String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
-        User.getInstance().setEmail(mEmail);
+        User.getInstance().setNRIC(mEmail);
         User.getInstance().setUserName(mName);
         User.getInstance().setUserType(mType);
         task = new MyTask();
@@ -179,7 +179,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Happy(def)","Positive");
                 task.execute();
 
@@ -194,7 +194,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Happy(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Surprised(def)","Positive");
                 task.execute();
             }
@@ -208,7 +208,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Smiling(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Disgusted(def)","Negative");
                 task.execute();
             }
@@ -222,7 +222,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Unhappy(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Fear(def)","Neutral");
                 task.execute();
             }
@@ -236,7 +236,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Angry(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Angry(def)","Negative");
                 task.execute();
             }
@@ -250,7 +250,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 final String date = dateFormat.format(d);
 //                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
 //                        "Sad(def)");
-                insert(User.getInstance().getEmail(),User.getInstance().getUserType(),
+                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
                         date,"Sad(def)","Negative");
                 task.execute();
             }
@@ -287,7 +287,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                     }
                     String[] sArray = splitText.split("\\s{2,}");
                     for (int i =0; i<sArray.length; i++){
-                        sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+                        sentimentAnalysis(User.getInstance().getNRIC(), User.getInstance().getUserType(), date,
                                 sArray[i]);
                     }
                 }
@@ -387,8 +387,8 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -524,7 +524,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
+            User.getInstance().setNRIC("");
             User.getInstance().setUserType("");
 //            finish();
             return true;
@@ -560,8 +560,8 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
             return true;
         }
 
-        if(id == R.id.action_change_language){
-            Intent intent = new Intent(EmotionButtonAssessmentActivity.this, ChangeLanguageActivity.class);
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

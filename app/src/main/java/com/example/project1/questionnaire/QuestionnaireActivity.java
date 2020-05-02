@@ -1,9 +1,6 @@
 package com.example.project1.questionnaire;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.eventReminder.EventReminderActivity;
-import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
@@ -35,17 +31,12 @@ import com.example.project1.login.component.User;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.faq.FAQActivity;
-import com.example.project1.forum.ForumActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
-import com.example.project1.forum.specialist.SpecialistForumActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,7 +79,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
         URL_GET = localhost + "/getQuestionnaire";
         sessionManager = new SessionManager(this);
         period = "0";
-        getQuestionnaire(User.getInstance().getEmail());
+        getQuestionnaire(User.getInstance().getNRIC());
         btnSubmit = (Button) findViewById(R.id.button_submit_assessment);
         btnSubmit.setVisibility(View.INVISIBLE);
         btnPrev = (Button) findViewById(R.id.button_prev_assessment);
@@ -106,7 +97,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onClick(View v) {
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
@@ -143,7 +134,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
             @Override
             public void onClick(View v) {
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     RadioButton btn = (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
                     String answer = btn.getText().toString();
@@ -182,7 +173,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
                 // check all questions has answer
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Please Make Sure The Question is Answered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.make_sure_ques_answered), Toast.LENGTH_SHORT).show();
                 } else {
                     String answer = ((RadioButton)findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                     answerArr[currentPage - 1] = answer;
@@ -193,7 +184,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
                     period = Integer.toString(Integer.parseInt(period) + 1);
 
-                    insertAssessment(User.getInstance().getEmail(),date, period,answerArr.toString());
+                    insertAssessment(User.getInstance().getNRIC(),date, period,Arrays.toString(answerArr));
 
                 }
             }
@@ -212,22 +203,22 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         String success = jsonObject.getString("success");
                         Log.e("TAG", "success" + success);
                         if (success.equals("1")) {
-                            Toast.makeText(getApplicationContext(), "Your Feedback is Recorded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.feedback_recorded), Toast.LENGTH_SHORT).show();
                             Intent i2 = new Intent(QuestionnaireActivity.this, EmotionAssessmentActivity.class);
                             startActivity(i2);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 }
             },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -262,18 +253,18 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                         period = "0";
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                 }
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -310,7 +301,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                 intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 User.getInstance().setUserName("");
-                User.getInstance().setEmail("");
+                User.getInstance().setNRIC("");
                 User.getInstance().setUserType("");
                 return true;
             }

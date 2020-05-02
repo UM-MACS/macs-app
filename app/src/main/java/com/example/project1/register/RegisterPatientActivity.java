@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -52,7 +51,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
     private static String URL_REGIST ;
     private static String URL_UPLOAD ;
 //    private DatabaseHelper db;
-    private EditText e1,e2,e3,e5,e6,e7;
+    private EditText e1,e2,e3,e5,e6,e7, nricEditText;
     private Button b1,b2;
     private Spinner spinner;
     private TextView inputLabel;
@@ -95,6 +94,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
         e5 = (EditText)findViewById(R.id.editText); //name
         e6 = (EditText)findViewById(R.id.editText3); //contact no
         e7 = (EditText)findViewById(R.id.editText4); //age
+        nricEditText = (EditText)findViewById(R.id.nric);
         b1 = (Button)findViewById(R.id.register);
         b2 = (Button)findViewById(R.id.login);
         uploadButton = (Button)findViewById(R.id.upload_button);
@@ -118,6 +118,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                 loading.setVisibility(View.VISIBLE);
                 b1.setVisibility(View.GONE);
                 final String s1 = e1.getText().toString().trim(); //email
+                final String nric = nricEditText.getText().toString().trim(); //nric
                 final String s2 = e2.getText().toString().trim(); //pw
                 String s3 = e3.getText().toString(); //confirm pw
                 final String s5 = e5.getText().toString().trim(); //name
@@ -125,44 +126,43 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                 final String s7 = e7.getText().toString(); //age
 
                 //check if fields are empty
-                if (s1.equals("") || s2.equals("") || s3.equals("") || s5.equals("") || s6.equals("") || s7.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Field(s) are empty", Toast.LENGTH_SHORT).show();
+                if (nric.equals("") || s2.equals("") || s3.equals("") || s5.equals("") || s6.equals("") || s7.equals("")) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
-                else if(!s1.contains("@")){
-                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
+                else if(!s1.equals("") && !s1.contains("@")){
+                    Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
                 else if (Integer.parseInt(s7)>120){
-                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Age", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_age), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
-//                else if(s6.length()>11 || s6.length()<10){
-//                    Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"
-//                            , Toast.LENGTH_SHORT).show();
-//                    loading.setVisibility(View.GONE);
-//                    b1.setVisibility(View.VISIBLE);
-//                }
+                else if (nric.length() != 12){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_nric), Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    b1.setVisibility(View.VISIBLE);
+                }
                 else {
                     if (s2.equals(s3)) { //check if password matches
                         /* mysql posting */
-
+                        Log.e("TAG", "Register nric: "+ nric );
                         Log.e("TAG", "log"+ s1+ " "+s2+" "+s5+" "+s6+" "+s7 );
-                       registerAccount(s1,s2,s5,s6,s7);
+                       registerAccount(s1,s2,s5,s6,s7,nric);
 //                       setProfile_pic(s1,s5);
 
                         /* set user instance */
-                            User.getInstance().setEmail(s1); //email
+                            User.getInstance().setNRIC(nric); //nric
                             User.getInstance().setPassword(s2); //pw
                             User.getInstance().setUserName(s5);
                             User.getInstance().setContact(s6);
                             User.getInstance().setAge(s7);
                             Log.e("Tag", "hello");
                     } else {
-                        Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.unmatch_pw), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
@@ -186,7 +186,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
     }
 
     private void registerAccount(final String email, final String password, final String name,
-                                 final String contact, final String age) {
+                                 final String contact, final String age, final String nric) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -196,23 +196,23 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                     String success = jsonObject.getString("success");
                     Log.e("TAG", "success"+success );
                     if(success.equals("1")){
-                        Toast.makeText(getApplicationContext(),"Register Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterPatientActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
                     else if(success.equals("0")){
-                        Toast.makeText(getApplicationContext(),"Error, Please Try Again Later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
                     else if(success.equals("-1")){
-                        Toast.makeText(getApplicationContext(),"Email entered already has an account", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.nric_used), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     b1.setVisibility(View.VISIBLE);
                 }
@@ -221,7 +221,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),"Register Fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.try_later), Toast.LENGTH_SHORT).show();
                         loading.setVisibility(View.GONE);
                         b1.setVisibility(View.VISIBLE);
                     }
@@ -240,6 +240,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
                 params.put("contact",contact);
                 params.put("age",age);
                 params.put("photo",img);
+                params.put("nric",nric);
                 return params;
             }
         };
@@ -309,7 +310,7 @@ public class RegisterPatientActivity extends BaseActivity implements AdapterView
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
-                "Select Photo"),1);
+                getString(R.string.select_photo)),1);
     }
 
     @Override
