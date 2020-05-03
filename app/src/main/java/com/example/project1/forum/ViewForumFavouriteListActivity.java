@@ -30,7 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.forum.specialist.SpecialistViewForumFavouriteActivity;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.userProfile.UserProfileActivity;
 
@@ -100,7 +100,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(User.getInstance().getUserType().equals("Specialist")) {
+                if(CurrentUser.getInstance().getUserType().equals("Specialist")) {
                     Intent i = new Intent(ViewForumFavouriteListActivity.this,
                             SpecialistViewForumFavouriteActivity.class);
                     startActivity(i);
@@ -123,7 +123,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getMyPosts(User.getInstance().getNRIC());
+        getMyPosts(CurrentUser.getInstance().getNRIC());
 
     }
 
@@ -371,7 +371,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -559,8 +559,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getNRIC(),User.getInstance().getUserType(), expanded_user_pic);
-                                    expandedName.setText(User.getInstance().getUserName());
+                                    getPic(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), expanded_user_pic);
+                                    expandedName.setText(CurrentUser.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
@@ -591,9 +591,9 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("email", User.getInstance().getNRIC());
-                    params.put("type", User.getInstance().getUserType());
-                    params.put("name", User.getInstance().getUserName());
+                    params.put("email", CurrentUser.getInstance().getNRIC());
+                    params.put("type", CurrentUser.getInstance().getUserType());
+                    params.put("name", CurrentUser.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
                     params.put("date",date);
@@ -645,7 +645,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -694,7 +694,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("postID",id );
                 return params;
             }

@@ -41,7 +41,7 @@ import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -72,7 +72,7 @@ public class ExerciseActivity extends BaseActivity {
     private List<String> durationList = new ArrayList<>();
     private List<String> exerciseNameList = new ArrayList<>();
     private int sessionId;
-    private String email = User.getInstance().getNRIC();
+    private String email = CurrentUser.getInstance().getNRIC();
     private String exerciseLevel, feeling, startTime, endTime, time;
     private boolean saveStatus = true;
     private SessionManager sessionManager;
@@ -105,11 +105,11 @@ public class ExerciseActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -135,8 +135,8 @@ public class ExerciseActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(ExerciseActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -674,9 +674,9 @@ public class ExerciseActivity extends BaseActivity {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 

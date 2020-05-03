@@ -183,6 +183,16 @@
         </activity>
         <activity
             android:name=".onboarding.OnboardingBaseActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".userManagement.UserListActivity"
+            android:exported="true"
+            android:label="@string/user_management"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userManagement.ViewUserDetailActivity"
+            android:exported="true"
+            android:label="@string/edit_user_profile"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

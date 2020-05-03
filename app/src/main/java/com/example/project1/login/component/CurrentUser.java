@@ -1,6 +1,6 @@
 package com.example.project1.login.component;
 
-public class User {
+public class CurrentUser {
     private String appointment;
     private int id;
     private String Name;
@@ -10,18 +10,18 @@ public class User {
     private String Age;
     private String userType;
     private int appointmentId;
-    private static User ourInstance = new User();
+    private static CurrentUser ourInstance = new CurrentUser();
 
 
 
-    public static User getInstance() {
+    public static CurrentUser getInstance() {
         if(ourInstance == null){
-            ourInstance = new User();
+            ourInstance = new CurrentUser();
         }
         return ourInstance;
     }
 
-    private User() {
+    private CurrentUser() {
     }
 
     public void setUserType (String type){

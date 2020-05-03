@@ -31,7 +31,7 @@ import com.example.project1.login.LoginActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -154,11 +154,11 @@ public class RegisterSpecialistActivity extends BaseActivity implements AdapterV
 //                        setProfile_pic(s1,s5);
 
                         /* set user instance */
-                        User.getInstance().setNRIC(nric); //nric
-                        User.getInstance().setPassword(s2); //pw
-                        User.getInstance().setUserName(s5);
-                        User.getInstance().setContact(s6);
-                        User.getInstance().setAge(s7);
+                        CurrentUser.getInstance().setNRIC(nric); //nric
+                        CurrentUser.getInstance().setPassword(s2); //pw
+                        CurrentUser.getInstance().setUserName(s5);
+                        CurrentUser.getInstance().setContact(s6);
+                        CurrentUser.getInstance().setAge(s7);
                         Log.e("Tag", "hello");
                     }
 //                    else if(s6.length()>11 || s6.length()<10){

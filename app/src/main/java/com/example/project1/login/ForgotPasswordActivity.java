@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,11 +49,11 @@ public class ForgotPasswordActivity extends BaseActivity {
     }
 
     public void onForgotPassword(View v){
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             URL = localhost+"/sendSaltToEmail";
-        } else if (User.getInstance().getUserType().equals("Caregiver")){
+        } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")){
             URL = localhost+"/sendSaltToEmail2";
-        } else if(User.getInstance().getUserType().equals("Specialist")){
+        } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
             URL = localhost+"/sendSaltToEmail3";
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -113,7 +113,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
-//                params.put("type", User.getInstance().getUserType());
+//                params.put("type", CurrentUser.getInstance().getUserType());
                 return params;
             }
         };

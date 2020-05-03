@@ -1,7 +1,6 @@
 package com.example.project1.login;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,11 +48,11 @@ public class ResetPasswordActivity extends BaseActivity {
     }
 
     public void onResetPassword(View view) {
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             URL = localhost+"/resetPassword";
-        } else if (User.getInstance().getUserType().equals("Caregiver")){
+        } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")){
             URL = localhost+"/resetPassword2";
-        } else if(User.getInstance().getUserType().equals("Specialist")){
+        } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
             URL = localhost+"/resetPassword3";
         }
         final EditText et1 = (EditText) findViewById(R.id.password);

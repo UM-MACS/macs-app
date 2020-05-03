@@ -197,6 +197,15 @@
     <string name="no">Tidak</string>
     <string name="save">S</string>
     <string name="email_register">E-mel ( Tidak diwajibkan )</string>
+    <string name="my_personal_details">Biodata</string>
+    <string name="empty_details">Nama, No Telefon dan Usia tidak boleh dikosongkan</string>
+
+    <string name="user_management">Pengurusan Pengguna</string>
+    <string name="view">Buka</string>
+    <string name="delete_user_fail">Gagal padam pengguna</string>
+    <string name="delete_user_success">Berjaya padam pengguna</string>
+    <string name="retrieve_user_fail">Gagal dapat pengguna</string>
     <string name="nric_register">NRIC ( tanpa \'-\' )</string>
     <string name="invalid_nric">Sila masukkan NRIC yang sah</string>
+    <string name="edit_user_profile">Ubah Biodata Pengguna</string>
 </resources>

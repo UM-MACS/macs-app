@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -29,7 +30,6 @@ import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.component.EmotionFragmentText;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.component.EmotionFragment;
 import com.example.project1.forum.ForumActivity;
@@ -90,8 +90,8 @@ public class EmotionAssessmentActivity extends BaseActivity {
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -116,11 +116,11 @@ public class EmotionAssessmentActivity extends BaseActivity {
 //                        startActivity(i);
                         break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
                             Intent i6 = new Intent(EmotionAssessmentActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Patient")){
                             Intent i6 = new Intent(EmotionAssessmentActivity.this, ForumActivity.class);
                             startActivity(i6);
                             break;
@@ -232,7 +232,7 @@ public class EmotionAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -254,9 +254,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             Intent i = new Intent(EmotionAssessmentActivity.this, MainActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
 //            finish();
             return true;
         }

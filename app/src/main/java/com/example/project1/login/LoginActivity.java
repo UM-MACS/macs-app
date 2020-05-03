@@ -22,10 +22,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
@@ -87,12 +87,12 @@ public class LoginActivity extends BaseActivity {
         b2 = (Button)findViewById(R.id.registerButton);
         t1 = (TextView)findViewById(R.id.textLogin);
         b3 = (Button)findViewById(R.id.forgotpwButton);
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             t1.setText(R.string.patientLogin);
         }
-        else if(User.getInstance().getUserType().equals("Caregiver")){
+        else if(CurrentUser.getInstance().getUserType().equals("Caregiver")){
             t1.setText(R.string.caregiverLogin);
-        } else if(User.getInstance().getUserType().equals("Specialist")){
+        } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
             t1.setText(R.string.specialistLogin);
         } else{
             t1.setText(R.string.adminLogin);
@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity {
                 if (nric.equals("") || password.equals("")) {
                     Toast.makeText(getApplicationContext(), getString(R.string.empty_fields),Toast.LENGTH_SHORT).show();
                 } else {
-                    if (User.getInstance().getUserType().equals("Patient")) {
+                    if (CurrentUser.getInstance().getUserType().equals("Patient")) {
                         /* mysql */
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
@@ -188,9 +188,9 @@ public class LoginActivity extends BaseActivity {
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
 
-                        User.getInstance().setNRIC(nric);
+                        CurrentUser.getInstance().setNRIC(nric);
 
-                    } else if (User.getInstance().getUserType().equals("Caregiver")) {
+                    } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")) {
                         /* mysql */
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
@@ -213,8 +213,8 @@ public class LoginActivity extends BaseActivity {
                                                     String jnric = jsonObject.getString("nric").trim();
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jnric, "Caregiver");
-                                                    User.getInstance().setNRIC(jnric); //email
-                                                    User.getInstance().setUserName(jname);
+                                                    CurrentUser.getInstance().setNRIC(jnric); //email
+                                                    CurrentUser.getInstance().setUserName(jname);
 
                                                 }
                                                 Intent i;
@@ -270,8 +270,8 @@ public class LoginActivity extends BaseActivity {
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
 
-                        User.getInstance().setNRIC(nric);
-                    } else if(User.getInstance().getUserType().equals("Specialist")){
+                        CurrentUser.getInstance().setNRIC(nric);
+                    } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
@@ -296,8 +296,8 @@ public class LoginActivity extends BaseActivity {
                                                     String jnric = jsonObject.getString("nric").trim();
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jnric, "Specialist");
-                                                    User.getInstance().setNRIC(jnric); //email
-                                                    User.getInstance().setUserName(jname);
+                                                    CurrentUser.getInstance().setNRIC(jnric); //email
+                                                    CurrentUser.getInstance().setUserName(jname);
                                                 }
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeSpecialist() == 0){
@@ -353,7 +353,7 @@ public class LoginActivity extends BaseActivity {
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
 
-                        User.getInstance().setNRIC(nric);
+                        CurrentUser.getInstance().setNRIC(nric);
                     }
 
                     else{
@@ -384,11 +384,11 @@ public class LoginActivity extends BaseActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (User.getInstance().getUserType().equals("Patient")) {
+                if (CurrentUser.getInstance().getUserType().equals("Patient")) {
                     Intent intent = new Intent(LoginActivity.this, RegisterPatientActivity.class);
                     startActivity(intent);
                 }
-                else if (User.getInstance().getUserType().equals("Caregiver")) {
+                else if (CurrentUser.getInstance().getUserType().equals("Caregiver")) {
                     Intent intent = new Intent(LoginActivity.this, RegisterCaregiverActivity.class);
                     startActivity(intent);
                 }

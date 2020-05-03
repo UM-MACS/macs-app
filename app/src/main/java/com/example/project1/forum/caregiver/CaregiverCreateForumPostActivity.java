@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,9 +42,9 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
-        Log.e("TAG", "Caregiver user name "+ User.getInstance().getNRIC() );
-        email = User.getInstance().getNRIC();
-        name = User.getInstance().getUserName();
+        Log.e("TAG", "Caregiver user name "+ CurrentUser.getInstance().getNRIC() );
+        email = CurrentUser.getInstance().getNRIC();
+        name = CurrentUser.getInstance().getUserName();
         localhost = getString(R.string.localhost);
         URL = localhost+"/postingToCaregiverForum/";
 
@@ -113,7 +113,7 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", email);
-                    params.put("type", User.getInstance().getUserType());
+                    params.put("type", CurrentUser.getInstance().getUserType());
                     params.put("name", name);
                     params.put("title", title);
                     params.put("content", content);

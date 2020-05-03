@@ -25,8 +25,8 @@ import com.example.project1.forum.specialist.SpecialistEditDeleteForumPostActivi
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.forum.specialist.SpecialistViewForumFavouriteActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -47,11 +47,11 @@ public class UserProfileActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -77,8 +77,8 @@ public class UserProfileActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(UserProfileActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -94,7 +94,7 @@ public class UserProfileActivity extends BaseActivity {
             }
         });
 
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             Button mydetailsButton = (Button) findViewById(R.id.my_details);
             mydetailsButton.setVisibility(View.GONE);
         }
@@ -105,10 +105,10 @@ public class UserProfileActivity extends BaseActivity {
         viewMyPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
+                if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
                     Intent i = new Intent(UserProfileActivity.this, CaregiverEditDeletePostActivity.class);
                     startActivity(i);
-                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                } else if (CurrentUser.getInstance().getUserType().equalsIgnoreCase("Patient")){
                     Intent i = new Intent(UserProfileActivity.this, EditDeleteForumPostActivity.class);
                     startActivity(i);
                 } else {
@@ -122,10 +122,10 @@ public class UserProfileActivity extends BaseActivity {
         viewMyFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
+                if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")) {
                     Intent i = new Intent(UserProfileActivity.this, CaregiverViewForumFavouriteListActivity.class);
                     startActivity(i);
-                } else if (User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                } else if (CurrentUser.getInstance().getUserType().equalsIgnoreCase("Patient")){
                     Intent i = new Intent(UserProfileActivity.this, ViewForumFavouriteListActivity.class);
                     startActivity(i);
                 } else {
@@ -141,7 +141,7 @@ public class UserProfileActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -164,9 +164,9 @@ public class UserProfileActivity extends BaseActivity {
             Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 

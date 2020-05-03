@@ -34,6 +34,7 @@ import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
@@ -42,7 +43,6 @@ import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.forum.imageFile.ImgLoader;
 
@@ -98,7 +98,7 @@ public class SearchForumActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
             Button button = (Button)findViewById(R.id.admin_back_button);
             button.setVisibility(View.VISIBLE);
@@ -110,8 +110,8 @@ public class SearchForumActivity extends BaseActivity {
                 }
             });
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -137,8 +137,8 @@ public class SearchForumActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(SearchForumActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -335,7 +335,7 @@ public class SearchForumActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("postID",id);
                 return params;
             }
@@ -408,7 +408,7 @@ public class SearchForumActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("forum","Patient");
                 params.put("postID",id);
                 return params;
@@ -459,7 +459,7 @@ public class SearchForumActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", User.getInstance().getNRIC());
+                params.put("email", CurrentUser.getInstance().getNRIC());
                 params.put("forum","Patient");
                 params.put("postID",id );
                 return params;
@@ -624,8 +624,8 @@ public class SearchForumActivity extends BaseActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getNRIC(),User.getInstance().getUserType(), expanded_user_pic);
-                                    expandedName.setText(User.getInstance().getUserName());
+                                    getPic(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), expanded_user_pic);
+                                    expandedName.setText(CurrentUser.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
@@ -656,9 +656,9 @@ public class SearchForumActivity extends BaseActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("email", User.getInstance().getNRIC());
-                    params.put("type", User.getInstance().getUserType());
-                    params.put("name", User.getInstance().getUserName());
+                    params.put("email", CurrentUser.getInstance().getNRIC());
+                    params.put("type", CurrentUser.getInstance().getUserType());
+                    params.put("name", CurrentUser.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
                     params.put("date",date);
@@ -755,7 +755,7 @@ public class SearchForumActivity extends BaseActivity {
                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                         final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
-                                        if(User.getInstance().getUserType().equals("Specialist")){
+                                        if(CurrentUser.getInstance().getUserType().equals("Specialist")){
                                             unpinned_pic = (ImageView) ((View)rowView).findViewById(R.id.unpinned);
                                             unpinned_pic.setVisibility(View.VISIBLE);
                                         }
@@ -1015,7 +1015,7 @@ public class SearchForumActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -1038,9 +1038,9 @@ public class SearchForumActivity extends BaseActivity {
             Intent intent = new Intent(SearchForumActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 
