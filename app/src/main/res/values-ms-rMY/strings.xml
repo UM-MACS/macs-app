@@ -165,7 +165,7 @@
     <string name="no_search_result">"Tiada Hasil untuk Pencarian "</string>
     <string name="add_favourite">Tambah ke Kegemaran</string>
     <string name="remove_favourite">Padam dari Kegemaran</string>
-    <string name="my_activity">Aktiviti Saya</string>
+    <string name="my_activity">Aktiviti Profil Saya</string>
     <string name="my_fav_list">Siaran Kegemaran Saya</string>
     <string name="reported_posts">Siaran yang Dilaporkan</string>
     <string name="answer">Jawapan</string>
@@ -197,4 +197,6 @@
     <string name="no">Tidak</string>
     <string name="save">S</string>
     <string name="email_register">E-mel ( Tidak diwajibkan )</string>
+    <string name="nric_register">NRIC ( tanpa \'-\' )</string>
+    <string name="invalid_nric">Sila masukkan NRIC yang sah</string>
 </resources>
