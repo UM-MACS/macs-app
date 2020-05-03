@@ -42,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -50,7 +51,6 @@ import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.eventReminder.component.AlarmReceiver;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.ForumActivity;
@@ -100,18 +100,18 @@ public class EventReminderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_reminder);
 
-        Log.e("TAG", "onCreate: view appointment name: "+ User.getInstance().getUserName() );
+        Log.e("TAG", "onCreate: view appointment name: "+ CurrentUser.getInstance().getUserName() );
 
         //drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -137,8 +137,8 @@ public class EventReminderActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(EventReminderActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -166,7 +166,7 @@ public class EventReminderActivity extends BaseActivity {
         clickableView = (LinearLayout) findViewById(R.id.clickable_view);
         sessionManager = new SessionManager(this);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getAppointmentData(User.getInstance().getNRIC());
+        getAppointmentData(CurrentUser.getInstance().getNRIC());
 
 
 
@@ -428,9 +428,9 @@ public class EventReminderActivity extends BaseActivity {
                         remarkTextView.setText(remarkText);
                         appointmentDateText.setText(dateSelected);
                         appointmentTimeText.setText(timeSelected);
-                        User.getInstance().setAppointment(dateSelected);
+                        CurrentUser.getInstance().setAppointment(dateSelected);
                         Log.e("tag", "date selected is " + dateSelected);
-                        setAppointment(User.getInstance().getNRIC(), User.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
+                        setAppointment(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), remarkText, dateSelected, timeSelected);
                     }
                 }
             }
@@ -799,7 +799,7 @@ public class EventReminderActivity extends BaseActivity {
                     remarkTextView.setText(remarkText);
                     appointmentDateText.setText(dateSelected);
                     appointmentTimeText.setText(timeSelected);
-                    User.getInstance().setAppointment(dateSelected);
+                    CurrentUser.getInstance().setAppointment(dateSelected);
                     if(timeSelected==null){
                         timeSelected = "";
                     }
@@ -835,7 +835,7 @@ public class EventReminderActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -858,9 +858,9 @@ public class EventReminderActivity extends BaseActivity {
             Intent intent = new Intent(EventReminderActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setPassword("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setPassword("");
             return true;
         }
 

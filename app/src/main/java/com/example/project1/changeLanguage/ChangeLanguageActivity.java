@@ -22,8 +22,8 @@ import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -52,11 +52,11 @@ public class ChangeLanguageActivity extends BaseActivity {
             //Bottom Navigation
             BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         if(sessionManager.isLogin()) {
-            if (User.getInstance().getUserType().equals("Admin")) {
+            if (CurrentUser.getInstance().getUserType().equals("Admin")) {
                 bottomNavigationView.setVisibility(View.GONE);
             }
-            if (User.getInstance().getUserType().equals("Caregiver") ||
-                    User.getInstance().getUserType().equals("Specialist")) {
+            if (CurrentUser.getInstance().getUserType().equals("Caregiver") ||
+                    CurrentUser.getInstance().getUserType().equals("Specialist")) {
                 MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
                 item.setVisible(false);
             }
@@ -82,8 +82,8 @@ public class ChangeLanguageActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                         case R.id.navigation_forum:
-                            if (User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                    || User.getInstance().getUserType().equalsIgnoreCase("Admin")) {
+                            if (CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                    || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")) {
                                 Intent i6 = new Intent(ChangeLanguageActivity.this, SpecialistForumActivity.class);
                                 startActivity(i6);
                                 break;
@@ -157,7 +157,7 @@ public class ChangeLanguageActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if(sessionManager.isLogin()) {
-            if (User.getInstance().getUserType().equals("Patient")) {
+            if (CurrentUser.getInstance().getUserType().equals("Patient")) {
                 getMenuInflater().inflate(R.menu.nav, menu);
                 return true;
             } else {
@@ -188,9 +188,9 @@ public class ChangeLanguageActivity extends BaseActivity {
             Intent intent = new Intent(ChangeLanguageActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setPassword("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setPassword("");
             return true;
         }
         if (id == R.id.action_change_password){

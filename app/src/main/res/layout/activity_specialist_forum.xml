@@ -37,6 +37,7 @@
         android:onClick="onNavPatientForum"/>
 
     <Button
+        android:id="@+id/button_to_caregiver_forum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="30dp"
@@ -50,6 +51,23 @@
         android:layout_below="@+id/button_to_patient_forum"
         android:text="@string/caregiver_forum"
         android:onClick="onNavCaregiverForum"/>
+
+    <Button
+        android:id="@+id/button_to_user_management"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:textSize="20sp"
+        android:background="@drawable/button_border"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/button_to_caregiver_forum"
+        android:text="@string/user_management"
+        android:visibility="gone"
+        android:onClick="onNavUserManagement"/>
 
 
     <android.support.design.widget.BottomNavigationView

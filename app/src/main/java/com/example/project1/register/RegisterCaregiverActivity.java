@@ -170,11 +170,11 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
 //                        setProfile_pic(s1,s5);
 
                         /* set user instance */
-//                        User.getInstance().setEmail(s1); //email
-//                        User.getInstance().setPassword(s2); //pw
-//                        User.getInstance().setUserName(s5);
-//                        User.getInstance().setContact(s6);
-//                        User.getInstance().setAge(s7);
+//                        CurrentUser.getInstance().setEmail(s1); //email
+//                        CurrentUser.getInstance().setPassword(s2); //pw
+//                        CurrentUser.getInstance().setUserName(s5);
+//                        CurrentUser.getInstance().setContact(s6);
+//                        CurrentUser.getInstance().setAge(s7);
                     }
 //                    else if(s6.length()>11 || s6.length()<10){
 //                        Toast.makeText(getApplicationContext(), "Please Enter a Valid Phone Number"

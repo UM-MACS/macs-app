@@ -26,8 +26,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,9 +86,9 @@ public class EmotionFragmentText extends Fragment {
         String mEmail = user.get(sessionManager.NRIC);
         String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
-        User.getInstance().setNRIC(mEmail);
-        User.getInstance().setUserName(mName);
-        User.getInstance().setUserType(mType);
+        CurrentUser.getInstance().setNRIC(mEmail);
+        CurrentUser.getInstance().setUserName(mName);
+        CurrentUser.getInstance().setUserType(mType);
         task = new MyTask();
 
         arrayList = new ArrayList<String>();
@@ -128,7 +128,7 @@ public class EmotionFragmentText extends Fragment {
                     }
                     String[] sArray = splitText.split("\\s{2,}");
                     for (int i =0; i<sArray.length; i++){
-                        sentimentAnalysis(User.getInstance().getNRIC(), User.getInstance().getUserType(), date,
+                        sentimentAnalysis(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), date,
                                 sArray[i]);
                     }
                 }

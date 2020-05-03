@@ -25,8 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,9 +83,9 @@ public class EmotionFragment extends Fragment {
         String mEmail = user.get(sessionManager.NRIC);
         String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
-        User.getInstance().setNRIC(mEmail);
-        User.getInstance().setUserName(mName);
-        User.getInstance().setUserType(mType);
+        CurrentUser.getInstance().setNRIC(mEmail);
+        CurrentUser.getInstance().setUserName(mName);
+        CurrentUser.getInstance().setUserType(mType);
         task = new MyTask();
 
         b1 = (Button) thisFragment.findViewById(R.id.emotion1);
@@ -105,10 +105,10 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
-                Log.d("tagd"," email " + User.getInstance().getNRIC()+ " type " + User.getInstance().getUserType() + " date " + date);
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                Log.d("tagd"," email " + CurrentUser.getInstance().getNRIC()+ " type " + CurrentUser.getInstance().getUserType() + " date " + date);
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Happy","Positive");
                 task.execute();
 
@@ -121,9 +121,9 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Happy(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Surprised(def)","Positive");
                 task.execute();
             }
@@ -135,9 +135,9 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Smiling(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Disgusted(def)","Negative");
                 task.execute();
             }
@@ -149,9 +149,9 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Unhappy(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Fear(def)","Neutral");
                 task.execute();
             }
@@ -163,9 +163,9 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Angry(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Angry(def)","Negative");
                 task.execute();
             }
@@ -177,9 +177,9 @@ public class EmotionFragment extends Fragment {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Sad(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Sad(def)","Negative");
                 task.execute();
             }
@@ -216,7 +216,7 @@ public class EmotionFragment extends Fragment {
 //                    }
 //                    String[] sArray = splitText.split("\\s{2,}");
 //                    for (int i =0; i<sArray.length; i++){
-//                        sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                        sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                                sArray[i]);
 //                    }
 //                }

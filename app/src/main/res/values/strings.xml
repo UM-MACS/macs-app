@@ -262,5 +262,11 @@
     <string name="email_register">Email ( Optional )</string>
     <string name="invalid_nric">Please Enter a Valid NRIC</string>
 
+    //user management
+    <string name="user_management">User Management</string>
+    <string name="view">View</string>
+    <string name="delete_user_fail">Delete user fail</string>
+    <string name="delete_user_success">Delete user success</string>
+    <string name="retrieve_user_fail">Retrieve user fail</string>
 
 </resources>

@@ -30,7 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 
 import org.json.JSONArray;
@@ -96,7 +96,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getMyPosts(User.getInstance().getNRIC());
+        getMyPosts(CurrentUser.getInstance().getNRIC());
 
     }
 

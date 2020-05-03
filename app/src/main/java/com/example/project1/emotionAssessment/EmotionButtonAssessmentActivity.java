@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.faq.FAQActivity;
@@ -38,7 +39,6 @@ import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
@@ -77,7 +77,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if(User.getInstance().getUserType().equals("Specialist")){
+//        if(CurrentUser.getInstance().getUserType().equals("Specialist")){
 //            Intent i = new Intent(EmotionButtonAssessmentActivity.this,DisplayAnalysisActivity.class);
 //            startActivity(i);
 //        }
@@ -96,9 +96,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
         String mEmail = user.get(sessionManager.NRIC);
         String mType = user.get(sessionManager.TYPE);
         Log.e("TAG", "shared preference name is "+mName );
-        User.getInstance().setNRIC(mEmail);
-        User.getInstance().setUserName(mName);
-        User.getInstance().setUserType(mType);
+        CurrentUser.getInstance().setNRIC(mEmail);
+        CurrentUser.getInstance().setUserName(mName);
+        CurrentUser.getInstance().setUserType(mType);
         task = new MyTask();
 
 
@@ -108,11 +108,11 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
 
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -138,8 +138,8 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(EmotionButtonAssessmentActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -177,9 +177,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Very Happy(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Happy(def)","Positive");
                 task.execute();
 
@@ -192,9 +192,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Happy(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Surprised(def)","Positive");
                 task.execute();
             }
@@ -206,9 +206,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Smiling(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Disgusted(def)","Negative");
                 task.execute();
             }
@@ -220,9 +220,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Unhappy(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Fear(def)","Neutral");
                 task.execute();
             }
@@ -234,9 +234,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Angry(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Angry(def)","Negative");
                 task.execute();
             }
@@ -248,9 +248,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                 Date d = Calendar.getInstance().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final String date = dateFormat.format(d);
-//                sentimentAnalysis(User.getInstance().getEmail(), User.getInstance().getUserType(), date,
+//                sentimentAnalysis(CurrentUser.getInstance().getEmail(), CurrentUser.getInstance().getUserType(), date,
 //                        "Sad(def)");
-                insert(User.getInstance().getNRIC(),User.getInstance().getUserType(),
+                insert(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(),
                         date,"Sad(def)","Negative");
                 task.execute();
             }
@@ -287,7 +287,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
                     }
                     String[] sArray = splitText.split("\\s{2,}");
                     for (int i =0; i<sArray.length; i++){
-                        sentimentAnalysis(User.getInstance().getNRIC(), User.getInstance().getUserType(), date,
+                        sentimentAnalysis(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), date,
                                 sArray[i]);
                     }
                 }
@@ -501,7 +501,7 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -523,9 +523,9 @@ public class EmotionButtonAssessmentActivity extends BaseActivity {
             Intent intent = new Intent(EmotionButtonAssessmentActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setNRIC("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
 //            finish();
             return true;
         }

@@ -28,7 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 
 import org.json.JSONArray;
@@ -107,7 +107,7 @@ public class ViewForumReportedPostActivity extends BaseActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
 //        userType = (TextView)findViewById(R.id.UserTypeTV);
-        getMyPosts(User.getInstance().getNRIC());
+        getMyPosts(CurrentUser.getInstance().getNRIC());
 
     }
 
@@ -147,7 +147,7 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                                     Log.e("TAG", "time "+date.get(i));
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     final View rowView = inflater.inflate(R.layout.field_forum, forumParentLinearLayout, false);
-                                    //Show User type
+                                    //Show CurrentUser type
 //                                    userType = (TextView)((View)rowView).findViewById(R.id.UserTypeTV);
 //                                    userType.setVisibility(View.VISIBLE);
 //                                    if(type.get(i).equalsIgnoreCase("patient")){
@@ -430,8 +430,8 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                                     expandedContent = (TextView) ((View) rowView).findViewById(R.id.expanded_thread_content);
                                     expanded_user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.expanded_user_profile_pic);
                                     expandedTime = (TextView)((View)rowView).findViewById(R.id.expanded_thread_time);
-                                    getPic(User.getInstance().getNRIC(),User.getInstance().getUserType(), expanded_user_pic);
-                                    expandedName.setText(User.getInstance().getUserName());
+                                    getPic(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), expanded_user_pic);
+                                    expandedName.setText(CurrentUser.getInstance().getUserName());
                                     expandedContent.setText(text);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
@@ -462,9 +462,9 @@ public class ViewForumReportedPostActivity extends BaseActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("email", User.getInstance().getNRIC());
-                    params.put("type", User.getInstance().getUserType());
-                    params.put("name", User.getInstance().getUserName());
+                    params.put("email", CurrentUser.getInstance().getNRIC());
+                    params.put("type", CurrentUser.getInstance().getUserType());
+                    params.put("name", CurrentUser.getInstance().getUserName());
                     params.put("content", text);
                     params.put("parentID", parentID);
                     params.put("date",date);

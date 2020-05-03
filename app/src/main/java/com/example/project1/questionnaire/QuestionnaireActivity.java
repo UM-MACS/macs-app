@@ -23,11 +23,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
@@ -79,7 +79,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
         URL_GET = localhost + "/getQuestionnaire";
         sessionManager = new SessionManager(this);
         period = "0";
-        getQuestionnaire(User.getInstance().getNRIC());
+        getQuestionnaire(CurrentUser.getInstance().getNRIC());
         btnSubmit = (Button) findViewById(R.id.button_submit_assessment);
         btnSubmit.setVisibility(View.INVISIBLE);
         btnPrev = (Button) findViewById(R.id.button_prev_assessment);
@@ -186,7 +186,7 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
 
                     period = Integer.toString(Integer.parseInt(period) + 1);
 
-                    insertAssessment(User.getInstance().getNRIC(),date, period,Arrays.toString(answerArr));
+                    insertAssessment(CurrentUser.getInstance().getNRIC(),date, period,Arrays.toString(answerArr));
 
                 }
             }
@@ -302,9 +302,9 @@ public class QuestionnaireActivity extends BaseActivity implements AdapterView.O
                 Intent intent = new Intent(QuestionnaireActivity.this, MainActivity.class);
                 intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                User.getInstance().setUserName("");
-                User.getInstance().setNRIC("");
-                User.getInstance().setUserType("");
+                CurrentUser.getInstance().setUserName("");
+                CurrentUser.getInstance().setNRIC("");
+                CurrentUser.getInstance().setUserType("");
                 return true;
             }
 

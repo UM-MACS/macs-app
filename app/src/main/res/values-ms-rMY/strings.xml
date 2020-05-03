@@ -197,4 +197,10 @@
     <string name="no">Tidak</string>
     <string name="save">S</string>
     <string name="email_register">E-mel ( Tidak diwajibkan )</string>
+
+    <string name="user_management">Pengurusan Pengguna</string>
+    <string name="view">Buka</string>
+    <string name="delete_user_fail">Gagal padam pengguna</string>
+    <string name="delete_user_success">Berjaya padam pengguna</string>
+    <string name="retrieve_user_fail">Gagal dapat pengguna</string>
 </resources>
