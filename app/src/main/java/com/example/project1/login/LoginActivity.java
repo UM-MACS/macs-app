@@ -210,10 +210,10 @@ public class LoginActivity extends BaseActivity {
                                             } else if (success.equals("1")) {
                                                 for (int i = 0; i < jsonArray.length(); i++) {
                                                     String jname = jsonObject.getString("name").trim();
-                                                    String jemail = jsonObject.getString("email").trim();
+                                                    String jnric = jsonObject.getString("nric").trim();
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                    sessionManager.createSession(jname, jemail, "Caregiver");
-                                                    User.getInstance().setNRIC(jemail); //email
+                                                    sessionManager.createSession(jname, jnric, "Caregiver");
+                                                    User.getInstance().setNRIC(jnric); //email
                                                     User.getInstance().setUserName(jname);
 
                                                 }
@@ -226,12 +226,12 @@ public class LoginActivity extends BaseActivity {
                                                 }
 //                                                Intent i = new Intent(LoginActivity.this, EmotionAssessmentActivity.class);
                                                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                i.putExtra("email",nric);
+                                                i.putExtra("nric",nric);
                                                 startActivity(i);
                                             } else if(success.equals("2")){
                                                 Intent i = new Intent(LoginActivity.this,ResetPasswordActivity.class);
                                                 i.setFlags(i.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                                i.putExtra("email",nric);
+                                                i.putExtra("nric",nric);
                                                 startActivity(i);
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(), getString(R.string.incorrect_pw), Toast.LENGTH_LONG).show();
@@ -261,7 +261,7 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<>();
-                                params.put("email", nric);
+                                params.put("nric", nric);
                                 params.put("password", password);
                                 return params;
                             }
@@ -293,10 +293,10 @@ public class LoginActivity extends BaseActivity {
                                                 for (int i = 0; i < jsonArray.length(); i++) {
 //                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                                     String jname = jsonObject.getString("name").trim();
-                                                    String jemail = jsonObject.getString("email").trim();
+                                                    String jnric = jsonObject.getString("nric").trim();
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                    sessionManager.createSession(jname, jemail, "Specialist");
-                                                    User.getInstance().setNRIC(jemail); //email
+                                                    sessionManager.createSession(jname, jnric, "Specialist");
+                                                    User.getInstance().setNRIC(jnric); //email
                                                     User.getInstance().setUserName(jname);
                                                 }
                                                 Intent i;
@@ -359,14 +359,16 @@ public class LoginActivity extends BaseActivity {
                     else{
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
-                        if(nric.equals("mascadmin")&&password.equals("abc123")){
+                        if(nric.equals("macsadmin")&&password.equals("abc123")){
                             Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
                             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
-                            sessionManager.createSession("admin", "mascadmin", "Admin");
+                            sessionManager.createSession("admin", "macsadmin", "Admin");
                         } else{
                             Toast.makeText(getApplicationContext(), getString(R.string.wrong_nric_pw)
                             ,Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            b1.setVisibility(View.VISIBLE);
                         }
                     }
                     getWindow().setSoftInputMode(
