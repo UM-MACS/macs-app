@@ -207,7 +207,7 @@
     <string name="view_reported_posts">View Reported Posts</string>
     <string name="no_posts">No Posts yet</string>
     <string name="back">Back</string>
-<!--    <string name="enter_title_content" translatable="false">Please Enter Title and Content</string>-->
+    <!--    <string name="enter_title_content" translatable="false">Please Enter Title and Content</string>-->
     <string name="update_success">Update Post Success</string>
     <string name="delete_post">Delete Post?</string>
     <string name="delete_post_success">Post Deleted</string>
@@ -217,10 +217,10 @@
     <string name="report_post_confirm">Are you sure you want to report this post?</string>
     <string name="report">Report</string>
     <string name="no_search_result">"No Search Result for "</string>
-    <string name="add_favourite">Add Favourite</string>
-    <string name="remove_favourite">Remove Favourite</string>
+    <string name="add_favourite">Add To Favourite</string>
+    <string name="remove_favourite">Remove from Favourite</string>
     <string name="edit" translatable="false">Edit</string>
-    <string name="my_activity">My Activity</string>
+    <string name="my_activity">My Profile Activity</string>
     <string name="my_fav_list">My Favourite Posts</string>
     <string name="reported_posts">Reported Posts</string>
     <string name="answer">Answer</string>
@@ -261,6 +261,8 @@
     <string name="nric_register">NRIC ( without \'-\' )</string>
     <string name="email_register">Email ( Optional )</string>
     <string name="invalid_nric">Please Enter a Valid NRIC</string>
+    <string name="my_personal_details">My Personal Details</string>
+    <string name="empty_details">Name, Phone No and Age cannot be Empty</string>
 
 
 </resources>
