@@ -48,8 +48,29 @@
     <android.support.v4.view.ViewPager
         android:paddingTop="32dp"
         android:id="@+id/view_pager"
-        android:layout_marginTop="64dp"
-        android:layout_width="match_parent"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="@android:dimen/notification_large_icon_width"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/forward_button"
+        android:layout_width="45dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="287dp"
+        android:layout_marginStart="-40dp"
+        android:background="@drawable/ic_right"
+        android:layout_alignEnd="@+id/view_pager"/>
+
+    <Button
+        android:id="@+id/backward_button"
+        android:layout_width="45dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="-40dp"
+        android:layout_marginTop="287dp"
+        android:background="@drawable/ic_left"
+        android:layout_alignStart="@+id/view_pager"
+        android:visibility="gone"/>
+
 
 </RelativeLayout>

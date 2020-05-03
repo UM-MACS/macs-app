@@ -39,6 +39,26 @@
         android:paddingTop="48dp" />
 
     <Button
+        android:id="@+id/forward_button"
+        android:layout_width="45dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="-40dp"
+        android:background="@drawable/ic_right"
+        android:layout_alignEnd="@+id/view_pager"/>
+
+    <Button
+        android:id="@+id/backward_button"
+        android:layout_width="45dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="-40dp"
+        android:layout_marginTop="287dp"
+        android:background="@drawable/ic_left"
+        android:layout_alignStart="@+id/view_pager"
+        android:visibility="gone"/>
+
+    <Button
         android:id="@+id/btn_done"
         android:layout_width="96dp"
         android:layout_height="36dp"

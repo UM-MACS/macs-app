@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -49,6 +51,16 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
+            Button buttonRight = (Button) findViewById(R.id.forward_button);
+            Button buttonLeft = (Button) findViewById(R.id.backward_button);
+            if(position==0){
+                buttonLeft.setVisibility(View.GONE);
+                buttonRight.setVisibility(View.VISIBLE);
+            }
+            if (position == dots.length-1){
+                buttonRight.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+            }
             for (int i = 0; i < dots.length; i++) {
                 if (i == position)
                     dots[i].setImageResource(R.drawable.active_dot);
@@ -57,6 +69,8 @@ public class EmotionAssessmentActivity extends BaseActivity {
             }
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +138,7 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
 
         viewPager = findViewById(R.id.view_pager);
-        Fragment[] fragments = {
+        final Fragment[] fragments = {
                 new EmotionFragment(),
                 new EmotionFragmentText(),
         };
@@ -137,14 +151,14 @@ public class EmotionAssessmentActivity extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
-        ImageView forwardArrow = new ImageView(this);
-        forwardArrow.setImageResource(R.drawable.left_arrow);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(15, 0, 15, 0);
-        dotList.addView(forwardArrow);
+//        ImageView forwardArrow = new ImageView(this);
+//        forwardArrow.setImageResource(R.drawable.left_arrow);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        layoutParams.setMargins(15, 0, 15, 0);
+//        dotList.addView(forwardArrow);
 
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
@@ -159,10 +173,38 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
         dots[0].setImageResource(R.drawable.active_dot);
 
-        ImageView backwardArrow = new ImageView(this);
-        backwardArrow.setImageResource(R.drawable.right_arrow);
-        layoutParams.setMargins(8, 0, 8, 0);
-        dotList.addView(backwardArrow);
+//        ImageView backwardArrow = new ImageView(this);
+//        backwardArrow.setImageResource(R.drawable.right_arrow);
+//        layoutParams.setMargins(8, 0, 8, 0);
+//        dotList.addView(backwardArrow);
+
+        final Button buttonRight = (Button) findViewById(R.id.forward_button);
+        final Button buttonLeft = (Button) findViewById(R.id.backward_button);
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonLeft.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem()+1;
+                viewPager.setCurrentItem(i);
+                if(i == fragments.length-1){
+                    buttonRight.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonRight.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem() -1;
+                viewPager.setCurrentItem(i);
+                if(i == 0){
+                    buttonLeft.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

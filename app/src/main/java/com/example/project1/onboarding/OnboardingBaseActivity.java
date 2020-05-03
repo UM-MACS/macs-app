@@ -180,14 +180,14 @@ public class OnboardingBaseActivity extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
-        ImageView forwardArrow = new ImageView(this);
-        forwardArrow.setImageResource(R.drawable.left_arrow);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(15, 0, 15, 0);
-        dotList.addView(forwardArrow);
+//        ImageView forwardArrow = new ImageView(this);
+//        forwardArrow.setImageResource(R.drawable.left_arrow);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        layoutParams.setMargins(15, 0, 15, 0);
+//        dotList.addView(forwardArrow);
 
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
@@ -202,10 +202,37 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         dots[0].setImageResource(R.drawable.active_dot);
 
-        ImageView backwardArrow = new ImageView(this);
-        backwardArrow.setImageResource(R.drawable.right_arrow);
-        layoutParams.setMargins(8, 0, 8, 0);
-        dotList.addView(backwardArrow);
+//        ImageView backwardArrow = new ImageView(this);
+//        backwardArrow.setImageResource(R.drawable.right_arrow);
+//        layoutParams.setMargins(8, 0, 8, 0);
+//        dotList.addView(backwardArrow);
+
+        final Button buttonRight = (Button) findViewById(R.id.forward_button);
+        final Button buttonLeft = (Button) findViewById(R.id.backward_button);
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonLeft.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem()+1;
+                viewPager.setCurrentItem(i);
+                if(i == fragments.length-1){
+                    buttonRight.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonRight.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem() -1;
+                viewPager.setCurrentItem(i);
+                if(i == 0){
+                    buttonLeft.setVisibility(View.GONE);
+                }
+            }
+        });
+
 
         btnDone = (Button) findViewById(R.id.btn_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -236,10 +263,21 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
-            if(position == dots.length - 1)
+            Button buttonRight = (Button) findViewById(R.id.forward_button);
+            Button buttonLeft = (Button) findViewById(R.id.backward_button);
+            if(position==0){
+                buttonLeft.setVisibility(View.GONE);
+                buttonRight.setVisibility(View.VISIBLE);
+            }
+            else if(position == dots.length - 1){
                 btnDone.setVisibility(View.VISIBLE);
-            else
+                buttonRight.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+                }
+            else {
                 btnDone.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+            }
 
             for (int i = 0; i < dots.length; i++) {
                 if (i == position)
