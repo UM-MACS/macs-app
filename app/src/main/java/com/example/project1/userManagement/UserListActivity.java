@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -48,6 +49,9 @@ public class UserListActivity extends BaseActivity implements UserListAdapter.Ev
         setContentView(R.layout.activity_user_list);
         sessionManager = new SessionManager(this);
         sessionManager.checkLogin();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         btnPatient = findViewById(R.id.btn_patient);
         btnCaregiver = findViewById(R.id.btn_caregiver);
@@ -137,10 +141,12 @@ public class UserListActivity extends BaseActivity implements UserListAdapter.Ev
                                     doctorList = temp;
                                 }
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), getString(R.string.retrieve_user_fail),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
+                            progressBar.setVisibility(View.GONE);
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), getString(R.string.retrieve_user_fail),
                                     Toast.LENGTH_SHORT).show();
@@ -150,6 +156,7 @@ public class UserListActivity extends BaseActivity implements UserListAdapter.Ev
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), getString(R.string.retrieve_user_fail),
                                 Toast.LENGTH_SHORT).show();
                     }

@@ -31,4 +31,7 @@ public class PublicComponent {
     public static final String DELETE_PATIENT_URL = localhost+"/deletePatient/";
     public static final String DELETE_CAREGIVER_URL = localhost+"/deleteCaregiver/";
     public static final String DELETE_SPECIALIST_URL = localhost+"/deleteSpecialist/";
+    public static final String UPDATE_PATIENT_URL = localhost+"/updateDetailsPatient/";
+    public static final String UPDATE_CAREGIVER_URL = localhost+"/updateDetailsCaregiver/";
+    public static final String UPDATE_SPECIALIST_URL = localhost+"/updateDetailsSpecialist/";
 }

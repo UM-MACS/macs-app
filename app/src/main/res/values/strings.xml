@@ -270,5 +270,6 @@
     <string name="delete_user_fail">Delete user fail</string>
     <string name="delete_user_success">Delete user success</string>
     <string name="retrieve_user_fail">Retrieve user fail</string>
+    <string name="edit_user_profile">Edit User Profile</string>
 
 </resources>

@@ -94,7 +94,7 @@ public class UserProfileActivity extends BaseActivity {
             }
         });
 
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             Button mydetailsButton = (Button) findViewById(R.id.my_details);
             mydetailsButton.setVisibility(View.GONE);
         }

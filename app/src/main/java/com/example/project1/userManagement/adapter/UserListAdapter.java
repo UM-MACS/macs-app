@@ -19,7 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
-import com.example.project1.userManagement.UserDetailActivity;
+import com.example.project1.userManagement.ViewUserDetailActivity;
 import com.example.project1.userManagement.component.User;
 
 import org.json.JSONException;
@@ -118,6 +118,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                                 }
                                 handler.handle(false);
                             } catch (JSONException e) {
+                                handler.handle(false);
                                 e.printStackTrace();
                                 Toast.makeText(mContext, mContext.getString(R.string.delete_user_fail),
                                         Toast.LENGTH_SHORT).show();
@@ -127,6 +128,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            handler.handle(false);
                             Toast.makeText(mContext, mContext.getString(R.string.delete_user_fail),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -143,7 +145,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         }
 
         private void onClickView() {
-            Intent i = new Intent(mContext, UserDetailActivity.class);
+            Intent i = new Intent(mContext, ViewUserDetailActivity.class);
             i.putExtra(PublicComponent.NAME,chosenUser.getName());
             i.putExtra(PublicComponent.EMAIL,chosenUser.getEmail());
             i.putExtra(PublicComponent.NRIC,chosenUser.getNric());
