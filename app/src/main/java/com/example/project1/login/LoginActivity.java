@@ -359,14 +359,16 @@ public class LoginActivity extends BaseActivity {
                     else{
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
-                        if(nric.equals("mascadmin")&&password.equals("abc123")){
+                        if(nric.equals("macsadmin")&&password.equals("abc123")){
                             Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
                             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
-                            sessionManager.createSession("admin", "mascadmin", "Admin");
+                            sessionManager.createSession("admin", "macsadmin", "Admin");
                         } else{
                             Toast.makeText(getApplicationContext(), getString(R.string.wrong_nric_pw)
                             ,Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            b1.setVisibility(View.VISIBLE);
                         }
                     }
                     getWindow().setSoftInputMode(
