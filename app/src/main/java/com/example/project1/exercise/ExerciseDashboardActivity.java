@@ -256,8 +256,10 @@ public class ExerciseDashboardActivity extends BaseActivity {
         spinner.setAdapter(adapter);
 
         final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.checkbox_dialog);
+        String save = "<font color='#228B22'>"+getString(R.string.ok)+"</font>";
+        String cancel = "<font color='#DC143C'>"+getString(R.string.cancel)+"</font>";
 
-        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>OK</font>"),
+        alertDialogBuilder.setPositiveButton(Html.fromHtml(save),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -276,7 +278,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
                         arg0.dismiss();
                     }
                 });
-        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
+        alertDialogBuilder.setNegativeButton(Html.fromHtml(cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {

@@ -443,7 +443,8 @@ public class ExerciseActivity extends BaseActivity {
             }
         });
 
-        String save = "<font color='#228B22' size>"+getString(R.string.save)+"</font>";
+
+        String save = "<font color='#228B22'>"+getString(R.string.save)+"</font>";
         String cancel = "<font color='#228B22'>"+getString(R.string.cancel)+"</font>";
         alertDialogBuilder.setPositiveButton(Html.fromHtml(save),
                 new DialogInterface.OnClickListener() {
@@ -484,7 +485,8 @@ public class ExerciseActivity extends BaseActivity {
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
+//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(8);
+//        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(8);
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
