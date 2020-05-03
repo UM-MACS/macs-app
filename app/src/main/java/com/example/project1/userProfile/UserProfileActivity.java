@@ -94,6 +94,11 @@ public class UserProfileActivity extends BaseActivity {
             }
         });
 
+        if(User.getInstance().getUserType().equals("Admin")){
+            Button mydetailsButton = (Button) findViewById(R.id.my_details);
+            mydetailsButton.setVisibility(View.GONE);
+        }
+
         viewMyPosts = (Button)findViewById(R.id.view_my_posts_button);
         viewMyFavourite = (Button)findViewById(R.id.view_my_favourite_button);
 
@@ -204,4 +209,8 @@ public class UserProfileActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onNavMyDetails(View view) {
+        Intent i = new Intent (this, UserDetailsActivity.class);
+        startActivity(i);
+    }
 }
