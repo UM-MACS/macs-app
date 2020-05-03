@@ -1,5 +1,6 @@
 package com.example.project1.userManagement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
 
@@ -124,5 +126,11 @@ public class ViewUserDetailActivity extends BaseActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ViewUserDetailActivity.this, UserListActivity.class);
+        startActivity(i);
     }
 }

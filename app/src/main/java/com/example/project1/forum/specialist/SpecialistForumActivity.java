@@ -119,7 +119,12 @@ public class SpecialistForumActivity extends BaseActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(CurrentUser.getInstance().getUserType().equals("Admin")){
+
+            }
+            else{
+                super.onBackPressed();
+            }
         }
     }
 

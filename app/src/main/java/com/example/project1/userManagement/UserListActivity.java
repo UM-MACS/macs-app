@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -38,8 +39,7 @@ public class UserListActivity extends BaseActivity implements UserListAdapter.Ev
     private SessionManager sessionManager;
     private Button btnPatient, btnCaregiver, btnDoctor;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private boolean isPatient = false, isCaregiver = false, isDoctor = false;
+    private RelativeLayout progressBar;
     private ArrayList<User> patientList, caregiverList, doctorList;
     private RecyclerView.Adapter mAdapter;
 
@@ -57,7 +57,7 @@ public class UserListActivity extends BaseActivity implements UserListAdapter.Ev
         btnCaregiver = findViewById(R.id.btn_caregiver);
         btnDoctor = findViewById(R.id.btn_doctor);
         recyclerView = findViewById(R.id.recycler_view_user_list);
-        progressBar = findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.container);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
