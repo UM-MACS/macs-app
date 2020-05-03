@@ -485,6 +485,9 @@ public class ExerciseActivity extends BaseActivity {
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(getString(R.string.save));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(getString(R.string.cancel));
+
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
