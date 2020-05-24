@@ -1,7 +1,6 @@
 package com.example.project1.login;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,11 +48,11 @@ public class ResetPasswordActivity extends BaseActivity {
     }
 
     public void onResetPassword(View view) {
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             URL = localhost+"/resetPassword";
-        } else if (User.getInstance().getUserType().equals("Caregiver")){
+        } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")){
             URL = localhost+"/resetPassword2";
-        } else if(User.getInstance().getUserType().equals("Specialist")){
+        } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
             URL = localhost+"/resetPassword3";
         }
         final EditText et1 = (EditText) findViewById(R.id.password);
@@ -73,15 +72,15 @@ public class ResetPasswordActivity extends BaseActivity {
                                 String success = jsonObject.getString("success");
                                 if (success.equals("1")) {
                                     Toast.makeText(getApplicationContext(),
-                                            "Password has been reset!",
-                                            Toast.LENGTH_SHORT).show();
+                                            getString(R.string.reset_pw_success),
+                                        Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(ResetPasswordActivity.this,
                                             LoginActivity.class);
                                     startActivity(i);
                                 } else if (success.equals("0")) {
                                     Toast.makeText(getApplicationContext(),
-                                            "Error, Please Try Again Later!",
-                                            Toast.LENGTH_SHORT).show();
+                                            getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -92,8 +91,8 @@ public class ResetPasswordActivity extends BaseActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(getApplicationContext(),
-                                    "Error, Please Try Again Later!",
-                                    Toast.LENGTH_SHORT).show();
+                                    getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -107,7 +106,7 @@ public class ResetPasswordActivity extends BaseActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
         } else {
-            Toast.makeText(getApplicationContext(), "New Passwords are not same!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.unmatch_new_pw), Toast.LENGTH_LONG).show();
             et1.setText("");
             et2.setText("");
         }

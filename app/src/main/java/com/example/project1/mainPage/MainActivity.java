@@ -1,9 +1,7 @@
 package com.example.project1.mainPage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -13,16 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.LoginActivity;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     LinearLayout l1,l2,l3;
     private TextView mTextMessage;
     SessionManager sessionManager;
@@ -42,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
         if(login){
             HashMap<String,String> user = sessionManager.getUserDetail();
             String mName = user.get(sessionManager.NAME);
-            String mEmail = user.get(sessionManager.EMAIL);
+            String mEmail = user.get(sessionManager.NRIC);
             String mType = user.get(sessionManager.TYPE);
             Log.e("TAG", "shared preference name is "+mName );
-            User.getInstance().setEmail(mEmail);
-            User.getInstance().setUserName(mName);
-            User.getInstance().setUserType(mType);
+            CurrentUser.getInstance().setNRIC(mEmail);
+            CurrentUser.getInstance().setUserName(mName);
+            CurrentUser.getInstance().setUserType(mType);
             Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User.getInstance().setUserType("Patient");
+                CurrentUser.getInstance().setUserType("Patient");
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         l2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User.getInstance().setUserType("Caregiver");
+                CurrentUser.getInstance().setUserType("Caregiver");
                 Intent intent2 = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent2);
             }
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         l3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User.getInstance().setUserType("Specialist");
+                CurrentUser.getInstance().setUserType("Specialist");
                 Intent intent3 = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent3);
             }
@@ -105,8 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (id == R.id.action_admin_login){
-            User.getInstance().setUserType("Admin");
+            CurrentUser.getInstance().setUserType("Admin");
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

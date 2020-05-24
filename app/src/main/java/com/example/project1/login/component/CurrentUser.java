@@ -1,31 +1,27 @@
 package com.example.project1.login.component;
 
-public class User {
+public class CurrentUser {
     private String appointment;
     private int id;
     private String Name;
-    private String Email;
+    private String NRIC;
     private String Password;
     private String Contact;
     private String Age;
     private String userType;
     private int appointmentId;
-    private static User ourInstance = new User();
+    private static CurrentUser ourInstance = new CurrentUser();
 
 
 
-    public static User getInstance() {
+    public static CurrentUser getInstance() {
         if(ourInstance == null){
-            ourInstance = new User();
+            ourInstance = new CurrentUser();
         }
         return ourInstance;
     }
 
-    private User() {
-    }
-
-    public String getAppointment() {
-        return appointment;
+    private CurrentUser() {
     }
 
     public void setUserType (String type){
@@ -40,10 +36,6 @@ public class User {
         this.appointment = app;
     }
 
-    public void setAppointmentId(int id){ this.appointmentId = id; }
-
-    public int getAppointmentId(){return appointmentId;}
-
     public String getUserName() {
         return Name;
     }
@@ -52,28 +44,20 @@ public class User {
         this.Name = name;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getNRIC() {
+        return NRIC;
     }
 
-    public void setEmail(String email) {
-        this.Email= email;
+    public void setNRIC(String nric) {
+        this.NRIC= nric;
     }
 
     public void setPassword(String password) {
         this.Password = password;
     }
 
-    public String getAge() {
-        return Age;
-    }
-
     public void setAge(String age) {
         this.Age= age;
-    }
-
-    public String getContact() {
-        return Contact;
     }
 
     public void setContact(String contact) {

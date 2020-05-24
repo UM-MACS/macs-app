@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -30,7 +31,7 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.userProfile.UserProfileActivity;
@@ -63,11 +64,11 @@ SessionManager sessionManager;
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -80,11 +81,11 @@ SessionManager sessionManager;
                         startActivity(i2);
                         break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
                             Intent i6 = new Intent(ChangePasswordActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Patient")){
                             Intent i6 = new Intent(ChangePasswordActivity.this, ForumActivity.class);
                             startActivity(i6);
                             break;
@@ -107,14 +108,14 @@ SessionManager sessionManager;
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);
         toastSuccess = getResources().getString(R.string.update_pw_success);
-        toastError = getResources().getString(R.string.update_fail);
+        toastError = getResources().getString(R.string.try_later);
         toastWrongOldPW = getResources().getString(R.string.wrong_old_pw);
         toastUnmatchPW = getResources().getString(R.string.unmatch_new_pw);
         button = (Button)findViewById(R.id.submit_change_password);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("TAG", "type: "+ User.getInstance().getUserType() );
+                Log.e("TAG", "type: "+ CurrentUser.getInstance().getUserType() );
                 t1 = o1.getText().toString(); //old pw
                 t2 = c1.getText().toString(); //new pw
                 t3 = c2.getText().toString();
@@ -131,15 +132,15 @@ SessionManager sessionManager;
                                             if (success.equals("1")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastSuccess,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("0")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastError,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                             } else if (success.equals("-1")) {
                                                 Toast.makeText(getApplicationContext(),
                                                         toastWrongOldPW,
-                                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                                 o1.setText("");
                                                 c1.setText("");
                                                 c2.setText("");
@@ -154,14 +155,14 @@ SessionManager sessionManager;
                                     public void onErrorResponse(VolleyError error) {
                                         Toast.makeText(getApplicationContext(),
                                                 toastError,
-                                                Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> params = new HashMap<>();
-                                params.put("email", User.getInstance().getEmail());
-                                params.put("type", User.getInstance().getUserType());
+                                params.put("email", CurrentUser.getInstance().getNRIC());
+                                params.put("type", CurrentUser.getInstance().getUserType());
                                 params.put("password", t1);
                                 params.put("newPass", t2);
                                 return params;
@@ -181,7 +182,7 @@ SessionManager sessionManager;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -204,9 +205,9 @@ SessionManager sessionManager;
             Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
-            User.getInstance().setPassword("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setPassword("");
             return true;
         }
         if (id == R.id.action_change_password){
@@ -235,6 +236,12 @@ SessionManager sessionManager;
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(ChangePasswordActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

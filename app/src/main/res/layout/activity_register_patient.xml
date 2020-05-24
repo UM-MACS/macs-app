@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:ems="10"
-                    android:hint="@string/email"
+                    android:hint="@string/email_register"
                     android:inputType="textEmailAddress"
                     android:paddingBottom="15dp" />
 
@@ -77,6 +77,16 @@
                     android:ems="10"
                     android:hint="@string/name"
                     android:inputType="textCapWords"
+                    android:paddingBottom="15dp" />
+
+                <EditText
+                    android:id="@+id/nric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:hint="@string/nric_register"
+                    android:inputType="number"
                     android:paddingBottom="15dp" />
 
                 <EditText
@@ -147,12 +157,12 @@
 
             <Button
                 android:id="@+id/login"
-                android:layout_width="211dp"
+                android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="120dp"
                 android:background="@drawable/border"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:text="@string/registeredUser2"
                 android:textSize="15sp" />
 
@@ -168,6 +178,7 @@
         android:layout_marginEnd="0dp"
         android:background="@drawable/nav_border"
         app:itemIconSize="25dp"
+        android:padding="7dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

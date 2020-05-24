@@ -13,12 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -27,7 +30,6 @@ import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.component.EmotionFragmentText;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.example.project1.emotionAssessment.component.EmotionFragment;
 import com.example.project1.forum.ForumActivity;
@@ -49,6 +51,16 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
+            Button buttonRight = (Button) findViewById(R.id.forward_button);
+            Button buttonLeft = (Button) findViewById(R.id.backward_button);
+            if(position==0){
+                buttonLeft.setVisibility(View.GONE);
+                buttonRight.setVisibility(View.VISIBLE);
+            }
+            if (position == dots.length-1){
+                buttonRight.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+            }
             for (int i = 0; i < dots.length; i++) {
                 if (i == position)
                     dots[i].setImageResource(R.drawable.active_dot);
@@ -57,6 +69,8 @@ public class EmotionAssessmentActivity extends BaseActivity {
             }
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +90,8 @@ public class EmotionAssessmentActivity extends BaseActivity {
         //Bottom Navigation Bar
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -102,11 +116,11 @@ public class EmotionAssessmentActivity extends BaseActivity {
 //                        startActivity(i);
                         break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")){
                             Intent i6 = new Intent(EmotionAssessmentActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
-                        } else if(User.getInstance().getUserType().equalsIgnoreCase("Patient")){
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Patient")){
                             Intent i6 = new Intent(EmotionAssessmentActivity.this, ForumActivity.class);
                             startActivity(i6);
                             break;
@@ -124,7 +138,7 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
 
         viewPager = findViewById(R.id.view_pager);
-        Fragment[] fragments = {
+        final Fragment[] fragments = {
                 new EmotionFragment(),
                 new EmotionFragmentText(),
         };
@@ -137,14 +151,14 @@ public class EmotionAssessmentActivity extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
-        ImageView forwardArrow = new ImageView(this);
-        forwardArrow.setImageResource(R.drawable.left_arrow);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(15, 0, 15, 0);
-        dotList.addView(forwardArrow);
+//        ImageView forwardArrow = new ImageView(this);
+//        forwardArrow.setImageResource(R.drawable.left_arrow);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        layoutParams.setMargins(15, 0, 15, 0);
+//        dotList.addView(forwardArrow);
 
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
@@ -159,10 +173,38 @@ public class EmotionAssessmentActivity extends BaseActivity {
 
         dots[0].setImageResource(R.drawable.active_dot);
 
-        ImageView backwardArrow = new ImageView(this);
-        backwardArrow.setImageResource(R.drawable.right_arrow);
-        layoutParams.setMargins(8, 0, 8, 0);
-        dotList.addView(backwardArrow);
+//        ImageView backwardArrow = new ImageView(this);
+//        backwardArrow.setImageResource(R.drawable.right_arrow);
+//        layoutParams.setMargins(8, 0, 8, 0);
+//        dotList.addView(backwardArrow);
+
+        final Button buttonRight = (Button) findViewById(R.id.forward_button);
+        final Button buttonLeft = (Button) findViewById(R.id.backward_button);
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonLeft.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem()+1;
+                viewPager.setCurrentItem(i);
+                if(i == fragments.length-1){
+                    buttonRight.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonRight.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem() -1;
+                viewPager.setCurrentItem(i);
+                if(i == 0){
+                    buttonLeft.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -190,7 +232,7 @@ public class EmotionAssessmentActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -212,9 +254,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             Intent i = new Intent(EmotionAssessmentActivity.this, MainActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
-            User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
 //            finish();
             return true;
         }
@@ -249,8 +291,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             return true;
         }
 
-        if(id == R.id.action_change_language){
-            Intent intent = new Intent(EmotionAssessmentActivity.this, ChangeLanguageActivity.class);
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

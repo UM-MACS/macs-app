@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -21,10 +20,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,18 +31,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
-import com.example.project1.faq.FAQActivity;
 import com.example.project1.forum.ForumActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 
@@ -55,9 +51,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -99,16 +92,16 @@ public class ExerciseDashboardActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals("Admin")){
+        if(CurrentUser.getInstance().getUserType().equals("Admin")){
             bottomNavigationView.setVisibility(View.GONE);
         }
-        if(User.getInstance().getUserType().equals("Caregiver")||
-                User.getInstance().getUserType().equals("Specialist")){
+        if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                CurrentUser.getInstance().getUserType().equals("Specialist")){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
-//        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_forum);
-//        itemForum.setChecked(true);
+        MenuItem itemForum = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
+        itemForum.setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -129,8 +122,8 @@ public class ExerciseDashboardActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(ExerciseDashboardActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -243,7 +236,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", sessionManager.getUserDetail().get(sessionManager.EMAIL));
+                params.put("email", sessionManager.getUserDetail().get(sessionManager.NRIC));
                 return params;
             }
         };
@@ -253,7 +246,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
     public void showDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ExerciseDashboardActivity.this);
-        alertDialogBuilder.setTitle("Customize My Exercise Plan");
+        alertDialogBuilder.setTitle(R.string.customize_exercise_plan);
 //        alertDialogBuilder.setMessage("How many days do you want to exercise per week?");
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
@@ -263,8 +256,10 @@ public class ExerciseDashboardActivity extends BaseActivity {
         spinner.setAdapter(adapter);
 
         final CheckBox checkBox = (CheckBox) dialogView.findViewById(R.id.checkbox_dialog);
+        String save = "<font color='#228B22'>"+getString(R.string.ok)+"</font>";
+        String cancel = "<font color='#DC143C'>"+getString(R.string.cancel)+"</font>";
 
-        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#228B22'>OK</font>"),
+        alertDialogBuilder.setPositiveButton(Html.fromHtml(save),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -283,7 +278,7 @@ public class ExerciseDashboardActivity extends BaseActivity {
                         arg0.dismiss();
                     }
                 });
-        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#DC143C'>Cancel</font>"),
+        alertDialogBuilder.setNegativeButton(Html.fromHtml(cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -355,9 +350,9 @@ public class ExerciseDashboardActivity extends BaseActivity {
             Intent intent = new Intent(ExerciseDashboardActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 
@@ -381,6 +376,12 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
         if (id == R.id.action_questionnaire) {
             Intent intent = new Intent(ExerciseDashboardActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

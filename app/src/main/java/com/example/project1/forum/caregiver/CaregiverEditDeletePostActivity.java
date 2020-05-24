@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -31,7 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 
 import org.json.JSONArray;
@@ -97,7 +96,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.GONE);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-        getMyPosts(User.getInstance().getEmail());
+        getMyPosts(CurrentUser.getInstance().getNRIC());
 
     }
 
@@ -277,6 +276,8 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         deleteButton.setVisibility(View.VISIBLE);
         fav_icon = (ImageView)findViewById(R.id.addFav);
         fav_icon.setVisibility(View.GONE);
+        TextView favDes = (TextView)findViewById(R.id.fav_des);
+        favDes.setVisibility(View.GONE);
         expandedName = (TextView)findViewById(R.id.expanded_user_name);
         expandedTitle = (TextView)findViewById(R.id.expanded_thread_title);
         expandedContent=(TextView)findViewById(R.id.expanded_thread_content);
@@ -349,8 +350,8 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         final String title = postTitle.getText().toString();
         final String content = postContent.getText().toString();
         if(title.equals("")||content.equals("")){
-            Toast.makeText(getApplicationContext(),R.string.enter_title_content,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.enter_title_content),
+                                        Toast.LENGTH_SHORT).show();
             return;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_POST,
@@ -362,28 +363,28 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
-                                Toast.makeText(getApplicationContext(),R.string.update_success,
+                                Toast.makeText(getApplicationContext(), getString(R.string.update_success),
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 finish();
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),R.string.post_fail,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),R.string.post_fail,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),R.string.post_fail,
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
@@ -436,7 +437,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                             String success = jsonObject.getString("success");
                             if(success.equals("1")){
                                 Log.e("TAG", "success" );
-                                Toast.makeText(getApplicationContext(),R.string.delete_post_success,
+                                Toast.makeText(getApplicationContext(), getString(R.string.delete_post_success),
                                         Toast.LENGTH_SHORT).show();
 //                                Intent i = new Intent(CaregiverEditDeletePostActivity.this,
 //                                        CaregiverEditDeletePostActivity.class);
@@ -447,7 +448,7 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),R.string.try_later,
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -458,8 +459,8 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),R.string.try_later,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

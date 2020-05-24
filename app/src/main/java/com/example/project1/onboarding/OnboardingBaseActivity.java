@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -26,8 +27,8 @@ import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.onboarding.component.OnboardingEmotionFragment;
 import com.example.project1.onboarding.component.OnboardingExercise2Fragment;
@@ -79,11 +80,11 @@ public class OnboardingBaseActivity extends BaseActivity {
             btnDone.setVisibility(View.GONE);
 
             BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-            if(User.getInstance().getUserType().equals("Admin")){
+            if(CurrentUser.getInstance().getUserType().equals("Admin")){
                 bottomNavigationView.setVisibility(View.GONE);
             }
-            if(User.getInstance().getUserType().equals("Caregiver")||
-                    User.getInstance().getUserType().equals("Specialist")){
+            if(CurrentUser.getInstance().getUserType().equals("Caregiver")||
+                    CurrentUser.getInstance().getUserType().equals("Specialist")){
                 MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
                 item.setVisible(false);
             }
@@ -109,8 +110,8 @@ public class OnboardingBaseActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                         case R.id.navigation_forum:
-                            if(User.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                    || User.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                            if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+                                    || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                                 Intent i6 = new Intent(OnboardingBaseActivity.this, SpecialistForumActivity.class);
                                 startActivity(i6);
                                 break;
@@ -179,14 +180,14 @@ public class OnboardingBaseActivity extends BaseActivity {
         LinearLayout dotList = findViewById(R.id.pageDot);
         dots = new ImageView[fragments.length];
 
-        ImageView forwardArrow = new ImageView(this);
-        forwardArrow.setImageResource(R.drawable.left_arrow);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layoutParams.setMargins(15, 0, 15, 0);
-        dotList.addView(forwardArrow);
+//        ImageView forwardArrow = new ImageView(this);
+//        forwardArrow.setImageResource(R.drawable.left_arrow);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        layoutParams.setMargins(15, 0, 15, 0);
+//        dotList.addView(forwardArrow);
 
         for (int i = 0; i < fragments.length; i++) {
             dots[i] = new ImageView(this);
@@ -201,10 +202,37 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         dots[0].setImageResource(R.drawable.active_dot);
 
-        ImageView backwardArrow = new ImageView(this);
-        backwardArrow.setImageResource(R.drawable.right_arrow);
-        layoutParams.setMargins(8, 0, 8, 0);
-        dotList.addView(backwardArrow);
+//        ImageView backwardArrow = new ImageView(this);
+//        backwardArrow.setImageResource(R.drawable.right_arrow);
+//        layoutParams.setMargins(8, 0, 8, 0);
+//        dotList.addView(backwardArrow);
+
+        final Button buttonRight = (Button) findViewById(R.id.forward_button);
+        final Button buttonLeft = (Button) findViewById(R.id.backward_button);
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonLeft.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem()+1;
+                viewPager.setCurrentItem(i);
+                if(i == fragments.length-1){
+                    buttonRight.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonRight.setVisibility(View.VISIBLE);
+                int i = viewPager.getCurrentItem() -1;
+                viewPager.setCurrentItem(i);
+                if(i == 0){
+                    buttonLeft.setVisibility(View.GONE);
+                }
+            }
+        });
+
 
         btnDone = (Button) findViewById(R.id.btn_done);
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +249,7 @@ public class OnboardingBaseActivity extends BaseActivity {
                     i = new Intent(getApplicationContext(), SpecialistForumActivity.class);
 
                 i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("email",sessionManager.getUserDetail().get(sessionManager.EMAIL));
+                i.putExtra("email",sessionManager.getUserDetail().get(sessionManager.NRIC));
                 startActivity(i);
             }
         });
@@ -235,10 +263,21 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
-            if(position == dots.length - 1)
+            Button buttonRight = (Button) findViewById(R.id.forward_button);
+            Button buttonLeft = (Button) findViewById(R.id.backward_button);
+            if(position==0){
+                buttonLeft.setVisibility(View.GONE);
+                buttonRight.setVisibility(View.VISIBLE);
+            }
+            else if(position == dots.length - 1){
                 btnDone.setVisibility(View.VISIBLE);
-            else
+                buttonRight.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+                }
+            else {
                 btnDone.setVisibility(View.GONE);
+                buttonLeft.setVisibility(View.VISIBLE);
+            }
 
             for (int i = 0; i < dots.length; i++) {
                 if (i == position)
@@ -274,7 +313,7 @@ public class OnboardingBaseActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -297,9 +336,9 @@ public class OnboardingBaseActivity extends BaseActivity {
             Intent intent = new Intent(OnboardingBaseActivity.this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 
@@ -329,6 +368,12 @@ public class OnboardingBaseActivity extends BaseActivity {
 
         if(id == R.id.action_event_reminder){
             Intent intent = new Intent(OnboardingBaseActivity.this, EventReminderActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_switch_language){
+            Intent intent = new Intent(this, ChangeLanguageActivity.class);
             startActivity(intent);
             return true;
         }

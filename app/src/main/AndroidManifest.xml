@@ -15,9 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".userProfile.UserDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".changeLanguage.ChangeLanguageActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.specialist.SpecialistEditDeleteForumPostActivity"
             android:exported="true"
@@ -60,8 +63,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.caregiver.CaregiverEditDeletePostActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/my_forum_posts"/>
+            android:label="@string/my_forum_posts"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".forum.caregiver.CaregiverViewForumFavouriteListActivity"
             android:label="@string/my_fav_list"
@@ -107,9 +110,8 @@
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".forum.ViewForumFavouriteListActivity"/>
+                android:value=".forum.ViewForumFavouriteListActivity" />
         </activity>
-
         <activity
             android:name=".forum.specialist.ViewForumReportedPostActivity"
             android:label="@string/reported_posts"
@@ -202,6 +204,16 @@
         <activity
             android:name=".onboarding.OnboardingBaseActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".userManagement.UserListActivity"
+            android:exported="true"
+            android:label="@string/user_management"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userManagement.ViewUserDetailActivity"
+            android:exported="true"
+            android:label="@string/edit_user_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

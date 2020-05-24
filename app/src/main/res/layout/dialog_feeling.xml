@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="110dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginStart="20dp"
@@ -51,36 +51,36 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="@string/happy"/>
+                android:text="@string/enjoyment"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:orientation="vertical">
-            <ToggleButton
-                android:id="@+id/emotion2"
-                android:layout_gravity="center"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/ic_emotion_surprised" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/layout2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#FFFFFF"-->
+<!--            android:orientation="vertical">-->
+<!--            <ToggleButton-->
+<!--                android:id="@+id/emotion2"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:textOn=""-->
+<!--                android:textOff=""-->
+<!--                android:background="@drawable/ic_emotion_surprised" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/surprised"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="@string/surprised"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/layout3"
@@ -98,21 +98,21 @@
                 android:layout_height="70dp"
                 android:textOn=""
                 android:textOff=""
-                android:background="@drawable/ic_emotion_disgusted" />
+                android:background="@drawable/ic_emotion_satisfied" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="@string/disgusted"/>
+                android:text="@string/satisfied"/>
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="110dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginStart="20dp"
@@ -143,36 +143,36 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="@string/fear"/>
+                android:text="@string/normal"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:orientation="vertical">
-            <ToggleButton
-                android:id="@+id/emotion5"
-                android:layout_gravity="center"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:textOn=""
-                android:textOff=""
-                android:background="@drawable/ic_emotion_angry" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/layout5"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#FFFFFF"-->
+<!--            android:orientation="vertical">-->
+<!--            <ToggleButton-->
+<!--                android:id="@+id/emotion5"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_width="70dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:textOn=""-->
+<!--                android:textOff=""-->
+<!--                android:background="@drawable/ic_emotion_angry" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/angry"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="@string/angry"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/layout6"
@@ -197,7 +197,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="@string/sad"/>
+                android:text="@string/dissatisfaction"/>
 
         </LinearLayout>
     </LinearLayout>
