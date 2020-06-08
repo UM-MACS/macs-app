@@ -95,9 +95,71 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         contactListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewChatChannel(currentItem);
+                checkChannelExist(currentItem);
+//                createNewChatChannel(currentItem);
             }
         });
+    }
+
+    private void checkChannelExist(final ContactItem currentItem){
+        sessionManager = new SessionManager(context);
+        final String receiverName = currentItem.getName();
+        final String receiverType = currentItem.getType();
+        final String NRICTo = currentItem.getNRIC();
+        final String NRICFrom = sessionManager.getUserDetail().get("NRIC");
+        final String pic = currentItem.getPhoto();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, PublicComponent.URL_GET_CHAT_IF_EXIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String apiStatus = jsonObject.getString(PublicComponent.API_CALL_STATUS);
+
+                            if(apiStatus.equals("1")){
+                                Intent i = new Intent(context, ChatPageActivity.class);
+                                i.putExtra(NRIC_TO, NRICTo);
+                                i.putExtra(RECEIVER_NAME, receiverName);
+                                i.putExtra(RECEIVER_TYPE, receiverType);
+                                i.putExtra(CHAT_CHANNEL_ID, jsonObject.getString(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID));
+                                i.putExtra(RECEIVER_PIC, pic);
+                                context.startActivity(i);
+                            }
+                            else if(apiStatus.equals("2")){
+                                createNewChatChannel(currentItem);
+                            }
+                            else{
+                                Toast.makeText(context, "Error, Please Try Again Later",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.e("Error", e.toString());
+                            Toast.makeText(context, "Error, Please Try Again Later",
+                                    Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error, Please Try Again Later",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(NRIC_FROM, NRICFrom);
+                params.put(NRIC_TO, NRICTo);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
     private void createNewChatChannel(final ContactItem currentItem) {
@@ -244,7 +306,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<ContactItem> filteredList = new ArrayList<>();
 
-            if(constraint == null || constraint.length() == 0){
+            if(constraint == null || constraint.toString().length() == 0){
                 filteredList.addAll(contactItemListFull);
             }
             else{

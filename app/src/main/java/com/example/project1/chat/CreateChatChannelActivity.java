@@ -24,6 +24,7 @@ import com.example.project1.R;
 import com.example.project1.chat.adapter.ContactListAdapter;
 import com.example.project1.chat.component.ContactItem;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +47,7 @@ public class CreateChatChannelActivity extends BaseActivity {
     private String PHOTO = "photo";
     private Context context = this;
     private ArrayList<ContactItem> contactItemList = new ArrayList<>();
-
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class CreateChatChannelActivity extends BaseActivity {
         setContentView(R.layout.activity_create_chat_channel);
 //        ContactItem i = new ContactItem("Test Name","Test NRIC", "Test type","Test Photo");
 //        contactItemList.add(i);
+        sessionManager = new SessionManager(this);
         progressBarContactList = findViewById(R.id.progress_bar_contact_list);
         searchViewContactList = findViewById(R.id.search_view_contact_list);
         recyclerViewContactList = findViewById(R.id.recycler_view_contact_list);
@@ -75,9 +77,6 @@ public class CreateChatChannelActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.contentEquals("")||newText.isEmpty()){
-                    return true;
-                }
                 contactListAdapter.getFilter().filter(newText);
                 return false;
             }
@@ -109,8 +108,10 @@ public class CreateChatChannelActivity extends BaseActivity {
                             if(apiStatus.equals("1") || apiStatus.contentEquals("1")){
                                 for(int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
-                                    final ContactItem item = new ContactItem(object.getString(NAME),object.getString(NRIC),type,object.getString(PHOTO));
-                                    contactItemList.add(item);
+                                    if(!object.getString(NRIC).equals(sessionManager.getUserDetail().get("NRIC"))) {
+                                        final ContactItem item = new ContactItem(object.getString(NAME), object.getString(NRIC), type, object.getString(PHOTO));
+                                        contactItemList.add(item);
+                                    }
                                 }
 //                                contactListAdapter = new ContactListAdapter(context, contactItemList);
 //                                recyclerViewContactList.setAdapter(contactListAdapter);

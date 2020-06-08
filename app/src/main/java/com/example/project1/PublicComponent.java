@@ -35,6 +35,7 @@ public class PublicComponent {
     public static final String URL_GET_ALL_CAREGIVER = LOCALHOST + "/getAllCaregiver/";
     public static final String URL_GET_ALL_SPECIALIST = LOCALHOST + "/getAllSpecialist/";
     public static final String URL_GET_CHAT_BY_CHAT_CHANNEL_ID = LOCALHOST + "/getChatByChatChannelId";
+    public static final String URL_GET_CHAT_IF_EXIST = LOCALHOST + "/getChatIfExist";
     public static final String API_CALL_STATUS = "success";
 
     //firebase database reference key

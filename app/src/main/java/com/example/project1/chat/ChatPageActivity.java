@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +113,11 @@ public class ChatPageActivity extends BaseActivity {
         scrollViewEditText = findViewById(R.id.scrollview_edit_text);
         linearLayoutChatContent = findViewById(R.id.linear_layout_chat_content);
         etSendChat = findViewById(R.id.et_send_chat);
+
+        tvChatName.setText(receiverName);
+        //TODO maybe
+        tvChatStatus.setText(receiverType);
+        setPic(receiverPic,civChatProfilePic);
 
         chatHistoryReference.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -193,9 +199,9 @@ public class ChatPageActivity extends BaseActivity {
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID, chatChannelId);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME, sessionManager.getUserDetail().get("NAME"));
 
-                            DateFormat dateFormat = new SimpleDateFormat("dd MM yy hh:mm a");
-                            Date date = new Date();
-                            String sentDate = dateFormat.format(date);
+                            Date d = Calendar.getInstance().getTime();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            final String sentDate = dateFormat.format(d);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP, sentDate);
 
                             chatHistoryReference.push().setValue(map);
@@ -263,6 +269,12 @@ public class ChatPageActivity extends BaseActivity {
                 scrollViewChat.fullScroll(View.FOCUS_DOWN);
             }
         });
+    }
+
+    public void setPic(final String photo, final CircleImageView view) {
+        int loader = R.drawable.ic_user;
+        ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+        imgLoader.DisplayImage(photo, loader, view);
     }
 
     public String getPic(final String email, final String type) {
