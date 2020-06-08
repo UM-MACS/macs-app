@@ -36,106 +36,125 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/navigation" />
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="50dp"
-    android:layout_marginBottom="60dp"
-    android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
 
-        <VideoView
+    <TextureView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/video_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/video_name"
-        android:textColor="#000000"
-        android:textSize= "24dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/border"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/exercises_time"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/stopwatch_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center"
-            android:text="00:00:00"
-            android:textColor="#000000"
-            android:textSize="30sp" />
-
+        android:layout_marginBottom="10dp" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical">
+
+<!--                <VideoView-->
+<!--                android:id="@+id/video_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginBottom="10dp"/>-->
+
+
+
+
+            <TextView
+                android:id="@+id/video_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/video_name"
+                android:textColor="#000000"
+                android:textSize= "24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="250dp"
+                android:background="@android:color/transparent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/exercises_time"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/stopwatch_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:text="00:00:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp">
+
+                    <Button
+                        android:id="@+id/button_start"
+                        android:layout_marginRight="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_red_light"
+                        android:textColor="@color/white"
+                        android:text="@string/start" />
+
+                    <Button
+                        android:id="@+id/button_end"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/dodger_blue"
+                        android:textColor="@color/white"
+                        android:text="@string/next" />
+
+                </LinearLayout>
+
 
             <Button
-                android:id="@+id/button_start"
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
+                android:id="@+id/button_reset"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/holo_red_light"
+                android:layout_gravity="center"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="32dp"
+                android:layout_weight="2"
+                android:background="@color/cardview_dark_background"
                 android:textColor="@color/white"
-                android:text="@string/start" />
-
-            <Button
-                android:id="@+id/button_end"
-                android:layout_marginLeft="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/dodger_blue"
-                android:textColor="@color/white"
-                android:text="@string/next" />
-
+                android:text="@string/reset" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_reset"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="32dp"
-            android:layout_weight="2"
-            android:background="@color/cardview_dark_background"
-            android:textColor="@color/white"
-            android:text="@string/reset" />
-    </LinearLayout>
 
-</LinearLayout>
+
+
+        </LinearLayout>
+<!--    </LinearLayout>-->
+<!--    </ScrollView>-->
 </RelativeLayout>

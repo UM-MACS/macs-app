@@ -160,6 +160,7 @@ public class ChatChannelListActivity extends BaseActivity {
                             JSONArray jsonArray = new JSONArray(response);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String apiStatus = jsonObject.getString(PublicComponent.API_CALL_STATUS);
+                            Log.e("onResponse: ", jsonArray.toString());
 
                             if(apiStatus.equals("1")){
                                 for(int i = 0; i < jsonArray.length(); i++){
@@ -171,15 +172,61 @@ public class ChatChannelListActivity extends BaseActivity {
                                     tempMap.put(RECEIVER_TYPE,object.getString(RECEIVER_TYPE));
 
                                     DatabaseReference tempRef = databaseReference;
-                                    tempRef.child(tempMap.get(CHAT_CHANNEL_ID)).orderByChild(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    tempRef.child(tempMap.get(CHAT_CHANNEL_ID)).child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY).orderByChild(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                                             if(dataSnapshot.exists()){
                                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                                    Log.e("onResponseFB: ", ds.toString());
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class));
+                                                    break;
                                                 }
                                                 receiverList.add(tempMap);
+
+                                                Log.e("onResponse list: ", receiverList.toString());
+
+                                                //if list is empty show sth else
+                                                if (receiverList.size() > 0) {
+                                                    for (int i = 0; i < receiverList.size(); i++) {
+                                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                        final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
+                                                        linearLayoutChatList.addView(rowView);
+
+                                                        final HashMap<String, String> tempMap = receiverList.get(i);
+
+                                                        CircleImageView civReceiverProfilePic = (CircleImageView) ((View) rowView).findViewById(R.id.civ_receiver_profile_pic);
+                                                        TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
+                                                        TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
+                                                        TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
+                                                        TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
+                                                        TextView tvNRICTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
+
+                                                        final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
+                                                        tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
+                                                        tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
+                                                        tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
+                                                        tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
+                                                        tvNRICTo.setText(tempMap.get(NRIC_TO));
+
+                                                        rowView.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
+                                                                i.putExtra(NRIC_TO, tempMap.get(NRIC_TO));
+                                                                i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
+                                                                i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
+                                                                i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
+                                                                i.putExtra(RECEIVER_PIC,temp);
+                                                                startActivity(i);
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                                else{
+                                                    //
+                                                }
                                             }
                                         }
 
@@ -190,56 +237,17 @@ public class ChatChannelListActivity extends BaseActivity {
                                     });
                                 }
 
-                                //if list is empty show sth else
-                                if (receiverList.size() > 0) {
-                                    for (int i = 0; i < receiverList.size(); i++) {
-                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
-                                        linearLayoutChatList.addView(rowView);
-
-                                        final HashMap<String, String> tempMap = receiverList.get(i);
-
-                                        CircleImageView civReceiverProfilePic = (CircleImageView) ((View) rowView).findViewById(R.id.civ_receiver_profile_pic);
-                                        TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
-                                        TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
-                                        TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
-                                        TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
-                                        TextView tvNRICTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
-
-                                        final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
-                                        tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
-                                        tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
-                                        tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
-                                        tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
-                                        tvNRICTo.setText(tempMap.get(NRIC_TO));
-
-                                        rowView.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
-                                                i.putExtra(NRIC_TO, tempMap.get(NRIC_TO));
-                                                i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
-                                                i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
-                                                i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
-                                                i.putExtra(RECEIVER_PIC,temp);
-                                                startActivity(i);
-                                            }
-                                        });
-                                    }
-                                }
-                                else{
-                                    //
-                                }
+                                progressBarChat.setVisibility(View.GONE);
                             }
                             else{
                                 progressBarChat.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                                Toast.makeText(getApplicationContext(), "Error1, Please Try Again Later",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e){
                             Log.e("Error", e.toString());
-                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                            Toast.makeText(getApplicationContext(), "Error2, Please Try Again Later",
                                     Toast.LENGTH_SHORT).show();
                             progressBarChat.setVisibility(View.GONE);
                             e.printStackTrace();
@@ -250,7 +258,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBarChat.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
+                        Toast.makeText(getApplicationContext(), "Error3, Please Try Again Later",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }){

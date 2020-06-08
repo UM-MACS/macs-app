@@ -37,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,11 +113,39 @@ public class ChatPageActivity extends BaseActivity {
         linearLayoutChatContent = findViewById(R.id.linear_layout_chat_content);
         etSendChat = findViewById(R.id.et_send_chat);
 
+        chatHistoryReference.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+                            String message = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class);
+                            String NRICFrom = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).getValue(String.class);
+                            String time = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class);
+
+                            if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
+                                appendMessage(message,time,1);
+                            }
+                            else{
+                                appendMessage(message,time,2);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+
         chatHistoryReference.addChildEventListener(
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Map map = dataSnapshot.getValue(Map.class);
+//                        HashMap<String,String> map = dataSnapshot.getValue(HashMap.class);
+                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                         String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
                         String NRICFrom = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).toString();
                         String time = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).toString();
@@ -155,12 +184,12 @@ public class ChatPageActivity extends BaseActivity {
                         String message = etSendChat.getText().toString().trim();
                         etSendChat.setText("");
                         if(!message.equals("") || !message.equals(" ")){
-                            Map<String,String> map = new HashMap<>();
+                            HashMap<String,String> map = new HashMap<>();
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE,"text");
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE, message);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MEDIA_URL, "");
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM, sessionManager.getUserDetail().get("NRIC"));
-                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO, NRIC_TO);
+                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO, NRICTo);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID, chatChannelId);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME, sessionManager.getUserDetail().get("NAME"));
 
@@ -169,7 +198,7 @@ public class ChatPageActivity extends BaseActivity {
                             String sentDate = dateFormat.format(date);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP, sentDate);
 
-                            sendChatReference.push().setValue(map);
+                            chatHistoryReference.push().setValue(map);
 
                             appendMessage(message, sentDate,2);
                         }
