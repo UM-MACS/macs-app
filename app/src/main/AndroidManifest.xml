@@ -143,11 +143,16 @@
             android:name=".login.LoginActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".chat.ChatChannelListActivity"/>
+            android:name=".chat.ChatChannelListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".chat.CreateChatChannelActivity"/>
+            android:name=".chat.CreateChatChannelActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".chat.ChatPageActivity"/>
+            android:name=".chat.ChatPageActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
 
         <receiver android:name=".exercise.NotificationReceiver">
             <intent-filter>

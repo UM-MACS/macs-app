@@ -38,7 +38,7 @@ import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.login.component.User;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
 import com.example.project1.onboarding.OnboardingBaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -73,7 +73,7 @@ public class ChatChannelListActivity extends BaseActivity {
     private DatabaseReference databaseReference;
     private String tempPic = "";
     private final String RECEIVER_PIC = "receiverPic";
-    private final String EMAIL_TO = "emailTo";
+    private final String NRIC_TO = "NRICTo";
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
@@ -89,8 +89,8 @@ public class ChatChannelListActivity extends BaseActivity {
 
         //bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if(User.getInstance().getUserType().equals(PublicComponent.CAREGIVER)||
-                User.getInstance().getUserType().equals(PublicComponent.SPECIALIST)){
+        if(CurrentUser.getInstance().getUserType().equals(PublicComponent.CAREGIVER)||
+                CurrentUser.getInstance().getUserType().equals(PublicComponent.SPECIALIST)){
             MenuItem item = bottomNavigationView.getMenu().findItem(R.id.navigation_exercise);
             item.setVisible(false);
         }
@@ -109,8 +109,8 @@ public class ChatChannelListActivity extends BaseActivity {
                         startActivity(i3);
                         break;
                     case R.id.navigation_forum:
-                        if(User.getInstance().getUserType().equalsIgnoreCase(PublicComponent.SPECIALIST)
-                                || User.getInstance().getUserType().equalsIgnoreCase(PublicComponent.ADMIN)){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.SPECIALIST)
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.ADMIN)){
                             Intent i6 = new Intent(ChatChannelListActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
@@ -165,7 +165,7 @@ public class ChatChannelListActivity extends BaseActivity {
                                 for(int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     final HashMap<String,String> tempMap = new HashMap<>();
-                                    tempMap.put(EMAIL_TO,object.getString(EMAIL_TO));
+                                    tempMap.put(NRIC_TO,object.getString(NRIC_TO));
                                     tempMap.put(CHAT_CHANNEL_ID,object.getString(CHAT_CHANNEL_ID));
                                     tempMap.put(RECEIVER_NAME,object.getString(RECEIVER_NAME));
                                     tempMap.put(RECEIVER_TYPE,object.getString(RECEIVER_TYPE));
@@ -204,20 +204,20 @@ public class ChatChannelListActivity extends BaseActivity {
                                         TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
                                         TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
                                         TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
-                                        TextView tvEmailTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
+                                        TextView tvNRICTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
 
-                                        final String temp = getPic(tempMap.get(EMAIL_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
+                                        final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
                                         tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
                                         tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
                                         tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
                                         tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
-                                        tvEmailTo.setText(tempMap.get(EMAIL_TO));
+                                        tvNRICTo.setText(tempMap.get(NRIC_TO));
 
                                         rowView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
-                                                i.putExtra(EMAIL_TO, tempMap.get(EMAIL_TO));
+                                                i.putExtra(NRIC_TO, tempMap.get(NRIC_TO));
                                                 i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
                                                 i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
                                                 i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
@@ -226,6 +226,9 @@ public class ChatChannelListActivity extends BaseActivity {
                                             }
                                         });
                                     }
+                                }
+                                else{
+                                    //
                                 }
                             }
                             else{
@@ -254,7 +257,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("emailFrom", sessionManager.getUserDetail().get("EMAIL"));
+                        params.put("NRICFrom", sessionManager.getUserDetail().get("NRIC"));
                         return params;
                     }
                 };
@@ -329,7 +332,7 @@ public class ChatChannelListActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(User.getInstance().getUserType().equals("Patient")){
+        if(CurrentUser.getInstance().getUserType().equals("Patient")){
             getMenuInflater().inflate(R.menu.nav, menu);
             return true;
         } else {
@@ -351,9 +354,9 @@ public class ChatChannelListActivity extends BaseActivity {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            User.getInstance().setUserName("");
-            User.getInstance().setEmail("");
-            User.getInstance().setUserType("");
+            CurrentUser.getInstance().setUserName("");
+            CurrentUser.getInstance().setNRIC("");
+            CurrentUser.getInstance().setUserType("");
             return true;
         }
 

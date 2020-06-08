@@ -34,6 +34,7 @@ public class PublicComponent {
     public static final String URL_GET_ALL_PATIENT = LOCALHOST + "/getAllPatient/";
     public static final String URL_GET_ALL_CAREGIVER = LOCALHOST + "/getAllCaregiver/";
     public static final String URL_GET_ALL_SPECIALIST = LOCALHOST + "/getAllSpecialist/";
+    public static final String URL_GET_CHAT_BY_CHAT_CHANNEL_ID = LOCALHOST + "/getChatByChatChannelId";
     public static final String API_CALL_STATUS = "success";
 
     //firebase database reference key
@@ -45,8 +46,9 @@ public class PublicComponent {
     public static final String FIREBASE_CHAT_HISTORY_MESSAGE_TYPE = "messageType";
     public static final String FIREBASE_CHAT_HISTORY_MEDIA_URL = "mediaUrl";
     public static final String FIREBASE_CHAT_HISTORY_MESSAGE = "message";
-    public static final String FIREBASE_CHAT_HISTORY_EMAIL_FROM = "emailFrom";
-    public static final String FIREBASE_CHAT_HISTORY_EMAIL_TO = "emailTo";
+    public static final String FIREBASE_CHAT_HISTORY_NRIC_FROM = "NRICFrom";
+    public static final String FIREBASE_CHAT_HISTORY_NRIC_TO = "NRICTo";
+    public static final String FIREBASE_CHAT_HISTORY_SENDER_NAME = "senderName";
     public static final String FIREBASE_CHAT_HISTORY_TIMESTAMP = "timestamp";
     public static final String FIREBASE_CHAT_UNREAD_BASE = "unread";
 

@@ -3,13 +3,13 @@ package com.example.project1.chat.component;
 public class ContactItem {
 
     private String name;
-    private String email;
+    private String nric;
     private String type;
     private String photo;
 
-    public ContactItem(String name, String email, String type, String photo) {
+    public ContactItem(String name, String nric, String type, String photo) {
         this.name = name;
-        this.email = email;
+        this.nric = nric;
         this.type = type;
         this.photo = photo;
     }
@@ -22,12 +22,12 @@ public class ContactItem {
         this.photo = photo;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNRIC() {
+        return nric;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNRIC(String nric) {
+        this.nric = nric;
     }
 
     public String getType() {

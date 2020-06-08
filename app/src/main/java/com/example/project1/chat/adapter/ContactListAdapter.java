@@ -44,18 +44,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder> implements Filterable {
 
-    private List<ContactItem> contactItemList;
-    private List<ContactItem> contactItemListFull;
+    private ArrayList<ContactItem> contactItemList;
+    private ArrayList<ContactItem> contactItemListFull;
     private Context context;
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private final String EMAIL_FROM = "emailFrom";
-    private final String EMAIL_TO = "emailTo";
+    private final String NRIC_FROM = "NRICFrom";
+    private final String NRIC_TO = "NRICTo";
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
     private final String RECEIVER_PIC = "receiverPic";
+    private LayoutInflater mInflater;
 
     class ContactListViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,24 +70,26 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     }
 
-    public ContactListAdapter(Context con, List<ContactItem> list){
+    public ContactListAdapter(Context con, ArrayList<ContactItem> list){
+        Log.e("ContactListAdapter: ", list.toString());
+        this.mInflater = LayoutInflater.from(con);
         this.context = con;
         this.contactItemList = list;
-        this.contactItemListFull = new ArrayList<>(list);
+        this.contactItemListFull = list;
     }
 
     @NonNull
     @Override
     public ContactListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item, viewGroup, false);
+        View v = mInflater.inflate(R.layout.contact_item, viewGroup, false);
         return new ContactListViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactListAdapter.ContactListViewHolder contactListViewHolder, int i) {
+    public void onBindViewHolder(ContactListViewHolder contactListViewHolder, int i) {
         final ContactItem currentItem = contactItemList.get(i);
 
-        getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
+//        getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
         contactListViewHolder.tvContactName.setText(currentItem.getName());
 
         contactListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +100,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         });
     }
 
-    private void createNewChatChannel(ContactItem currentItem) {
+    private void createNewChatChannel(final ContactItem currentItem) {
         sessionManager = new SessionManager(context);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE);
@@ -105,8 +108,72 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         final String chatChannelId = databaseReference.push().getKey();
         final String receiverName = currentItem.getName();
         final String receiverType = currentItem.getType();
-        final String emailTo = currentItem.getEmail();
-        final String emailFrom = sessionManager.getUserDetail().get("EMAIL");
+        final String NRICTo = currentItem.getNRIC();
+        final String NRICFrom = sessionManager.getUserDetail().get("NRIC");
+        final String pic = currentItem.getPhoto();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, PublicComponent.URL_POST_CHAT_CHANNEL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String apiStatus = jsonObject.getString(PublicComponent.API_CALL_STATUS);
+
+                            if(apiStatus.equals("1")){
+                                createNewReceiverChatChannel(currentItem,chatChannelId);
+//                                Intent i = new Intent(context, ChatPageActivity.class);
+//                                i.putExtra(NRIC_TO, NRICTo);
+//                                i.putExtra(RECEIVER_NAME, receiverName);
+//                                i.putExtra(RECEIVER_TYPE, receiverType);
+//                                i.putExtra(CHAT_CHANNEL_ID, chatChannelId);
+//                                i.putExtra(RECEIVER_PIC, pic);
+//                                context.startActivity(i);
+                            }
+                            else{
+                                Toast.makeText(context, "Error, Please Try Again Later",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.e("Error", e.toString());
+                            Toast.makeText(context, "Error, Please Try Again Later",
+                                    Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error, Please Try Again Later",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(NRIC_FROM, NRICFrom);
+                params.put(NRIC_TO, NRICTo);
+                params.put(CHAT_CHANNEL_ID, chatChannelId);
+                params.put(RECEIVER_NAME, receiverName);
+                params.put(RECEIVER_TYPE, receiverType);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    private void createNewReceiverChatChannel(final ContactItem currentItem, String key) {
+        sessionManager = new SessionManager(context);
+
+        final String chatChannelId = key;
+        final String receiverName = sessionManager.getUserDetail().get("NAME");
+        final String receiverType = sessionManager.getUserDetail().get("TYPE");
+        final String NRICTo = sessionManager.getUserDetail().get("NRIC");
+        final String NRICFrom = currentItem.getNRIC();
         final String pic = currentItem.getPhoto();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, PublicComponent.URL_POST_CHAT_CHANNEL,
@@ -120,11 +187,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
                             if(apiStatus.equals("1")){
                                 Intent i = new Intent(context, ChatPageActivity.class);
-                                i.putExtra(EMAIL_TO, emailTo);
-                                i.putExtra(RECEIVER_NAME, receiverName);
-                                i.putExtra(RECEIVER_TYPE, receiverType);
+                                i.putExtra(NRIC_TO, currentItem.getNRIC());
+                                i.putExtra(RECEIVER_NAME, currentItem.getName());
+                                i.putExtra(RECEIVER_TYPE, currentItem.getType());
                                 i.putExtra(CHAT_CHANNEL_ID, chatChannelId);
-                                i.putExtra(RECEIVER_PIC, pic);
+                                i.putExtra(RECEIVER_PIC, currentItem.getPhoto());
                                 context.startActivity(i);
                             }
                             else{
@@ -150,8 +217,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put(EMAIL_FROM, emailFrom);
-                params.put(EMAIL_TO, emailTo);
+                params.put(NRIC_FROM, NRICFrom);
+                params.put(NRIC_TO, NRICTo);
                 params.put(CHAT_CHANNEL_ID, chatChannelId);
                 params.put(RECEIVER_NAME, receiverName);
                 params.put(RECEIVER_TYPE, receiverType);
@@ -164,7 +231,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contactItemList.size();
     }
 
     @Override
@@ -175,7 +242,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private Filter contactItemListFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<ContactItem> filteredList = new ArrayList<>();
+            ArrayList<ContactItem> filteredList = new ArrayList<>();
 
             if(constraint == null || constraint.length() == 0){
                 filteredList.addAll(contactItemListFull);
@@ -199,7 +266,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             contactItemList.clear();
-            contactItemList.addAll((List)results.values);
+            contactItemList.addAll((ArrayList)results.values);
             notifyDataSetChanged();
 
         }
