@@ -157,7 +157,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response) {
                         try{
-                            JSONArray jsonArray = new JSONArray(response);
+                            final JSONArray jsonArray = new JSONArray(response);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String apiStatus = jsonObject.getString(PublicComponent.API_CALL_STATUS);
                             Log.e("onResponse: ", jsonArray.toString());
@@ -178,18 +178,18 @@ public class ChatChannelListActivity extends BaseActivity {
 
                                             if(dataSnapshot.exists()){
                                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                                                    Log.e("onResponseFB: ", ds.toString());
+
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class));
                                                     break;
                                                 }
                                                 receiverList.add(tempMap);
 
-                                                Log.e("onResponse list: ", receiverList.toString());
-
+                                                Log.e("onResponse: ", "f" + receiverList.size());
+                                                Log.e("onResponse: ", "l" + jsonArray.length());
                                                 //if list is empty show sth else
                                                 if (receiverList.size() > 0) {
-                                                    for (int i = 0; i < receiverList.size(); i++) {
+                                                    for (int i = receiverList.size() - 1; i < receiverList.size(); i++) {
                                                         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                                         final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
                                                         linearLayoutChatList.addView(rowView);
@@ -205,7 +205,7 @@ public class ChatChannelListActivity extends BaseActivity {
 
                                                         final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
                                                         tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
-                                                        tvLastChatTime.setText(PublicComponent.parseTimestampToString(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)));
+                                                        tvLastChatTime.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP));
                                                         tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
                                                         tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
                                                         tvNRICTo.setText(tempMap.get(NRIC_TO));
@@ -225,7 +225,7 @@ public class ChatChannelListActivity extends BaseActivity {
                                                     }
                                                 }
                                                 else{
-                                                    //
+
                                                 }
                                             }
                                         }
