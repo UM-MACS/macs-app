@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -87,8 +88,12 @@ public class UserProfileActivity extends BaseActivity {
                             startActivity(i6);
                             break;
                         }
+
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(UserProfileActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
+
                 }
                 return true;
             }

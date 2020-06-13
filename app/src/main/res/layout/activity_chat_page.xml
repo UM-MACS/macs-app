@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_chat"
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:background="@color/dodger_blue">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -27,14 +29,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
+                android:paddingStart="7dp"
                 android:text="@string/name"
-                android:textSize="18sp" />
+                android:textStyle="bold"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/tv_chat_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
+                android:text="@string/type"
+                android:textColor="@color/white"
+                android:paddingStart="7dp"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -46,7 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_chat"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="90dp"
         android:layout_weight="10">
 
         <ScrollView
@@ -76,6 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:padding="7dp"
         android:orientation="horizontal">
 
         <ScrollView
@@ -91,16 +100,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/border"
-                android:hint="@string/name"
+                android:hint="@string/write_here"
+                android:paddingStart="15dp"
                 android:minHeight="64dp"
-                android:padding="4dp" />
+                android:padding="5dp" />
 
         </ScrollView>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/btn_send_chat"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_margin="4dp"
             android:layout_weight="2"
             android:src="@drawable/button_send" />

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -44,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -248,18 +250,21 @@ public class ChatPageActivity extends BaseActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 6f
         );
-        lp.setMargins(0, 0, 0, 5);
+
         // 1 friend
         if (messagePos == 1) {
             tv.setBackgroundResource(R.drawable.messagebg2);
             lp.gravity = Gravity.LEFT;
+            lp.setMargins(15, 0, 0, 5);
         }
         //  2 user
         else {
             tv.setBackgroundResource(R.drawable.messagebg1);
             lp.gravity = Gravity.RIGHT;
+            lp.setMargins(0, 0, 15, 5);
+
         }
-        tv.setPadding(12, 4, 12, 4);
+        tv.setPadding(30, 10, 30, 10);
         tv.setLayoutParams(lp);
         linearLayoutChatContent.addView(tv);
 

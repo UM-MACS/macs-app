@@ -274,5 +274,9 @@
     <string name="delete_user_success">Delete user success</string>
     <string name="retrieve_user_fail">Retrieve user fail</string>
     <string name="edit_user_profile">Edit User Profile</string>
+    <string name="type">Type</string>
+    <string name="write_here">Write Here</string>
+    <string name="time">time</string>
+    <string name="message">Message</string>
 
 </resources>

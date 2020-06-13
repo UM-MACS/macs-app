@@ -43,6 +43,7 @@ import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
@@ -164,7 +165,9 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
                             break;
                         }
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(ExerciseActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }

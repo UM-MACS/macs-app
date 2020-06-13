@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.questionnaire.QuestionnaireActivity;
@@ -88,8 +89,8 @@ public class FAQActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-                        startActivity(i);
+                        Intent i7 = new Intent(FAQActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
                         break;
                 }
                 return true;

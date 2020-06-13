@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +54,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,7 +124,9 @@ public class ChatChannelListActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(ChatChannelListActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
@@ -205,7 +211,18 @@ public class ChatChannelListActivity extends BaseActivity {
 
                                                         final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
                                                         tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
-                                                        tvLastChatTime.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP));
+
+                                                        String date = tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP);
+                                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                        try {
+                                                            Date d = dateFormat.parse(date);
+                                                            long epoch = d.getTime();
+                                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
+                                                            Log.e("TAG", "time: "+time );
+                                                            tvLastChatTime.setText(time);
+                                                        } catch (ParseException e) {
+                                                            e.printStackTrace();
+                                                        }
                                                         tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
                                                         tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
                                                         tvNRICTo.setText(tempMap.get(NRIC_TO));

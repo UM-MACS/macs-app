@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
@@ -148,7 +149,9 @@ public class SearchForumActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(SearchForumActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
