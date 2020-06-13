@@ -155,7 +155,7 @@ public class ChatChannelListActivity extends BaseActivity {
                 createNewChat();
             }
         });
-        btnCreateNewChat.setOnClickListener(
+        btnSearchChat.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
