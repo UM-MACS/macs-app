@@ -171,6 +171,7 @@ public class ChatChannelListActivity extends BaseActivity {
                             if(apiStatus.equals("1")){
                                 for(int i = 0; i < jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
+                                    final int currentPos = i;
                                     final HashMap<String,String> tempMap = new HashMap<>();
                                     tempMap.put(NRIC_TO,object.getString(NRIC_TO));
                                     tempMap.put(CHAT_CHANNEL_ID,object.getString(CHAT_CHANNEL_ID));
@@ -184,67 +185,18 @@ public class ChatChannelListActivity extends BaseActivity {
 
                                             if(dataSnapshot.exists()){
                                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-
+                                                    tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).getValue(String.class));
+                                                    tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class));
                                                     break;
                                                 }
                                                 receiverList.add(tempMap);
 
-                                                Log.e("onResponse: ", "f" + receiverList.size());
-                                                Log.e("onResponse: ", "l" + jsonArray.length());
-                                                //if list is empty show sth else
-                                                if (receiverList.size() > 0) {
-                                                    for (int i = receiverList.size() - 1; i < receiverList.size(); i++) {
-                                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                                        final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
-                                                        linearLayoutChatList.addView(rowView);
-
-                                                        final HashMap<String, String> tempMap = receiverList.get(i);
-
-                                                        CircleImageView civReceiverProfilePic = (CircleImageView) ((View) rowView).findViewById(R.id.civ_receiver_profile_pic);
-                                                        TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
-                                                        TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
-                                                        TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
-                                                        TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
-                                                        TextView tvNRICTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
-
-                                                        final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
-                                                        tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
-
-                                                        String date = tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP);
-                                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                                        try {
-                                                            Date d = dateFormat.parse(date);
-                                                            long epoch = d.getTime();
-                                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
-                                                            Log.e("TAG", "time: "+time );
-                                                            tvLastChatTime.setText(time);
-                                                        } catch (ParseException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                        tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
-                                                        tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
-                                                        tvNRICTo.setText(tempMap.get(NRIC_TO));
-
-                                                        rowView.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
-                                                                i.putExtra(NRIC_TO, tempMap.get(NRIC_TO));
-                                                                i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
-                                                                i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
-                                                                i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
-                                                                i.putExtra(RECEIVER_PIC,temp);
-                                                                startActivity(i);
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                                else{
-
-                                                }
                                             }
+
+                                            if(currentPos == jsonArray.length() -1)
+                                                loadLayout();
                                         }
 
                                         @Override
@@ -288,6 +240,64 @@ public class ChatChannelListActivity extends BaseActivity {
                 };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    public void loadLayout(){
+        if (receiverList.size() > 0) {
+            for (int i = 0; i < receiverList.size(); i++) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
+                linearLayoutChatList.addView(rowView);
+
+                final HashMap<String, String> tempMap = receiverList.get(i);
+
+                //ROW VIEW COLOR CHANGE
+                if(!tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).equals(sessionManager.getUserDetail().get("NRIC")) &&
+                        tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).equals(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE)){
+                    rowView.setBackgroundColor(getResources().getColor(R.color.pink));
+                }
+                CircleImageView civReceiverProfilePic = (CircleImageView) ((View) rowView).findViewById(R.id.civ_receiver_profile_pic);
+                TextView tvReceiverName = (TextView) ((View) rowView).findViewById(R.id.tv_receiver_name);
+                TextView tvLastChatTime = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_time);
+                TextView tvLastChatMessage = (TextView) ((View) rowView).findViewById(R.id.tv_last_chat_message);
+                TextView tvChatChannelId = (TextView) ((View) rowView).findViewById(R.id.tv_chat_channel_id);
+                TextView tvNRICTo = (TextView) ((View) rowView).findViewById(R.id.tv_email_to);
+
+                final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
+                tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
+
+                String date = tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date d = dateFormat.parse(date);
+                    long epoch = d.getTime();
+                    CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
+                    Log.e("TAG", "time: "+time );
+                    tvLastChatTime.setText(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
+                tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
+                tvNRICTo.setText(tempMap.get(NRIC_TO));
+
+                rowView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(ChatChannelListActivity.this, ChatPageActivity.class);
+                        i.putExtra(NRIC_TO, tempMap.get(NRIC_TO));
+                        i.putExtra(RECEIVER_NAME, tempMap.get(RECEIVER_NAME));
+                        i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
+                        i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
+                        i.putExtra(RECEIVER_PIC,temp);
+                        startActivity(i);
+                    }
+                });
+            }
+        }
+        else{
+
+        }
     }
 
     //Get Pic function from Forum Activity
