@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <SearchView
+        android:id="@+id/search_view_contact_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="@string/search"/>
+
     <ProgressBar
         android:id="@+id/progress_bar_contact_list"
         android:layout_marginTop="16dp"
@@ -12,16 +18,9 @@
         android:layout_gravity="center"
         android:visibility="gone"/>
 
-    <SearchView
-        android:id="@+id/search_view_contact_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="@string/search"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_contact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/alice_blue"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
