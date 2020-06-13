@@ -216,9 +216,16 @@ public class ChatChannelListActivity extends BaseActivity {
                                                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                                         try {
                                                             Date d = dateFormat.parse(date);
-                                                            long epoch = d.getTime();
-                                                            CharSequence time = DateUtils.getRelativeTimeSpanString(epoch,System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS);
-                                                            Log.e("TAG", "time: "+time );
+                                                            Long week = 604800000L;
+                                                            Long day = 86400000L;
+                                                            String time = "";
+                                                            if(System.currentTimeMillis() - d.getTime() <= day) {
+                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_TIME);
+                                                            } else if (System.currentTimeMillis() - d.getTime() <= week){
+                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY);
+                                                            } else{
+                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_ABBREV_MONTH);
+                                                            }
                                                             tvLastChatTime.setText(time);
                                                         } catch (ParseException e) {
                                                             e.printStackTrace();

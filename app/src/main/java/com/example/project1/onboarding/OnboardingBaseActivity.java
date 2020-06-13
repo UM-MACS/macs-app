@@ -31,6 +31,7 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.mainPage.MainActivity;
+import com.example.project1.onboarding.component.OnboardingChatFragment;
 import com.example.project1.onboarding.component.OnboardingEmotionFragment;
 import com.example.project1.onboarding.component.OnboardingExercise2Fragment;
 import com.example.project1.onboarding.component.OnboardingExerciseFragment;
@@ -139,6 +140,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment(),
                     new OnboardingExerciseFragment(),
@@ -151,6 +153,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment()
             };
@@ -160,6 +163,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment()
             };
