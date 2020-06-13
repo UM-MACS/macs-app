@@ -66,6 +66,7 @@ public class ChatPageActivity extends BaseActivity {
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, statusReference, chatHistoryReference;
+    private ChildEventListener childEventListener;
     private String NRICTo, chatChannelId, receiverName, receiverType, receiverPic;
     private String tempPic = "";
     private String tempType = "";
@@ -120,10 +121,10 @@ public class ChatPageActivity extends BaseActivity {
         tvChatStatus.setText(receiverType);
         setPic(receiverPic,civChatProfilePic);
 
-        chatHistoryReference.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//        chatHistoryReference.addListenerForSingleValueEvent(
+//                new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                        for(DataSnapshot ds : dataSnapshot.getChildren()){
 //
 //                            String message = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class);
@@ -137,17 +138,17 @@ public class ChatPageActivity extends BaseActivity {
 //                                appendMessage(message,time,2);
 //                            }
 //                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                }
+//        );
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                }
-        );
-
-        chatHistoryReference.addChildEventListener(
+        childEventListener = (
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -190,6 +191,8 @@ public class ChatPageActivity extends BaseActivity {
                 }
         );
 
+        chatHistoryReference.addChildEventListener(childEventListener);
+
         btnSendChat.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -224,8 +227,17 @@ public class ChatPageActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this,ChatChannelListActivity.class);
+        chatHistoryReference.removeEventListener(childEventListener);
         CurrentChatUser.getInstance().setCurrentNRIC("");
         startActivity(i);
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+        CurrentChatUser.getInstance().setCurrentNRIC("");
     }
 
     @Override

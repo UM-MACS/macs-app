@@ -57,6 +57,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -153,6 +155,14 @@ public class ChatChannelListActivity extends BaseActivity {
                 createNewChat();
             }
         });
+        btnCreateNewChat.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO
+                    }
+                }
+        );
     }
 
     //Complete, may need enhance
@@ -210,13 +220,13 @@ public class ChatChannelListActivity extends BaseActivity {
                             }
                             else{
                                 progressBarChat.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Error1, Please Try Again Later",
+                                Toast.makeText(getApplicationContext(), R.string.start_new_chat,
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e){
                             Log.e("Error", e.toString());
-                            Toast.makeText(getApplicationContext(), "Error2, Please Try Again Later",
+                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                     Toast.LENGTH_SHORT).show();
                             progressBarChat.setVisibility(View.GONE);
                             e.printStackTrace();
@@ -227,7 +237,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBarChat.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error3, Please Try Again Later",
+                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -244,6 +254,8 @@ public class ChatChannelListActivity extends BaseActivity {
 
     public void loadLayout(){
         if (receiverList.size() > 0) {
+            orderReceiverList();
+
             for (int i = 0; i < receiverList.size(); i++) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
@@ -266,27 +278,27 @@ public class ChatChannelListActivity extends BaseActivity {
                 final String temp = getPic(tempMap.get(NRIC_TO), tempMap.get(RECEIVER_TYPE), civReceiverProfilePic);
                 tvReceiverName.setText(tempMap.get(RECEIVER_NAME));
 
-                                                        String date = tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP);
-                                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                                        try {
-                                                            Date d = dateFormat.parse(date);
-                                                            Long week = 604800000L;
-                                                            Long day = 86400000L;
-                                                            String time = "";
-                                                            if(System.currentTimeMillis() - d.getTime() <= day) {
-                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_TIME);
-                                                            } else if (System.currentTimeMillis() - d.getTime() <= week){
-                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY);
-                                                            } else{
-                                                                time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_ABBREV_MONTH);
-                                                            }
-                                                            tvLastChatTime.setText(time);
-                                                        } catch (ParseException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                        tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
-                                                        tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
-                                                        tvNRICTo.setText(tempMap.get(NRIC_TO));
+                String date = tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date d = dateFormat.parse(date);
+                    Long week = 604800000L;
+                    Long day = 86400000L;
+                    String time = "";
+                    if(System.currentTimeMillis() - d.getTime() <= day) {
+                        time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_TIME);
+                    } else if (System.currentTimeMillis() - d.getTime() <= week){
+                        time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY);
+                    } else{
+                        time = DateUtils.formatDateTime(getApplicationContext(), d.getTime(), DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_ABBREV_MONTH);
+                    }
+                    tvLastChatTime.setText(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                tvLastChatMessage.setText(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE));
+                tvChatChannelId.setText(tempMap.get(CHAT_CHANNEL_ID));
+                tvNRICTo.setText(tempMap.get(NRIC_TO));
 
                 rowView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -304,6 +316,24 @@ public class ChatChannelListActivity extends BaseActivity {
         }
         else{
 
+        }
+    }
+
+    public void orderReceiverList(){
+        if(receiverList.size()>1) {
+            for (int i = 0; i < receiverList.size() - 1; i++) {
+                for (int j = i + 1; j < receiverList.size(); j++) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        if (dateFormat.parse(receiverList.get(i).get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP)).compareTo(
+                                dateFormat.parse(receiverList.get(j).get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP))) < 0) {
+                            Collections.swap(receiverList, i, j);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
