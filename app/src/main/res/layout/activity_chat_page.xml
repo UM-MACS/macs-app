@@ -101,6 +101,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/border"
                 android:hint="@string/write_here"
+                android:focusableInTouchMode="true"
                 android:paddingStart="15dp"
                 android:minHeight="64dp"
                 android:padding="5dp" />

@@ -92,12 +92,6 @@ public class ChatPageActivity extends BaseActivity {
         //handle pic and type null
         //TODO
         // DONE
-        if(receiverType == "null"){
-            receiverType = getType(chatChannelId);
-            if(receiverPic == "null"){
-                receiverPic = getPic(NRICTo, receiverType);
-            }
-        }
 
         sessionManager = new SessionManager(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -119,8 +113,14 @@ public class ChatPageActivity extends BaseActivity {
         tvChatName.setText(receiverName);
         //TODO maybe
         tvChatStatus.setText(receiverType);
-        setPic(receiverPic,civChatProfilePic);
 
+//        if(receiverType.equals("null")){
+//            receiverType = getType(chatChannelId);
+//            if(receiverPic.equals(null)){
+//                getPic(NRICTo, receiverType, civChatProfilePic);
+//            }
+//        }
+        getPic(NRICTo, receiverType, civChatProfilePic);
 //        chatHistoryReference.addListenerForSingleValueEvent(
 //                new ValueEventListener() {
 //                    @Override
@@ -294,13 +294,8 @@ public class ChatPageActivity extends BaseActivity {
         });
     }
 
-    public void setPic(final String photo, final CircleImageView view) {
-        int loader = R.drawable.ic_user;
-        ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-        imgLoader.DisplayImage(photo, loader, view);
-    }
-
-    public String getPic(final String email, final String type) {
+    //Get Pic
+    public String getPic(final String email, final String type, final CircleImageView view) {
         String URL_GETPIC;
         if (type.equals(PublicComponent.SPECIALIST)) {
             URL_GETPIC = PublicComponent.URL_SPECIALIST_PIC;
@@ -321,6 +316,12 @@ public class ChatPageActivity extends BaseActivity {
                             if (success.equals("1")) {
                                 String picture = jsonObject.getString("photo");
                                 tempPic = picture;
+
+                                //load picture example
+                                int loader = R.drawable.ic_user;
+                                ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+                                imgLoader.DisplayImage(picture, loader, view);
+                                Log.e("TAG", "success loading photo");
                             }
                         } catch (JSONException e) {
                             Log.e("TAG", "fail to load photo");

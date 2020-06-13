@@ -89,7 +89,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(ContactListViewHolder contactListViewHolder, int i) {
         final ContactItem currentItem = contactItemList.get(i);
 
-//        getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
+        getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
         contactListViewHolder.tvContactName.setText(currentItem.getName());
 
         contactListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {

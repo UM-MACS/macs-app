@@ -150,7 +150,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".chat.ChatPageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
 
 
 
