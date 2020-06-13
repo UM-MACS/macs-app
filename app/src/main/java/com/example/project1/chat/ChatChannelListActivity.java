@@ -8,8 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.format.DateUtils;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Key;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,7 +78,7 @@ public class ChatChannelListActivity extends BaseActivity {
     private EditText etSearchChat;
     private ProgressBar progressBarChat;
     private TextView tvEmptyChat;
-    private ArrayList<HashMap<String,String>> receiverList = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> receiverList = new ArrayList<>(), filterList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private String tempPic = "";
@@ -159,7 +163,55 @@ public class ChatChannelListActivity extends BaseActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //TODO
+                        filterList();
+                    }
+                }
+        );
+        // TODO
+//        etSearchChat.setKeyListener(
+//                new KeyListener() {
+//                    @Override
+//                    public int getInputType() {
+//                        return 0;
+//                    }
+//
+//                    @Override
+//                    public boolean onKeyDown(View view, Editable text, int keyCode, KeyEvent event) {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public boolean onKeyUp(View view, Editable text, int keyCode, KeyEvent event) {
+//                        filterList();
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public boolean onKeyOther(View view, Editable text, KeyEvent event) {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public void clearMetaKeyState(View view, Editable content, int states) {
+//
+//                    }
+//                }
+//        );
+        etSearchChat.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    filterList();
+                }
+                return false;
+            }
+        });
+
+        etSearchChat.setOnFocusChangeListener(
+                new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        filterList();
                     }
                 }
         );
@@ -205,8 +257,10 @@ public class ChatChannelListActivity extends BaseActivity {
 
                                             }
 
-                                            if(currentPos == jsonArray.length() -1)
+                                            if(currentPos == jsonArray.length() -1) {
+                                                orderReceiverList();
                                                 loadLayout();
+                                            }
                                         }
 
                                         @Override
@@ -252,16 +306,33 @@ public class ChatChannelListActivity extends BaseActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void loadLayout(){
-        if (receiverList.size() > 0) {
-            orderReceiverList();
+    public void filterList(){
+        filterList.clear();
+        final String searchKeyWord = etSearchChat.getText().toString().trim();
+        if(searchKeyWord.length() > 0){
+            for(int i = 0; i < receiverList.size(); i++){
+                final HashMap<String, String> tempMap = receiverList.get(i);
+                if(tempMap.get(RECEIVER_NAME).toLowerCase().contains(searchKeyWord.toLowerCase())){
+                    filterList.add(tempMap);
+                }
+            }
+        }
+        else{
+            filterList.addAll(receiverList);
+        }
+        loadLayout();
+    }
 
-            for (int i = 0; i < receiverList.size(); i++) {
+    public void loadLayout(){
+        linearLayoutChatList.removeAllViews();
+//        linearLayoutChatList.removeAllViewsInLayout();
+        if (filterList.size() > 0) {
+            for (int i = 0; i < filterList.size(); i++) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View rowView = inflater.inflate(R.layout.field_chat_channel, linearLayoutChatList, false);
                 linearLayoutChatList.addView(rowView);
 
-                final HashMap<String, String> tempMap = receiverList.get(i);
+                final HashMap<String, String> tempMap = filterList.get(i);
 
                 //ROW VIEW COLOR CHANGE
                 if(!tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).equals(sessionManager.getUserDetail().get("NRIC")) &&
@@ -335,6 +406,7 @@ public class ChatChannelListActivity extends BaseActivity {
                 }
             }
         }
+        filterList.addAll(receiverList);
     }
 
     //Get Pic function from Forum Activity

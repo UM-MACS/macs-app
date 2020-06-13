@@ -60,10 +60,10 @@ public class CreateChatChannelActivity extends BaseActivity {
         searchViewContactList = findViewById(R.id.search_view_contact_list);
         recyclerViewContactList = findViewById(R.id.recycler_view_contact_list);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        contactListAdapter = new ContactListAdapter(this, contactItemList);
-        recyclerViewContactList.setLayoutManager(layoutManager);
-        recyclerViewContactList.setAdapter(contactListAdapter);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//        contactListAdapter = new ContactListAdapter(this, contactItemList);
+//        recyclerViewContactList.setLayoutManager(layoutManager);
+//        recyclerViewContactList.setAdapter(contactListAdapter);
         getContactList();
 //        setupSearchView();
     }
@@ -129,6 +129,10 @@ public class CreateChatChannelActivity extends BaseActivity {
 //                                    contactListAdapter = new ContactListAdapter(context, contactItemList);
 //                                    recyclerViewContactList.setLayoutManager(layoutManager);
 //                                    recyclerViewContactList.setAdapter(contactListAdapter);
+                                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+                                    contactListAdapter = new ContactListAdapter(context, contactItemList);
+                                    recyclerViewContactList.setLayoutManager(layoutManager);
+                                    recyclerViewContactList.setAdapter(contactListAdapter);
                                     contactListAdapter.notifyDataSetChanged();
                                     setupSearchView();
                                 }

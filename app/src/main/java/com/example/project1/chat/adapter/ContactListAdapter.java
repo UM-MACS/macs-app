@@ -75,7 +75,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         this.mInflater = LayoutInflater.from(con);
         this.context = con;
         this.contactItemList = list;
-        this.contactItemListFull = list;
+        this.contactItemListFull = (ArrayList<ContactItem>) list.clone();
     }
 
     @NonNull
@@ -330,7 +330,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             contactItemList.clear();
             contactItemList.addAll((ArrayList)results.values);
             notifyDataSetChanged();
-
         }
     };
 
