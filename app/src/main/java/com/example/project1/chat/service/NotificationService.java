@@ -73,49 +73,49 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(sessionManager.isLogin()) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_UNREAD_BASE).child(sessionManager.getUserDetail().get("NRIC"));
-
-            databaseReference.addChildEventListener(
-                    new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            Map map = dataSnapshot.getValue(Map.class);
-                            String chatChannelId = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID).toString();
-                            String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
-                            String nricTo = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO).toString();
-                            String senderName = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME).toString();
-
-                            if(!nricTo.equals(CurrentChatUser.getInstance().getCurrentNRIC())){
-                                notifyUser(senderName,message,nricTo,chatChannelId);
-                            }
-
-                            databaseReference.child(dataSnapshot.getKey()).removeValue();
-
-                            chatDatabaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId).child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
-                            chatDatabaseReference.push().setValue(map);
-                        }
-
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    }
-            );
+//            databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_UNREAD_BASE).child(sessionManager.getUserDetail().get("NRIC"));
+//
+//            databaseReference.addChildEventListener(
+//                    new ChildEventListener() {
+//                        @Override
+//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                            Map map = dataSnapshot.getValue(Map.class);
+//                            String chatChannelId = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID).toString();
+//                            String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
+//                            String nricTo = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO).toString();
+//                            String senderName = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME).toString();
+//
+//                            if(!nricTo.equals(CurrentChatUser.getInstance().getCurrentNRIC())){
+//                                notifyUser(senderName,message,nricTo,chatChannelId);
+//                            }
+//
+//                            databaseReference.child(dataSnapshot.getKey()).removeValue();
+//
+//                            chatDatabaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId).child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
+//                            chatDatabaseReference.push().setValue(map);
+//                        }
+//
+//                        @Override
+//                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    }
+//            );
         }
 
         return START_STICKY;

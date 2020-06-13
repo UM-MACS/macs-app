@@ -51,7 +51,9 @@ public class PublicComponent {
     public static final String FIREBASE_CHAT_HISTORY_NRIC_TO = "NRICTo";
     public static final String FIREBASE_CHAT_HISTORY_SENDER_NAME = "senderName";
     public static final String FIREBASE_CHAT_HISTORY_TIMESTAMP = "timestamp";
-    public static final String FIREBASE_CHAT_UNREAD_BASE = "unread";
+    public static final String FIREBASE_CHAT_HISTORY_IS_SEEN = "isSeen";
+    public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE = "true";
+    public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE = "false";
 
     //TODO
     public static String parseTimestampToString(String timestamp){

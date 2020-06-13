@@ -65,7 +65,7 @@ public class ChatPageActivity extends BaseActivity {
     private EditText etSendChat;
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, statusReference, chatHistoryReference, sendChatReference;
+    private DatabaseReference databaseReference, statusReference, chatHistoryReference;
     private String NRICTo, chatChannelId, receiverName, receiverType, receiverPic;
     private String tempPic = "";
     private String tempType = "";
@@ -103,7 +103,6 @@ public class ChatPageActivity extends BaseActivity {
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId);
         statusReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_TYPING_STATUS);
         chatHistoryReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
-        sendChatReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_UNREAD_BASE).child(NRICTo);
 
         toolbarChat = findViewById(R.id.toolbar_chat);
         civChatProfilePic = findViewById(R.id.civ_chat_profile_pic);
@@ -125,19 +124,19 @@ public class ChatPageActivity extends BaseActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot ds : dataSnapshot.getChildren()){
-
-                            String message = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class);
-                            String NRICFrom = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).getValue(String.class);
-                            String time = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class);
-
-                            if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
-                                appendMessage(message,time,1);
-                            }
-                            else{
-                                appendMessage(message,time,2);
-                            }
-                        }
+//                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+//
+//                            String message = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class);
+//                            String NRICFrom = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).getValue(String.class);
+//                            String time = ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class);
+//
+//                            if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
+//                                appendMessage(message,time,1);
+//                            }
+//                            else{
+//                                appendMessage(message,time,2);
+//                            }
+//                        }
 
                     }
 
@@ -157,9 +156,15 @@ public class ChatPageActivity extends BaseActivity {
                         String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
                         String NRICFrom = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).toString();
                         String time = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).toString();
+                        String seen = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).toString();
 
                         if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
+                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
+                            chatHistoryReference.child(dataSnapshot.getKey()).setValue(map);
                             appendMessage(message,time,1);
+                        }
+                        else{
+                            appendMessage(message,time,2);
                         }
                     }
 
@@ -200,6 +205,7 @@ public class ChatPageActivity extends BaseActivity {
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO, NRICTo);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID, chatChannelId);
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME, sessionManager.getUserDetail().get("NAME"));
+                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN, PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE);
 
                             Date d = Calendar.getInstance().getTime();
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -208,7 +214,7 @@ public class ChatPageActivity extends BaseActivity {
 
                             chatHistoryReference.push().setValue(map);
 
-                            appendMessage(message, sentDate,2);
+//                            appendMessage(message, sentDate,2);
                         }
                     }
                 }
