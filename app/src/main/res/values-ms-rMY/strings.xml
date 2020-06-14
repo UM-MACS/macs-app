@@ -209,4 +209,8 @@
     <string name="nric_register">NRIC ( tanpa \'-\' )</string>
     <string name="invalid_nric">Sila masukkan NRIC yang sah</string>
     <string name="edit_user_profile">Ubah Biodata Pengguna</string>
+    <string name="type">Tulis</string>
+    <string name="write_here">Tulis di sini</string>
+    <string name="time">masa</string>
+    <string name="message">mesej</string>
 </resources>
