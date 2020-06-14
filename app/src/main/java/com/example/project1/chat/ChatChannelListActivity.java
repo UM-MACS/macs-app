@@ -474,6 +474,7 @@ public class ChatChannelListActivity extends BaseActivity {
     public void onBackPressed() {
         Intent i = new Intent(this,ChatChannelListActivity.class);
         startActivity(i);
+        finish();
     }
 
     @Override

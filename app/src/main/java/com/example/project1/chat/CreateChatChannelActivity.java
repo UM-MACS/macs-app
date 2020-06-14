@@ -175,5 +175,6 @@ public class CreateChatChannelActivity extends BaseActivity {
     public void onBackPressed() {
         Intent i = new Intent(this,ChatChannelListActivity.class);
         startActivity(i);
+        finish();
     }
 }
