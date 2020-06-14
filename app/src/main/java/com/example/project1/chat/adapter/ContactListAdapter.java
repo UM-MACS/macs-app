@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -61,17 +62,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     class ContactListViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView civContactProfilePic;
-        TextView tvContactName;
+        TextView tvContactName, tvType;
 
         ContactListViewHolder(View itemView){
             super(itemView);
             civContactProfilePic = itemView.findViewById(R.id.civ_contact_profile_pic);
             tvContactName = itemView.findViewById(R.id.tv_contact_name);
+            tvType = itemView.findViewById(R.id.tv_type);
         }
     }
 
     public ContactListAdapter(Context con, ArrayList<ContactItem> list){
-        Log.e("ContactListAdapter: ", list.toString());
         this.mInflater = LayoutInflater.from(con);
         this.context = con;
         this.contactItemList = list;
@@ -91,12 +92,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
         getPic(currentItem.getPhoto(), contactListViewHolder.civContactProfilePic);
         contactListViewHolder.tvContactName.setText(currentItem.getName());
+        contactListViewHolder.tvType.setText(currentItem.getType());
 
         contactListViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkChannelExist(currentItem);
-//                createNewChatChannel(currentItem);
             }
         });
     }
@@ -159,6 +160,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -225,6 +228,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -288,6 +293,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 

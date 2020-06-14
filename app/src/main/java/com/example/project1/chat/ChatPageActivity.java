@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -89,10 +90,6 @@ public class ChatPageActivity extends BaseActivity {
         receiverPic = getIntent().getExtras().getString(RECEIVER_PIC);
         CurrentChatUser.getInstance().setCurrentNRIC(NRICTo);
 
-        //handle pic and type null
-        //TODO
-        // DONE
-
         sessionManager = new SessionManager(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId);
@@ -113,14 +110,8 @@ public class ChatPageActivity extends BaseActivity {
         tvChatName.setText(receiverName);
         //TODO maybe
         tvChatStatus.setText(receiverType);
-
-//        if(receiverType.equals("null")){
-//            receiverType = getType(chatChannelId);
-//            if(receiverPic.equals(null)){
-//                getPic(NRICTo, receiverType, civChatProfilePic);
-//            }
-//        }
         getPic(NRICTo, receiverType, civChatProfilePic);
+
 //        chatHistoryReference.addListenerForSingleValueEvent(
 //                new ValueEventListener() {
 //                    @Override
@@ -342,6 +333,8 @@ public class ChatPageActivity extends BaseActivity {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
 
         return tempPic;

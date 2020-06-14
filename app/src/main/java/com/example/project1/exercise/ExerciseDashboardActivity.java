@@ -295,15 +295,6 @@ public class ExerciseDashboardActivity extends BaseActivity {
     }
 
     public void setReminder(){
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY,22);
-//        calendar.set(Calendar.MINUTE,48);
-//        calendar.set(Calendar.SECOND,30);
-//        Intent intent = new Intent(getApplicationContext(),NotificationService.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),200,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
         //alarmService
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

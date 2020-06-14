@@ -3,12 +3,8 @@ package com.example.project1.exercise;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
-import android.graphics.SurfaceTexture;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -17,11 +13,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -33,6 +26,7 @@ import android.widget.ToggleButton;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -58,7 +52,6 @@ import com.example.project1.userProfile.UserProfileActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,7 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ExerciseActivity extends BaseActivity implements TextureView.SurfaceTextureListener, MediaPlayer.OnVideoSizeChangedListener{
+public class ExerciseActivity extends BaseActivity {
 
     private Button btnStart, btnEnd, btnReset;
     private TextView tvStopwatchName, tvVideoName;
@@ -88,31 +81,21 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
 
     //exercise related variables
     private String[] currentExerciseList;
-//    private ArrayList<Integer> currentExerciseIdList = new ArrayList<>();
-    private ArrayList<String> currentExerciseIdList = new ArrayList<>();
+    private ArrayList<Integer> currentExerciseIdList = new ArrayList<>();
     private String[] oriExerciseList1 = {"Shoulder Shrug", "Seated Ladder Climb", "Seated Russian Twist", "Sit to Stand",
-            "Seated Bent over Row", "Toe Lift", "Wall Push Up"};
-//    private int[] oriExerciseIdList1 = {R.raw.shoulder_shrug, R.raw.seated_ladder_climb, R.raw.seated_russian_twist, R.raw.sit_to_stand,
-//            R.raw.seated_bend_over_row, R.raw.toe_lift, R.raw.wall_push_up, R.raw.oblique_squeeze};
-//    private String[] oriExerciseList2 = {"Seated Bicycle Crunch", "Seated Butterfly", "Lateral Leg Raise", "Squat with Rotational Press",
-//            "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"};
-//    private int[] oriExerciseIdList2 = {R.raw.seated_bicycle_crunch, R.raw.seated_butterfly, R.raw.lateral_leg_raise, R.raw.squat_with_rotational_press,
-//            R.raw.wood_cutter, R.raw.empty_the_can, R.raw.standing_bicycle_crunch};
-
-    private String[] oriExerciseList = {"seated_bicycle_crunch.mp4", "seated_butterfly.mp4",
-            "lateral_leg_raise.mp4", "squat_with_rotational_press.mp4","wood_cutter.mp4", "empty_the_can.mp4", "standing_bicycle_crunch.mp4"};
-
-
+            "Seated Bent over Row", "Toe Lift", "Wall Push Up", "Oblique Squeeze"};
+    private int[] oriExerciseIdList1 = {R.raw.shoulder_shrug, R.raw.seated_ladder_climb, R.raw.seated_russian_twist, R.raw.sit_to_stand,
+            R.raw.seated_bend_over_row, R.raw.toe_lift, R.raw.wall_push_up, R.raw.oblique_squeeze};
+    private String[] oriExerciseList2 = {"Seated Bicycle Crunch", "Seated Butterfly", "Lateral Leg Raise", "Squat with Rotational Press",
+            "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"};
+    private int[] oriExerciseIdList2 = {R.raw.seated_bicycle_crunch, R.raw.seated_butterfly, R.raw.lateral_leg_raise, R.raw.squat_with_rotational_press,
+            R.raw.wood_cutter, R.raw.empty_the_can, R.raw.standing_bicycle_crunch};
     private int exerciseCounter = 0;
     private boolean pause_check;
     private String localhost;
     private static String SESSION_URL, DETAILS_URL;
 
     private SharedPreferences sharedPreferences;
-
-    TextureView textureView;
-    private MediaPlayer mediaPlayer;
-    AssetFileDescriptor fileDescriptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,16 +173,16 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
             for (int i = 0; i < currentExerciseList.length; i++) {
                 for (int j = 0; j < oriExerciseList1.length; j++) {
                     if (currentExerciseList[i].contentEquals(oriExerciseList1[j])) {
-                        currentExerciseIdList.add(oriExerciseList1[j]);
+                        currentExerciseIdList.add(oriExerciseIdList1[j]);
                         System.out.println("true");
                     }
                 }
             }
         } else {
             for (int i = 0; i < currentExerciseList.length; i++) {
-                for (int j = 0; j < oriExerciseList.length; j++) {
-                    if (currentExerciseList[i].contentEquals(oriExerciseList[j])) {
-                        currentExerciseIdList.add(oriExerciseList[j]);
+                for (int j = 0; j < oriExerciseList2.length; j++) {
+                    if (currentExerciseList[i].contentEquals(oriExerciseList2[j])) {
+                        currentExerciseIdList.add(oriExerciseIdList2[j]);
                         System.out.println("false");
                     }
                 }
@@ -214,25 +197,10 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
         tvStopwatchName = (TextView) findViewById(R.id.stopwatch_name);
         tvVideoName = (TextView) findViewById(R.id.video_name);
 
-//        final VideoView view = (VideoView) findViewById(R.id.video_view);
-//        MediaController mc = new MediaController(this);
-//        view.setMediaController(mc);
-//        playVideo(view);
-
-
-        textureView = findViewById(R.id.video_view);
-        textureView.setSurfaceTextureListener(this);
-        mediaPlayer = new MediaPlayer();
-        try {
-            String path = "standing_bicycle_crunch.mp4";
-            Log.d("TAG", "playVideo: path is "+path);
-            fileDescriptor = getApplicationContext().getAssets().openFd("standing_bicycle_crunch.mp4");
-        } catch (IOException e) {
-            Log.e("TAG", "playVideo: "+ e);
-        }
-
-
-
+        final VideoView view = (VideoView) findViewById(R.id.video_view);
+        MediaController mc = new MediaController(this);
+        view.setMediaController(mc);
+        playVideo(view);
 
         //define start time
         Date c = Calendar.getInstance().getTime();
@@ -289,7 +257,7 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
-                        playVideo();
+                        playVideo(view);
                         btnNextOnClick();
                     }
                 } else {
@@ -312,7 +280,7 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
                         tvVideoName.setText(currentExerciseList[exerciseCounter]);
-                        playVideo();
+                        playVideo(view);
                         btnNextOnClick();
                     }
                 }
@@ -355,44 +323,6 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
 
     };
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        Surface surface = new Surface(surfaceTexture);
-        try {
-            mediaPlayer.setSurface(surface);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mediaPlayer.setDataSource(this,Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.standing_bicycle_crunch));
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer.start();
-                    }
-                });
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-    }
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
-    }
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-    }
-    @Override
-    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-    }
-
-
-
-
-
     //btn next
     public void btnNextOnClick(){
         handler.removeCallbacks(runnable);
@@ -420,18 +350,12 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
     }
 
     //play video
-    public void playVideo() {
+    public void playVideo(VideoView view) {
         System.out.println(exerciseCounter);
         System.out.println(currentExerciseIdList.size());
-        try {
-            String path = "android.resource://" + getPackageName() + "/" + currentExerciseIdList.get(exerciseCounter);
-//            String path = currentExerciseIdList.get(exerciseCounter);
-//            String path = "standing_bicycle_crunch.mp4";
-            Log.d("TAG", "playVideo: path is "+path);
-            fileDescriptor = getAssets().openFd(path);
-        } catch (IOException e) {
-            Log.e("TAG", "playVideo: "+ e);
-        }
+        String path = "android.resource://" + getPackageName() + "/" + currentExerciseIdList.get(exerciseCounter);
+        view.setVideoURI(Uri.parse(path));
+        view.start();
     }
 
     //ask wish to save
@@ -463,7 +387,6 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
     //ask feeling
     public void feelingDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setTitle("Your Feeling");
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_feeling, null);
 
@@ -565,8 +488,6 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(8);
-//        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(8);
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -586,11 +507,11 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
                 }
                 else if(counter > 1){
                     Toast.makeText(getApplicationContext(), getString(R.string.one_emotion_only),
-                                        Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), getString(R.string.at_least_one_emotion),
-                                        Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -599,47 +520,49 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
     //save exercise session
     public void saveExercise() {
         //SAVE TO DATABASE LOGIC HERE
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String success = jsonObject.getString("success");
-                                sessionId = jsonObject.getInt("sessionId");
-                                if (success.equals("1")) {
-                                    saveExerciseDetails();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
-                                        Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            sessionId = jsonObject.getInt("sessionId");
+                            if (success.equals("1")) {
+                                saveExerciseDetails();
+                            } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
                                         Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                             Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
-                                        Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("email", email);
-                    params.put("exerciseLevel", exerciseLevel);
-                    params.put("startTime", startTime);
-                    params.put("endTime", endTime);
-                    params.put("feeling", feeling);
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("exerciseLevel", exerciseLevel);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("feeling", feeling);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
     }
 
     //save exercise details of session
@@ -685,6 +608,8 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
         }
         if(saveStatus){
@@ -728,6 +653,7 @@ public class ExerciseActivity extends BaseActivity implements TextureView.Surfac
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     @Override

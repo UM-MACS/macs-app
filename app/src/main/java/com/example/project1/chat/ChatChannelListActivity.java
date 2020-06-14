@@ -1,5 +1,6 @@
 package com.example.project1.chat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -10,6 +11,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.text.method.KeyListener;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -165,61 +169,37 @@ public class ChatChannelListActivity extends BaseActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        filterList();
+//                        filterList();
+                        InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        etSearchChat.clearFocus();
                     }
                 }
         );
-        // TODO
-//        etSearchChat.setKeyListener(
-//                new KeyListener() {
-//                    @Override
-//                    public int getInputType() {
-//                        return 0;
-//                    }
-//
-//                    @Override
-//                    public boolean onKeyDown(View view, Editable text, int keyCode, KeyEvent event) {
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public boolean onKeyUp(View view, Editable text, int keyCode, KeyEvent event) {
-//                        filterList();
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public boolean onKeyOther(View view, Editable text, KeyEvent event) {
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public void clearMetaKeyState(View view, Editable content, int states) {
-//
-//                    }
-//                }
-//        );
-        etSearchChat.setOnKeyListener(new View.OnKeyListener() {
+
+        etSearchChat.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    filterList();
-                }
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterList();
             }
         });
-
-        etSearchChat.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        filterList();
-                    }
-                }
-        );
+//        etSearchChat.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_DEL) {
+//                    filterList();
+//                }
+//                return false;
+//            }
+//        });
     }
 
-    //Complete, may need enhance
     public void getChatChannelList(){
         progressBarChat.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, PublicComponent.URL_GET_CHAT_CHANNEL,
@@ -305,6 +285,8 @@ public class ChatChannelListActivity extends BaseActivity {
                     }
                 };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -460,6 +442,8 @@ public class ChatChannelListActivity extends BaseActivity {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
 
         return tempPic;
