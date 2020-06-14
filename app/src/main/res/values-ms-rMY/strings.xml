@@ -199,6 +199,7 @@
     <string name="email_register">E-mel ( Tidak diwajibkan )</string>
     <string name="my_personal_details">Biodata</string>
     <string name="empty_details">Nama, No Telefon dan Usia tidak boleh dikosongkan</string>
+    <string name="start_new_chat">Sila mulakan perbualan yang baru</string>
 
     <string name="user_management">Pengurusan Pengguna</string>
     <string name="view">Buka</string>

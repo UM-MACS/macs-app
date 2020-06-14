@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -112,8 +113,8 @@ public class EmotionAssessmentActivity extends BaseActivity {
                         startActivity(i3);
                         break;
                     case R.id.navigation_chat:
-//                        Intent i=getPackageManager().getLaunchIntentForPackage("com.example.fypchat");
-//                        startActivity(i);
+                        Intent i7 = new Intent(EmotionAssessmentActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
                         break;
                     case R.id.navigation_forum:
                         if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Caregiver")){

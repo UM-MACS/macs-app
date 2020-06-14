@@ -21,6 +21,7 @@ import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -30,6 +31,7 @@ import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
 import com.example.project1.mainPage.MainActivity;
+import com.example.project1.onboarding.component.OnboardingChatFragment;
 import com.example.project1.onboarding.component.OnboardingEmotionFragment;
 import com.example.project1.onboarding.component.OnboardingExercise2Fragment;
 import com.example.project1.onboarding.component.OnboardingExerciseFragment;
@@ -121,7 +123,9 @@ public class OnboardingBaseActivity extends BaseActivity {
                                 break;
                             }
                         case R.id.navigation_chat:
-//                         startActivity(i);
+                            Intent i7 = new Intent(OnboardingBaseActivity.this, ChatChannelListActivity.class);
+                            startActivity(i7);
+                            break;
                     }
                     return true;
                 }
@@ -136,6 +140,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment(),
                     new OnboardingExerciseFragment(),
@@ -148,6 +153,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment()
             };
@@ -157,6 +163,7 @@ public class OnboardingBaseActivity extends BaseActivity {
             Fragment[] temp = {
                     new OnboardingGeneralFragment(),
                     new OnboardingEmotionFragment(),
+                    new OnboardingChatFragment(),
                     new OnboardingForumFragment(),
                     new OnboardingForum2Fragment()
             };

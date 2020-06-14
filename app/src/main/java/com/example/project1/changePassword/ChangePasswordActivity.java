@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -97,6 +98,10 @@ SessionManager sessionManager;
                     case R.id.navigation_exercise:
                         Intent i3 = new Intent(ChangePasswordActivity.this, ExerciseDashboardActivity.class);
                         startActivity(i3);
+                    case R.id.navigation_chat:
+                        Intent i7 = new Intent(ChangePasswordActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }

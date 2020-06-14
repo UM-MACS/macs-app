@@ -26,6 +26,7 @@ import android.widget.ToggleButton;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -36,6 +37,7 @@ import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
@@ -146,7 +148,9 @@ public class ExerciseActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(ExerciseActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
@@ -383,7 +387,6 @@ public class ExerciseActivity extends BaseActivity {
     //ask feeling
     public void feelingDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setTitle("Your Feeling");
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_feeling, null);
 
@@ -485,8 +488,6 @@ public class ExerciseActivity extends BaseActivity {
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(8);
-//        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(8);
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -506,11 +507,11 @@ public class ExerciseActivity extends BaseActivity {
                 }
                 else if(counter > 1){
                     Toast.makeText(getApplicationContext(), getString(R.string.one_emotion_only),
-                                        Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), getString(R.string.at_least_one_emotion),
-                                        Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -519,47 +520,49 @@ public class ExerciseActivity extends BaseActivity {
     //save exercise session
     public void saveExercise() {
         //SAVE TO DATABASE LOGIC HERE
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String success = jsonObject.getString("success");
-                                sessionId = jsonObject.getInt("sessionId");
-                                if (success.equals("1")) {
-                                    saveExerciseDetails();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
-                                        Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SESSION_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            sessionId = jsonObject.getInt("sessionId");
+                            if (success.equals("1")) {
+                                saveExerciseDetails();
+                            } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
                                         Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                             Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
-                                        Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("email", email);
-                    params.put("exerciseLevel", exerciseLevel);
-                    params.put("startTime", startTime);
-                    params.put("endTime", endTime);
-                    params.put("feeling", feeling);
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.save_exercise_fail),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("exerciseLevel", exerciseLevel);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("feeling", feeling);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
     }
 
     //save exercise details of session
@@ -605,6 +608,8 @@ public class ExerciseActivity extends BaseActivity {
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 0,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
         }
         if(saveStatus){
@@ -648,6 +653,7 @@ public class ExerciseActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     @Override

@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.example.project1.R;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -74,6 +75,10 @@ public class ChangeLanguageActivity extends BaseActivity {
                             Intent i3 = new Intent(ChangeLanguageActivity.this, ExerciseDashboardActivity.class);
                             startActivity(i3);
                             break;
+                        case R.id.navigation_chat:
+                            Intent i7 = new Intent(ChangeLanguageActivity.this, ChatChannelListActivity.class);
+                            startActivity(i7);
+                            break;
 //                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);
 //                        break;
@@ -92,8 +97,6 @@ public class ChangeLanguageActivity extends BaseActivity {
                                 startActivity(i6);
                                 break;
                             }
-                        case R.id.navigation_chat:
-//                         startActivity(i);
                     }
                     return true;
                 }

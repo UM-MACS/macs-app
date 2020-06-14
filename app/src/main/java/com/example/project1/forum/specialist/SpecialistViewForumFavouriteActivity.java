@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
@@ -86,7 +87,9 @@ public class SpecialistViewForumFavouriteActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-//                         startActivity(i);
+                        Intent i7 = new Intent(SpecialistViewForumFavouriteActivity.this, ChatChannelListActivity.class);
+                        startActivity(i7);
+                        break;
                 }
                 return true;
             }
