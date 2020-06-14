@@ -190,7 +190,7 @@ public class ChatPageActivity extends BaseActivity {
                     public void onClick(View v) {
                         String message = etSendChat.getText().toString().trim();
                         etSendChat.setText("");
-                        if(!message.equals("") || !message.equals(" ")){
+                        if(!message.equals("") && !message.isEmpty()){
                             HashMap<String,String> map = new HashMap<>();
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE,"text");
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE, message);
