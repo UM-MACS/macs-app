@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -221,6 +222,9 @@ public class ExerciseActivity extends BaseActivity {
                     pause_check = false;
                     btnReset.setEnabled(true);
                     handler.removeCallbacks(runnable);
+                    if (view.isPlaying()) {
+                        view.pause();
+                    }
                 } else {
                     StartTime = SystemClock.uptimeMillis();
                     btnStart.setText(R.string.pause);
@@ -228,6 +232,12 @@ public class ExerciseActivity extends BaseActivity {
                     btnEnd.setEnabled(true);
                     btnReset.setEnabled(false);
                     handler.postDelayed(runnable, 0);
+                    if(!view.isPlaying()){
+                        view.start();
+                    }
+                    else {
+                        view.resume();
+                    }
                 }
             }
         });
@@ -302,6 +312,7 @@ public class ExerciseActivity extends BaseActivity {
                 tvStopwatchName.setText("00:00:00");
                 //
                 btnStart.setEnabled(true);
+                view.start();
             }
         });
     }
@@ -355,6 +366,14 @@ public class ExerciseActivity extends BaseActivity {
         System.out.println(currentExerciseIdList.size());
         String path = "android.resource://" + getPackageName() + "/" + currentExerciseIdList.get(exerciseCounter);
         view.setVideoURI(Uri.parse(path));
+        view.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.setLooping(true);
+                    }
+                }
+        );
         view.start();
     }
 

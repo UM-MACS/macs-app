@@ -990,8 +990,10 @@ private ProgressBar progressBar;
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
+//        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        startActivity(i);
+        super.onBackPressed();
     }
 
     @Override

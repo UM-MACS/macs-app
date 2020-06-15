@@ -141,13 +141,13 @@ public class CreateChatChannelActivity extends BaseActivity {
                             else{
                                 progressBarContactList.setVisibility(View.GONE);
                                 Log.e("onResponse1: ", apiStatus);
-                                Toast.makeText(getApplicationContext(), "Error1, Please Try Again Later",
+                                Toast.makeText(getApplicationContext(), "No User Available, Please Try Again Later",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e){
                             Log.e("Error", e.toString());
-                            Toast.makeText(getApplicationContext(), "Error2, Please Try Again Later",
+                            Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                     Toast.LENGTH_SHORT).show();
                             progressBarContactList.setVisibility(View.GONE);
                             e.printStackTrace();
@@ -158,7 +158,7 @@ public class CreateChatChannelActivity extends BaseActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBarContactList.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error3, Please Try Again Later",
+                        Toast.makeText(getApplicationContext(), "Error, Please Try Again Later",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -178,6 +178,7 @@ public class CreateChatChannelActivity extends BaseActivity {
     public void onBackPressed() {
         Intent i = new Intent(this,ChatChannelListActivity.class);
         startActivity(i);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         finish();
     }
 }

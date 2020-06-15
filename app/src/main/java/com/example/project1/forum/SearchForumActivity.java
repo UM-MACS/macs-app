@@ -1012,6 +1012,7 @@ public class SearchForumActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(SearchForumActivity.this,ForumActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(i);
     }
 

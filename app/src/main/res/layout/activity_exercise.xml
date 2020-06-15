@@ -65,17 +65,21 @@
             android:textColor="#000000"
             android:textSize= "24dp" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="16dp"
             android:background="@drawable/border"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="@string/exercises_time"
@@ -96,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp">
 
@@ -128,14 +132,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="50dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="2"
                 android:background="@color/cardview_dark_background"
                 android:textColor="@color/white"
                 android:text="@string/reset" />
         </LinearLayout>
 
+        </ScrollView>
+
     </LinearLayout>
+
+
 </RelativeLayout>
