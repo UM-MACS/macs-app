@@ -26,6 +26,7 @@ import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -115,6 +116,10 @@ public class OnboardingBaseActivity extends BaseActivity {
                             if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
                                     || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                                 Intent i6 = new Intent(OnboardingBaseActivity.this, SpecialistForumActivity.class);
+                                startActivity(i6);
+                                break;
+                            } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                                Intent i6 = new Intent(OnboardingBaseActivity.this, CaregiverForumActivity.class);
                                 startActivity(i6);
                                 break;
                             } else {

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.project1.PublicComponent;
 import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.userManagement.UserListActivity;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
@@ -79,6 +80,10 @@ public class SpecialistForumActivity extends BaseActivity {
                         if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
                                 || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(SpecialistForumActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                            Intent i6 = new Intent(SpecialistForumActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {

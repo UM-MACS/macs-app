@@ -15,12 +15,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -87,9 +89,13 @@ public class ChangeLanguageActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                         case R.id.navigation_forum:
-                            if (CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                    || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")) {
+                            if (CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.SPECIALIST)
+                                    || CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.ADMIN)) {
                                 Intent i6 = new Intent(ChangeLanguageActivity.this, SpecialistForumActivity.class);
+                                startActivity(i6);
+                                break;
+                            } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                                Intent i6 = new Intent(ChangeLanguageActivity.this, CaregiverForumActivity.class);
                                 startActivity(i6);
                                 break;
                             } else {

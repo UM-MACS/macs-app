@@ -44,6 +44,7 @@ import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
@@ -130,9 +131,13 @@ public class ChatChannelListActivity extends BaseActivity {
                             Intent i6 = new Intent(ChatChannelListActivity.this, SpecialistForumActivity.class);
                             startActivity(i6);
                             break;
-                        } else {
-                            Intent i6 = new Intent(ChatChannelListActivity.this, ForumActivity.class);
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                            Intent i6 = new Intent(ChatChannelListActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
+                            break;
+                        } else{
+                            Intent i8 = new Intent(ChatChannelListActivity.this, ForumActivity.class);
+                            startActivity(i8);
                             break;
                         }
                     case R.id.navigation_chat:

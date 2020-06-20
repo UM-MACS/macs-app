@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.project1.PublicComponent;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.chat.ChatChannelListActivity;
@@ -18,6 +19,7 @@ import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverEditDeletePostActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.caregiver.CaregiverViewForumFavouriteListActivity;
 import com.example.project1.forum.EditDeleteForumPostActivity;
 import com.example.project1.R;
@@ -81,6 +83,10 @@ public class UserProfileActivity extends BaseActivity {
                         if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
                                 || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(UserProfileActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                            Intent i6 = new Intent(UserProfileActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {

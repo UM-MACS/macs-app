@@ -30,9 +30,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
@@ -143,6 +145,10 @@ private ProgressBar progressBar;
                         if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
                         || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
                             Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                            Intent i6 = new Intent(ForumActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {

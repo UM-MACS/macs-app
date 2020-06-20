@@ -33,6 +33,7 @@ import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -101,9 +102,13 @@ public class UserDetailsActivity extends BaseActivity {
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
+                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.SPECIALIST)
+                                || CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.ADMIN)){
                             Intent i6 = new Intent(UserDetailsActivity.this, SpecialistForumActivity.class);
+                            startActivity(i6);
+                            break;
+                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+                            Intent i6 = new Intent(UserDetailsActivity.this, CaregiverForumActivity.class);
                             startActivity(i6);
                             break;
                         } else {
