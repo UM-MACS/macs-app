@@ -277,13 +277,18 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(CurrentUser.getInstance().getUserType().equals("Patient")){
-            getMenuInflater().inflate(R.menu.nav, menu);
-            return true;
-        } else {
-            getMenuInflater().inflate(R.menu.other_users_nav, menu);
-            return true;
-        }
+        if(sessionManager.isLogin()) {
+            if (CurrentUser.getInstance().getUserType().equals(PublicComponent.PATIENT)) {
+                getMenuInflater().inflate(R.menu.nav, menu);
+                return true;
+            } else if (CurrentUser.getInstance().getUserType().equals(PublicComponent.ADMIN)){
+                getMenuInflater().inflate(R.menu.admin_nav, menu);
+                return true;
+            } else {
+                getMenuInflater().inflate(R.menu.other_users_nav, menu);
+                return true;
+            }
+        } return true;
     }
 
 

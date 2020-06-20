@@ -213,4 +213,6 @@
     <string name="write_here">Tulis di sini</string>
     <string name="time">masa</string>
     <string name="message">mesej</string>
+    <string name="empty_chat">Tiada chat, sila mulakan chat yang baru</string>
+    <string name="username">Nama Pengguna</string>
 </resources>

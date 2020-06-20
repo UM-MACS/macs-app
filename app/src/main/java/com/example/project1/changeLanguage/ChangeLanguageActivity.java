@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
+import com.example.project1.changePassword.ChangePasswordActivity;
 import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
@@ -166,8 +167,11 @@ public class ChangeLanguageActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if(sessionManager.isLogin()) {
-            if (CurrentUser.getInstance().getUserType().equals("Patient")) {
+            if (CurrentUser.getInstance().getUserType().equals(PublicComponent.PATIENT)) {
                 getMenuInflater().inflate(R.menu.nav, menu);
+                return true;
+            } else if (CurrentUser.getInstance().getUserType().equals(PublicComponent.ADMIN)){
+                getMenuInflater().inflate(R.menu.admin_nav, menu);
                 return true;
             } else {
                 getMenuInflater().inflate(R.menu.other_users_nav, menu);
@@ -204,7 +208,7 @@ public class ChangeLanguageActivity extends BaseActivity {
             return true;
         }
         if (id == R.id.action_change_password){
-            Intent intent = new Intent(ChangeLanguageActivity.this, ChangeLanguageActivity.class);
+            Intent intent = new Intent(ChangeLanguageActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
             return true;
         }

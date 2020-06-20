@@ -279,5 +279,6 @@
     <string name="write_here">Write Here</string>
     <string name="time">time</string>
     <string name="message">Message</string>
+    <string name="username">Username</string>
 
 </resources>

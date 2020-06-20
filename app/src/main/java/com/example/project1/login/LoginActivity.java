@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
@@ -96,6 +97,7 @@ public class LoginActivity extends BaseActivity {
             t1.setText(R.string.specialistLogin);
         } else{
             t1.setText(R.string.adminLogin);
+            e1.setHint(R.string.username);
             b2.setVisibility(View.GONE);
             b3.setVisibility(View.GONE);
         }
@@ -271,7 +273,13 @@ public class LoginActivity extends BaseActivity {
                         requestQueue.add(stringRequest);
 
                         CurrentUser.getInstance().setNRIC(nric);
-                    } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
+                    } else if (CurrentUser.getInstance().getUserType().equals(PublicComponent.SPECIALIST)
+                        && nric.equals("macsadmin")){
+                        Toast.makeText(getApplicationContext(), getString(R.string.nric_not_exist), Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+                        b1.setVisibility(View.VISIBLE);
+                        }
+                    else {
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN3,
@@ -291,13 +299,18 @@ public class LoginActivity extends BaseActivity {
                                             } else if (success.equals("1")) {
 //                                            JSONArray jsonArray = jsonObject.getJSONArray("login");
                                                 for (int i = 0; i < jsonArray.length(); i++) {
-//                                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                                    String jname = jsonObject.getString("name").trim();
-                                                    String jnric = jsonObject.getString("nric").trim();
-//                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
-                                                    sessionManager.createSession(jname, jnric, "Specialist");
-                                                    CurrentUser.getInstance().setNRIC(jnric); //email
-                                                    CurrentUser.getInstance().setUserName(jname);
+                                                    if(nric.equals("macsadmin")){
+                                                        Intent intent = new Intent(LoginActivity.this,SpecialistForumActivity.class);
+                                                        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        sessionManager.createSession("admin", "macsadmin", "Admin");
+                                                    } else {
+                                                        String jname = jsonObject.getString("name").trim();
+                                                        String jnric = jsonObject.getString("nric").trim();
+                                                        sessionManager.createSession(jname, jnric, "Specialist");
+                                                        CurrentUser.getInstance().setNRIC(jnric); //email
+                                                        CurrentUser.getInstance().setUserName(jname);
+                                                    }
                                                 }
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeSpecialist() == 0){
@@ -356,21 +369,21 @@ public class LoginActivity extends BaseActivity {
                         CurrentUser.getInstance().setNRIC(nric);
                     }
 
-                    else{
-                        progressBar.setVisibility(View.VISIBLE);
-                        b1.setVisibility(View.GONE);
-                        if(nric.equals("macsadmin")&&password.equals("abc123")){
-                            Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
-                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                            sessionManager.createSession("admin", "macsadmin", "Admin");
-                        } else{
-                            Toast.makeText(getApplicationContext(), getString(R.string.wrong_nric_pw)
-                            ,Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                            b1.setVisibility(View.VISIBLE);
-                        }
-                    }
+//                    else{
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        b1.setVisibility(View.GONE);
+//                        if(nric.equals("macsadmin")&&password.equals("abc123")){
+//                            Intent i = new Intent(LoginActivity.this,SpecialistForumActivity.class);
+//                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(i);
+//                            sessionManager.createSession("admin", "macsadmin", "Admin");
+//                        } else{
+//                            Toast.makeText(getApplicationContext(), getString(R.string.wrong_nric_pw)
+//                            ,Toast.LENGTH_SHORT).show();
+//                            progressBar.setVisibility(View.GONE);
+//                            b1.setVisibility(View.VISIBLE);
+//                        }
+//                    }
                     getWindow().setSoftInputMode(
                             WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
                     );
