@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -27,15 +28,13 @@ import java.util.Map;
 
 public class ResetPasswordActivity extends BaseActivity {
     private String email;
-    private String localhost;
     private static String URL ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
-        localhost = getString(R.string.localhost);
-        URL = localhost+"/resetPassword";
+        URL = PublicComponent.URL_RESET_PASSWORD_PATIENT;
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -49,11 +48,11 @@ public class ResetPasswordActivity extends BaseActivity {
 
     public void onResetPassword(View view) {
         if(CurrentUser.getInstance().getUserType().equals("Patient")){
-            URL = localhost+"/resetPassword";
+            URL = PublicComponent.URL_RESET_PASSWORD_PATIENT;
         } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")){
-            URL = localhost+"/resetPassword2";
+            URL = PublicComponent.URL_RESET_PASSWORD_CAREGIVER;
         } else if(CurrentUser.getInstance().getUserType().equals("Specialist")){
-            URL = localhost+"/resetPassword3";
+            URL = PublicComponent.URL_RESET_PASSWORD_SPECIALIST;
         }
         final EditText et1 = (EditText) findViewById(R.id.password);
         final EditText et2 = (EditText) findViewById(R.id.confirm_password);

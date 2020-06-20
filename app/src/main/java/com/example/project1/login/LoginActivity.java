@@ -77,9 +77,9 @@ public class LoginActivity extends BaseActivity {
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_LOGIN = localhost+"/login/";
-        URL_LOGIN2 = localhost+"/login2/";
-        URL_LOGIN3 = localhost+"/login3/";
+        URL_LOGIN = PublicComponent.URL_LOGIN_PATIENT;
+        URL_LOGIN2 = PublicComponent.URL_LOGIN_CAREGIVER;
+        URL_LOGIN3 = PublicComponent.URL_LOGIN_SPECIALIST;
 //        db = new DatabaseHelper(this);
         progressBar = (ProgressBar) findViewById(R.id.login_loading);
         e1 = (EditText)findViewById(R.id.login_nric);
@@ -192,7 +192,8 @@ public class LoginActivity extends BaseActivity {
 
                         CurrentUser.getInstance().setNRIC(nric);
 
-                    } else if (CurrentUser.getInstance().getUserType().equals("Caregiver")) {
+                    }
+                    else if (CurrentUser.getInstance().getUserType().equals("Caregiver")) {
                         /* mysql */
                         progressBar.setVisibility(View.VISIBLE);
                         b1.setVisibility(View.GONE);
@@ -273,7 +274,8 @@ public class LoginActivity extends BaseActivity {
                         requestQueue.add(stringRequest);
 
                         CurrentUser.getInstance().setNRIC(nric);
-                    } else if (CurrentUser.getInstance().getUserType().equals(PublicComponent.SPECIALIST)
+                    }
+                    else if (CurrentUser.getInstance().getUserType().equals(PublicComponent.SPECIALIST)
                         && nric.equals("macsadmin")){
                         Toast.makeText(getApplicationContext(), getString(R.string.nric_not_exist), Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);

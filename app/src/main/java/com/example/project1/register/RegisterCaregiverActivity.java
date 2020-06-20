@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project1.PublicComponent;
 import com.example.project1.login.LoginActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.mainPage.MainActivity;
@@ -83,7 +84,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
         //finish
 
         localhost = getString(R.string.localhost);
-        URL_REGIST =localhost+"/register2/";
+        URL_REGIST = PublicComponent.URL_REGISTER_CAREGIVER;
         URL_UPLOAD =localhost+"/jee/setPic2.php";
 //        db = new DatabaseHelper(this);
         loading = (ProgressBar)findViewById(R.id.register2_loading);

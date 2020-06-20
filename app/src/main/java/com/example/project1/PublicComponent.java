@@ -12,11 +12,6 @@ public class PublicComponent {
     public static final String DESIRE_TO_BE_REMIND = "DESIRE_TO_BE_REMIND";
     public static final String DESIRE_EXERCISE_DAY = "DESIRE_EXERCISE_DAY";
 
-    //sqlite shared preference
-    public static final String SQLITE_ACCESS = "SQLITE_ACCESS";
-    public static final String IS_CHAT_CHANNEL_LIST_LOAD = "IS_CHAT_CHANNEL_LIST_LOAD";
-    public static final String IS_CONTACT_LIST_LOAD = "IS_CONTACT_LIST_LOAD";
-
     //user type
     public static final String PATIENT = "Patient";
     public static final String CAREGIVER = "Caregiver";
@@ -26,6 +21,16 @@ public class PublicComponent {
 
     //mysql database API address
     public static final String LOCALHOST = "https://masc-server.herokuapp.com";
+    public static final String URL_REGISTER_PATIENT = LOCALHOST + "/registerPatient/";
+    public static final String URL_REGISTER_CAREGIVER = LOCALHOST + "/registerCaregiver/";
+    public static final String URL_REGISTER_SPECIALIST = LOCALHOST + "/registerSpecialist/";
+    public static final String URL_LOGIN_PATIENT = LOCALHOST + "/loginPatient/";
+    public static final String URL_LOGIN_CAREGIVER = LOCALHOST + "/loginCaregiver/";
+    public static final String URL_LOGIN_SPECIALIST = LOCALHOST + "/loginSpecialist/";
+    public static final String URL_CHANGE_PASSWORD = LOCALHOST + "/changePassword/";
+    public static final String URL_RESET_PASSWORD_PATIENT = LOCALHOST + "/resetPasswordPatient/";
+    public static final String URL_RESET_PASSWORD_CAREGIVER = LOCALHOST + "/resetPasswordCaregiver/";
+    public static final String URL_RESET_PASSWORD_SPECIALIST = LOCALHOST + "/resetPasswordSpecialist/";
     public static final String URL_GET_CHAT_CHANNEL = LOCALHOST + "/getChatChannel/";
     public static final String URL_POST_CHAT_CHANNEL = LOCALHOST + "/postChatChannel/";
     public static final String URL_SPECIALIST_PIC = LOCALHOST + "/getSpecialistPic/";
@@ -54,11 +59,6 @@ public class PublicComponent {
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN = "isSeen";
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE = "true";
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE = "false";
-
-    //TODO
-    public static String parseTimestampToString(String timestamp){
-        return "xxx ago";
-    }
 
     public static final String NAME = "name";
     public static final String EMAIL = "email";

@@ -109,7 +109,7 @@ SessionManager sessionManager;
         });
 
         localhost = getString(R.string.localhost);
-        URL = localhost+"/changepassword";
+        URL = PublicComponent.URL_CHANGE_PASSWORD;
         o1 = (EditText)findViewById(R.id.old_pw);
         c1 = (EditText)findViewById(R.id.new_pw_1);
         c2 = (EditText)findViewById(R.id.new_pw_2);
