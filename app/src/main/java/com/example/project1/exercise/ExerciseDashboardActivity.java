@@ -33,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.chat.ChatChannelListActivity;
+import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -375,6 +376,12 @@ public class ExerciseDashboardActivity extends BaseActivity {
 
         if (id == R.id.action_questionnaire) {
             Intent intent = new Intent(ExerciseDashboardActivity.this, QuestionnaireActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if(id == R.id.action_event_reminder){
+            Intent intent = new Intent(ExerciseDashboardActivity.this, EventReminderActivity.class);
             startActivity(intent);
             return true;
         }

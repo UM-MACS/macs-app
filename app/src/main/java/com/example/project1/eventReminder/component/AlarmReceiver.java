@@ -52,7 +52,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             builder = new NotificationCompat.Builder(context, id);
             intent = new Intent(context, EventReminderActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required
                     .setSmallIcon(R.drawable.app_icon)
@@ -68,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         else {
             builder = new NotificationCompat.Builder(context, id);
             intent = new Intent(context, EventReminderActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required
                     .setContentText(s)

@@ -182,11 +182,9 @@ public class ChangeLanguageActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(!sessionManager.isLogin()){
             Intent i = new Intent(this,MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(i);
-        }
     }
 
     @Override

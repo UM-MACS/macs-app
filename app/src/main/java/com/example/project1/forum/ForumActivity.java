@@ -188,7 +188,7 @@ private ProgressBar progressBar;
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ForumActivity.this, CreateForumPostActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
         });

@@ -253,10 +253,10 @@ public class EventReminderActivity extends BaseActivity {
                                     SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
                                     long currentDate = Long.parseLong(df.format(c));
                                     Log.e("tag", "current date "+currentDate);
-                                    if(currentDate>newDate){
-                                        Log.e("tag", "enter delete");
-                                        parentLinearLayout.removeView((View)rowView);
-                                    }
+//                                    if(currentDate>newDate){
+//                                        Log.e("tag", "enter delete");
+//                                        parentLinearLayout.removeView((View)rowView);
+//                                    }
                                 }
                                 progressBar.setVisibility(View.GONE);
                             } else{
