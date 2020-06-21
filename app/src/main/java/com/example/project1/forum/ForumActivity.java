@@ -142,20 +142,21 @@ private ProgressBar progressBar;
 //                        startActivity(i5);
 //                        break;
                     case R.id.navigation_forum:
-                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
-                        || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
-                            Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
-                            Intent i6 = new Intent(ForumActivity.this, CaregiverForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        } else {
-                            Intent i6 = new Intent(ForumActivity.this, ForumActivity.class);
-                            startActivity(i6);
-                            break;
-                        }
+//                        if(CurrentUser.getInstance().getUserType().equalsIgnoreCase("Specialist")
+//                        || CurrentUser.getInstance().getUserType().equalsIgnoreCase("Admin")){
+//                            Intent i6 = new Intent(ForumActivity.this, SpecialistForumActivity.class);
+//                            startActivity(i6);
+//                            break;
+//                        } else if(CurrentUser.getInstance().getUserType().equalsIgnoreCase(PublicComponent.CAREGIVER)){
+//                            Intent i6 = new Intent(ForumActivity.this, CaregiverForumActivity.class);
+//                            startActivity(i6);
+//                            break;
+//                        } else {
+//                            Intent i6 = new Intent(ForumActivity.this, ForumActivity.class);
+//                            startActivity(i6);
+//                            break;
+//                        }
+                        break;
                     case R.id.navigation_chat:
                         Intent i7 = new Intent(ForumActivity.this, ChatChannelListActivity.class);
                         startActivity(i7);
@@ -187,6 +188,7 @@ private ProgressBar progressBar;
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ForumActivity.this, CreateForumPostActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
         });
@@ -197,6 +199,7 @@ private ProgressBar progressBar;
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this, ViewForumReportedPostActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtra("forum","Patient");
                     startActivity(i);
                 }
@@ -208,6 +211,7 @@ private ProgressBar progressBar;
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ForumActivity.this, ViewForumReportedPostActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtra("forum","Patient");
                     startActivity(i);
                 }

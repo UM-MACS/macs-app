@@ -34,11 +34,15 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="nric" translatable="false">NRIC</string>
+    <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="age">Age</string>
     <string name="contact">Contact No</string>
+    <string name="contact_admin">Don\'t have email? Contact admin here</string>
+    <string name="contact_admin_title">Contact Admin</string>
+    <string name="contact_admin_info">Please fill in your NRIC without \'-\'</string>
     <string-array name="relationship">
         <item>Please Select One</item>
         <item>Parent</item>

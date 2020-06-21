@@ -39,7 +39,7 @@ public class ResetPasswordActivity extends BaseActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
-                email = extras.getString("email");
+                email = extras.getString("nric");
                 Log.e("TAG", "getExtras: Reset Password of email : "+email );
 
             }

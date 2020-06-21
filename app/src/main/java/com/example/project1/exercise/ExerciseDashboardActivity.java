@@ -113,8 +113,8 @@ public class ExerciseDashboardActivity extends BaseActivity {
                         startActivity(i2);
                         break;
                     case R.id.navigation_exercise:
-                        Intent i3 = new Intent(ExerciseDashboardActivity.this, ExerciseDashboardActivity.class);
-                        startActivity(i3);
+//                        Intent i3 = new Intent(ExerciseDashboardActivity.this, ExerciseDashboardActivity.class);
+//                        startActivity(i3);
                         break;
 //                    Intent i4 = new Intent(ForumActivity.this, QuestionnaireListActivity.class);
 //                        startActivity(i4);

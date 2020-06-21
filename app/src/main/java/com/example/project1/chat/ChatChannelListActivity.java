@@ -141,8 +141,8 @@ public class ChatChannelListActivity extends BaseActivity {
                             break;
                         }
                     case R.id.navigation_chat:
-                        Intent i7 = new Intent(ChatChannelListActivity.this, ChatChannelListActivity.class);
-                        startActivity(i7);
+//                        Intent i7 = new Intent(ChatChannelListActivity.this, ChatChannelListActivity.class);
+//                        startActivity(i7);
                         break;
                 }
                 return true;

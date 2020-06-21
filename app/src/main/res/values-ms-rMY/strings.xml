@@ -22,11 +22,15 @@
     <string name="newUser2">Klik sini untuk mendaftar</string>
     <string name="login">Log Masuk</string>
     <string name="register">Mendaftar</string>
+    <string name="email">Emel</string>
     <string name="name">Nama</string>
     <string name="password">Kata Laluan</string>
     <string name="confirmPassword">Pengesahan Kata Laluan</string>
     <string name="age">Umur</string>
     <string name="contact">Nombor Telefon</string>
+    <string name="contact_admin">Tiada emel? Hubungi admin di sini</string>
+    <string name="contact_admin_title">Hubungi Admin</string>
+    <string name="contact_admin_info">Sila lengkapkan NRIC anda tanpa \'-\'</string>
     <string name="submitButton">Hantar</string>
     <string name="caregiverRelation">Hubungan dengan Pesakit</string>
     <string name="descriptionOfSpinner">Apa Hubungan Anda dengan Pesakit? Saya adalah .. mereka</string>

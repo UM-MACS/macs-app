@@ -104,9 +104,9 @@ public class EmotionAssessmentActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_emotion_assessment:
-                        Intent i2 = new Intent(EmotionAssessmentActivity.this,
-                                EmotionAssessmentActivity.class);
-                        startActivity(i2);
+//                        Intent i2 = new Intent(EmotionAssessmentActivity.this,
+//                                EmotionAssessmentActivity.class);
+//                        startActivity(i2);
                         break;
                     case R.id.navigation_exercise:
                         Intent i3 = new Intent(EmotionAssessmentActivity.this,
