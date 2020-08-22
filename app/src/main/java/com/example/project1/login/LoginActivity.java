@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.chat.service.NotificationService;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.mainPage.MainActivity;
@@ -136,6 +137,7 @@ public class LoginActivity extends BaseActivity {
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jnric, "Patient");
                                                 }
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeUser() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
@@ -220,6 +222,7 @@ public class LoginActivity extends BaseActivity {
                                                     CurrentUser.getInstance().setUserName(jname);
 
                                                 }
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeCaregiver() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
@@ -314,6 +317,7 @@ public class LoginActivity extends BaseActivity {
                                                         CurrentUser.getInstance().setUserName(jname);
                                                     }
                                                 }
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeSpecialist() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);

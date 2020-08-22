@@ -59,6 +59,7 @@ public class PublicComponent {
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN = "isSeen";
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE = "true";
     public static final String FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE = "false";
+    public static final String FIREBASE_NOTIFICATION_BASE = "notification";
 
     public static final String NAME = "name";
     public static final String EMAIL = "email";

@@ -1,6 +1,5 @@
 package com.example.project1.chat.service;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,45 +7,23 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
-import com.example.project1.chat.ChatPageActivity;
-import com.example.project1.chat.component.CurrentChatUser;
-import com.example.project1.exercise.ExerciseDashboardActivity;
-import com.example.project1.exercise.NotificationReceiver;
-import com.example.project1.forum.imageFile.ImgLoader;
+import com.example.project1.chat.ChatChannelListActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationService extends Service {
 
@@ -59,9 +36,7 @@ public class NotificationService extends Service {
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
 
-    public NotificationService(){
-        sessionManager = new SessionManager(getApplicationContext());
-    }
+    public NotificationService(){}
 
     @Nullable
     @Override
@@ -70,52 +45,46 @@ public class NotificationService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        sessionManager = new SessionManager(this);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(sessionManager.isLogin()) {
             firebaseDatabase = FirebaseDatabase.getInstance();
-//            databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_UNREAD_BASE).child(sessionManager.getUserDetail().get("NRIC"));
-//
-//            databaseReference.addChildEventListener(
-//                    new ChildEventListener() {
-//                        @Override
-//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                            Map map = dataSnapshot.getValue(Map.class);
-//                            String chatChannelId = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID).toString();
-//                            String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
-//                            String nricTo = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO).toString();
-//                            String senderName = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME).toString();
-//
-//                            if(!nricTo.equals(CurrentChatUser.getInstance().getCurrentNRIC())){
-//                                notifyUser(senderName,message,nricTo,chatChannelId);
-//                            }
-//
-//                            databaseReference.child(dataSnapshot.getKey()).removeValue();
-//
-//                            chatDatabaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId).child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
-//                            chatDatabaseReference.push().setValue(map);
-//                        }
-//
-//                        @Override
-//                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    }
-//            );
+            databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
+
+            databaseReference.addChildEventListener(
+                    new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            notifyUser();
+                            databaseReference.removeValue();
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    }
+            );
         }
 
         return START_STICKY;
@@ -129,16 +98,17 @@ public class NotificationService extends Service {
         }
     }
 
-    private void notifyUser(String senderName, String message, String nricTo, String chatChannelId){
+    private void notifyUser(){
 
         Context context = getApplicationContext();
 
         NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String s = sessionManager.getLanguagePref(context);
+        String message = "";
         if(s.equals("en")){
-            s = "New message from " + senderName;
+            message = "You have a new message! ";
         } else{
-            s = "Mesej baru dari " + senderName;
+            message = "Anda ada mesej baru! ";
         }
 
         final int NOTIFY_ID = 3; // ID of notification
@@ -160,12 +130,7 @@ public class NotificationService extends Service {
                 notifManager.createNotificationChannel(mChannel);
             }
             builder = new NotificationCompat.Builder(context, id);
-            intent = new Intent(context, ChatPageActivity.class);
-            intent.putExtra(NRIC_TO, nricTo);
-            intent.putExtra(RECEIVER_NAME, senderName);
-            intent.putExtra(RECEIVER_TYPE, "null");
-            intent.putExtra(CHAT_CHANNEL_ID, chatChannelId);
-            intent.putExtra(RECEIVER_PIC, "null");
+            intent = new Intent(context, ChatChannelListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             // REQUIRED
@@ -182,12 +147,7 @@ public class NotificationService extends Service {
         }
         else {
             builder = new NotificationCompat.Builder(context, id);
-            intent = new Intent(context, ChatPageActivity.class);
-            intent.putExtra(NRIC_TO, nricTo);
-            intent.putExtra(RECEIVER_NAME, senderName);
-            intent.putExtra(RECEIVER_TYPE, "null");
-            intent.putExtra(CHAT_CHANNEL_ID, chatChannelId);
-            intent.putExtra(RECEIVER_PIC, "null");
+            intent = new Intent(context, ChatChannelListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required

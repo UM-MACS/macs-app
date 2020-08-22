@@ -152,20 +152,15 @@
             android:name=".chat.ChatPageActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
-
-
-
         <receiver android:name=".exercise.NotificationReceiver">
             <intent-filter>
                 <action android:name="android.media.action.exercise.DISPLAY_NOTIFICATION" />
-
                 <category android:name="android.intent.category.exercise.DEFAULT" />
             </intent-filter>
         </receiver>
         <receiver android:name=".eventReminder.component.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -174,7 +169,6 @@
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false" />
-
         <receiver
             android:name=".chat.service.NotificationBroadcastReceiver"
             android:enabled="true"
@@ -183,7 +177,6 @@
                 <action android:name="com.example.project1.chat.service.restartservice" />
             </intent-filter>
         </receiver>
-
         <activity
             android:name=".emotionAssessment.EmotionButtonAssessmentActivity"
             android:exported="true"
@@ -203,7 +196,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -33,6 +33,7 @@ import com.example.project1.R;
 import com.example.project1.chat.component.CurrentChatUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.login.component.BaseActivity;
+import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -66,7 +67,7 @@ public class ChatPageActivity extends BaseActivity {
     private EditText etSendChat;
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, statusReference, chatHistoryReference;
+    private DatabaseReference databaseReference, statusReference, chatHistoryReference, receiverReference;
     private ChildEventListener childEventListener;
     private String NRICTo, chatChannelId, receiverName, receiverType, receiverPic;
     private String tempPic = "";
@@ -95,6 +96,8 @@ public class ChatPageActivity extends BaseActivity {
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId);
         statusReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_TYPING_STATUS);
         chatHistoryReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
+        receiverReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(NRICTo);
+//        receiverReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
 
         toolbarChat = findViewById(R.id.toolbar_chat);
         civChatProfilePic = findViewById(R.id.civ_chat_profile_pic);
@@ -207,6 +210,7 @@ public class ChatPageActivity extends BaseActivity {
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP, sentDate);
 
                             chatHistoryReference.push().setValue(map);
+                            receiverReference.push().setValue(map);
 
 //                            appendMessage(message, sentDate,2);
                         }

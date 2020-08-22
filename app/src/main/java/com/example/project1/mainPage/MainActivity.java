@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.project1.R;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.service.NotificationService;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
             CurrentUser.getInstance().setNRIC(mEmail);
             CurrentUser.getInstance().setUserName(mName);
             CurrentUser.getInstance().setUserType(mType);
+            startService(new Intent(this, NotificationService.class));
             Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
