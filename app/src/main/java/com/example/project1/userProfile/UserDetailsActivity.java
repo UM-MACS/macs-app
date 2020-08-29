@@ -2,16 +2,22 @@ package com.example.project1.userProfile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +40,7 @@ import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
 import com.example.project1.forum.ForumActivity;
 import com.example.project1.forum.caregiver.CaregiverForumActivity;
+import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.forum.specialist.SpecialistForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -46,6 +53,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,12 +62,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserDetailsActivity extends BaseActivity {
     private SessionManager sessionManager;
     private EditText nameET, emailET, ageET, phoneET;
     private String nric;
     private RelativeLayout container;
     private String localhost, URL_GET_DETAILS, URL_UPDATE_DETAILS;
+    private Button uploadButton;
+    private CircleImageView profile_pic;
+    private Bitmap bitmap;
 
 
     @Override
@@ -125,7 +139,8 @@ public class UserDetailsActivity extends BaseActivity {
             }
         });
 
-
+        uploadButton = (Button)findViewById(R.id.upload_button);
+        profile_pic = (CircleImageView)findViewById(R.id.upload_pic);
         nameET = (EditText)findViewById(R.id.name_et);
         emailET = (EditText)findViewById(R.id.email_et);
         ageET = (EditText)findViewById(R.id.age_et);
@@ -148,7 +163,62 @@ public class UserDetailsActivity extends BaseActivity {
         }
         onGetDetail(nric);
 
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseFile();
+            }
+        });
 
+    }
+
+    private void chooseFile(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                getString(R.string.select_photo)),1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode ==1 && resultCode == RESULT_OK
+                && data !=null && data.getData()!= null){
+            Uri filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), filePath);
+                profile_pic.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    public String getStringImage(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new
+                ByteArrayOutputStream();
+        int width = bitmap.getWidth();
+        int height = (int) (bitmap.getHeight() / (float) width * 120.0f);
+        bitmap = Bitmap.createScaledBitmap(bitmap,120,height,false);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50,
+                byteArrayOutputStream);
+        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+        String encodedImage = Base64.encodeToString(imageByteArray
+                ,Base64.DEFAULT);
+        Log.e("TAG", "encodedImage"+encodedImage );
+        return encodedImage;
+    }
+
+    public void getPic(final String photo, final CircleImageView view){
+        //load picture example
+        int loader = R.drawable.ic_user;
+        ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+        imgLoader.DisplayImage(photo, loader, view);
+        Log.e("TAG", "success loading photo" );
     }
 
     public void onGetDetail(final String nric){
@@ -165,6 +235,8 @@ public class UserDetailsActivity extends BaseActivity {
                             ArrayList <String> emailList = new ArrayList<>();
                             ArrayList <String> phoneNoList = new ArrayList<>();
                             ArrayList <String> ageList = new ArrayList<>();
+                            ArrayList<String> photo = new ArrayList<>();
+
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
@@ -172,6 +244,7 @@ public class UserDetailsActivity extends BaseActivity {
                                     emailList.add(object.getString("email"));
                                     phoneNoList.add(object.getString("phoneNo"));
                                     ageList.add(object.getString("age"));
+                                    photo.add(object.getString("photo"));
                                 }
 
                                 for (int i = 0; i < nameList.size(); i++) {
@@ -179,6 +252,7 @@ public class UserDetailsActivity extends BaseActivity {
                                     emailET.setText(emailList.get(i));
                                     phoneET.setText(phoneNoList.get(i));
                                     ageET.setText(ageList.get(i));
+                                    getPic(photo.get(i), profile_pic);
                                 }
                                 container.setVisibility(View.GONE);
                             } else{
@@ -258,12 +332,17 @@ public class UserDetailsActivity extends BaseActivity {
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
+                    String img= "";
+                    if (bitmap != null){
+                        img = getStringImage(bitmap);
+                    }
                     Map<String, String> params = new HashMap<>();
                     params.put(PublicComponent.NRIC, nric);
                     params.put(PublicComponent.NAME, name);
                     params.put(PublicComponent.EMAIL, email);
                     params.put(PublicComponent.CONTACT_NO, phoneNo);
                     params.put(PublicComponent.AGE, age);
+                    params.put("photo",img);
                     return params;
                 }
             };
