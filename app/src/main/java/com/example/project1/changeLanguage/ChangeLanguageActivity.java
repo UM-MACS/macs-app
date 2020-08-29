@@ -38,7 +38,7 @@ import static android.content.pm.PackageManager.GET_META_DATA;
 
 public class ChangeLanguageActivity extends BaseActivity {
 
-    private CheckBox checkBoxEn, checkBoxMs;
+    private CheckBox checkBoxEn, checkBoxMs, checkBoxCh;
     SessionManager sessionManager;
 
     @Override
@@ -114,11 +114,14 @@ public class ChangeLanguageActivity extends BaseActivity {
 
         checkBoxEn = (CheckBox)findViewById(R.id.checkbox_en);
         checkBoxMs = (CheckBox)findViewById(R.id.checkbox_ms);
+        checkBoxCh = (CheckBox)findViewById(R.id.checkbox_ch);
         String s = sessionManager.getLanguagePref(this);
         if(s.equals("en")){
             checkBoxEn.setChecked(true);
-        } else{
+        } else if (s.equals("ms")){
             checkBoxMs.setChecked(true);
+        } else{
+            checkBoxCh.setChecked(true);
         }
 
         checkBoxEn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -136,6 +139,15 @@ public class ChangeLanguageActivity extends BaseActivity {
                 compoundButton.setChecked(true);
                 resetTitles();
                 setNewLocale(ChangeLanguageActivity.this, SessionManager.MALAY);
+            }
+        });
+
+        checkBoxCh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                compoundButton.setChecked(true);
+                resetTitles();
+                setNewLocale(ChangeLanguageActivity.this, SessionManager.CHINESE);
             }
         });
 

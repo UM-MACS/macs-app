@@ -33,13 +33,14 @@ public class SessionManager {
 
     /* Language Declare */
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({ENGLISH, MALAY})
+    @StringDef({ENGLISH, MALAY, CHINESE})
     public @interface LocaleDef {
-        String[] SUPPORTED_LOCALES = { ENGLISH, MALAY};
+        String[] SUPPORTED_LOCALES = { ENGLISH, MALAY, CHINESE};
     }
 
     public static final String ENGLISH = "en";
     public static final String MALAY = "ms";
+    public static final String CHINESE = "zh";
     private static final String LANGUAGE_KEY = "language_key";
 
     /* End of Language Declare */

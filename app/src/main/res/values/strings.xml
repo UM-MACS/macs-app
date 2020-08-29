@@ -33,7 +33,7 @@
     <string name="newUser2">Click Here to Register </string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="nric" translatable="false">NRIC</string>
+    <string name="nric">NRIC</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
@@ -179,7 +179,7 @@
     <string name="return_to">Return</string>
     <string name="fail">Failed</string>
     <string name="try_later">Error, Please Try Again Later</string>
-    <string name="ok" translatable="false">Ok</string>
+    <string name="ok">Ok</string>
 
     //emotion
     <string name="enter_something">Please enter something in the text box</string>
@@ -226,7 +226,7 @@
     <string name="no_search_result">"No Search Result for "</string>
     <string name="add_favourite">Add To Favourite</string>
     <string name="remove_favourite">Remove from Favourite</string>
-    <string name="edit" translatable="false">Edit</string>
+    <string name="edit">Edit</string>
     <string name="my_activity">My Profile Activity</string>
     <string name="my_fav_list">My Favourite Posts</string>
     <string name="reported_posts">Reported Posts</string>
@@ -256,10 +256,10 @@
     <string name="end">End</string>
     <string name="menu_sign_in_as_admin">Sign In As Admin</string>
     <string name="menu_event_reminder">Event Reminder</string>
-    <string name="menu_faq" translatable="false">FAQ</string>
+    <string name="menu_faq">FAQ</string>
     <string name="btm_nav_emotion">Emotion</string>
-    <string name="btm_nav_chat" translatable="false">Chat</string>
-    <string name="btm_nav_forum" translatable="false">Forum</string>
+    <string name="btm_nav_chat">Chat</string>
+    <string name="btm_nav_forum">Forum</string>
     <string name="btm_nav_exercise">Exercise</string>
     <string name="title_schedule">Event</string>
     <string name="yes">Yes</string>
@@ -284,5 +284,7 @@
     <string name="time">time</string>
     <string name="message">Message</string>
     <string name="username">Username</string>
+    <string name="chinese">中文</string>
+    <string name="done">Done</string>
 
 </resources>

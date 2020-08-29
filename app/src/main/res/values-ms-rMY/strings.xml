@@ -219,4 +219,11 @@
     <string name="message">mesej</string>
     <string name="empty_chat">Tiada chat, sila mulakan chat yang baru</string>
     <string name="username">Nama Pengguna</string>
+    <string name="nric">NRIC</string>
+    <string name="btm_nav_chat">Chat</string>
+    <string name="btm_nav_forum">Forum</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="edit">Ubah</string>
+    <string name="ok">Ok</string>
+    <string name="done">Siap</string>
 </resources>
