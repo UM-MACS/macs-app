@@ -187,7 +187,10 @@ public class ExerciseDashboardActivity extends BaseActivity {
         });
 
         if(desiredExerciseDay > 0){
-            tvExerciseDay.setText(getApplicationContext().getResources().getString(R.string.exercise_1_day) + " " + completedExerciseDay + "/" + desiredExerciseDay + " " + getApplicationContext().getResources().getString(R.string.exercise_2_day));
+            String text = getResources().getString(R.string.exercise_1_day) + " "
+                    + completedExerciseDay + "/" + desiredExerciseDay + " "
+                    + getResources().getString(R.string.exercise_2_day);
+            tvExerciseDay.setText(text);
         }
 
     }
@@ -223,8 +226,10 @@ public class ExerciseDashboardActivity extends BaseActivity {
                                     }
                                 }
                                 if(desiredExerciseDay > 0){
-                                    tvExerciseDay.setText(getApplicationContext().getResources().getString(R.string.exercise_1_day) + " " + completedExerciseDay + "/" + desiredExerciseDay + " " + getApplicationContext().getResources().getString(R.string.exercise_2_day));
-                                }
+                                    String text = getResources().getString(R.string.exercise_1_day) + " "
+                                            + completedExerciseDay + "/" + desiredExerciseDay + " "
+                                            + getResources().getString(R.string.exercise_2_day);
+                                    tvExerciseDay.setText(text);                                }
                             } else {
 //                                Toast.makeText(getApplicationContext(), "Error",
 //                                        Toast.LENGTH_SHORT).show();
@@ -274,8 +279,10 @@ public class ExerciseDashboardActivity extends BaseActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         desiredExerciseDay = Integer.parseInt(spinner.getSelectedItem().toString());
                         if(desiredExerciseDay > 0){
-                            tvExerciseDay.setText(getApplicationContext().getResources().getString(R.string.exercise_1_day) + " " + completedExerciseDay + "/" + desiredExerciseDay + " " + getApplicationContext().getResources().getString(R.string.exercise_2_day));
-                        }
+                            String text = getResources().getString(R.string.exercise_1_day) + " "
+                                    + completedExerciseDay + "/" + desiredExerciseDay + " "
+                                    + getResources().getString(R.string.exercise_2_day);
+                            tvExerciseDay.setText(text);                        }
                         editor.putInt(PublicComponent.DESIRE_EXERCISE_DAY, Integer.parseInt(spinner.getSelectedItem().toString()));
                         if(checkBox.isChecked()){
                             desiredToBeReminded = 1;

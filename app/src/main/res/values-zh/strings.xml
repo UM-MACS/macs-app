@@ -37,7 +37,7 @@
     <string name="action_logout">退出</string>
     <string name="action_change_password">更换密码</string>
     <string name="menu_home">退出</string>
-    <string name="dashboard">Papan Pemuka</string>
+    <string name="dashboard">仪表板</string>
     <string name="exercise_level_1">运动第一阶段</string>
     <string name="exercise_level_2">运动第二阶段</string>
     <string name="enjoyment">享受</string>
