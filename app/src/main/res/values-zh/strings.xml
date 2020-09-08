@@ -226,4 +226,19 @@
     <string name="edit">xiu gai</string>
     <string name="ok">确认</string>
     <string name="done">完成</string>
+    <string name="shoulderShrug">耸肩</string>
+    <string name="seatedLadderClimb">攀爬阶梯</string>
+    <string name="seatedRussianTwist">俄罗斯转体</string>
+    <string name="sitToStand">由坐到站</string>
+    <string name="seatedBentOverRow">俯身杠铃划船</string>
+    <string name="toeLift">抬起脚趾</string>
+    <string name="wallPushUp">墙壁俯卧撑</string>
+    <string name="obliqueSqueeze">斜肌挤压</string>
+    <string name="seatedBicycleCrunch">坐立式单车卷腹</string>
+    <string name="seatedButterfly">蝶机夹胸</string>
+    <string name="lateralLegRaise">侧式抬腿</string>
+    <string name="woodCutter">木刀训炼</string>
+    <string name="emptyTheCan">倒罐头训练</string>
+    <string name="standingBicycleCrunch">站立式单车卷腹</string>
+    <string name="squatWithRotationalPress">哑铃前蹲+旋转推肩</string>
 </resources>

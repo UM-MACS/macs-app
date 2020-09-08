@@ -226,4 +226,19 @@
     <string name="edit">Ubah</string>
     <string name="ok">Ok</string>
     <string name="done">Siap</string>
+    <string name="shoulderShrug">Shoulder Shrug</string>
+    <string name="seatedLadderClimb">Seated Ladder Climb</string>
+    <string name="seatedRussianTwist">Seated Russian Twist</string>
+    <string name="sitToStand">Sit to Stand</string>
+    <string name="seatedBentOverRow">Seated Bent over Row</string>
+    <string name="toeLift">Toe Lift</string>
+    <string name="wallPushUp">Wall Push Up</string>
+    <string name="obliqueSqueeze">Oblique Squeeze</string>
+    <string name="seatedBicycleCrunch">Seated Bicycle Crunch</string>
+    <string name="seatedButterfly">Seated Butterfly</string>
+    <string name="lateralLegRaise">Lateral Leg Raise</string>
+    <string name="woodCutter">Wood Cutter</string>
+    <string name="emptyTheCan">Empty the Can</string>
+    <string name="standingBicycleCrunch">Standing Bicycle Crunch</string>
+    <string name="squatWithRotationalPress">Squat with Rotational Press</string>
 </resources>
