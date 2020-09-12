@@ -642,7 +642,7 @@ public class ExerciseActivity extends BaseActivity {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", email);
                     params.put("sessionId", Integer.toString(sessionId));
-                    params.put("exerciseName", exerciseNameList.get(j));
+                    params.put("exerciseName", currentExerciseIdList.get(j).toString());
                     params.put("duration", durationList.get(j));
                     return params;
                 }
