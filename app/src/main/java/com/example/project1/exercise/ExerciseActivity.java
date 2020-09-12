@@ -56,6 +56,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,12 +85,14 @@ public class ExerciseActivity extends BaseActivity {
     //exercise related variables
     private String[] currentExerciseList;
     private ArrayList<Integer> currentExerciseIdList = new ArrayList<>();
-    private String[] oriExerciseList1 = {"Shoulder Shrug", "Seated Ladder Climb", "Seated Russian Twist", "Sit to Stand",
-            "Seated Bent over Row", "Toe Lift", "Wall Push Up", "Oblique Squeeze"};
+    private ArrayList<String> oriExerciseList1 = new ArrayList<>();
+    private ArrayList<String> oriExerciseList2 = new ArrayList<>();
+//    private String[] oriExerciseList1 = {"Shoulder Shrug", "Seated Ladder Climb", "Seated Russian Twist", "Sit to Stand",
+//            "Seated Bent over Row", "Toe Lift", "Wall Push Up", "Oblique Squeeze"};
     private int[] oriExerciseIdList1 = {R.raw.shoulder_shrug, R.raw.seated_ladder_climb, R.raw.seated_russian_twist, R.raw.sit_to_stand,
             R.raw.seated_bend_over_row, R.raw.toe_lift, R.raw.wall_push_up, R.raw.oblique_squeeze};
-    private String[] oriExerciseList2 = {"Seated Bicycle Crunch", "Seated Butterfly", "Lateral Leg Raise", "Squat with Rotational Press",
-            "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"};
+//    private String[] oriExerciseList2 = {"Seated Bicycle Crunch", "Seated Butterfly", "Lateral Leg Raise", "Squat with Rotational Press",
+//            "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"};
     private int[] oriExerciseIdList2 = {R.raw.seated_bicycle_crunch, R.raw.seated_butterfly, R.raw.lateral_leg_raise, R.raw.squat_with_rotational_press,
             R.raw.wood_cutter, R.raw.empty_the_can, R.raw.standing_bicycle_crunch};
     private int exerciseCounter = 0;
@@ -174,11 +177,24 @@ public class ExerciseActivity extends BaseActivity {
         currentExerciseList = str.split(", ");
         sessionManager = new SessionManager(this);
 
+        if(exerciseLevel.contentEquals("exercise-level-one")){
+            oriExerciseList1 = new ArrayList<>(Arrays.asList(getResources().getString(R.string.shoulderShrug),
+                    getResources().getString(R.string.seatedLadderClimb), getResources().getString(R.string.seatedRussianTwist), getResources().getString(R.string.sitToStand),
+                    getResources().getString(R.string.seatedBentOverRow), getResources().getString(R.string.toeLift),
+                    getResources().getString(R.string.wallPushUp), getResources().getString(R.string.obliqueSqueeze)));
+        }
+        else {
+            oriExerciseList2 =new ArrayList<>(Arrays.asList(getResources().getString(R.string.seatedBicycleCrunch),
+                    getResources().getString(R.string.seatedButterfly),
+                    getResources().getString(R.string.lateralLegRaise), getResources().getString(R.string.squatWithRotationalPress),
+                    getResources().getString(R.string.woodCutter), getResources().getString(R.string.emptyTheCan), getString(R.string.standingBicycleCrunch)));
+        }
+
         //define current list with id
         if (exerciseLevel.contentEquals("exercise-level-one")) {
             for (int i = 0; i < currentExerciseList.length; i++) {
-                for (int j = 0; j < oriExerciseList1.length; j++) {
-                    if (currentExerciseList[i].contentEquals(oriExerciseList1[j])) {
+                for (int j = 0; j < oriExerciseList1.size(); j++) {
+                    if (currentExerciseList[i].contentEquals(oriExerciseList1.get(j))) {
                         currentExerciseIdList.add(oriExerciseIdList1[j]);
                         System.out.println("true");
                     }
@@ -186,8 +202,8 @@ public class ExerciseActivity extends BaseActivity {
             }
         } else {
             for (int i = 0; i < currentExerciseList.length; i++) {
-                for (int j = 0; j < oriExerciseList2.length; j++) {
-                    if (currentExerciseList[i].contentEquals(oriExerciseList2[j])) {
+                for (int j = 0; j < oriExerciseList2.size(); j++) {
+                    if (currentExerciseList[i].contentEquals(oriExerciseList2.get(j))) {
                         currentExerciseIdList.add(oriExerciseIdList2[j]);
                         System.out.println("false");
                     }

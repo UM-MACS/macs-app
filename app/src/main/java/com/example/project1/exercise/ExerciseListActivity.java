@@ -60,11 +60,10 @@ public class ExerciseListActivity extends BaseActivity {
     private ArrayList<String> exerciseList1 = new ArrayList<>(Arrays.asList("Shoulder Shrug", "Seated Ladder Climb", "Seated Russian Twist", "Sit to Stand",
             "Seated Bent over Row", "Toe Lift", "Wall Push Up", "Oblique Squeeze"));
     //exercise level two
+    private ArrayList<String> exerciseTimeList2 = new ArrayList<>(Arrays.asList("30s","30s","30s","30s","30s","30s","30s"));
     private ArrayList<String> exerciseList2 = new ArrayList<>(Arrays.asList("Seated Bicycle Crunch","Seated Butterfly","Lateral Leg Raise", "Squat with Rotational Press",
             "Wood Cutter", "Empty the Can", "Standing Bicycle Crunch"));
 
-    //exercise level two
-    private ArrayList<String> exerciseTimeList2 = new ArrayList<>(Arrays.asList("30s","30s","30s","30s","30s","30s","30s"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,32 +142,32 @@ public class ExerciseListActivity extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_exercise_list);
 
         //set value to exercise list
-//        if(exerciseType.contentEquals("exercise-level-one")){
-//            exerciseList = new ArrayList<>(Arrays.asList(getResources().getString(R.string.shoulderShrug),
-//                    getResources().getString(R.string.seatedLadderClimb), getResources().getString(R.string.seatedRussianTwist), getResources().getString(R.string.sitToStand),
-//                    getResources().getString(R.string.seatedBentOverRow), getResources().getString(R.string.toeLift),
-//                    getResources().getString(R.string.wallPushUp), getResources().getString(R.string.obliqueSqueeze)));
-//            exerciseTimeList = exerciseTimeList1;
-//        }
-//        else {
-//            exerciseList = new ArrayList<>(Arrays.asList(getResources().getString(R.string.seatedBicycleCrunch),
-//                    getResources().getString(R.string.seatedButterfly),
-//                    getResources().getString(R.string.lateralLegRaise), getResources().getString(R.string.squatWithRotationalPress),
-//                    getResources().getString(R.string.woodCutter), getResources().getString(R.string.emptyTheCan), getString(R.string.standingBicycleCrunch)));
-//            exerciseTimeList = exerciseTimeList2;
-//        }
-//            tvTitle.setText(R.string.exercise_level_2);
-
         if(exerciseType.contentEquals("exercise-level-one")){
-            exerciseList = exerciseList1;
+            exerciseList = new ArrayList<>(Arrays.asList(getResources().getString(R.string.shoulderShrug),
+                    getResources().getString(R.string.seatedLadderClimb), getResources().getString(R.string.seatedRussianTwist), getResources().getString(R.string.sitToStand),
+                    getResources().getString(R.string.seatedBentOverRow), getResources().getString(R.string.toeLift),
+                    getResources().getString(R.string.wallPushUp), getResources().getString(R.string.obliqueSqueeze)));
             exerciseTimeList = exerciseTimeList1;
         }
-        else{
-            exerciseList = exerciseList2;
+        else {
+            exerciseList = new ArrayList<>(Arrays.asList(getResources().getString(R.string.seatedBicycleCrunch),
+                    getResources().getString(R.string.seatedButterfly),
+                    getResources().getString(R.string.lateralLegRaise), getResources().getString(R.string.squatWithRotationalPress),
+                    getResources().getString(R.string.woodCutter), getResources().getString(R.string.emptyTheCan), getString(R.string.standingBicycleCrunch)));
             exerciseTimeList = exerciseTimeList2;
             tvTitle.setText(R.string.exercise_level_2);
         }
 
+
+//        if(exerciseType.contentEquals("exercise-level-one")){
+//            exerciseList = exerciseList1;
+//            exerciseTimeList = exerciseTimeList1;
+//        }
+//        else{
+//            exerciseList = exerciseList2;
+//            exerciseTimeList = exerciseTimeList2;
+//            tvTitle.setText(R.string.exercise_level_2);
+//        }
 
         //adapter declare
         layoutManager = new LinearLayoutManager(this);
