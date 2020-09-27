@@ -75,6 +75,7 @@ public class NotificationService extends Service {
         Log.e(TAG, "onDestroy: " + CurrentUser.getInstance().getNRIC());
         super.onDestroy();
         databaseReference.removeEventListener(childEventListener);
+        stopForeground(true);
         if(sessionManager.isLogin()){
             Log.e(TAG, "onDestroy2: " + CurrentUser.getInstance().getNRIC());
 //            sendBroadcast(new Intent("com.example.project1.chat.service.restartservice"));
@@ -91,8 +92,10 @@ public class NotificationService extends Service {
         String message = "";
         if(s.equals("en")){
             message = "You have a new message! ";
-        } else{
+        } else if (s.equals("ms")){
             message = "Anda ada mesej baru! ";
+        } else {
+            message = "您有一条新信息! ";
         }
 
         final int NOTIFY_ID = 3; // ID of notification
@@ -101,9 +104,9 @@ public class NotificationService extends Service {
         PendingIntent pendingIntent;
         Intent intent;
         NotificationCompat.Builder builder;
-        if (notifManager == null) {
-            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        }
+//        if (notifManager == null) {
+//            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+//        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = notifManager.getNotificationChannel(id);
@@ -146,7 +149,8 @@ public class NotificationService extends Service {
                     .setPriority(Notification.PRIORITY_HIGH);
         }
         Notification notification = builder.build();
-        notifManager.notify(NOTIFY_ID, notification);
+//        notifManager.notify(NOTIFY_ID, notification);
+        startForeground(NOTIFY_ID,notification);
     }
 
     ChildEventListener getChildEventListener() {
