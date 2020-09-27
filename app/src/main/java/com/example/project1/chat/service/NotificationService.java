@@ -52,7 +52,7 @@ public class NotificationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.e(TAG, "onStartCommand: " + CurrentUser.getInstance().getNRIC());
+        Log.e(TAG, "onCreate: " + CurrentUser.getInstance().getNRIC());
         sessionManager = new SessionManager(this);
         super.onCreate();
     }
@@ -72,14 +72,15 @@ public class NotificationService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.e(TAG, "onDestroy: " + CurrentUser.getInstance().getNRIC());
         super.onDestroy();
         databaseReference.removeEventListener(childEventListener);
         stopForeground(true);
         if(sessionManager.isLogin()){
-            Log.e(TAG, "onDestroy2: " + CurrentUser.getInstance().getNRIC());
-//            sendBroadcast(new Intent("com.example.project1.chat.service.restartservice"));
-            startService(new Intent(this,NotificationService.class));
+            Intent broadcast = new Intent();
+            broadcast.setAction("com.example.project1.chat.service.restartservice");
+            broadcast.setClass(this,NotificationBroadcastReceiver.class);
+            sendBroadcast(broadcast);
+//            startService(new Intent(this,NotificationService.class));
         }
     }
 
@@ -104,9 +105,6 @@ public class NotificationService extends Service {
         PendingIntent pendingIntent;
         Intent intent;
         NotificationCompat.Builder builder;
-//        if (notifManager == null) {
-//            notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-//        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = notifManager.getNotificationChannel(id);

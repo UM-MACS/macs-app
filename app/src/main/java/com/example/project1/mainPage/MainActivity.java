@@ -1,6 +1,7 @@
 package com.example.project1.mainPage;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,7 +49,14 @@ public class MainActivity extends BaseActivity {
             CurrentUser.getInstance().setNRIC(mEmail);
             CurrentUser.getInstance().setUserName(mName);
             CurrentUser.getInstance().setUserType(mType);
-            startService(new Intent(this, NotificationService.class));
+
+//            startService(new Intent(this, NotificationService.class));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(this, NotificationService.class));
+            } else {
+                startService(new Intent(this, NotificationService.class));
+            }
+
             Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);

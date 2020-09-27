@@ -171,16 +171,17 @@
             android:exported="true"
             android:stopWithTask="false" >
 <!--            <intent-filter>-->
-<!--                <action android:name="com.example.project1.chat.service.restartservice" />-->
-<!--            </intent-filter>-->
+<!--            <action android:name="com.example.project1.chat.service.restartservice" />-->
+<!--        </intent-filter>-->
         </service>
         <receiver
             android:name=".chat.service.NotificationBroadcastReceiver"
             android:enabled="true"
-            android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="com.example.project1.chat.service.restartservice" />-->
-<!--            </intent-filter>-->
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.example.project1.chat.service.restartservice" />
+            </intent-filter>
         </receiver>
         <activity
             android:name=".emotionAssessment.EmotionButtonAssessmentActivity"
