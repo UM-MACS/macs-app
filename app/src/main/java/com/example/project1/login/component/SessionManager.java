@@ -9,6 +9,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringDef;
 
+import com.example.project1.chat.service.NotificationService;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.login.LoginActivity;
 import com.example.project1.emotionAssessment.EmotionButtonAssessmentActivity;
@@ -89,6 +90,7 @@ public class SessionManager {
     public void logout(){
         editor.clear();
         editor.commit();
+        context.stopService(new Intent(context, NotificationService.class));
     }
 
     public int isFirstTimeUser(){

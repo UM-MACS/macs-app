@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
@@ -25,18 +26,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.android.volley.VolleyLog.TAG;
+
 public class NotificationService extends Service {
 
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, chatDatabaseReference;
+    private ChildEventListener childEventListener;
     private final String RECEIVER_PIC = "receiverPic";
     private final String NRIC_TO = "NRICTo";
     private final String CHAT_CHANNEL_ID = "chatChannelId";
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
 
-    public NotificationService(){}
+    public NotificationService(){
+        childEventListener = getChildEventListener();
+    }
 
     @Nullable
     @Override
@@ -46,45 +52,19 @@ public class NotificationService extends Service {
 
     @Override
     public void onCreate() {
-        super.onCreate();
+        Log.e(TAG, "onStartCommand: " + CurrentUser.getInstance().getNRIC());
         sessionManager = new SessionManager(this);
+        super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand: " + CurrentUser.getInstance().getNRIC());
         if(sessionManager.isLogin()) {
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
 
-            databaseReference.addChildEventListener(
-                    new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            notifyUser();
-                            databaseReference.removeValue();
-                        }
-
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    }
-            );
+            databaseReference.addChildEventListener(childEventListener);
         }
 
         return START_STICKY;
@@ -92,14 +72,18 @@ public class NotificationService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.e(TAG, "onDestroy: " + CurrentUser.getInstance().getNRIC());
         super.onDestroy();
+        databaseReference.removeEventListener(childEventListener);
         if(sessionManager.isLogin()){
-            sendBroadcast(new Intent("com.example.project1.chat.service.restartservice"));
+            Log.e(TAG, "onDestroy2: " + CurrentUser.getInstance().getNRIC());
+//            sendBroadcast(new Intent("com.example.project1.chat.service.restartservice"));
+            startService(new Intent(this,NotificationService.class));
         }
     }
 
     private void notifyUser(){
-
+        Log.e(TAG, "notify: " + databaseReference.toString());
         Context context = getApplicationContext();
 
         NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -163,6 +147,36 @@ public class NotificationService extends Service {
         }
         Notification notification = builder.build();
         notifManager.notify(NOTIFY_ID, notification);
+    }
+
+    ChildEventListener getChildEventListener() {
+        return new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                notifyUser();
+                databaseReference.removeValue();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
     }
 
 }
