@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,9 +88,8 @@ public class CaregiverForumActivity extends BaseActivity {
     private EditText replyText;
     private TextView reportButton;
     private Button submitReplyButton, viewReportedButton;
-    //private String getName, getTitle, getContent, getID;
-    private LinearLayout layoutAdjust;
     private ProgressBar progressBar;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -616,6 +616,7 @@ public class CaregiverForumActivity extends BaseActivity {
     public void onReply(final String parentID){
         replyText = (EditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
+        scrollView = (ScrollView) findViewById(R.id.scrollview_forum);
         replyText.setText("");
         replyText.clearFocus();
         Date d = Calendar.getInstance().getTime();
@@ -658,6 +659,12 @@ public class CaregiverForumActivity extends BaseActivity {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
+                                    View lastChild = scrollView.getChildAt(scrollView.getChildCount() - 1);
+                                    int bottom = lastChild.getBottom() + scrollView.getPaddingBottom();
+                                    int sy = scrollView.getScrollY();
+                                    int sh = scrollView.getHeight();
+                                    int delta = bottom - (sy + sh);
+                                    scrollView.smoothScrollBy(0, delta);
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), getString(R.string.try_later),

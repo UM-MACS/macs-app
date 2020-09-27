@@ -118,14 +118,6 @@ public class EmotionFragmentText extends Fragment {
                             Toast.LENGTH_LONG).show();
                 } else {
                     task.execute();
-//                    final String input =  text.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-//                    Pattern re = Pattern.compile("[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)",
-//                            Pattern.MULTILINE | Pattern.COMMENTS);
-//                    Matcher reMatcher = re.matcher(input);
-//                    String splitText="";
-//                    while (reMatcher.find()) {
-//                        splitText = (reMatcher.group());
-//                    }
                     String[] sArray = text.split("\\s{2,}");
                     for (int i =0; i<sArray.length; i++){
                         sentimentAnalysis(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), date,
