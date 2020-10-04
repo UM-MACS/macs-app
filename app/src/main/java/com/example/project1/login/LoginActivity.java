@@ -152,6 +152,7 @@ public class LoginActivity extends BaseActivity {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                                     JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                                                     JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .setOverrideDeadline(0)
                                                             .build();
                                                     jobScheduler.schedule(jobInfo);
                                                 } else {
@@ -250,6 +251,7 @@ public class LoginActivity extends BaseActivity {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                                     JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                                                     JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .setOverrideDeadline(0)
                                                             .build();
                                                     jobScheduler.schedule(jobInfo);
                                                 } else {
@@ -358,6 +360,7 @@ public class LoginActivity extends BaseActivity {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                                     JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                                                     JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .setOverrideDeadline(0)
                                                             .build();
                                                     jobScheduler.schedule(jobInfo);
                                                 } else {
