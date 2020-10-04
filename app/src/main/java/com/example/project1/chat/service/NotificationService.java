@@ -156,7 +156,7 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(!CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
+                if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
                     notifyUser();
                 }
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

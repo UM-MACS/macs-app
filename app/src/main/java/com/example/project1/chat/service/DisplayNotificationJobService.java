@@ -46,7 +46,7 @@ public class DisplayNotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
         sessionManager = new SessionManager(this);
         childEventListener = getChildEventListener();
 
@@ -135,7 +135,7 @@ public class DisplayNotificationJobService extends JobService {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(!CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
+                if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
                     notifyUser();
                 }
                 databaseReference.removeValue();
