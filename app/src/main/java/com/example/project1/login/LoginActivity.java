@@ -1,5 +1,9 @@
 package com.example.project1.login;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
+import com.example.project1.chat.service.DisplayNotificationJobService;
 import com.example.project1.chat.service.NotificationService;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -139,8 +144,16 @@ public class LoginActivity extends BaseActivity {
                                                     sessionManager.createSession(jname, jnric, "Patient");
                                                 }
 //                                                startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .build();
+                                                    jobScheduler.schedule(jobInfo);
                                                 } else {
                                                     startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 }
@@ -229,8 +242,16 @@ public class LoginActivity extends BaseActivity {
 
                                                 }
 //                                                startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .build();
+                                                    jobScheduler.schedule(jobInfo);
                                                 } else {
                                                     startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 }
@@ -329,8 +350,16 @@ public class LoginActivity extends BaseActivity {
                                                     }
                                                 }
 //                                                startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+                                                            .build();
+                                                    jobScheduler.schedule(jobInfo);
                                                 } else {
                                                     startService(new Intent(LoginActivity.this, NotificationService.class));
                                                 }

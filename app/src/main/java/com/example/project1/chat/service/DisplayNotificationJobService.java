@@ -1,19 +1,21 @@
 package com.example.project1.chat.service;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
@@ -28,60 +30,37 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import static com.android.volley.VolleyLog.TAG;
 
-public class NotificationService extends Service {
+@TargetApi(21)
+public class DisplayNotificationJobService extends JobService {
 
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference, chatDatabaseReference;
+    private DatabaseReference databaseReference;
     private ChildEventListener childEventListener;
-    private final String RECEIVER_PIC = "receiverPic";
-    private final String NRIC_TO = "NRICTo";
-    private final String CHAT_CHANNEL_ID = "chatChannelId";
-    private final String RECEIVER_NAME = "receiverName";
-    private final String RECEIVER_TYPE = "receiverType";
-
-    public NotificationService(){
-        childEventListener = getChildEventListener();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onCreate() {
-        Log.e(TAG, "onCreate: " + CurrentUser.getInstance().getNRIC());
-        sessionManager = new SessionManager(this);
-        super.onCreate();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand: " + CurrentUser.getInstance().getNRIC());
+        return START_STICKY;
+    }
+
+    @Override
+    public boolean onStartJob(JobParameters params) {
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+        sessionManager = new SessionManager(this);
+        childEventListener = getChildEventListener();
+
         if(sessionManager.isLogin()) {
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
 
             databaseReference.addChildEventListener(childEventListener);
         }
-
-        return START_STICKY;
+        return true;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        databaseReference.removeEventListener(childEventListener);
-        stopForeground(true);
-        if(sessionManager.isLogin()){
-            Intent broadcast = new Intent();
-            broadcast.setAction("com.example.project1.chat.service.restartservice");
-            broadcast.setClass(this,NotificationBroadcastReceiver.class);
-            sendBroadcast(broadcast);
-//            startService(new Intent(this,NotificationService.class));
-        }
+    public boolean onStopJob(JobParameters params) {
+        return true;
     }
 
     private void notifyUser(){
@@ -99,7 +78,7 @@ public class NotificationService extends Service {
             message = "您有一条新信息! ";
         }
 
-        final int NOTIFY_ID = 3333; // ID of notification
+        final int NOTIFY_ID = 3334; // ID of notification
         String id = "Channel 3"; // default_channel_id
         String title = "title channel 3"; // Default Channel
         PendingIntent pendingIntent;
@@ -156,11 +135,6 @@ public class NotificationService extends Service {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 notifyUser();
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                    startForegroundService(new Intent(NotificationService.this, NotificationService.class));
-//                } else {
-//                    startService(new Intent(NotificationService.this, NotificationService.class));
-//                }
                 databaseReference.removeValue();
             }
 
@@ -185,5 +159,4 @@ public class NotificationService extends Service {
             }
         };
     }
-
 }

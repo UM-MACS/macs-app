@@ -1,5 +1,9 @@
 package com.example.project1.mainPage;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.project1.R;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
+import com.example.project1.chat.service.DisplayNotificationJobService;
 import com.example.project1.chat.service.NotificationService;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
@@ -51,8 +56,16 @@ public class MainActivity extends BaseActivity {
             CurrentUser.getInstance().setUserType(mType);
 
 //            startService(new Intent(this, NotificationService.class));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(this, NotificationService.class));
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                startForegroundService(new Intent(this, NotificationService.class));
+//            } else {
+//                startService(new Intent(this, NotificationService.class));
+//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(this, DisplayNotificationJobService.class))
+                        .build();
+                jobScheduler.schedule(jobInfo);
             } else {
                 startService(new Intent(this, NotificationService.class));
             }

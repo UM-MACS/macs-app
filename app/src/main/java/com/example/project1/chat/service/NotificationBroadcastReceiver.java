@@ -8,11 +8,11 @@ import android.os.Build;
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(new Intent(context, NotificationService.class));
-        } else {
-            context.startService(new Intent(context, NotificationService.class));
-        }
-//        context.startService(new Intent(context,NotificationService.class));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(new Intent(context, NotificationService.class));
+//        } else {
+//            context.startService(new Intent(context, NotificationService.class));
+//        }
+        context.startService(new Intent(context,NotificationService.class));
     }
 }
