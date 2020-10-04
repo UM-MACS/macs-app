@@ -127,8 +127,8 @@ public class DisplayNotificationJobService extends JobService {
                     .setPriority(Notification.PRIORITY_HIGH);
         }
         Notification notification = builder.build();
-//        notifManager.notify(NOTIFY_ID, notification);
-        startForeground(NOTIFY_ID,notification);
+        notifManager.notify(NOTIFY_ID, notification);
+//        startForeground(NOTIFY_ID,notification);
     }
 
     ChildEventListener getChildEventListener() {
