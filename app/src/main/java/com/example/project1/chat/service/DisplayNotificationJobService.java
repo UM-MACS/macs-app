@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.chat.ChatChannelListActivity;
+import com.example.project1.chat.component.CurrentChatUser;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
 import com.google.firebase.database.ChildEventListener;
@@ -134,7 +135,9 @@ public class DisplayNotificationJobService extends JobService {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                notifyUser();
+                if(!CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
+                    notifyUser();
+                }
                 databaseReference.removeValue();
             }
 
