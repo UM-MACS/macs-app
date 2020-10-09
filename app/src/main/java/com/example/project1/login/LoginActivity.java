@@ -143,21 +143,21 @@ public class LoginActivity extends BaseActivity {
 //                                                    Toast.makeText(getApplicationContext(), jname + " , success logging in " + jemail, Toast.LENGTH_SHORT).show();
                                                     sessionManager.createSession(jname, jnric, "Patient");
                                                 }
-//                                                startService(new Intent(LoginActivity.this, NotificationService.class));
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                } else {
 //                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                }
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
-                                                            .setOverrideDeadline(0)
-                                                            .build();
-                                                    jobScheduler.schedule(jobInfo);
-                                                } else {
-                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                }
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+//                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+//                                                            .setOverrideDeadline(0)
+//                                                            .build();
+//                                                    jobScheduler.schedule(jobInfo);
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeUser() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
@@ -242,21 +242,21 @@ public class LoginActivity extends BaseActivity {
                                                     CurrentUser.getInstance().setUserName(jname);
 
                                                 }
-//                                                startService(new Intent(LoginActivity.this, NotificationService.class));
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                } else {
 //                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                }
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
-                                                            .setOverrideDeadline(0)
-                                                            .build();
-                                                    jobScheduler.schedule(jobInfo);
-                                                } else {
-                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                }
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+//                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+//                                                            .setOverrideDeadline(0)
+//                                                            .build();
+//                                                    jobScheduler.schedule(jobInfo);
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeCaregiver() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);
@@ -351,21 +351,21 @@ public class LoginActivity extends BaseActivity {
                                                         CurrentUser.getInstance().setUserName(jname);
                                                     }
                                                 }
-//                                                startService(new Intent(LoginActivity.this, NotificationService.class));
+                                                startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                                    startForegroundService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                } else {
 //                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
 //                                                }
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
-                                                            .setOverrideDeadline(0)
-                                                            .build();
-                                                    jobScheduler.schedule(jobInfo);
-                                                } else {
-                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
-                                                }
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                                    JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+//                                                    JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(LoginActivity.this, DisplayNotificationJobService.class))
+//                                                            .setOverrideDeadline(0)
+//                                                            .build();
+//                                                    jobScheduler.schedule(jobInfo);
+//                                                } else {
+//                                                    startService(new Intent(LoginActivity.this, NotificationService.class));
+//                                                }
                                                 Intent i;
                                                 if(sessionManager.isFirstTimeSpecialist() == 0){
                                                     i = new Intent(LoginActivity.this, OnboardingBaseActivity.class);

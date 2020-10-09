@@ -55,21 +55,21 @@ public class MainActivity extends BaseActivity {
             CurrentUser.getInstance().setUserName(mName);
             CurrentUser.getInstance().setUserType(mType);
 
-//            startService(new Intent(this, NotificationService.class));
+            startService(new Intent(this, NotificationService.class));
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                startForegroundService(new Intent(this, NotificationService.class));
 //            } else {
 //                startService(new Intent(this, NotificationService.class));
 //            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(this, DisplayNotificationJobService.class))
-                        .setOverrideDeadline(0)
-                        .build();
-                jobScheduler.schedule(jobInfo);
-            } else {
-                startService(new Intent(this, NotificationService.class));
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+//                JobInfo jobInfo = new JobInfo.Builder(333, new ComponentName(this, DisplayNotificationJobService.class))
+//                        .setOverrideDeadline(0)
+//                        .build();
+//                jobScheduler.schedule(jobInfo);
+//            } else {
+//                startService(new Intent(this, NotificationService.class));
+//            }
 
             Intent i = new Intent(MainActivity.this, EmotionAssessmentActivity.class);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

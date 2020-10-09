@@ -148,8 +148,8 @@ public class NotificationService extends Service {
                     .setPriority(Notification.PRIORITY_HIGH);
         }
         Notification notification = builder.build();
-//        notifManager.notify(NOTIFY_ID, notification);
-        startForeground(NOTIFY_ID,notification);
+        notifManager.notify(NOTIFY_ID, notification);
+//        startForeground(NOTIFY_ID,notification);
     }
 
     ChildEventListener getChildEventListener() {
@@ -159,11 +159,6 @@ public class NotificationService extends Service {
                 if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
                     notifyUser();
                 }
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                    startForegroundService(new Intent(NotificationService.this, NotificationService.class));
-//                } else {
-//                    startService(new Intent(NotificationService.this, NotificationService.class));
-//                }
                 databaseReference.removeValue();
             }
 
