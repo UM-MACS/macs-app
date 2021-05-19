@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -55,6 +56,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class ChatPageActivity extends BaseActivity {
 
@@ -64,7 +67,10 @@ public class ChatPageActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ScrollView scrollViewChat, scrollViewEditText;
     private LinearLayout linearLayoutChatContent;
-    private EditText etSendChat;
+    private EmojiconEditText etSendChat;
+    private EmojIconActions emojIconActions;
+    private ImageView emoji;
+    private View view;
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, statusReference, chatHistoryReference, receiverReference;
@@ -108,7 +114,12 @@ public class ChatPageActivity extends BaseActivity {
         scrollViewChat = findViewById(R.id.scrollview_chat);
         scrollViewEditText = findViewById(R.id.scrollview_edit_text);
         linearLayoutChatContent = findViewById(R.id.linear_layout_chat_content);
+
         etSendChat = findViewById(R.id.et_send_chat);
+        emoji = findViewById(R.id.emoji_icon);
+        view = findViewById(R.id.chat_view);
+        emojIconActions = new EmojIconActions(this, view, etSendChat, emoji);
+        emojIconActions.ShowEmojIcon();
 
         tvChatName.setText(receiverName);
         //TODO maybe

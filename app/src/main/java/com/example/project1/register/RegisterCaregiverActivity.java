@@ -51,7 +51,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
     private String localhost;
     private static String URL_REGIST;
     private static String URL_UPLOAD ;
-//    private DatabaseHelper db;
+    //    private DatabaseHelper db;
     private EditText e1,e2,e3,e5,e6,e7, nricEditText;
     private Button b1,b2;
     private Spinner spinner;
@@ -78,7 +78,7 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
                         startActivity(i1);
                         break;
                 }
-                return true;
+                return true;    
             }
         });
         //finish
@@ -201,8 +201,8 @@ public class RegisterCaregiverActivity extends BaseActivity implements AdapterVi
     }
 
     private void registerAccount(final String email, final String name, final String contact
-                                ,final String password, final String relationship
-                                ,final String age, final String nric){
+            ,final String password, final String relationship
+            ,final String age, final String nric){
         /* mysql posting */
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGIST, new Response.Listener<String>() {
             @Override
