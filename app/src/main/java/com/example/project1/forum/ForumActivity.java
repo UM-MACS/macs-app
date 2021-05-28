@@ -64,6 +64,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class ForumActivity extends BaseActivity {
 private SessionManager sessionManager;
@@ -86,12 +88,15 @@ private TextView nullPost, username, threadTitle, threadContent, threadID, threa
 private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
 private FloatingActionButton createPostButton;
 private CircleImageView user_pic, expanded_user_pic;
-private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon;
-private EditText replyText;
+private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon, emoji;
+private EmojiconEditText replyText;
 private TextView reportButton;
 private Button submitReplyButton, viewReportedButton;
 private ProgressBar progressBar;
 private ScrollView scrollView;
+private View view;
+private EmojIconActions emojIconActions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -480,7 +485,13 @@ private ScrollView scrollView;
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
-        replyText = (EditText) findViewById(R.id.reply_input);
+
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
+        emoji = findViewById(R.id.reply_emoji_icon);
+        view = findViewById(R.id.forum_expand_view);
+        emojIconActions = new EmojIconActions(this, view, replyText, emoji);
+        emojIconActions.ShowEmojIcon();
+
         if(getName.equals("Anonymous")) {
             getPic("lee","", expanded_user_pic);
         } else{
@@ -640,7 +651,7 @@ private ScrollView scrollView;
     }
 
     public void onReply(final String parentID){
-        replyText = (EditText) findViewById(R.id.reply_input);
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         scrollView = (ScrollView) findViewById(R.id.scrollview_forum);
         replyText.setText("");

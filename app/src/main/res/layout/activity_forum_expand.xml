@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".forum.ForumActivity">
+    tools:context=".forum.ForumActivity"
+    android:id="@+id/forum_expand_view">
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -240,12 +241,20 @@
         android:background="@drawable/border_forum_reply"
         android:padding="10dp">
 
-        <EditText
-            android:id="@+id/reply_input"
-            android:layout_width="match_parent"
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginEnd="100dp"
+            app:srcCompat="@drawable/ic_baseline_insert_emoticon_24"
+            android:layout_gravity="left"
+            android:id="@+id/reply_emoji_icon"
+            />
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            android:id="@+id/reply_input"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
             android:focusable = "true"
             android:focusableInTouchMode = "true"
             android:hint="@string/reply"/>
@@ -253,7 +262,7 @@
             android:id="@+id/submit_reply_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="right"
             android:text="@string/post"/>
     </FrameLayout>
     </ScrollView>
