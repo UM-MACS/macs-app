@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 
 import com.example.project1.chat.service.NotificationService;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;

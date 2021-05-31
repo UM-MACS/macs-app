@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".forum.specialist.SpecialistEditDeleteForumPostActivity">
 
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
     <TextView
         android:id="@+id/tv_fav"
@@ -65,7 +65,7 @@
         android:onClick="onNavMyPostsCaregiverForum"/>
 
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

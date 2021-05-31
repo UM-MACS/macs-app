@@ -7,19 +7,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.example.project1.eventReminder.EventReminderActivity;
-import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
-import com.example.project1.mainPage.MainActivity;
 import com.example.project1.R;
-
-import static android.content.pm.PackageManager.GET_META_DATA;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
