@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "525535134590",
-    "firebase_url": "https://masc-app-ca011.firebaseio.com",
-    "project_id": "masc-app-ca011",
-    "storage_bucket": "masc-app-ca011.appspot.com"
+    "project_number": "822830052147",
+    "firebase_url": "https://macs-app-80319.firebaseio.com",
+    "project_id": "macs-app-80319",
+    "storage_bucket": "macs-app-80319.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:525535134590:android:9893ea441ad8bcb87e292f",
+        "mobilesdk_app_id": "1:822830052147:android:72c5f9ed7f1a1930ad0446",
         "android_client_info": {
           "package_name": "com.example.project1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "525535134590-f7rcmrm93p7q7vrdmg81mod65hc718ro.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.project1",
-            "certificate_hash": "9ef7b5ca00cfd65a983faaca283612c469349e95"
-          }
-        },
-        {
-          "client_id": "525535134590-a71rj2qp8k9fm7ltll1rqjfgjnoq50m8.apps.googleusercontent.com",
+          "client_id": "822830052147-q0qbeud6f2iqhnjaomlbsd77u2nkfpg3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAvUeJPdrD682-JhyZd0b5qoCgPLl2qy44"
+          "current_key": "AIzaSyBZ8Dw07QGOKG9hjL4u9bYhQtQhbCY4Y_E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "525535134590-a71rj2qp8k9fm7ltll1rqjfgjnoq50m8.apps.googleusercontent.com",
+              "client_id": "822830052147-q0qbeud6f2iqhnjaomlbsd77u2nkfpg3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
