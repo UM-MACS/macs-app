@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,6 +76,8 @@ private static String URL_GETPIC;
 private static String URL_GETPIC_SPECIALIST;
 private static String URL_GET_REPLY;
 private static String URL_POST_REPLY;
+private static String URL_EDIT_REPLY;
+private static String URL_DELETE_REPLY;
 private static String URL_PIN_POST;
 private static String URL_SEARCH_POST;
 private static String URL_ADD_FAV;
@@ -90,12 +93,18 @@ private FloatingActionButton createPostButton;
 private CircleImageView user_pic, expanded_user_pic;
 private ImageView pinned_pic, unpinned_pic, fav_icon, unfav_icon, emoji;
 private EmojiconEditText replyText;
-private TextView reportButton;
+private TextView reportButton, editReplyButton, deleteReplyButton;
 private Button submitReplyButton, viewReportedButton;
 private ProgressBar progressBar;
 private ScrollView scrollView;
 private View view;
 private EmojIconActions emojIconActions;
+
+// === All the components layout in edit the reply layout ===
+private CheckBox anonymousCheckbox;
+private Button postButton, updateButton, cancelButton;
+private EditText postTitle, postContent;
+
 
 
     @Override
@@ -183,6 +192,9 @@ private EmojIconActions emojIconActions;
         URL_DEL_FAV = localhost+"/removeFavourite/";
         URL_GET_IS_FAV = localhost+"/getIsFavourite/";
         URL_REPORT_POST = localhost+"/reportPost/";
+        URL_EDIT_REPLY = localhost+"/updateReplyPost/";
+        URL_DELETE_REPLY = localhost+"/deleteReplyPost/";
+
         sessionManager = new SessionManager(this);
         forumParentLinearLayout = (LinearLayout)findViewById(R.id.parent_linear_layout_forum);
         nullPost = (TextView) findViewById(R.id.nullPost);
@@ -518,7 +530,7 @@ private EmojIconActions emojIconActions;
             @Override
             public void onClick(View v) {
                 //confirmation pop up window
-                AlertDialog diaBox = AskOption(getID);
+                AlertDialog diaBox = AskOption(getID, "report");
                 diaBox.show();
             }
         });
@@ -610,6 +622,33 @@ private EmojIconActions emojIconActions;
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
+
+                                    editReplyButton = (TextView)((View) rowView).findViewById(R.id.edit_reply_button);
+                                    deleteReplyButton = (TextView)((View) rowView).findViewById(R.id.delete_reply_button);
+                                    if(email.get(i).equals(CurrentUser.getInstance().getNRIC())){
+                                        editReplyButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //confirmation pop up window
+                                                onEditReply(expandedID.getText().toString(), expandedContent.getText().toString());
+                                            }
+                                        });
+                                        deleteReplyButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //confirmation pop up window
+                                                AlertDialog diaBox = AskOption(expandedID.getText().toString(), "");
+                                                diaBox.show();
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        editReplyButton.setVisibility(View.GONE);
+                                        deleteReplyButton.setVisibility(View.GONE);
+
+                                    }
+
+
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
@@ -735,6 +774,128 @@ private EmojIconActions emojIconActions;
         }
     }
 
+
+    // === Method for delete the reply ===
+    public void onDeleteReply(final String id){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DELETE_REPLY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.delete_reply_success),
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    // === Method for create layout for user edit the reply ===
+    public void onEditReply(final String id, final String content){
+        setContentView(R.layout.activity_create_post);
+        anonymousCheckbox = (CheckBox)findViewById(R.id.anonymous_checkbox);
+        anonymousCheckbox.setVisibility(View.GONE);
+        postButton = (Button) findViewById(R.id.post_button);
+        postButton.setVisibility(View.GONE);
+        updateButton = (Button)findViewById(R.id.update_button);
+        updateButton.setVisibility(View.VISIBLE);
+        postTitle = (EditText)findViewById(R.id.post_title);
+        postTitle.setVisibility(View.GONE);
+        postContent = (EditText)findViewById(R.id.post_content);
+        cancelButton = (Button) findViewById(R.id.post_cancel);
+        postContent.setText(content);
+        //onPost(id)
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUpdateReply(id, postContent.getText().toString());
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+    }
+
+    // === Method for update the reply content to database ===
+    public void onUpdateReply(final String id, final String content){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_EDIT_REPLY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.update_reply_success),
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("content", content);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
     public void onSearch(View v){
         EditText editText = (EditText) ((View)v.getParent()).findViewById(R.id.search_edit_text);
         final String searchText = (String) editText.getText().toString();
@@ -785,28 +946,51 @@ private EmojIconActions emojIconActions;
         requestQueue.add(stringRequest);
     }
 
-    private AlertDialog AskOption(final String id) {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
-                //set message, title, and icon
-                .setTitle(R.string.report_post)
-                .setMessage(R.string.report_post_confirm)
-                .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        onReport(id);
-                        dialog.dismiss();
-                    }
+    private AlertDialog AskOption(final String id, final String type) {
+        if(type.equals("report")){
+            AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                    //set message, title, and icon
+                    .setTitle(R.string.report_post)
+                    .setMessage(R.string.report_post_confirm)
+                    .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            onReport(id);
+                            dialog.dismiss();
+                        }
 
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
+                            dialog.dismiss();
 
-                    }
-                })
-                .create();
-        return myQuittingDialogBox;
+                        }
+                    })
+                    .create();
+            return myQuittingDialogBox;
+        }
+        else{
+            AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                    //set message, title, and icon
+                    .setTitle(R.string.delete_reply)
+                    .setMessage(R.string.delete_reply_confirm)
+                    .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            onDeleteReply(id);
+                            dialog.dismiss();
+                        }
 
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .create();
+            return myQuittingDialogBox;
+        }
     }
 
     public void onFavourite(final View v){

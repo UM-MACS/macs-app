@@ -55,6 +55,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"/>
+        <TextView
+            android:id="@+id/edit_reply_button"
+            android:background="@color/white"
+            android:textColor="@color/dodger_blue"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="10sp"
+            android:text="@string/edit_reply" />
+
+        <TextView
+            android:id="@+id/delete_reply_button"
+            android:background="@color/white"
+            android:textColor="@color/dodger_blue"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="10sp"
+            android:text="@string/delete_reply"/>
 
         <TextView
             android:id="@+id/expanded_thread_id"
