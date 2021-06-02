@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -142,7 +144,4 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }

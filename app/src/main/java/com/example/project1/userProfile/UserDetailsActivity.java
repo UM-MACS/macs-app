@@ -195,7 +195,6 @@ public class UserDetailsActivity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

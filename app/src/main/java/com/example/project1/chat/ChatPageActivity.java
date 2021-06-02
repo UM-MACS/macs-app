@@ -1,10 +1,15 @@
 package com.example.project1.chat;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.widget.Toolbar;
 import android.text.SpannableString;
@@ -12,12 +17,15 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -33,11 +41,20 @@ import com.example.project1.chat.component.CurrentChatUser;
 import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONArray;
@@ -45,10 +62,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
@@ -69,6 +88,8 @@ public class ChatPageActivity extends BaseActivity {
     private SessionManager sessionManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference, statusReference, chatHistoryReference, receiverReference;
+    private StorageReference storageReference;
+    private FirebaseStorage storage;
     private ChildEventListener childEventListener;
     private String NRICTo, chatChannelId, receiverName, receiverType, receiverPic;
     private String tempPic = "";
@@ -79,6 +100,8 @@ public class ChatPageActivity extends BaseActivity {
     private final String RECEIVER_NAME = "receiverName";
     private final String RECEIVER_TYPE = "receiverType";
     private final String RECEIVER_PIC = "receiverPic";
+    private Uri imageUri;
+    private ArrayList<Map<String,Object>> list = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +118,8 @@ public class ChatPageActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE).child(chatChannelId);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         statusReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_TYPING_STATUS);
         chatHistoryReference = databaseReference.child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY);
         receiverReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(NRICTo);
@@ -154,18 +179,21 @@ public class ChatPageActivity extends BaseActivity {
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //                        HashMap<String,String> map = dataSnapshot.getValue(HashMap.class);
                         Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        map.put("docID",dataSnapshot.getKey());
+                        System.out.println(dataSnapshot.getKey());
+                        list.add(map);
                         String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
                         String NRICFrom = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).toString();
                         String time = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).toString();
                         String seen = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).toString();
-
+                        String type = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE).toString();
                         if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
                             map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
                             chatHistoryReference.child(dataSnapshot.getKey()).setValue(map);
-                            appendMessage(message,time,1);
+                            appendMessage(message,time,1,type, dataSnapshot.getKey());
                         }
                         else{
-                            appendMessage(message,time,2);
+                            appendMessage(message,time,2,type, dataSnapshot.getKey());
                         }
                     }
 
@@ -176,7 +204,15 @@ public class ChatPageActivity extends BaseActivity {
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                        for(int i=0; i<list.size(); i++){
+                            Map<String,Object> map = list.get(i);
+                            System.out.println();
+                            if(map.containsValue(dataSnapshot.getKey())){
+                                list.remove(i);
+                                break;
+                            }
+                        }
+                        reloadLayout();
                     }
 
                     @Override
@@ -192,6 +228,13 @@ public class ChatPageActivity extends BaseActivity {
         );
 
         chatHistoryReference.addChildEventListener(childEventListener);
+
+        etSendChat.setOnTouchListener(new OnEditTextRightDrawableTouchListener(etSendChat) {
+            @Override
+            public void OnDrawableClick() {
+                choosePicture();
+            }
+        });
 
         btnSendChat.setOnClickListener(
                 new View.OnClickListener() {
@@ -223,10 +266,12 @@ public class ChatPageActivity extends BaseActivity {
                     }
                 }
         );
+
     }
 
     @Override
     public void onBackPressed() {
+        System.out.println("back");
         Intent i = new Intent(this,ChatChannelListActivity.class);
         chatHistoryReference.removeEventListener(childEventListener);
         CurrentChatUser.getInstance().setCurrentNRIC("");
@@ -234,65 +279,178 @@ public class ChatPageActivity extends BaseActivity {
         finish();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-        CurrentChatUser.getInstance().setCurrentNRIC("");
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        CurrentChatUser.getInstance().setCurrentNRIC("");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        CurrentChatUser.getInstance().setCurrentNRIC("");
-    }
-
-    private void appendMessage(String message, String time, int messagePos){
-        TextView tv = new TextView(this);
-
-        SpannableString dateString = new SpannableString(time);
-        dateString.setSpan(new RelativeSizeSpan(0.7f), 0, time.length(), 0);
-        dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
-
-        tv.setText(message + "\n");
-        tv.append(dateString);
-        tv.setTextColor(Color.parseColor("#000000"));
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                6f
-        );
-
-        // 1 friend
-        if (messagePos == 1) {
-            tv.setBackgroundResource(R.drawable.messagebg2);
-            lp.gravity = Gravity.LEFT;
-            lp.setMargins(15, 0, 0, 5);
-        }
-        //  2 user
-        else {
-            tv.setBackgroundResource(R.drawable.messagebg1);
-            lp.gravity = Gravity.RIGHT;
-            lp.setMargins(0, 0, 15, 5);
-
-        }
-        tv.setPadding(30, 10, 30, 10);
-        tv.setLayoutParams(lp);
-        linearLayoutChatContent.addView(tv);
-
-        scrollViewChat.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollViewChat.fullScroll(View.FOCUS_DOWN);
+    private void reloadLayout(){
+        linearLayoutChatContent.removeAllViews();
+        for(int i=0; i<list.size(); i++){
+            Map<String,Object> map = list.get(i);
+            String message = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).toString();
+            String NRICFrom = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).toString();
+            String time = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).toString();
+            String seen = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).toString();
+            String type = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE).toString();
+            String docID = map.get("docID").toString();
+            if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
+                map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
+                appendMessage(message,time,1,type, docID);
             }
-        });
+            else{
+                appendMessage(message,time,2,type, docID);
+            }
+        }
+    }
+
+
+    private void appendMessage(String message, String time, int messagePos, String type, String docID){
+        if(type.equals("text")){
+            TextView tv = new TextView(this);
+
+            SpannableString dateString = new SpannableString(time);
+            dateString.setSpan(new RelativeSizeSpan(0.7f), 0, time.length(), 0);
+            dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
+
+            tv.setText(message + "\n");
+            tv.append(dateString);
+            tv.setTextColor(Color.parseColor("#000000"));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    6f
+            );
+
+            // 1 friend
+            if (messagePos == 1) {
+                tv.setBackgroundResource(R.drawable.messagebg2);
+                lp.gravity = Gravity.LEFT;
+                lp.setMargins(15, 0, 0, 5);
+            }
+            //  2 user
+            else {
+                tv.setBackgroundResource(R.drawable.messagebg1);
+                lp.gravity = Gravity.RIGHT;
+                lp.setMargins(0, 0, 15, 5);
+                tv.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog diaBox = AskOption(docID);
+                        diaBox.show();
+                        return false;
+                    }
+                });
+
+            }
+            tv.setPadding(30, 10, 30, 10);
+            tv.setLayoutParams(lp);
+
+            linearLayoutChatContent.addView(tv);
+
+            scrollViewChat.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollViewChat.fullScroll(View.FOCUS_DOWN);
+                }
+            });
+        }
+        else if(type.equals("image")){
+            ImageView tv = new ImageView(this);
+
+            SpannableString dateString = new SpannableString(time);
+            dateString.setSpan(new RelativeSizeSpan(0.7f), 0, time.length(), 0);
+            dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
+
+            Picasso.get()
+                    .load(message)
+                    .into(tv);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    600,
+                    600,
+                    6f
+            );
+
+            // 1 friend
+            if (messagePos == 1) {
+                tv.setBackgroundResource(R.drawable.messagebg2);
+                lp.gravity = Gravity.LEFT;
+                lp.setMargins(15, 0, 0, 5);
+            }
+            //  2 user
+            else {
+                tv.setBackgroundResource(R.drawable.messagebg1);
+                lp.gravity = Gravity.RIGHT;
+                lp.setMargins(0, 0, 15, 5);
+                tv.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog diaBox = AskOption(docID);
+                        diaBox.show();
+                        return false;
+                    }
+                });
+
+            }
+            final boolean[] isImageFitToScreen = {false};
+
+            tv.setPadding(30, 10, 30, 10);
+            tv.setLayoutParams(lp);
+
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isImageFitToScreen[0]) {
+                        isImageFitToScreen[0] =false;
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(600, 600, 6f));
+                        if(messagePos == 1){
+                            lp.gravity = Gravity.LEFT;
+                            lp.setMargins(15, 0, 0, 5);
+                            tv.setLayoutParams(lp);
+                        }
+                        else {
+                            lp.gravity = Gravity.RIGHT;
+                            lp.setMargins(0, 0, 15, 5);
+                            tv.setLayoutParams(lp);
+
+                        }
+                        tv.setAdjustViewBounds(true);
+                    }else{
+                        isImageFitToScreen[0] =true;
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                        tv.setScaleType(ImageView.ScaleType.FIT_XY);
+                    }
+                }
+            });
+            linearLayoutChatContent.addView(tv);
+
+            scrollViewChat.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollViewChat.fullScroll(View.FOCUS_DOWN);
+                }
+            });
+        }
+    }
+
+    private AlertDialog AskOption(final String docID) {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle(R.string.delete)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        chatHistoryReference.child(docID).removeValue();
+                        dialog.dismiss();
+                    }
+                })
+
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
     }
 
     //Get Pic
@@ -348,6 +506,83 @@ public class ChatPageActivity extends BaseActivity {
         requestQueue.add(stringRequest);
 
         return tempPic;
+    }
+
+    // === Part method for upload image ===
+    public void choosePicture(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            System.out.println(imageUri.toString());
+            uploadPicture();
+        }
+    }
+
+    public void uploadPicture(){
+        final ProgressDialog pd = new ProgressDialog(ChatPageActivity.this);
+        pd.setTitle("Uploading Image...");
+        pd.show();
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference riversRef = storageReference.child("images/" + randomKey);
+
+        riversRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                uploadImageToDatabase(uri);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        pd.setMessage("Percentage: "  + (int)progressPercent+  "%");
+                    }
+                });
+    }
+
+    public void uploadImageToDatabase(final Uri uri){
+        HashMap<String,String> map = new HashMap<>();
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE,"image");
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE, uri.toString());
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MEDIA_URL, "");
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM, sessionManager.getUserDetail().get("NRIC"));
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO, NRICTo);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID, chatChannelId);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME, sessionManager.getUserDetail().get("NAME"));
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN, PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE);
+
+        Date d = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String sentDate = dateFormat.format(d);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP, sentDate);
+
+        chatHistoryReference.push().setValue(map);
+        receiverReference.push().setValue(map);
     }
 
     public String getType(final String id) {

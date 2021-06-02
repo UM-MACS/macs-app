@@ -120,9 +120,9 @@
                 android:hint="@string/write_here"
                 android:minHeight="64dp"
                 android:padding="5dp"
-                android:paddingStart="15dp"/>
-
-
+                android:paddingStart="15dp"
+                android:drawableRight="@drawable/ic_baseline_image_24"
+            />
         </ScrollView>
 
         <de.hdodenhof.circleimageview.CircleImageView

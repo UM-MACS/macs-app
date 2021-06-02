@@ -346,4 +346,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         ImgLoader imgLoader = new ImgLoader(context);
         imgLoader.DisplayImage(photo, loader, view);
     }
+
+
 }
