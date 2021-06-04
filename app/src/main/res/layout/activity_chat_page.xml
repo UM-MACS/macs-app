@@ -132,9 +132,16 @@
             android:layout_gravity="center"
             android:layout_margin="4dp"
             android:layout_weight="2"
+            android:visibility="gone"
             android:src="@drawable/button_send" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_record_audio"
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="2"
+            android:src="@drawable/ic_baseline_keyboard_voice_24" />
 
     </LinearLayout>
-
-
 </RelativeLayout>

@@ -1,12 +1,16 @@
 package com.example.project1.chat;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public abstract class OnEditTextRightDrawableTouchListener implements OnTouchListener {
 
@@ -34,6 +38,7 @@ public abstract class OnEditTextRightDrawableTouchListener implements OnTouchLis
         }
         return false;
     }
+
 
     public abstract void OnDrawableClick();
 }

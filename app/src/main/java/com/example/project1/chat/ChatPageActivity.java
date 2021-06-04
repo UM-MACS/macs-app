@@ -1,10 +1,15 @@
 package com.example.project1.chat;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -12,7 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.Environment;
+import android.os.Handler;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -21,9 +31,11 @@ import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,22 +73,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
+import static android.view.View.VISIBLE;
+
 public class ChatPageActivity extends BaseActivity {
 
     private Toolbar toolbarChat;
-    private CircleImageView civChatProfilePic, btnSendChat;
+    private CircleImageView civChatProfilePic, btnSendChat, btnRecordAudio;
     private TextView tvChatName, tvChatStatus;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ScrollView scrollViewChat, scrollViewEditText;
@@ -102,6 +121,10 @@ public class ChatPageActivity extends BaseActivity {
     private final String RECEIVER_PIC = "receiverPic";
     private Uri imageUri;
     private ArrayList<Map<String,Object>> list = new ArrayList<>();
+    private MediaRecorder mediaRecorder;
+    private String mFileName;
+    private static final String LOG_TAG = "Record Log";
+    private Runnable runnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,6 +151,7 @@ public class ChatPageActivity extends BaseActivity {
         toolbarChat = findViewById(R.id.toolbar_chat);
         civChatProfilePic = findViewById(R.id.civ_chat_profile_pic);
         btnSendChat = findViewById(R.id.btn_send_chat);
+        btnRecordAudio = findViewById(R.id.btn_record_audio);
         tvChatName = findViewById(R.id.tv_chat_name);
         tvChatStatus = findViewById(R.id.tv_chat_status);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
@@ -173,6 +197,30 @@ public class ChatPageActivity extends BaseActivity {
 //                }
 //        );
 
+        etSendChat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length() == 0){
+                    btnSendChat.setVisibility(View.GONE);
+                    btnRecordAudio.setVisibility(VISIBLE);
+                }
+                else{
+                    btnSendChat.setVisibility(VISIBLE);
+                    btnRecordAudio.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         childEventListener = (
                 new ChildEventListener() {
                     @Override
@@ -198,9 +246,7 @@ public class ChatPageActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -216,14 +262,10 @@ public class ChatPageActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
                 }
         );
 
@@ -233,6 +275,21 @@ public class ChatPageActivity extends BaseActivity {
             @Override
             public void OnDrawableClick() {
                 choosePicture();
+            }
+        });
+
+        btnRecordAudio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    startRecording();
+                    Toast.makeText(getApplicationContext(), "Recording started...", Toast.LENGTH_SHORT).show();
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP){
+                    Toast.makeText(getApplicationContext(), "Recording stopped...", Toast.LENGTH_SHORT).show();
+                    stopRecording();
+                }
+                return true;
             }
         });
 
@@ -277,6 +334,93 @@ public class ChatPageActivity extends BaseActivity {
         CurrentChatUser.getInstance().setCurrentNRIC("");
         startActivity(i);
         finish();
+    }
+
+    public void startRecording(){
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(getPath());
+        try{
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+    }
+
+    public void stopRecording(){
+        mediaRecorder.stop();
+        mediaRecorder.release();
+        mediaRecorder = null;
+        uploadAudio();
+    }
+
+    public void uploadAudio(){
+        final ProgressDialog pd = new ProgressDialog(ChatPageActivity.this);
+        pd.setTitle("Uploading Audio...");
+        pd.show();
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference riversRef = storageReference.child("audio/" + randomKey);
+        Uri uri = Uri.fromFile(new File(mFileName));
+        riversRef.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Audio Uploaded", Toast.LENGTH_SHORT).show();
+                        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                uploadAudioToDatabase(uri);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Failed to Upload", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        pd.setMessage("Percentage: "  + (int)progressPercent+  "%");
+                    }
+                });
+    }
+
+    public void uploadAudioToDatabase(final Uri uri){
+        HashMap<String,String> map = new HashMap<>();
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE,"audio");
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE, uri.toString());
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_MEDIA_URL, "");
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM, sessionManager.getUserDetail().get("NRIC"));
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_TO, NRICTo);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID, chatChannelId);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME, sessionManager.getUserDetail().get("NAME"));
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN, PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE);
+
+        Date d = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String sentDate = dateFormat.format(d);
+        map.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP, sentDate);
+
+        chatHistoryReference.push().setValue(map);
+        receiverReference.push().setValue(map);
+    }
+
+
+    public String getPath(){
+        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File file = new File(musicDirectory, "macsRecordingFile" + ".mp3");
+        mFileName = file.getPath();
+        return mFileName;
     }
 
 
@@ -352,18 +496,25 @@ public class ChatPageActivity extends BaseActivity {
             });
         }
         else if(type.equals("image")){
-            ImageView tv = new ImageView(this);
-
+            LinearLayout tv = new LinearLayout(this);
+            ImageView imgView = new ImageView(this);
+            TextView txtView = new TextView(this);
+            tv.setOrientation(LinearLayout.VERTICAL);
+            tv.addView(imgView);
+            tv.addView(txtView);
             SpannableString dateString = new SpannableString(time);
             dateString.setSpan(new RelativeSizeSpan(0.7f), 0, time.length(), 0);
             dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
 
+            txtView.append(dateString);
+            txtView.setTextColor(Color.parseColor("#000000"));
+
             Picasso.get()
                     .load(message)
-                    .into(tv);
+                    .into(imgView);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    600,
-                    600,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
                     6f
             );
 
@@ -410,11 +561,11 @@ public class ChatPageActivity extends BaseActivity {
                             tv.setLayoutParams(lp);
 
                         }
-                        tv.setAdjustViewBounds(true);
+                        imgView.setAdjustViewBounds(true);
                     }else{
                         isImageFitToScreen[0] =true;
                         tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                        tv.setScaleType(ImageView.ScaleType.FIT_XY);
+                        imgView.setScaleType(ImageView.ScaleType.FIT_XY);
                     }
                 }
             });
@@ -427,7 +578,154 @@ public class ChatPageActivity extends BaseActivity {
                 }
             });
         }
+        
+        else if(type.equals("audio")){
+            LinearLayout tv = new LinearLayout(this);
+            LinearLayout tv2 = new LinearLayout(this);
+            TextView txtView = new TextView(this);
+            ImageView play = new ImageView(this);
+            ImageView pause = new ImageView(this);
+            SeekBar mSeelBar = new SeekBar(this);
+            play.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+            pause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+            pause.setVisibility(View.GONE);
+
+            tv2.setOrientation(LinearLayout.HORIZONTAL);
+            tv.setOrientation(LinearLayout.VERTICAL);
+            tv2.addView(play);
+            tv2.addView(pause);
+            tv2.addView(mSeelBar);
+            tv.addView(tv2);
+            tv.addView(txtView);
+
+            LinearLayout.LayoutParams seelBarLp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    6f
+            );
+            mSeelBar.setLayoutParams(seelBarLp);
+
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            Uri uri = Uri.parse(message);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+            try{
+                mediaPlayer.setDataSource(ChatPageActivity.this, uri);
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if(mediaPlayer.isPlaying()){
+                        mSeelBar.setProgress(mediaPlayer.getCurrentPosition());
+                        handler.postDelayed(this,50);
+                    }
+                }
+            };
+
+            play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pause.setVisibility(VISIBLE);
+                    play.setVisibility(View.GONE);
+                    mediaPlayer.start();
+                    mSeelBar.setMax(mediaPlayer.getDuration());
+                    handler.postDelayed(runnable,0);
+                }
+            });
+            pause.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    play.setVisibility(VISIBLE);
+                    pause.setVisibility(View.GONE);
+                    mediaPlayer.pause();
+                    handler.removeCallbacks(runnable);
+                }
+            });
+
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    play.setVisibility(VISIBLE);
+                    pause.setVisibility(View.GONE);
+                    mediaPlayer.seekTo(0);
+                }
+            });
+
+            mSeelBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if(fromUser){
+                        mediaPlayer.seekTo(progress);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+            SpannableString dateString = new SpannableString(time);
+            dateString.setSpan(new RelativeSizeSpan(0.7f), 0, time.length(), 0);
+            dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
+
+
+
+            txtView.append(dateString);
+            txtView.setTextColor(Color.parseColor("#000000"));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    600,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    6f
+            );
+
+            // 1 friend
+            if (messagePos == 1) {
+                tv.setBackgroundResource(R.drawable.messagebg2);
+                lp.gravity = Gravity.LEFT;
+                lp.setMargins(15, 0, 0, 5);
+            }
+            //  2 user
+            else {
+                tv.setBackgroundResource(R.drawable.messagebg1);
+                lp.gravity = Gravity.RIGHT;
+                lp.setMargins(0, 0, 15, 5);
+                tv.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog diaBox = AskOption(docID);
+                        diaBox.show();
+                        return false;
+                    }
+                });
+
+            }
+            tv.setPadding(30, 10, 30, 10);
+            tv.setLayoutParams(lp);
+
+            linearLayoutChatContent.addView(tv);
+
+            scrollViewChat.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollViewChat.fullScroll(View.FOCUS_DOWN);
+                }
+            });
+
+        }
     }
+
+
 
     private AlertDialog AskOption(final String docID) {
         AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
