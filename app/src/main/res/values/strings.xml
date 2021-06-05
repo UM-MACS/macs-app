@@ -131,7 +131,7 @@
     <string name="content">Content</string>
     <string name="report_post">Report This Post</string>
     <string name="delete_reply">Delete Reply</string>
-    <string name="delete_reply_success">This reply has been reported successfully</string>
+    <string name="delete_reply_success">This reply has been deleted successfully</string>
     <string name="delete_reply_confirm">Are you sure you want to delete this reply?</string>
     <string name="edit_reply">Edit Reply</string>
     <string name="update_reply_success">Update Reply Success</string>

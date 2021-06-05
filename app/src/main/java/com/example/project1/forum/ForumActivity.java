@@ -99,6 +99,7 @@ private ProgressBar progressBar;
 private ScrollView scrollView;
 private View view;
 private EmojIconActions emojIconActions;
+private String currentPostParentID;
 
 // === All the components layout in edit the reply layout ===
 private CheckBox anonymousCheckbox;
@@ -235,6 +236,8 @@ private EditText postTitle, postContent;
             });
         }
     }
+
+
 
     public void getPic(final String email,final String type, final CircleImageView view){
         if(type.equals("Specialist")){
@@ -485,6 +488,7 @@ private EditText postTitle, postContent;
         Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
+        currentPostParentID = getID;
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
 
@@ -517,6 +521,7 @@ private EditText postTitle, postContent;
 
         getIsFavourite(getID);
         getReplyPost(getID);
+
         submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
         submitReplyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -710,6 +715,8 @@ private EditText postTitle, postContent;
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
+                                String id = jsonObject.getString("id");
+                                System.out.println("sasfdfdsfdsfdsf" + id);
                                 if (success.equals("1")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.post_success),
                                         Toast.LENGTH_SHORT).show();
@@ -725,6 +732,25 @@ private EditText postTitle, postContent;
                                     getPic(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(CurrentUser.getInstance().getUserName());
                                     expandedContent.setText(text);
+                                    editReplyButton = (TextView)((View) rowView).findViewById(R.id.edit_reply_button);
+                                    deleteReplyButton = (TextView)((View) rowView).findViewById(R.id.delete_reply_button);
+                                    editReplyButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //confirmation pop up window
+                                            onEditReply(id, expandedContent.getText().toString());
+                                        }
+                                    });
+
+                                    deleteReplyButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //confirmation pop up window
+                                            AlertDialog diaBox = AskOption(id, "");
+                                            diaBox.show();
+                                        }
+                                    });
+
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
@@ -789,9 +815,8 @@ private EditText postTitle, postContent;
                                 Toast.makeText(getApplicationContext(),
                                         getString(R.string.delete_reply_success),
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = getIntent();
-                                finish();
-                                startActivity(intent);
+                                expandedForumParentLinearLayout.removeAllViews();
+                                getReplyPost(currentPostParentID);
 
                             } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.try_later),
@@ -1202,10 +1227,9 @@ private EditText postTitle, postContent;
 
     @Override
     public void onBackPressed() {
-//        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
-//        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        startActivity(i);
-        super.onBackPressed();
+        Intent i = new Intent(ForumActivity.this,ForumActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(i);
     }
 
     @Override

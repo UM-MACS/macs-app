@@ -273,6 +273,8 @@ public class ChatPageActivity extends BaseActivity {
 
         etSendChat.setOnTouchListener(new OnEditTextRightDrawableTouchListener(etSendChat) {
             @Override
+            public void OnEditTextClick() { showKeyboard(); }
+            @Override
             public void OnDrawableClick() {
                 choosePicture();
             }
@@ -334,6 +336,12 @@ public class ChatPageActivity extends BaseActivity {
         CurrentChatUser.getInstance().setCurrentNRIC("");
         startActivity(i);
         finish();
+    }
+
+    public void showKeyboard(){
+        etSendChat.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etSendChat, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void startRecording(){

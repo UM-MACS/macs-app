@@ -33,6 +33,10 @@ public abstract class OnEditTextRightDrawableTouchListener implements OnTouchLis
                     view.performClick();
                     OnDrawableClick();
                 }
+                else{
+                    view.performClick();
+                    OnEditTextClick();
+                }
                 return true;
             }
         }
@@ -40,5 +44,6 @@ public abstract class OnEditTextRightDrawableTouchListener implements OnTouchLis
     }
 
 
+    public abstract void OnEditTextClick();
     public abstract void OnDrawableClick();
 }
