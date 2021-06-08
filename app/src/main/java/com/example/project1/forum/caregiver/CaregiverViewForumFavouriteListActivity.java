@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,6 +46,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private String localhost;
@@ -54,25 +57,35 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private static String URL_DEL_FAV;
     private static String URL_GET_REPLY;
     private static String URL_POST_REPLY;
+    private static String URL_EDIT_REPLY;
+    private static String URL_DELETE_REPLY;
     private static String URL_GET_IS_FAV;
     private static String URL_REPORT_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer, typeContainer, reportButton, fav_des, postPhotoString;
+            ,emailContainer, typeContainer, reportButton, fav_des, postPhotoString, editReplyButton, deleteReplyButton;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
     private BottomNavigationView bottomNavigationView;
     private Button editButton, deleteButton, postButton;
     private EditText postTitle, postContent;
-    private EditText searchEditText, replyText;
+    private EditText searchEditText;
+    private EmojiconEditText replyText;
+    private View view;
+    private EmojIconActions emojIconActions;
     private Button searchButton, submitReplyButton;
-    private ImageView fav_icon, unfav_icon;
+    private ImageView fav_icon, unfav_icon, emoji;
     private LinearLayout expandedForumParentLinearLayout;
     private ProgressBar progressBar;
     private String currentPostParentID;
     private ImageView postImage;
+
+    // === All the components layout in edit the reply layout ===
+    private CheckBox anonymousCheckbox;
+    private Button updateButton, cancelButton;
+    private EditText editPostTitle, editPostContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +104,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         URL_GETPIC = localhost+"/getCaregiverPic";
         URL_GET_REPLY = localhost+"/getReplyPostCaregiver/";
         URL_POST_REPLY = localhost+"/postReplyCaregiver/";
+        URL_EDIT_REPLY = localhost+"/updateReplyPostCaregiver/";
+        URL_DELETE_REPLY = localhost+"/deleteReplyPostCaregiver/";
         URL_GET_IS_FAV = localhost+"/getIsFavouriteCaregiver/";
         URL_REPORT_POST = localhost+"/reportPostCaregiver/";
 
@@ -273,6 +288,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         Log.e("TAG", "get content"+ getContent );
         threadID = (TextView) ((View) v).findViewById(R.id.thread_id);
         final String getID = (String) threadID.getText().toString();
+        currentPostParentID = getID;
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
         postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
@@ -285,8 +301,14 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
+
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
+        emoji = findViewById(R.id.reply_emoji_icon);
+        view = findViewById(R.id.forum_expand_view);
+        emojIconActions = new EmojIconActions(this, view, replyText, emoji);
+        emojIconActions.ShowEmojIcon();
+
         postImage = (ImageView) findViewById(R.id.expanded_post_image);
-        replyText = (EditText) findViewById(R.id.reply_input);
 
         getPic(getEmail,getType, expanded_user_pic);
         if(!getPostPhotoString.equals("")){
@@ -316,7 +338,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //confirmation pop up window
-                AlertDialog diaBox = AskOption(getID);
+                AlertDialog diaBox = AskOption(getID, "report");
                 diaBox.show();
             }
         });
@@ -407,28 +429,51 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         requestQueue.add(stringRequest);
     }
 
-    private AlertDialog AskOption(final String id) {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
-                //set message, title, and icon
-                .setTitle(R.string.report_post)
-                .setMessage(R.string.report_post_confirm)
-                .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        onReport(id);
-                        dialog.dismiss();
-                    }
+    private AlertDialog AskOption(final String id, final String type) {
+        if(type.equals("report")){
+            AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                    //set message, title, and icon
+                    .setTitle(R.string.report_post)
+                    .setMessage(R.string.report_post_confirm)
+                    .setPositiveButton(R.string.report, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            onReport(id);
+                            dialog.dismiss();
+                        }
 
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
+                            dialog.dismiss();
 
-                    }
-                })
-                .create();
-        return myQuittingDialogBox;
+                        }
+                    })
+                    .create();
+            return myQuittingDialogBox;
+        }
+        else{
+            AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this)
+                    //set message, title, and icon
+                    .setTitle(R.string.delete_reply)
+                    .setMessage(R.string.delete_reply_confirm)
+                    .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            onDeleteReply(id);
+                            dialog.dismiss();
+                        }
 
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .create();
+            return myQuittingDialogBox;
+        }
     }
 
     private void getReplyPost(final String parentID) {
@@ -474,6 +519,30 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     expandedContent.setText(content.get(i));
                                     expandedID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.expanded_thread_time);
+                                    editReplyButton = (TextView)((View) rowView).findViewById(R.id.edit_reply_button);
+                                    deleteReplyButton = (TextView)((View) rowView).findViewById(R.id.delete_reply_button);
+                                    if(email.get(i).equals(CurrentUser.getInstance().getNRIC())){
+                                        editReplyButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //confirmation pop up window
+                                                onEditReply(expandedID.getText().toString(), expandedContent.getText().toString());
+                                            }
+                                        });
+                                        deleteReplyButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //confirmation pop up window
+                                                AlertDialog diaBox = AskOption(expandedID.getText().toString(), "");
+                                                diaBox.show();
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        editReplyButton.setVisibility(View.GONE);
+                                        deleteReplyButton.setVisibility(View.GONE);
+
+                                    }
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
@@ -515,7 +584,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     }
 
     public void onReply(final String parentID){
-        replyText = (EditText) findViewById(R.id.reply_input);
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
         final String text = replyText.getText().toString().trim();
         Date d = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -532,6 +601,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
+                                String id = jsonObject.getString("id");
                                 if (success.equals("1")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.post_success),
                                         Toast.LENGTH_SHORT).show();
@@ -547,6 +617,24 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     getPic(CurrentUser.getInstance().getNRIC(), CurrentUser.getInstance().getUserType(), expanded_user_pic);
                                     expandedName.setText(CurrentUser.getInstance().getUserName());
                                     expandedContent.setText(text);
+                                    editReplyButton = (TextView)((View) rowView).findViewById(R.id.edit_reply_button);
+                                    deleteReplyButton = (TextView)((View) rowView).findViewById(R.id.delete_reply_button);
+                                    editReplyButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //confirmation pop up window
+                                            onEditReply(id, expandedContent.getText().toString());
+                                        }
+                                    });
+
+                                    deleteReplyButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //confirmation pop up window
+                                            AlertDialog diaBox = AskOption(id, "");
+                                            diaBox.show();
+                                        }
+                                    });
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date);
@@ -588,6 +676,185 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
         }
+    }
+
+    // === Method for delete the reply ===
+    public void onDeleteReply(final String id){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DELETE_REPLY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.delete_reply_success),
+                                        Toast.LENGTH_SHORT).show();
+                                expandedForumParentLinearLayout.removeAllViews();
+                                getReplyPost(currentPostParentID);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    // === Method for create layout for user edit the reply ===
+    public void onEditReply(final String id, final String content){
+        setContentView(R.layout.activity_create_post);
+        anonymousCheckbox = (CheckBox)findViewById(R.id.anonymous_checkbox);
+        anonymousCheckbox.setVisibility(View.GONE);
+        postButton = (Button) findViewById(R.id.post_button);
+        postButton.setVisibility(View.GONE);
+        updateButton = (Button)findViewById(R.id.update_button);
+        updateButton.setVisibility(View.VISIBLE);
+        postTitle = (EditText)findViewById(R.id.post_title);
+        postTitle.setVisibility(View.GONE);
+        postContent = (EditText)findViewById(R.id.post_content);
+        cancelButton = (Button) findViewById(R.id.post_cancel);
+        postContent.setText(content);
+        //onPost(id)
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUpdateReply(id, postContent.getText().toString());
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToExpandedForum();
+            }
+        });
+    }
+
+    private void backToExpandedForum(){
+        final String getEmail = emailContainer.getText().toString();
+        final String getType = typeContainer.getText().toString();
+        final String getName = username.getText().toString();
+        final String getTitle = (String) threadTitle.getText().toString();
+        final String getContent = (String) threadContent.getText().toString();
+        final String getID = (String) threadID.getText().toString();
+        final String getPostPhotoString = (String) postPhotoString.getText().toString();
+        currentPostParentID = getID;
+        final String getTime = threadTime.getText().toString();
+
+        setContentView(R.layout.activity_forum_expand);
+        expandedName = (TextView) findViewById(R.id.expanded_user_name);
+        expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
+        expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
+        expandedID = (TextView) findViewById(R.id.expanded_thread_id);
+        expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
+        expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
+
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
+        emoji = findViewById(R.id.reply_emoji_icon);
+        view = findViewById(R.id.forum_expand_view);
+        emojIconActions = new EmojIconActions(this, view, replyText, emoji);
+        emojIconActions.ShowEmojIcon();
+
+        if(getName.equals("Anonymous")) {
+            getPic("lee","", expanded_user_pic);
+        } else{
+            getPic(getEmail, getType, expanded_user_pic);
+        }
+        if(!getPostPhotoString.equals("")) {
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+        }
+        expandedName.setText(getName);
+        expandedTitle.setText(getTitle);
+        expandedContent.setText(getContent);
+        expandedID.setText(getID);
+        expandedTime.setText(getTime);
+
+        getIsFavourite(getID);
+        getReplyPost(getID);
+
+        submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
+        submitReplyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReply(getID);
+            }
+        });
+
+        reportButton = (TextView) findViewById(R.id.report_button);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //confirmation pop up window
+                AlertDialog diaBox = AskOption(getID, "report");
+                diaBox.show();
+            }
+        });
+    }
+
+    // === Method for update the reply content to database ===
+    public void onUpdateReply(final String id, final String content){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_EDIT_REPLY,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.update_reply_success),
+                                        Toast.LENGTH_SHORT).show();
+                                backToExpandedForum();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), getString(R.string.try_later),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+                params.put("content", content);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     public void onFavourite(final View v){
