@@ -14,6 +14,7 @@
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.util.Base64;
+        import android.view.View;
         import android.widget.ImageView;
 
         import com.example.project1.R;
@@ -42,6 +43,21 @@
             queuePhoto(url, imageView);
             imageView.setImageResource(loader);
         }
+    }
+
+    public void DisplayPostImage(String url, ImageView imageView){
+        imageViews.put(imageView, url);
+        Bitmap bitmap=memoryCache.get(url);
+        if(bitmap!=null)
+            imageView.setImageBitmap(bitmap);
+        else{
+            System.out.println("testinddsdsdsdsg");
+            queuePhoto(url, imageView);
+            byte[] byteArray = Base64.decode(url, Base64.DEFAULT);
+            Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            imageView.setImageBitmap(b);
+        }
+
     }
 
     private void queuePhoto(String url, ImageView imageView)

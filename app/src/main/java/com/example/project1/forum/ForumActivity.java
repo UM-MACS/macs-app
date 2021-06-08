@@ -8,8 +8,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +40,6 @@ import com.example.project1.PublicComponent;
 import com.example.project1.changeLanguage.ChangeLanguageActivity;
 import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
-import com.example.project1.forum.caregiver.CaregiverForumActivity;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.onboarding.OnboardingBaseActivity;
@@ -86,7 +89,7 @@ private static String URL_GET_IS_FAV;
 private static String URL_REPORT_POST;
 private String picture;
 private LinearLayout forumParentLinearLayout, expandedForumParentLinearLayout;
-private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime,
+private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime, postPhotoString,
         emailContainer, typeContainer, fav_des;
 private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
 private FloatingActionButton createPostButton;
@@ -100,6 +103,7 @@ private ScrollView scrollView;
 private View view;
 private EmojIconActions emojIconActions;
 private String currentPostParentID;
+private ImageView postImage;
 
 // === All the components layout in edit the reply layout ===
 private CheckBox anonymousCheckbox;
@@ -314,6 +318,7 @@ private EditText postTitle, postContent;
                             ArrayList<String> pinned = new ArrayList<>();
                             ArrayList<String> date = new ArrayList<>();
                             ArrayList<String> photo = new ArrayList<>();
+                            ArrayList<String> postPhoto = new ArrayList<>();
 
                             if(success.equals("1")){
                                 for (int i=0; i<jsonArray.length(); i++){
@@ -328,6 +333,7 @@ private EditText postTitle, postContent;
                                     pinned.add(object.getString("pinned"));
                                     date.add(object.getString("date"));
                                     photo.add(object.getString("photo"));
+                                    postPhoto.add(object.getString("postPhoto"));
                                 }
                                 for (int i =0; i<name.size();i++){
                                     if(pinned.get(i).equals("true")) {
@@ -346,6 +352,8 @@ private EditText postTitle, postContent;
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
+                                            postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                            postPhotoString.setText(postPhoto.get(i));
 //                                            getPic(email.get(i),type.get(i), user_pic);
                                             if(type.get(i).equals("Specialist")){
                                                 getPic(email.get(i),type.get(i),user_pic);
@@ -421,6 +429,8 @@ private EditText postTitle, postContent;
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
                                         threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                        postPhotoString.setText(postPhoto.get(i));
                                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");                                        try {
                                             Date d = dateFormat.parse(date.get(i));
                                             long epoch = d.getTime();
@@ -491,8 +501,77 @@ private EditText postTitle, postContent;
         currentPostParentID = getID;
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
+        postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
+        final String getPostPhotoString = postPhotoString.getText().toString();
 
         Log.e("TAG", "onExpand: get Thread ID "+getID );
+
+        setContentView(R.layout.activity_forum_expand);
+        expandedName = (TextView) findViewById(R.id.expanded_user_name);
+        expandedTitle = (TextView) findViewById(R.id.expanded_thread_title);
+        expandedContent = (TextView) findViewById(R.id.expanded_thread_content);
+        expandedID = (TextView) findViewById(R.id.expanded_thread_id);
+        expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
+        expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
+
+        replyText = (EmojiconEditText) findViewById(R.id.reply_input);
+        emoji = findViewById(R.id.reply_emoji_icon);
+        view = findViewById(R.id.forum_expand_view);
+        emojIconActions = new EmojIconActions(this, view, replyText, emoji);
+        emojIconActions.ShowEmojIcon();
+
+        if(getName.equals("Anonymous")) {
+            getPic("lee","", expanded_user_pic);
+        } else{
+            getPic(getEmail, getType, expanded_user_pic);
+        }
+        if(!getPostPhotoString.equals("")){
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            /**byte[] byteArray = Base64.decode(getPostPhotoString, Base64.DEFAULT);
+            Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            postImage.setVisibility(View.VISIBLE);
+            postImage.setImageBitmap(b);*/
+        }
+        expandedName.setText(getName);
+        expandedTitle.setText(getTitle);
+        expandedContent.setText(getContent);
+        expandedID.setText(getID);
+        expandedTime.setText(getTime);
+
+        getIsFavourite(getID);
+        getReplyPost(getID);
+
+        submitReplyButton = (Button)findViewById(R.id.submit_reply_button);
+        submitReplyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReply(getID);
+            }
+        });
+
+        reportButton = (TextView) findViewById(R.id.report_button);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //confirmation pop up window
+                AlertDialog diaBox = AskOption(getID, "report");
+                diaBox.show();
+            }
+        });
+    }
+
+    private void backToExpandedForum(){
+        final String getEmail = emailContainer.getText().toString();
+        final String getType = typeContainer.getText().toString();
+        final String getName = username.getText().toString();
+        final String getTitle = (String) threadTitle.getText().toString();
+        final String getContent = (String) threadContent.getText().toString();
+        final String getID = (String) threadID.getText().toString();
+        currentPostParentID = getID;
+        final String getTime = threadTime.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
@@ -868,9 +947,7 @@ private EditText postTitle, postContent;
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+                backToExpandedForum();
             }
         });
     }
@@ -889,9 +966,7 @@ private EditText postTitle, postContent;
                                 Toast.makeText(getApplicationContext(),
                                         getString(R.string.update_reply_success),
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = getIntent();
-                                finish();
-                                startActivity(intent);
+                                backToExpandedForum();
 
                             } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.try_later),
@@ -919,6 +994,8 @@ private EditText postTitle, postContent;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+
 
 
     public void onSearch(View v){

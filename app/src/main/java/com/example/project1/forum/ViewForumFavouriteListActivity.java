@@ -60,7 +60,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     private static String URL_REPORT_POST;
     private static String URL_GET_FAV_SPECIALIST;
     private String picture, ID;
-    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
+    private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime, postPhotoString;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
             ,emailContainer,typeContainer, reportButton, fav_des;
     private LinearLayout forumParentLinearLayout;
@@ -75,6 +75,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
     private LinearLayout expandedForumParentLinearLayout;
     private ProgressBar progressBar;
     private TextView userType;
+    private String currentPostParentID;
+    private ImageView postImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +146,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                             ArrayList<String> date = new ArrayList<>();
                             ArrayList<String> email = new ArrayList<>();
                             ArrayList<String> type = new ArrayList<>();
+                            ArrayList<String> postPhoto = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -156,6 +159,7 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                     date.add(object.getString("date"));
                                     email.add(object.getString("email"));
                                     type.add(object.getString("type"));
+                                    postPhoto.add(object.getString("postPhoto"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -179,6 +183,8 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
                                     threadContent.setText(content.get(i));
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
+                                    postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                    postPhotoString.setText(postPhoto.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
@@ -288,6 +294,9 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         final String getID = (String) threadID.getText().toString();
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
+        postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
+        final String getPostPhotoString = postPhotoString.getText().toString();
+        System.out.println("sasasasad   " + getPostPhotoString);
 
         setContentView(R.layout.activity_forum_expand);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -309,7 +318,18 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
         replyText = (EditText) findViewById(R.id.reply_input);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
+
         getPic(getEmail,getType, expanded_user_pic);
+        if(!getPostPhotoString.equals("")){
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            /**byte[] byteArray = Base64.decode(getPostPhotoString, Base64.DEFAULT);
+             Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+             postImage.setVisibility(View.VISIBLE);
+             postImage.setImageBitmap(b);*/
+        }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);

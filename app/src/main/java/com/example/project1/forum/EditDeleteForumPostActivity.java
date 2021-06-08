@@ -3,15 +3,25 @@ package com.example.project1.forum;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+
+import com.example.project1.chat.OnEditTextRightDrawableTouchListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.MediaStore;
 import android.text.format.DateUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,6 +47,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +66,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
     private static String URL_DELETE_POST;
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime
-            , emailContainer, typeContainer;
+            , emailContainer, typeContainer, postPhotoString;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
@@ -68,6 +80,9 @@ public class EditDeleteForumPostActivity extends BaseActivity {
     private ProgressBar progressBar;
     private CheckBox anonymousCheckbox;
     private TextView isAnonymousTV, displayAnonymousTV;
+    private String currentPostParentID;
+    private ImageView postImage, editPostImage;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +133,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                             ArrayList<String> email = new ArrayList<>();
                             ArrayList<String> type = new ArrayList<>();
                             ArrayList<String> anonymous = new ArrayList<>();
+                            ArrayList<String> postPhoto = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -131,6 +147,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                                     email.add(object.getString("email"));
                                     type.add(object.getString("type"));
                                     anonymous.add(object.getString("anonymous"));
+                                    postPhoto.add(object.getString("postPhoto"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -155,6 +172,9 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                    postPhotoString.setText(postPhoto.get(i));
+
                                     if (anonymous.get(i).equals("true")) {
                                         isAnonymousTV = (TextView)((View)rowView.findViewById(R.id.isAnonymoustv));
                                         isAnonymousTV.setText("Anonymous");
@@ -267,6 +287,8 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         final String getTime = (String) threadTime.getText().toString();
         isAnonymousTV = (TextView)((View)v.findViewById(R.id.isAnonymoustv));
         final String isAnonymous = (String) isAnonymousTV.getText().toString();
+        postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
+        final String getPostPhotoString = postPhotoString.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         editButton = (Button)findViewById(R.id.edit_post);
@@ -283,7 +305,14 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         expandedID = (TextView)findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView)findViewById(R.id.expanded_user_profile_pic);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
+
         getPic(getEmail,getType,expanded_user_pic);
+        if(!getPostPhotoString.equals("")) {
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+        }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);
@@ -298,7 +327,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEditPost(getID, getTitle,getContent);
+                onEditPost(getID, getTitle,getContent,getPostPhotoString);
             }
         });
 
@@ -313,7 +342,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
 
     }
 
-    public void onEditPost(final String ID, final String title, final String content){
+    public void onEditPost(final String ID, final String title, final String content, final String getPostPhotoString){
         setContentView(R.layout.activity_create_post);
         anonymousCheckbox = (CheckBox)findViewById(R.id.anonymous_checkbox);
         anonymousCheckbox.setVisibility(View.GONE);
@@ -324,6 +353,22 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         postTitle = (EditText)findViewById(R.id.post_title);
         postContent = (EditText)findViewById(R.id.post_content);
         cancelButton = (Button) findViewById(R.id.post_cancel);
+        editPostImage = (ImageView)findViewById(R.id.post_image);
+
+        postTitle.setOnTouchListener(new OnEditTextRightDrawableTouchListener(postTitle) {
+            @Override
+            public void OnEditTextClick() { showKeyboard(); }
+            @Override
+            public void OnDrawableClick() {
+                choosePicture();
+            }
+        });
+
+        if(!getPostPhotoString.equals("")){
+            editPostImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, editPostImage);
+        }
         postTitle.setText(title);
         postContent.setText(content);
         //onPost(id)
@@ -391,6 +436,11 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", id);
                 params.put("title",title);
+                String img= "";
+                if (bitmap != null){
+                    img = getStringImage(bitmap);
+                }
+                params.put("postPhoto",img);
                 params.put("content",content);
                 return params;
             }
@@ -470,6 +520,45 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    // ========================= Adding upload photo features code ========================
+    public void showKeyboard(){
+        postTitle.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(postTitle, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public void choosePicture(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), filePath);
+                editPostImage.setVisibility(View.VISIBLE);
+                editPostImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getStringImage(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+        String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+        Log.e("TAG", "encodedImage"+encodedImage );
+        return encodedImage;
     }
 
 //    @Override

@@ -185,7 +185,13 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-
+                    <ImageView
+                        android:id="@+id/expanded_post_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
             </LinearLayout>

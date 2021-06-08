@@ -1,13 +1,24 @@
 package com.example.project1.forum;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project1.R;
+import com.example.project1.chat.OnEditTextRightDrawableTouchListener;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.CurrentUser;
 
@@ -24,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,11 +45,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateForumPostActivity extends BaseActivity {
-private EditText titleInput, contentInput;
-private Button cancelButton, postButton;
-private CheckBox checkBox;
-private String localhost;
-private static String URL;
+    private EditText titleInput, contentInput;
+    private Button cancelButton, postButton;
+    private CheckBox checkBox;
+    private String localhost;
+    private static String URL;
+    private ImageView postImage;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +66,16 @@ private static String URL;
         cancelButton = (Button) findViewById(R.id.post_cancel);
         postButton = (Button)findViewById(R.id.post_button);
         checkBox = (CheckBox)findViewById(R.id.anonymous_checkbox);
+        postImage = (ImageView)findViewById(R.id.post_image);
+
+        titleInput.setOnTouchListener(new OnEditTextRightDrawableTouchListener(titleInput) {
+            @Override
+            public void OnEditTextClick() { showKeyboard(); }
+            @Override
+            public void OnDrawableClick() {
+                choosePicture();
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +136,10 @@ private static String URL;
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
+                    String img= "";
+                    if (bitmap != null){
+                        img = getStringImage(bitmap);
+                    }
                     params.put("email", CurrentUser.getInstance().getNRIC());
                     params.put("type", CurrentUser.getInstance().getUserType());
                     params.put("name", CurrentUser.getInstance().getUserName());
@@ -117,6 +147,7 @@ private static String URL;
                     params.put("content", content);
                     params.put("anonymous", anonymous);
                     params.put("date", date);
+                    params.put("postPhoto",img);
                     return params;
                 }
             };
@@ -128,4 +159,42 @@ private static String URL;
         }
     }
 
+    // === Adding upload photo features code ===
+    public void showKeyboard(){
+        titleInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(titleInput, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public void choosePicture(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), filePath);
+                postImage.setVisibility(View.VISIBLE);
+                postImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getStringImage(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+        String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+        Log.e("TAG", "encodedImage"+encodedImage );
+        return encodedImage;
+    }
 }
