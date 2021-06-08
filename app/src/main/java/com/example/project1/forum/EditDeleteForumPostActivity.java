@@ -80,7 +80,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
     private ProgressBar progressBar;
     private CheckBox anonymousCheckbox;
     private TextView isAnonymousTV, displayAnonymousTV;
-    private String currentPostParentID;
+    private String currentPostParentID, currentPostPhotoString;
     private ImageView postImage, editPostImage;
     private Bitmap bitmap;
 
@@ -288,7 +288,8 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         isAnonymousTV = (TextView)((View)v.findViewById(R.id.isAnonymoustv));
         final String isAnonymous = (String) isAnonymousTV.getText().toString();
         postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
-        final String getPostPhotoString = postPhotoString.getText().toString();
+        final String getPostPhotoString = (String) postPhotoString.getText().toString();
+        currentPostPhotoString = getPostPhotoString;
 
         setContentView(R.layout.activity_forum_expand);
         editButton = (Button)findViewById(R.id.edit_post);
@@ -439,8 +440,11 @@ public class EditDeleteForumPostActivity extends BaseActivity {
                 String img= "";
                 if (bitmap != null){
                     img = getStringImage(bitmap);
+                    params.put("postPhoto",img);
                 }
-                params.put("postPhoto",img);
+                else{
+                    params.put("postPhoto",currentPostPhotoString);
+                }
                 params.put("content",content);
                 return params;
             }

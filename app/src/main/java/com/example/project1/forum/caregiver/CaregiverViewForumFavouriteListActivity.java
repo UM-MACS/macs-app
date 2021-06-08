@@ -59,7 +59,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private String picture, ID;
     private TextView nullPost, username, threadTitle, threadContent, threadID, threadTime;
     private TextView expandedName, expandedTitle, expandedContent, expandedID, expandedTime
-            ,emailContainer, typeContainer, reportButton, fav_des;
+            ,emailContainer, typeContainer, reportButton, fav_des, postPhotoString;
     private LinearLayout forumParentLinearLayout;
     private CircleImageView user_pic, expanded_user_pic;
     private FloatingActionButton b1;
@@ -71,6 +71,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
     private ImageView fav_icon, unfav_icon;
     private LinearLayout expandedForumParentLinearLayout;
     private ProgressBar progressBar;
+    private String currentPostParentID;
+    private ImageView postImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                             ArrayList<String> date = new ArrayList<>();
                             ArrayList<String> email = new ArrayList<>();
                             ArrayList<String> type = new ArrayList<>();
+                            ArrayList<String> postPhoto = new ArrayList<>();
                             Log.e("TAG", "success"+success );
 
                             if(success.equals("1")){
@@ -136,6 +139,7 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     date.add(object.getString("date"));
                                     email.add(object.getString("email"));
                                     type.add(object.getString("type"));
+                                    postPhoto.add(object.getString("postPhoto"));
                                 }
 
                                 for(int i=0; i<name.size();i++){
@@ -160,6 +164,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
                                     threadID = (TextView)((View)rowView).findViewById(R.id.thread_id);
                                     threadID.setText(id.get(i));
                                     threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                    postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                    postPhotoString.setText(postPhoto.get(i));
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                     try {
                                         Date d = dateFormat.parse(date.get(i));
@@ -269,6 +275,8 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         final String getID = (String) threadID.getText().toString();
         threadTime = (TextView) ((View)v).findViewById(R.id.thread_time);
         final String getTime = threadTime.getText().toString();
+        postPhotoString = (TextView) ((View)v).findViewById(R.id.postPhotoString);
+        final String getPostPhotoString = postPhotoString.getText().toString();
 
         setContentView(R.layout.activity_forum_expand);
         expandedName = (TextView) findViewById(R.id.expanded_user_name);
@@ -277,8 +285,16 @@ public class CaregiverViewForumFavouriteListActivity extends BaseActivity {
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
         replyText = (EditText) findViewById(R.id.reply_input);
+
         getPic(getEmail,getType, expanded_user_pic);
+        if(!getPostPhotoString.equals("")){
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+        }
+
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
         expandedContent.setText(getContent);

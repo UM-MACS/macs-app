@@ -342,18 +342,20 @@ private EditText postTitle, postContent;
                                         forumParentLinearLayout.addView(rowView, forumParentLinearLayout.getChildCount() - 1);
                                         pinned_pic = (ImageView) ((View)rowView).findViewById(R.id.pinned);
                                         pinned_pic.setVisibility(View.VISIBLE);
+                                        postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                        postPhotoString.setText(postPhoto.get(i));
                                         if (anonymous.get(i).equals("true")) {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(R.string.anonymous);
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
 //                                            getPic("lee","", user_pic);
                                             getPicTest("",user_pic);
-                                        } else {
+                                        }
+
+                                        else {
                                             username = (TextView) ((View) rowView).findViewById(R.id.user_name);
                                             username.setText(name.get(i));
                                             user_pic = (CircleImageView) ((View) rowView).findViewById(R.id.user_profile_pic);
-                                            postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
-                                            postPhotoString.setText(postPhoto.get(i));
 //                                            getPic(email.get(i),type.get(i), user_pic);
                                             if(type.get(i).equals("Specialist")){
                                                 getPic(email.get(i),type.get(i),user_pic);
@@ -373,6 +375,8 @@ private EditText postTitle, postContent;
                                         threadID = (TextView) ((View) rowView).findViewById(R.id.thread_id);
                                         threadID.setText(id.get(i));
                                         threadTime = (TextView)((View) rowView).findViewById(R.id.thread_time);
+                                        postPhotoString = (TextView) ((View) rowView).findViewById(R.id.postPhotoString);
+                                        postPhotoString.setText(postPhoto.get(i));
 
                                         Log.e("TAG", "onResponse: Date from database: "+date.get(i) );
 
@@ -570,6 +574,7 @@ private EditText postTitle, postContent;
         final String getTitle = (String) threadTitle.getText().toString();
         final String getContent = (String) threadContent.getText().toString();
         final String getID = (String) threadID.getText().toString();
+        final String getPostPhotoString = (String) postPhotoString.getText().toString();
         currentPostParentID = getID;
         final String getTime = threadTime.getText().toString();
 
@@ -580,6 +585,7 @@ private EditText postTitle, postContent;
         expandedID = (TextView) findViewById(R.id.expanded_thread_id);
         expandedTime = (TextView) findViewById(R.id.expanded_thread_time);
         expanded_user_pic = (CircleImageView) findViewById(R.id.expanded_user_profile_pic);
+        postImage = (ImageView) findViewById(R.id.expanded_post_image);
 
         replyText = (EmojiconEditText) findViewById(R.id.reply_input);
         emoji = findViewById(R.id.reply_emoji_icon);
@@ -591,6 +597,11 @@ private EditText postTitle, postContent;
             getPic("lee","", expanded_user_pic);
         } else{
             getPic(getEmail, getType, expanded_user_pic);
+        }
+        if(!getPostPhotoString.equals("")) {
+            postImage.setVisibility(View.VISIBLE);
+            ImgLoader imgLoader = new ImgLoader(getApplicationContext());
+            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
         }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
@@ -795,7 +806,6 @@ private EditText postTitle, postContent;
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                                 String success = jsonObject.getString("success");
                                 String id = jsonObject.getString("id");
-                                System.out.println("sasfdfdsfdsfdsf" + id);
                                 if (success.equals("1")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.post_success),
                                         Toast.LENGTH_SHORT).show();
