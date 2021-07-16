@@ -89,6 +89,11 @@
     <string name="specialistLogin">Log Masuk sebagai Doktor</string>
     <string name="adminLogin">Log Masuk sebagai Pentadbir</string>
     <string name="report_post">Laporkan Siaran ini</string>
+    <string name="delete_reply">Padam komen</string>
+    <string name="delete_reply_success">Padam komen berjaya</string>
+    <string name="delete_reply_confirm">Padam komen?</string>
+    <string name="edit_reply">Ubah komen</string>
+    <string name="update_reply_success">Berjaya ubah komen</string>
     <string name="reply">Komen</string>
     <string name="old_password">Kata Laluan Lama</string>
     <string name="new_password">Kata Laluan Baru</string>
@@ -219,6 +224,7 @@
     <string name="message">mesej</string>
     <string name="empty_chat">Tiada chat, sila mulakan chat yang baru</string>
     <string name="username">Nama Pengguna</string>
+    <string name="chinese">中文</string>
     <string name="nric">NRIC</string>
     <string name="btm_nav_chat">Chat</string>
     <string name="btm_nav_forum">Forum</string>

@@ -89,6 +89,11 @@
     <string name="specialistLogin">医生登录</string>
     <string name="adminLogin">管理员登录</string>
     <string name="report_post">举报这个帖子</string>
+    <string name="delete_reply">删除评论</string>
+    <string name="delete_reply_success">评论已删除</string>
+    <string name="delete_reply_confirm">确定删除此评论？</string>
+    <string name="edit_reply">更新评论</string>
+    <string name="update_reply_success">评论已更新</string>
     <string name="reply">评论</string>
     <string name="old_password">旧密码</string>
     <string name="new_password">新密码</string>
@@ -219,6 +224,7 @@
     <string name="message">信息</string>
     <string name="empty_chat">没有聊天记录，开始聊天</string>
     <string name="username">用户名字</string>
+    <string name="chinese">中文</string>
     <string name="nric">身份证号码</string>
     <string name="btm_nav_chat">聊天</string>
     <string name="btm_nav_forum">论坛</string>

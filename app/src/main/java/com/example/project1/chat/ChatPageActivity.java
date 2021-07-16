@@ -1,10 +1,12 @@
 package com.example.project1.chat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -15,6 +17,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.widget.Toolbar;
 
@@ -69,6 +73,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -125,6 +130,7 @@ public class ChatPageActivity extends BaseActivity {
     private String mFileName;
     private static final String LOG_TAG = "Record Log";
     private Runnable runnable;
+    final int REQUEST_PERMISSION_CODE = 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -283,13 +289,18 @@ public class ChatPageActivity extends BaseActivity {
         btnRecordAudio.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    startRecording();
-                    Toast.makeText(getApplicationContext(), "Recording started...", Toast.LENGTH_SHORT).show();
+                if (checkPermissionFromDevice()) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                        startRecording();
+                        Toast.makeText(getApplicationContext(), "Recording started...", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(event.getAction() == MotionEvent.ACTION_UP){
+                        Toast.makeText(getApplicationContext(), "Recording stopped...", Toast.LENGTH_SHORT).show();
+                        stopRecording();
+                    }
                 }
-                else if(event.getAction() == MotionEvent.ACTION_UP){
-                    Toast.makeText(getApplicationContext(), "Recording stopped...", Toast.LENGTH_SHORT).show();
-                    stopRecording();
+                else{
+                    requestPermission();
                 }
                 return true;
             }
@@ -363,6 +374,36 @@ public class ChatPageActivity extends BaseActivity {
         mediaRecorder.release();
         mediaRecorder = null;
         uploadAudio();
+    }
+
+    public boolean checkPermissionFromDevice(){
+        int write_external_storage_result = ContextCompat.checkSelfPermission(ChatPageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int record_audio_result = ContextCompat.checkSelfPermission(ChatPageActivity.this, Manifest.permission.RECORD_AUDIO);
+        return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
+                record_audio_result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        }, REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_PERMISSION_CODE:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
     }
 
     public void uploadAudio(){
