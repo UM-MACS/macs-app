@@ -131,6 +131,7 @@ public class ChatPageActivity extends BaseActivity {
     private static final String LOG_TAG = "Record Log";
     private Runnable runnable;
     final int REQUEST_PERMISSION_CODE = 1000;
+    private ScrollView scrollview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +155,7 @@ public class ChatPageActivity extends BaseActivity {
         receiverReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(NRICTo);
 //        receiverReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
 
+        scrollview = findViewById(R.id.scrollview_chat);
         toolbarChat = findViewById(R.id.toolbar_chat);
         civChatProfilePic = findViewById(R.id.civ_chat_profile_pic);
         btnSendChat = findViewById(R.id.btn_send_chat);
@@ -165,6 +167,7 @@ public class ChatPageActivity extends BaseActivity {
         scrollViewEditText = findViewById(R.id.scrollview_edit_text);
         linearLayoutChatContent = findViewById(R.id.linear_layout_chat_content);
 
+        scrollview.scrollTo(0, 0);
         etSendChat = findViewById(R.id.et_send_chat);
         emoji = findViewById(R.id.emoji_icon);
         view = findViewById(R.id.chat_view);
