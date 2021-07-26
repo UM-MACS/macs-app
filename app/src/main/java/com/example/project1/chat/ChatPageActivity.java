@@ -599,26 +599,29 @@ public class ChatPageActivity extends BaseActivity {
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isImageFitToScreen[0]) {
-                        isImageFitToScreen[0] =false;
-                        tv.setLayoutParams(new LinearLayout.LayoutParams(600, 600, 6f));
-                        if(messagePos == 1){
-                            lp.gravity = Gravity.LEFT;
-                            lp.setMargins(15, 0, 0, 5);
-                            tv.setLayoutParams(lp);
-                        }
-                        else {
-                            lp.gravity = Gravity.RIGHT;
-                            lp.setMargins(0, 0, 15, 5);
-                            tv.setLayoutParams(lp);
-
-                        }
-                        imgView.setAdjustViewBounds(true);
-                    }else{
-                        isImageFitToScreen[0] =true;
-                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                        imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    }
+                    Intent fullScreenIntent = new Intent(ChatPageActivity.this, FullScreenImageActivity.class);
+                    fullScreenIntent.setData(Uri.parse(message));
+                    startActivity(fullScreenIntent);
+//                    if(isImageFitToScreen[0]) {
+//                        isImageFitToScreen[0] =false;
+//                        tv.setLayoutParams(new LinearLayout.LayoutParams(600, 600, 6f));
+//                        if(messagePos == 1){
+//                            lp.gravity = Gravity.LEFT;
+//                            lp.setMargins(15, 0, 0, 5);
+//                            tv.setLayoutParams(lp);
+//                        }
+//                        else {
+//                            lp.gravity = Gravity.RIGHT;
+//                            lp.setMargins(0, 0, 15, 5);
+//                            tv.setLayoutParams(lp);
+//
+//                        }
+//                        imgView.setAdjustViewBounds(true);
+//                    }else{
+//                        isImageFitToScreen[0] =true;
+//                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//                        imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    }
                 }
             });
             linearLayoutChatContent.addView(tv);
