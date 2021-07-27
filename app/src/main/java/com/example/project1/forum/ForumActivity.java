@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+
+import com.example.project1.chat.ChatPageActivity;
+import com.example.project1.chat.FullScreenImageActivity;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
@@ -533,7 +537,15 @@ private EditText postTitle, postContent;
         if(!getPostPhotoString.equals("")){
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(ForumActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
             /**byte[] byteArray = Base64.decode(getPostPhotoString, Base64.DEFAULT);
             Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             postImage.setVisibility(View.VISIBLE);
@@ -601,7 +613,15 @@ private EditText postTitle, postContent;
         if(!getPostPhotoString.equals("")) {
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte[] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(ForumActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.example.project1.chat.OnEditTextRightDrawableTouchListener;
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.FullScreenPostImageActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -313,7 +315,15 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")) {
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(CaregiverEditDeletePostActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
 
         expandedName.setText(getName);
@@ -370,7 +380,15 @@ public class CaregiverEditDeletePostActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")){
             editPostImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, editPostImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, editPostImage);
+            editPostImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(CaregiverEditDeletePostActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
 
         postTitle.setText(title);

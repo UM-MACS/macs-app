@@ -58,6 +58,10 @@
         <activity android:name=".login.ForgotPasswordActivity" />
         <activity android:name=".login.ResetPasswordActivity" />
         <activity
+            android:name=".forum.FullScreenPostImageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".forum.specialist.SpecialistForumActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />

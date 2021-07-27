@@ -11,13 +11,24 @@
 
         import android.app.Activity;
         import android.content.Context;
+        import android.content.Intent;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
+        import android.net.Uri;
         import android.util.Base64;
         import android.view.View;
         import android.widget.ImageView;
 
+        import androidx.core.content.ContextCompat;
+
         import com.example.project1.R;
+        import com.example.project1.chat.ChatPageActivity;
+        import com.example.project1.chat.FullScreenImageActivity;
+        import com.example.project1.forum.ForumActivity;
+        import com.github.chrisbanes.photoview.PhotoView;
+
+        import de.hdodenhof.circleimageview.CircleImageView;
+
 
         public class ImgLoader {
     MemoryCache memoryCache=new MemoryCache();
@@ -31,7 +42,7 @@
     }
 
     int stub_id = R.drawable.ic_launcher_background;
-    public void DisplayImage(String url, int loader, ImageView imageView)
+    public void DisplayImage(String url, int loader, CircleImageView imageView)
     {
         stub_id = loader;
         imageViews.put(imageView, url);
@@ -45,19 +56,19 @@
         }
     }
 
-    public void DisplayPostImage(String url, ImageView imageView){
+    public byte[] DisplayPostImage(String url, ImageView imageView){
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
-        if(bitmap!=null)
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-        else{
-            System.out.println("testinddsdsdsdsg");
+        } else {
             queuePhoto(url, imageView);
             byte[] byteArray = Base64.decode(url, Base64.DEFAULT);
             Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             imageView.setImageBitmap(b);
+            return byteArray;
         }
-
+        return null;
     }
 
     private void queuePhoto(String url, ImageView imageView)

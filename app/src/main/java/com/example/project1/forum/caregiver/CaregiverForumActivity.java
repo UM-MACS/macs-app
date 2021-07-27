@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+
+import com.example.project1.forum.ForumActivity;
+import com.example.project1.forum.FullScreenPostImageActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
@@ -497,7 +500,15 @@ public class CaregiverForumActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")){
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(CaregiverForumActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
 
         expandedName.setText(getName);
@@ -985,7 +996,16 @@ public class CaregiverForumActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")) {
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(CaregiverForumActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
+
         }
 
         expandedName.setText(getName);

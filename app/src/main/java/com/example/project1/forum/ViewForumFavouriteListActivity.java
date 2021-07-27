@@ -345,7 +345,15 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")){
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(ViewForumFavouriteListActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
             /**byte[] byteArray = Base64.decode(getPostPhotoString, Base64.DEFAULT);
              Bitmap b = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
              postImage.setVisibility(View.VISIBLE);
@@ -820,7 +828,15 @@ public class ViewForumFavouriteListActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")) {
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(ViewForumFavouriteListActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);

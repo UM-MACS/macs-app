@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.project1.chat.OnEditTextRightDrawableTouchListener;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -312,7 +313,15 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")) {
             postImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, postImage);
+            postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(EditDeleteForumPostActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
         expandedName.setText(getName);
         expandedTitle.setText(getTitle);
@@ -354,7 +363,7 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         postTitle = (EditText)findViewById(R.id.post_title);
         postContent = (EditText)findViewById(R.id.post_content);
         cancelButton = (Button) findViewById(R.id.post_cancel);
-        editPostImage = (ImageView)findViewById(R.id.post_image);
+        editPostImage = (ImageView) findViewById(R.id.post_image);
 
         postTitle.setOnTouchListener(new OnEditTextRightDrawableTouchListener(postTitle) {
             @Override
@@ -368,7 +377,15 @@ public class EditDeleteForumPostActivity extends BaseActivity {
         if(!getPostPhotoString.equals("")){
             editPostImage.setVisibility(View.VISIBLE);
             ImgLoader imgLoader = new ImgLoader(getApplicationContext());
-            imgLoader.DisplayPostImage(getPostPhotoString, editPostImage);
+            byte [] byteArray = imgLoader.DisplayPostImage(getPostPhotoString, editPostImage);
+            editPostImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fullScreenIntent = new Intent(EditDeleteForumPostActivity.this, FullScreenPostImageActivity.class);
+                    fullScreenIntent.putExtra("byteArray", byteArray);
+                    startActivity(fullScreenIntent);
+                }
+            });
         }
         postTitle.setText(title);
         postContent.setText(content);
