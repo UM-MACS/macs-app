@@ -67,6 +67,18 @@ public class NotificationService extends Service {
 
             databaseReference.addChildEventListener(childEventListener);
         }
+        else{
+            final int NOTIFY_ID = 3333; // ID of notification
+            String id = "Channel 3"; // default_channel_id
+            String title = "title channel 3"; // Default Channel
+            Context context = getApplicationContext();
+            NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new NotificationCompat.Builder(this, id)
+                    .setContentTitle("")
+                    .setContentText("").build();
+
+            startForeground(1, notification);
+        }
 
         return START_STICKY;
     }
@@ -149,7 +161,7 @@ public class NotificationService extends Service {
         }
         Notification notification = builder.build();
         notifManager.notify(NOTIFY_ID, notification);
-//        startForeground(NOTIFY_ID,notification);
+        startForeground(NOTIFY_ID,notification);
     }
 
     ChildEventListener getChildEventListener() {

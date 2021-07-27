@@ -92,6 +92,7 @@ public class SessionManager {
         editor.commit();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(new Intent(context, NotificationService.class));
+            System.out.println("Logouttt in 1");
         } else {
             context.stopService(new Intent(context, NotificationService.class));
         }
