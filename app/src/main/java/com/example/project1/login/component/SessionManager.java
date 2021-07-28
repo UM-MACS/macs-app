@@ -90,12 +90,13 @@ public class SessionManager {
     public void logout(){
         editor.clear();
         editor.commit();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(new Intent(context, NotificationService.class));
-            System.out.println("Logouttt in 1");
-        } else {
-            context.stopService(new Intent(context, NotificationService.class));
-        }
+        context.stopService(new Intent(context, NotificationService.class));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(new Intent(context, NotificationService.class));
+//            System.out.println("Logouttt in 1");
+//        } else {
+//            context.stopService(new Intent(context, NotificationService.class));
+//        }
 //        context.startForegroundService(new Intent(context, NotificationService.class));
 //        context.stopService(new Intent(context, NotificationService.class));
     }

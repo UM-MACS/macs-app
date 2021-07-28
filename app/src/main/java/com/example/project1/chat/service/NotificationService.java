@@ -21,6 +21,7 @@ import com.example.project1.chat.ChatChannelListActivity;
 import com.example.project1.chat.component.CurrentChatUser;
 import com.example.project1.login.component.CurrentUser;
 import com.example.project1.login.component.SessionManager;
+import com.example.project1.mainPage.MainActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,22 +65,9 @@ public class NotificationService extends Service {
         if(sessionManager.isLogin()) {
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
-
             databaseReference.addChildEventListener(childEventListener);
+            startForeground();
         }
-        else{
-            final int NOTIFY_ID = 3333; // ID of notification
-            String id = "Channel 3"; // default_channel_id
-            String title = "title channel 3"; // Default Channel
-            Context context = getApplicationContext();
-            NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification notification = new NotificationCompat.Builder(this, id)
-                    .setContentTitle("")
-                    .setContentText("").build();
-
-            startForeground(1, notification);
-        }
-
         return START_STICKY;
     }
 
@@ -97,10 +85,39 @@ public class NotificationService extends Service {
         }
     }
 
+    private void startForeground(){
+        final int NOTIFY_ID = 2222; // ID of notification
+        String NOTFY_ID = "Channel 2"; // default_channel_id
+        String NOTIFY_TITLE = "title channel 2"; // Default Channel
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        NotificationCompat.Builder builder;
+        Context context = getApplicationContext();
+        NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = notifManager.getNotificationChannel(NOTFY_ID);
+            if (mChannel == null) {
+                mChannel = new NotificationChannel(NOTFY_ID, NOTIFY_TITLE, importance);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                notifManager.createNotificationChannel(mChannel);
+            }
+        }
+        startForeground(NOTIFY_ID, new NotificationCompat.Builder(this,
+                NOTFY_ID) // don't forget create a notification channel first
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.app_icon)
+                .setContentTitle("MACS")
+                .setContentText("Service is running background")
+                .setContentIntent(pendingIntent)
+                .build());
+    }
+
     private void notifyUser(){
         Log.e(TAG, "notify: " + databaseReference.toString());
         Context context = getApplicationContext();
-
         NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String s = sessionManager.getLanguagePref(context);
         String message = "";
@@ -161,7 +178,7 @@ public class NotificationService extends Service {
         }
         Notification notification = builder.build();
         notifManager.notify(NOTIFY_ID, notification);
-        startForeground(NOTIFY_ID,notification);
+//        startForeground(NOTIFY_ID,notification);
     }
 
     ChildEventListener getChildEventListener() {

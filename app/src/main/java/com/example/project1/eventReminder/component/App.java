@@ -4,8 +4,13 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+
+import androidx.core.content.ContextCompat;
+
+import com.example.project1.chat.service.NotificationService;
 
 public class App extends Application {
     public static final String CHANNEL_ID = "exampleChannel";
@@ -31,6 +36,7 @@ public class App extends Application {
             // or other notification behaviors after this
             NotificationManager notificationManager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
+            startService(new Intent(this, NotificationService.class));
         }
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            NotificationChannel channel = new NotificationChannel(
