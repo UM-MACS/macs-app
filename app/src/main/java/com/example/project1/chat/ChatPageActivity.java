@@ -245,8 +245,8 @@ public class ChatPageActivity extends BaseActivity {
                         String seen = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).toString();
                         String type = map.get(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE).toString();
                         if(!NRICFrom.equals(sessionManager.getUserDetail().get("NRIC"))){
-                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
-                            chatHistoryReference.child(dataSnapshot.getKey()).setValue(map);
+//                            map.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
+//                            chatHistoryReference.child(dataSnapshot.getKey()).setValue(map);
                             appendMessage(message,time,1,type, dataSnapshot.getKey());
                         }
                         else{

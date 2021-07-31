@@ -1,6 +1,7 @@
 package com.example.project1.eventReminder.component;
 
 import android.app.Application;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -36,18 +37,15 @@ public class App extends Application {
             // or other notification behaviors after this
             NotificationManager notificationManager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
-            startService(new Intent(this, NotificationService.class));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                ContextCompat.startForegroundService(this, new Intent(this, NotificationService.class));
+            }
+
+            else {
+                startService(new Intent(this, NotificationService.class));
+            }
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel channel = new NotificationChannel(
-//                    CHANNEL_ID,
-//                    "Example Channel",
-//                    NotificationManager.IMPORTANCE_HIGH
-//            );
-//
-//            NotificationManager manager = getSystemService(NotificationManager.class);
-//            manager.createNotificationChannel(channel);
-//        }
     }
 }
 

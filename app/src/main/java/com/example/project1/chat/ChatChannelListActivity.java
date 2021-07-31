@@ -39,6 +39,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.changePassword.ChangePasswordActivity;
+import com.example.project1.chat.component.CurrentChatUser;
 import com.example.project1.emotionAssessment.EmotionAssessmentActivity;
 import com.example.project1.eventReminder.EventReminderActivity;
 import com.example.project1.exercise.ExerciseDashboardActivity;
@@ -55,6 +56,7 @@ import com.example.project1.questionnaire.QuestionnaireActivity;
 import com.example.project1.userProfile.UserProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -88,7 +90,7 @@ public class ChatChannelListActivity extends BaseActivity {
     private TextView tvEmptyChat;
     private ArrayList<HashMap<String,String>> receiverList = new ArrayList<>(), filterList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, notificationReference;
     private String tempPic = "";
     private final String RECEIVER_PIC = "receiverPic";
     private final String NRIC_TO = "NRICTo";
@@ -153,6 +155,11 @@ public class ChatChannelListActivity extends BaseActivity {
         //firebase database
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE);
+
+        // Cancel all the notifications of the current user when enter the channel list page
+        ChildEventListener childEventListener = getChildEventListener();
+        notificationReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
+        notificationReference.addChildEventListener(childEventListener);
 
         sessionManager = new SessionManager(this);
 
@@ -239,6 +246,10 @@ public class ChatChannelListActivity extends BaseActivity {
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_TIMESTAMP).getValue(String.class));
                                                     tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE).getValue(String.class));
+                                                    tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MESSAGE_TYPE).getValue(String.class));
+                                                    tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_SENDER_NAME).getValue(String.class));
+                                                    tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_MEDIA_URL,ds.child(PublicComponent.FIREBASE_CHAT_HISTORY_MEDIA_URL).getValue(String.class));
+                                                    tempMap.put("docID",ds.getKey());
                                                     break;
                                                 }
                                                 receiverList.add(tempMap);
@@ -286,7 +297,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("NRICFrom", sessionManager.getUserDetail().get("NRIC"));
+                        params.put("NRICTo", sessionManager.getUserDetail().get("NRIC"));
                         return params;
                     }
                 };
@@ -371,6 +382,18 @@ public class ChatChannelListActivity extends BaseActivity {
                         i.putExtra(RECEIVER_TYPE, tempMap.get(RECEIVER_TYPE));
                         i.putExtra(CHAT_CHANNEL_ID, tempMap.get(CHAT_CHANNEL_ID));
                         i.putExtra(RECEIVER_PIC,temp);
+                        if(!tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_NRIC_FROM).equals(sessionManager.getUserDetail().get("NRIC")) &&
+                                tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN).equals(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_FALSE)){
+                            tempMap.put(PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN, PublicComponent.FIREBASE_CHAT_HISTORY_IS_SEEN_TRUE);
+                            DatabaseReference lastMessageReference = databaseReference
+                                    .child(tempMap.get(PublicComponent.FIREBASE_CHAT_HISTORY_CHANNEL_ID))
+                                    .child(PublicComponent.FIREBASE_CHAT_CHANNEL_CHAT_HISTORY)
+                                    .child(tempMap.get("docID"));
+                            tempMap.remove(RECEIVER_NAME);
+                            tempMap.remove(RECEIVER_TYPE);
+                            lastMessageReference.setValue(tempMap);
+                            System.out.println("Change last message seen to be TRUE success");
+                        }
                         startActivity(i);
                     }
                 });
@@ -536,5 +559,36 @@ public class ChatChannelListActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    ChildEventListener getChildEventListener() {
+        return new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
+                    notificationReference.removeValue();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
     }
 }

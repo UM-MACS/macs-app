@@ -66,7 +66,16 @@ public class NotificationService extends Service {
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
             databaseReference.addChildEventListener(childEventListener);
-            startForeground();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForeground();
+                System.out.println("Foregroun detected");
+            }
+
+            else {
+                startForeground(1, new Notification());
+                System.out.println("Older foreground detected");
+            }
         }
         return START_STICKY;
     }
@@ -105,8 +114,7 @@ public class NotificationService extends Service {
                 notifManager.createNotificationChannel(mChannel);
             }
         }
-        startForeground(NOTIFY_ID, new NotificationCompat.Builder(this,
-                NOTFY_ID) // don't forget create a notification channel first
+        startForeground(NOTIFY_ID, new NotificationCompat.Builder(this, NOTFY_ID)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle("MACS")
@@ -146,7 +154,7 @@ public class NotificationService extends Service {
             }
             builder = new NotificationCompat.Builder(context, id);
             intent = new Intent(context, ChatChannelListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             // REQUIRED
             builder.setContentTitle("MACS")
@@ -163,7 +171,7 @@ public class NotificationService extends Service {
         else {
             builder = new NotificationCompat.Builder(context, id);
             intent = new Intent(context, ChatChannelListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
             builder.setContentTitle("MACS")                            // required
                     .setContentText(message)
@@ -188,7 +196,6 @@ public class NotificationService extends Service {
                 if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
                     notifyUser();
                 }
-                databaseReference.removeValue();
             }
 
             @Override
