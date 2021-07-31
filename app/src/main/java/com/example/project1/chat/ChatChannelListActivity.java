@@ -297,7 +297,7 @@ public class ChatChannelListActivity extends BaseActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("NRICTo", sessionManager.getUserDetail().get("NRIC"));
+                        params.put("NRICFrom", sessionManager.getUserDetail().get("NRIC"));
                         return params;
                     }
                 };
