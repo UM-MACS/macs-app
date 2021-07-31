@@ -489,7 +489,9 @@ public class ChatChannelListActivity extends BaseActivity {
 //        startActivity(i);
 //        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 //        finish();
-        super.onBackPressed();
+        Intent i = new Intent(this, ChatChannelListActivity.class);
+        startActivity(i);
+        finish();
     }
 
     @Override
