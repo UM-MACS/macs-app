@@ -13,6 +13,8 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import android.provider.Settings;
 import android.util.Log;
 
 import com.example.project1.PublicComponent;
@@ -98,10 +100,14 @@ public class NotificationService extends Service {
     private void startForeground(){
         final int NOTIFY_ID = 2222; // ID of notification
         String NOTFY_ID = "Channel 2"; // default_channel_id
-        String NOTIFY_TITLE = "title channel 2"; // Default Channel
+        String NOTIFY_TITLE = "Running Background Channel"; // Default Channel
         Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, getApplicationContext().getPackageName())
+                .putExtra(Settings.EXTRA_CHANNEL_ID, NOTFY_ID);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         NotificationCompat.Builder builder;
         Context context = getApplicationContext();
         NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -118,6 +124,7 @@ public class NotificationService extends Service {
         startForeground(NOTIFY_ID, new NotificationCompat.Builder(this, NOTFY_ID)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.app_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon))
                 .setContentTitle("MACS")
                 .setContentText("Service is running background")
                 .setContentIntent(pendingIntent)
@@ -140,7 +147,7 @@ public class NotificationService extends Service {
 
         final int NOTIFY_ID = 3333; // ID of notification
         String id = "Channel 3"; // default_channel_id
-        String title = "title channel 3"; // Default Channel
+        String title = "Message Notification Channel"; // Default Channel
         PendingIntent pendingIntent;
         Intent intent;
         NotificationCompat.Builder builder;
