@@ -567,9 +567,7 @@ public class ChatChannelListActivity extends BaseActivity {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
-                    notificationReference.removeValue();
-                }
+                notificationReference.removeValue();
             }
 
             @Override

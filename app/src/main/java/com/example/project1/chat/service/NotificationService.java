@@ -84,6 +84,7 @@ public class NotificationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         databaseReference.removeEventListener(childEventListener);
+        System.out.println("Notifcations is shutting down");
         stopForeground(true);
         if(sessionManager.isLogin()){
             Intent broadcast = new Intent();
@@ -194,9 +195,7 @@ public class NotificationService extends Service {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(CurrentChatUser.getInstance().getCurrentNRIC().equals("")){
-                    notifyUser();
-                }
+                notifyUser();
             }
 
             @Override
