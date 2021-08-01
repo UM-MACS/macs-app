@@ -156,11 +156,6 @@ public class ChatChannelListActivity extends BaseActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_CHAT_BASE);
 
-        // Cancel all the notifications of the current user when enter the channel list page
-        ChildEventListener childEventListener = getChildEventListener();
-        notificationReference = firebaseDatabase.getReference(PublicComponent.FIREBASE_NOTIFICATION_BASE).child(CurrentUser.getInstance().getNRIC());
-        notificationReference.addChildEventListener(childEventListener);
-
         sessionManager = new SessionManager(this);
 
         linearLayoutChatList = findViewById(R.id.linear_layout_chat_list);
@@ -561,34 +556,5 @@ public class ChatChannelListActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    ChildEventListener getChildEventListener() {
-        return new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                notificationReference.removeValue();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
     }
 }

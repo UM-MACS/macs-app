@@ -203,6 +203,7 @@ public class NotificationService extends Service {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 notifyUser();
+                databaseReference.removeValue();
             }
 
             @Override
