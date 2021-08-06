@@ -3,6 +3,9 @@ package com.example.project1.forum;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -152,6 +156,10 @@ public class CreateForumPostActivity extends BaseActivity {
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+            stringRequest.setRetryPolicy(new
+                    DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 1,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+            );
             requestQueue.add(stringRequest);
         } else{
             Toast.makeText(getApplicationContext(),
@@ -189,9 +197,29 @@ public class CreateForumPostActivity extends BaseActivity {
         }
     }
 
+    public Bitmap BITMAP_RESIZER(Bitmap bitmap,int newWidth,int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
+
     public String getStringImage(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+//        bitmap = BITMAP_RESIZER(bitmap, 300, 300);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 30 , byteArrayOutputStream);
         byte[] imageByteArray = byteArrayOutputStream.toByteArray();
         String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
         Log.e("TAG", "encodedImage"+encodedImage );
