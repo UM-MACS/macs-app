@@ -565,8 +565,8 @@ public class ChatPageActivity extends BaseActivity {
                     .load(message)
                     .into(imgView);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    800,
+                    800,
                     6f
             );
 
