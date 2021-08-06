@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -152,6 +153,10 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+            stringRequest.setRetryPolicy(new
+                    DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 1,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+            );
             requestQueue.add(stringRequest);
         } else{
             Toast.makeText(getApplicationContext(), getString(R.string.enter_title_content),Toast.LENGTH_SHORT)
@@ -191,7 +196,7 @@ public class CaregiverCreateForumPostActivity extends BaseActivity {
 
     public String getStringImage(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
         byte[] imageByteArray = byteArrayOutputStream.toByteArray();
         String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
         Log.e("TAG", "encodedImage"+encodedImage );
