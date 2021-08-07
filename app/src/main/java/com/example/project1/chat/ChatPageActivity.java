@@ -845,7 +845,7 @@ public class ChatPageActivity extends BaseActivity {
     public void choosePicture(){
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_PICK);
         startActivityForResult(intent, 1);
     }
 
@@ -856,7 +856,6 @@ public class ChatPageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            System.out.println(imageUri.toString());
             uploadPicture();
         }
     }

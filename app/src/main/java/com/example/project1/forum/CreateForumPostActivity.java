@@ -1,15 +1,23 @@
 package com.example.project1.forum;
 
+import android.Manifest;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -22,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -41,7 +50,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -175,54 +189,100 @@ public class CreateForumPostActivity extends BaseActivity {
     }
 
     public void choosePicture(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+        try {
+            if (ActivityCompat.checkSelfPermission(CreateForumPostActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(CreateForumPostActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(
-                        getContentResolver(), filePath);
-                postImage.setVisibility(View.VISIBLE);
-                postImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Uri uri = data.getData();
+            String filePath = RealPathUtil.getRealPath(getApplicationContext(),uri);
+            bitmap = resizeAndCompressImageBeforeSend(filePath);
+            postImage.setVisibility(View.VISIBLE);
+            postImage.setImageBitmap(bitmap);
         }
     }
 
-    public Bitmap BITMAP_RESIZER(Bitmap bitmap,int newWidth,int newHeight) {
-        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+    public Bitmap resizeAndCompressImageBeforeSend(String filePath){
+        final int MAX_IMAGE_SIZE = 700 * 1024; // max final file size in kilobytes
 
-        float ratioX = newWidth / (float) bitmap.getWidth();
-        float ratioY = newHeight / (float) bitmap.getHeight();
-        float middleX = newWidth / 2.0f;
-        float middleY = newHeight / 2.0f;
+        // First decode with inJustDecodeBounds=true to check dimensions of image
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath,options);
 
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
+        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
+        options.inSampleSize = calculateInSampleSize(options, 300, 300);
 
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig= Bitmap.Config.ARGB_8888;
 
-        return scaledBitmap;
-
+        Bitmap bmpPic = BitmapFactory.decodeFile(filePath,options);
+        return bmpPic;
     }
 
-    public String getStringImage(Bitmap bitmap){
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap = BITMAP_RESIZER(bitmap, 300, 300);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 30 , byteArrayOutputStream);
-        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
-        String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
-        Log.e("TAG", "encodedImage"+encodedImage );
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        String debugTag = "MemoryInformation";
+        // Image nin islenmeden onceki genislik ve yuksekligi
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        Log.d(debugTag,"image height: "+height+ "---image width: "+ width);
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        Log.d(debugTag,"inSampleSize: "+inSampleSize);
+        return inSampleSize;
+    }
+
+    public String getStringImage(Bitmap bmpPic) {
+        final int MAX_IMAGE_SIZE = 700 * 1024;
+        int compressQuality = 100; // quality decreasing by 5 every loop.
+        int streamLength;
+        byte[] bmpPicByteArray;
+        do {
+            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
+            Log.d("compressBitmap", "Quality: " + compressQuality);
+            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
+            bmpPicByteArray = bmpStream.toByteArray();
+            streamLength = bmpPicByteArray.length;
+            compressQuality -= 5;
+            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
+        } while (streamLength >= MAX_IMAGE_SIZE);
+        String encodedImage = Base64.encodeToString(bmpPicByteArray, Base64.DEFAULT);
         return encodedImage;
     }
+
+//    public String getStringImage(Bitmap bitmap){
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap = BITMAP_RESIZER(bitmap, 300, 300);
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 30 , byteArrayOutputStream);
+//        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+//        String encodedImage = Base64.encodeToString(imageByteArray,Base64.DEFAULT);
+//        Log.e("TAG", "encodedImage"+encodedImage );
+//        return encodedImage;
+//    }
 }
