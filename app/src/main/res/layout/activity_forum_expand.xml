@@ -180,6 +180,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="20dp"
                         android:paddingEnd="0dp"
+                        android:textIsSelectable="true"
                         android:text="Title"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -202,6 +203,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:padding="5dp"
+                android:textIsSelectable="true"
+                android:autoLink="web"
                 android:text="random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl"
                 android:textColor="@color/black" />
 

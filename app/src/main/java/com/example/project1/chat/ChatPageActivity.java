@@ -31,6 +31,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -512,6 +513,7 @@ public class ChatPageActivity extends BaseActivity {
             dateString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, time.length(), 0);
 
             tv.setText(message + "\n");
+            tv.setAutoLinkMask(Linkify.ALL);
             tv.append(dateString);
             tv.setTextColor(Color.parseColor("#000000"));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
