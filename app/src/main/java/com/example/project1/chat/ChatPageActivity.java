@@ -7,6 +7,8 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -29,6 +31,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -54,6 +57,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.project1.PublicComponent;
 import com.example.project1.R;
 import com.example.project1.chat.component.CurrentChatUser;
+import com.example.project1.forum.RealPathUtil;
 import com.example.project1.forum.imageFile.ImgLoader;
 import com.example.project1.login.component.BaseActivity;
 import com.example.project1.login.component.SessionManager;
@@ -78,6 +82,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -132,6 +137,7 @@ public class ChatPageActivity extends BaseActivity {
     private Runnable runnable;
     final int REQUEST_PERMISSION_CODE = 1000;
     private ScrollView scrollview;
+    private byte [] bytes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -856,8 +862,65 @@ public class ChatPageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
+            String filePath = RealPathUtil.getRealPath(getApplicationContext(),imageUri);
+            bytes = resizeAndCompressImageBeforeSend(filePath);
             uploadPicture();
         }
+    }
+
+    public byte [] resizeAndCompressImageBeforeSend(String filePath){
+        final int MAX_IMAGE_SIZE = 700 * 1024; // max final file size in kilobytes
+
+        // First decode with inJustDecodeBounds=true to check dimensions of image
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath,options);
+
+        // Calculate inSampleSize(First we are going to resize the image to 800x800 image, in order to not have a big but very low quality image.
+        //resizing the image will already reduce the file size, but after resizing we will check the file size and start to compress image
+        options.inSampleSize = calculateInSampleSize(options, 800, 800);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig= Bitmap.Config.ARGB_8888;
+
+        Bitmap bmpPic = BitmapFactory.decodeFile(filePath,options);
+        int compressQuality = 100; // quality decreasing by 5 every loop.
+        int streamLength;
+        byte[] bmpPicByteArray;
+        do {
+            ByteArrayOutputStream bmpStream = new ByteArrayOutputStream();
+            Log.d("compressBitmap", "Quality: " + compressQuality);
+            bmpPic.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream);
+            bmpPicByteArray = bmpStream.toByteArray();
+            streamLength = bmpPicByteArray.length;
+            compressQuality -= 5;
+            Log.d("compressBitmap", "Size: " + streamLength / 1024 + " kb");
+        } while (streamLength >= MAX_IMAGE_SIZE);
+        return bmpPicByteArray;
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        String debugTag = "MemoryInformation";
+        // Image nin islenmeden onceki genislik ve yuksekligi
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        Log.d(debugTag,"image height: "+height+ "---image width: "+ width);
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        Log.d(debugTag,"inSampleSize: "+inSampleSize);
+        return inSampleSize;
     }
 
     public void uploadPicture(){
@@ -867,7 +930,8 @@ public class ChatPageActivity extends BaseActivity {
         final String randomKey = UUID.randomUUID().toString();
         StorageReference riversRef = storageReference.child("images/" + randomKey);
 
-        riversRef.putFile(imageUri)
+
+        riversRef.putBytes(bytes)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
