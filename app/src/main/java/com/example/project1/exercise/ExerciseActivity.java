@@ -270,7 +270,7 @@ public class ExerciseActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 //                Map<String,String> temp = new HashMap<>();
-                if (exerciseLevel.contentEquals("exercise level one")) {
+                if (exerciseLevel.contentEquals("exercise-level-one")) {
                     if (exerciseCounter == 7) {
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
@@ -293,7 +293,8 @@ public class ExerciseActivity extends BaseActivity {
                         playVideo(view);
                         btnNextOnClick();
                     }
-                } else {
+                }
+                else {
                     if (exerciseCounter == 6) {
                         exerciseNameList.add(tvVideoName.getText().toString());
                         durationList.add(time);
