@@ -46,7 +46,6 @@
             android:text="random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl random text and trying to type shdsjakd fjksl kdlsls fjdksl"
             android:textColor="@color/black"
             android:ellipsize="end"
-            android:maxLines="4"
             android:paddingStart="10dp"
             android:paddingEnd="0dp"/>
 

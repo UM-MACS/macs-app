@@ -568,7 +568,7 @@ public class ChatPageActivity extends BaseActivity {
 
             txtView.append(dateString);
             txtView.setTextColor(Color.parseColor("#000000"));
-
+    
             Picasso.get()
                     .load(message)
                     .into(imgView);
