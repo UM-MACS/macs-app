@@ -260,7 +260,7 @@
             />
         <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
             android:id="@+id/reply_input"
-            android:layout_width="220dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
